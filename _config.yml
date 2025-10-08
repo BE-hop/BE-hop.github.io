@@ -3,7 +3,7 @@ title: liu.ruyuan Blog
 SEOTitle: BEhop Experince | liu.ruyuan Blog
 header-img: img/home-bg.jpg
 email: l15836141001@163.com
-description: "这里是 @liuruyaun 的个人博客，与你一起改变世界 | 要做一个会AI的设计师"
+description: "这里是 @liuruyaun 的个人博客，做一个会AI的设计师 | BE(be express)hop(i am a hiphop dancer)-无论通过什么方式，尽情的表达自己；接收，表达，连接，这是人生的意义，也是我的设计哲学，我致力于创建更高效更美丽的表达方式，一起创造美好的世界吧～"
 keyword: "BEhop, BE-hop, liuruyaun, @liuruyuan, liuruyuan Blog, 博客, 个人网站, AI, Python, 设计师, 景观设计师"
 url: "https://huangxuan.me" # your host, for absolute URL
 baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
@@ -13,10 +13,10 @@ future: true
 
 # SNS settings
 RSS: false
-weibo_username: huxpro
-zhihu_username: huxpro
-github_username: huxpro
-twitter_username: huxpro
+weibo_username: *
+zhihu_username: *
+github_username: *
+twitter_username: *
 #facebook_username:  huxpro
 #linkedin_username:  firstname-lastname-idxxxx
 
@@ -69,13 +69,13 @@ netease_comment: false
 # ba_track_id: [your track id]
 
 # Google Analytics
-ga_track_id: "UA-49627206-1" # Format: UA-xxxxxx-xx
-ga_domain: huangxuan.me
+# ga_track_id: "UA-49627206-1" # Format: UA-xxxxxx-xx
+# ga_domain: huangxuan.me
 
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
-sidebar-about-description: "要做一个有 swag 的程序员 <br> React Team @ Meta"
-sidebar-avatar: https://github.com/Huxpro.png # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-about-description: "无论通过什么方式，尽情的表达自己；接收，表达，连接，这是人生的意义，也是我的设计哲学，我致力于创建更高效更美丽的表达方式，一起创造美好的世界吧～"
+sidebar-avatar: https://github.com/BE-hop.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags
 featured-tags: true # whether or not using Feature-Tags
@@ -91,12 +91,12 @@ page-mathjax: false
 # Friends
 friends:
   [
-    { title: "乱序（Midare）", href: "http://mida.re/" },
-    { title: "Ebn Zhang", href: "https://ebnbin.dev/" },
-    { title: "Kun Qian", href: "http://kunq.me" },
-    { title: "Sherry Woo", href: "https://sherrywoo.me/" },
-    { title: "SmdCn", href: "http://blog.smdcn.net" },
-    { title: "JiyinYiyong", href: "http://tiye.me/" },
-    { title: "DHong Say", href: "http://dhong.co" },
-    { title: "尹峰以为", href: "http://ingf.github.io/" },
+   # { title: "乱序（Midare）", href: "http://mida.re/" },
+   # { title: "Ebn Zhang", href: "https://ebnbin.dev/" },
+   # { title: "Kun Qian", href: "http://kunq.me" },
+   # { title: "Sherry Woo", href: "https://sherrywoo.me/" },
+   # { title: "SmdCn", href: "http://blog.smdcn.net" },
+    #{ title: "JiyinYiyong", href: "http://tiye.me/" },
+    #{ title: "DHong Say", href: "http://dhong.co" },
+    #{ title: "尹峰以为", href: "http://ingf.github.io/" },
   ]

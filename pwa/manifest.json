@@ -1,7 +1,7 @@
 {
-  "name": "Hux Blog",
-  "short_name": "Hux Blog",
-  "description": "About an engineer & designer who loves web.",
+  "name": "BEhop Experience",
+  "short_name": "BEhop",
+  "description": "liu.ruyuan 的设计与 AI 灵感记录。",
   "icons": [{
     "src": "icons/128.png",
     "sizes": "128x128",

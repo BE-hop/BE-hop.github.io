@@ -2,7 +2,7 @@
 layout: post
 title: "欢迎来到 BEhop Experience"
 subtitle: "记录设计、AI 与舞蹈的灵感" 
-date: 2024-05-01
+date: 2025-09-30
 author: liu.ruyuan
 tags: [设计, AI, 生活]
 ---

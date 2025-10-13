@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Vibe Coding 成功🏅！经历12+小时，借助GPT5、GitHub、codex、vscode及copilt。"
-subtitle: "解决了本地大模型弱智，线上大模型上传文本受限"
+subtitle: "基于我的专业构建了一个“知识库🧀”项目，解决了本地大模型弱智，线上大模型上传文本受限。并对其他职业也具有迁移性。"
 date: 2025-10-10
 author: liu.ruyuan
-tags: [AI]
+tags: [AI，知识库，植物设计]
 ---
 
 ## Vibe Coding 成功🏅！经历12+小时，借助GPT5、GitHub、codex、vscode及copilt。

@@ -2,7 +2,9 @@
 title: Archive
 layout: default
 description: "归档每一次创作的痕迹"
+nav-order: 30
 header-img: "img/bj.tree.jpg"
+archive-lang: zh
 ---
 
 <!--
@@ -16,21 +18,37 @@ https://github.com/kitian616/jekyll-TeXt-theme
 <div class="container">
 	<div class="row">
 		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+			{%- assign archive_lang = page.archive-lang | default: 'zh' -%}
+			{%- if archive_lang == 'zh' -%}
+			{%- assign archive_posts = site.posts | where_exp: "post", "post.lang != 'en'" -%}
+			{%- else -%}
+			{%- assign archive_posts = site.posts | where: "lang", archive_lang -%}
+			{%- endif -%}
+
 			<!-- Tags (as filter) -->
 			<div id='tag_cloud' class="tags tags-sup js-tags">
 				<a class="tag-button--all" data-encode="">
 					Show All
-					<sup>{{site.posts.size}}</sup>
+					<sup>{{ archive_posts.size }}</sup>
 				</a>
 
 				{% capture tags %}
 				{% for tag in site.tags %}
-				<a data-sort="{{ site.posts.size | minus: tag[1].size | prepend: '0000' | slice: -4, 4 }}"
+				{% assign tag_posts = tag[1] %}
+				{% if archive_lang == 'zh' %}
+				{% assign tag_posts = tag_posts | where_exp: "post", "post.lang != 'en'" %}
+				{% else %}
+				{% assign tag_posts = tag_posts | where: "lang", archive_lang %}
+				{% endif %}
+				{% assign tag_count = tag_posts | size %}
+				{% if tag_count > 0 %}
+				<a data-sort="{{ archive_posts.size | minus: tag_count | prepend: '0000' | slice: -4, 4 }}"
 					data-encode="{{ tag[0] | strip | url_encode }}" class="tag-button" title="{{ tag[0] }}"
-					rel="{{ tag[1].size }}">
+					rel="{{ tag_count }}">
 					{{ tag[0] }}
-					<sup>{{tag[1].size}}</sup>
+					<sup>{{ tag_count }}</sup>
 				</a>__SEPERATOR__
+				{% endif %}
 				{% endfor %}
 				{% endcapture %}
 				{{ tags | split:'__SEPERATOR__' | sort }}
@@ -38,7 +56,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 
 			<!-- Article List -->
 			<div class="mini-post-list js-result d-none">
-				{%- assign _sorted_list = site.posts -%}
+				{%- assign _sorted_list = archive_posts -%}
 				{%- assign _sorted_list = _sorted_list | sort: 'date' -%}
 				{%- assign _sorted_list = _sorted_list | reverse -%}
 

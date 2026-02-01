@@ -1,0 +1,70 @@
+---
+layout: page
+title: "about me"
+description: "关于 BEhop 的自述"
+lang-switcher: true
+---
+
+{% capture sidebar_about %}{% include about/sidebar.md %}{% endcapture %}
+{{ sidebar_about | markdownify }}
+
+<script>
+  (function () {
+    var buttons = document.querySelectorAll('.blog-lang-button');
+    var titleNode = document.querySelector('.intro-header .site-heading h1');
+    var descNode = document.querySelector('.intro-header .site-heading .subheading');
+    var navNodes = document.querySelectorAll('[data-i18n-zh][data-i18n-en]');
+    var blogRoot = document.querySelector('[data-blog-root]');
+    var blogLatest = document.querySelector('[data-blog-latest]');
+    var blogAbout = document.querySelector('[data-blog-about]');
+    var blogArchive = document.querySelector('[data-blog-archive]');
+
+    var texts = {
+      zh: { title: 'about me', desc: '关于 BEhop 的自述' },
+      en: { title: 'About Me', desc: 'About BEhop' }
+    };
+    var base = '{{ site.baseurl }}';
+    var paths = { zh: base + '/blog/about/', en: base + '/blog/about/en/' };
+    var current = 'zh';
+    var fallback = 'en';
+
+    function applyLang(lang) {
+      if (titleNode) titleNode.textContent = texts[lang].title;
+      if (descNode) descNode.textContent = texts[lang].desc;
+      navNodes.forEach(function (node) {
+        var value = node.getAttribute(lang === 'zh' ? 'data-i18n-zh' : 'data-i18n-en');
+        if (value) node.textContent = value;
+      });
+      if (blogRoot) blogRoot.setAttribute('href', lang === 'en' ? base + '/blog/en/' : base + '/blog/');
+      if (blogLatest) blogLatest.setAttribute('href', lang === 'en' ? base + '/blog/en/' : base + '/blog/');
+      if (blogAbout) blogAbout.setAttribute('href', lang === 'en' ? base + '/blog/about/en/' : base + '/blog/about/');
+      if (blogArchive) blogArchive.setAttribute('href', lang === 'en' ? base + '/archive/en/' : base + '/archive/');
+      buttons.forEach(function (btn) {
+        btn.classList.toggle('is-active', btn.getAttribute('data-blog-lang') === lang);
+      });
+      localStorage.setItem('blogLang', lang);
+    }
+
+    function setLang(lang) {
+      if (lang !== current) {
+        localStorage.setItem('blogLang', lang);
+        window.location.href = paths[lang];
+        return;
+      }
+      applyLang(lang);
+    }
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setLang(btn.getAttribute('data-blog-lang') || current);
+      });
+    });
+
+    var stored = localStorage.getItem('blogLang') || fallback;
+    if (stored !== current) {
+      window.location.href = paths[stored];
+      return;
+    }
+    applyLang(current);
+  })();
+</script>

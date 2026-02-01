@@ -1,0 +1,90 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title_zh | default: page.title }} | BEhooop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--background)",
+              foreground: "var(--foreground)",
+              card: "var(--card)",
+              "card-foreground": "var(--card-foreground)",
+              popover: "var(--popover)",
+              "popover-foreground": "var(--popover-foreground)",
+              primary: "var(--primary)",
+              "primary-foreground": "var(--primary-foreground)",
+              secondary: "var(--secondary)",
+              "secondary-foreground": "var(--secondary-foreground)",
+              muted: "var(--muted)",
+              "muted-foreground": "var(--muted-foreground)",
+              accent: "var(--accent)",
+              "accent-foreground": "var(--accent-foreground)",
+              border: "var(--border)",
+              input: "var(--input)",
+              ring: "var(--ring)",
+            },
+            fontFamily: {
+              serif: ["Playfair Display", "serif"],
+              sans: ["Manrope", "sans-serif"],
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css">
+</head>
+<body class="bg-background text-foreground">
+  {% include nav.html %}
+
+  <main class="pt-24">
+    <section class="px-6 py-16 lg:px-8">
+      <div class="mx-auto max-w-6xl">
+        <a href="{{ site.baseurl }}/#projects" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Back to Projects" data-zh="返回项目作品">返回项目作品</a>
+
+        <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:items-start">
+          <div class="overflow-hidden rounded-2xl border border-border bg-card">
+            <img src="{{ page.image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" />
+          </div>
+
+          <div class="space-y-6">
+            <span class="text-xs font-medium uppercase tracking-widest text-primary" data-en="{{ page.category_label_en }}" data-zh="{{ page.category_label_zh }}">{{ page.category_label_zh }}</span>
+            <h1 class="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl" data-en="{{ page.title_en }}" data-zh="{{ page.title_zh }}">{{ page.title_zh }}</h1>
+            <p class="text-muted-foreground" data-en="{{ page.meta_en }}" data-zh="{{ page.meta_zh }}">{{ page.meta_zh }}</p>
+            <p class="text-muted-foreground leading-relaxed" data-en="{{ page.detail_en }}" data-zh="{{ page.detail_zh }}">{{ page.detail_zh }}</p>
+
+            {% if page.year %}
+            <div class="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">
+              <span data-en="Year" data-zh="年份">年份</span>
+              <span>{{ page.year }}</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 pb-20 lg:px-8">
+      <div class="mx-auto max-w-4xl space-y-6 text-muted-foreground leading-relaxed">
+        {{ content }}
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script src="{{ site.baseurl }}/js/portfolio.js"></script>
+</body>
+</html>

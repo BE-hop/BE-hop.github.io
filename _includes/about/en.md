@@ -1,10 +1,8 @@
-Hi, I’m **liu.ruyuan** — a designer, AI tinkerer, and hip-hop dancer who loves blending technology with storytelling. By day I shape landscape and interaction projects; by night I explore creative coding workflows that make expression more joyful and accessible.
+### Three Selves
 
-On this site you’ll find:
+- The self I believe I am
+- The self I present
+- The self others see
 
-1. Experiments with AI-assisted design tools;
-2. Notes from real-world projects and retrospectives;
-3. Training logs from the dance floor and reflections on body awareness;
-4. Ideas, sketches, and anything that sparks curiosity.
-
-Feel free to reach out via the social links in the sidebar. Let’s learn, create, and collaborate together.
+Who I am is defined by these three.  
+I am working to let this site hold all three, becoming my digital vessel.

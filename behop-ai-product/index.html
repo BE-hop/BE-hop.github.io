@@ -1,0 +1,393 @@
+---
+layout: null
+title: "BEhopAI Product"
+nav-order: 1
+permalink: /behop-ai-product/
+lang-switcher: true
+nav-theme: dark
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BEhopAI Product</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--background)",
+              foreground: "var(--foreground)",
+              card: "var(--card)",
+              "card-foreground": "var(--card-foreground)",
+              popover: "var(--popover)",
+              "popover-foreground": "var(--popover-foreground)",
+              primary: "var(--primary)",
+              "primary-foreground": "var(--primary-foreground)",
+              secondary: "var(--secondary)",
+              "secondary-foreground": "var(--secondary-foreground)",
+              muted: "var(--muted)",
+              "muted-foreground": "var(--muted-foreground)",
+              accent: "var(--accent)",
+              "accent-foreground": "var(--accent-foreground)",
+              border: "var(--border)",
+              input: "var(--input)",
+              ring: "var(--ring)",
+            },
+            fontFamily: {
+              sans: ["Sora", "sans-serif"],
+              display: ["Space Grotesk", "sans-serif"],
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/behop-ai.css">
+</head>
+<body class="bg-background text-foreground">
+  {% include nav.html %}
+
+  <main class="min-h-screen bg-background">
+    <section class="ai-hero relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      <div class="ai-hero-grid"></div>
+      <div class="ai-hero-glow"></div>
+
+      <div class="relative z-10 mx-auto max-w-5xl px-6 py-24 text-center lg:px-8">
+        <div class="ai-hero-pill mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm">
+          <span class="ai-hero-dot h-2 w-2 rounded-full animate-pulse"></span>
+          <span data-en="Explore AI-Powered Design Tools" data-zh="探索 AI 驱动的设计工具">探索 AI 驱动的设计工具</span>
+        </div>
+
+        <h1 class="ai-hero-title font-display text-4xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl text-balance">
+          <span data-en="BEhop" data-zh="BEhop">BEhop</span>
+          <span class="text-accent" data-en=" AI Design" data-zh=" AI 设计"> AI 设计</span>
+          <br />
+          <span class="ai-hero-line" data-en="Innovation Hub" data-zh="创新平台">创新平台</span>
+        </h1>
+
+        <p class="ai-hero-subtitle mt-6 text-lg leading-8 max-w-2xl mx-auto text-pretty" data-en="Discover BEhop's curated collection of AI products transforming design workflows, landscape architecture, and image processing. Explore tools that inspire creativity and amplify efficiency." data-zh="探索 BEhop 精选的 AI 产品系列，革新设计工作流程、景观建筑与图像处理。发现激发创意、提升效率的智能工具。">
+          探索 BEhop 精选的 AI 产品系列，革新设计工作流程、景观建筑与图像处理。发现激发创意、提升效率的智能工具。
+        </p>
+
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#products" class="ai-hero-button ai-hero-button--primary inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold" data-en="Explore Products" data-zh="探索产品">探索产品</a>
+          <a href="#gallery" class="ai-hero-button ai-hero-button--ghost inline-flex items-center justify-center px-6 py-3 text-sm font-semibold" data-en="View Gallery" data-zh="查看作品集">查看作品集</a>
+        </div>
+
+        <div class="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4 border-t border-border pt-10">
+          <div class="flex flex-col items-center">
+            <span class="text-3xl font-bold text-foreground">50+</span>
+            <span class="text-sm text-muted-foreground" data-en="AI Tools" data-zh="AI 工具">AI 工具</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-3xl font-bold text-foreground">12</span>
+            <span class="text-sm text-muted-foreground" data-en="Categories" data-zh="产品分类">产品分类</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-3xl font-bold text-foreground">10K+</span>
+            <span class="text-sm text-muted-foreground" data-en="Users" data-zh="用户">用户</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-3xl font-bold text-foreground">99%</span>
+            <span class="text-sm text-muted-foreground" data-en="Satisfaction" data-zh="满意度">满意度</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" class="py-24 px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" data-en="Featured AI Products" data-zh="精选 AI 产品">精选 AI 产品</h2>
+          <p class="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto" data-en="Explore BEhop's curated collection of AI-powered tools designed to transform how you approach design and creative work." data-zh="探索 BEhop 精选的 AI 工具系列，旨在革新您的设计和创意工作方式。">
+            探索 BEhop 精选的 AI 工具系列，旨在革新您的设计和创意工作方式。
+          </p>
+        </div>
+
+        <div class="mb-10 flex flex-wrap items-center justify-center gap-2">
+          <button type="button" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-accent text-accent-foreground" data-filter="All" data-en="All" data-zh="全部">全部</button>
+          <button type="button" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80" data-filter="Design Tools" data-en="Design Tools" data-zh="设计工具">设计工具</button>
+          <button type="button" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80" data-filter="Landscape Architecture" data-en="Landscape Architecture" data-zh="景观建筑">景观建筑</button>
+          <button type="button" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80" data-filter="Image Processing" data-en="Image Processing" data-zh="图像处理">图像处理</button>
+          <button type="button" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80" data-filter="Workflow" data-en="Workflow" data-zh="工作流程">工作流程</button>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" data-product-grid>
+          {%- assign product_list = site.ai_products | sort: "order" -%}
+          {%- for product in product_list -%}
+          <a href="{{ product.url | prepend: site.baseurl }}" class="group relative block overflow-hidden rounded-xl bg-card border border-border transition-all duration-300 hover:border-accent/50 no-underline" data-category="{{ product.category }}">
+            <div class="relative aspect-[4/3] overflow-hidden bg-secondary">
+              <img src="{{ product.image | relative_url }}" alt="{{ product.title_en }}" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60"></div>
+              <div class="absolute top-4 left-4">
+                <span class="inline-flex items-center rounded-full bg-background/80 backdrop-blur-sm px-3 py-1 text-xs font-medium text-foreground" data-en="{{ product.category_en }}" data-zh="{{ product.category_zh }}">{{ product.category_zh }}</span>
+              </div>
+              <div class="absolute top-4 right-4 h-8 w-8 rounded-full bg-accent flex items-center justify-center opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                <span class="text-xs text-accent-foreground">↗</span>
+              </div>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-semibold text-foreground group-hover:text-accent transition-colors" data-en="{{ product.title_en }}" data-zh="{{ product.title_zh }}">{{ product.title_zh }}</h3>
+              <p class="mt-2 text-sm text-muted-foreground line-clamp-2" data-en="{{ product.summary_en }}" data-zh="{{ product.summary_zh }}">{{ product.summary_zh }}</p>
+              {% if product.chips %}
+              <div class="mt-4 flex flex-wrap gap-2">
+                {% for chip in product.chips %}
+                <span class="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs text-muted-foreground" data-en="{{ chip.en }}" data-zh="{{ chip.zh }}">{{ chip.zh }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </a>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery" class="py-24 px-6 lg:px-8 bg-secondary/30">
+      <div class="mx-auto max-w-7xl">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" data-en="Work Gallery" data-zh="作品展示">作品展示</h2>
+          <p class="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto" data-en="Explore stunning examples of AI-powered design work across various disciplines." data-zh="探索各领域 AI 驱动设计作品的精彩案例。">探索各领域 AI 驱动设计作品的精彩案例。</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-gallery-grid>
+          {%- assign gallery_list = site.ai_gallery | sort: "order" -%}
+          {%- for item in gallery_list -%}
+          <a href="{{ item.url | prepend: site.baseurl }}" class="group relative block overflow-hidden rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent text-left no-underline {{ item.grid_class | default: 'aspect-[4/3]' }}">
+            <img src="{{ item.image | relative_url }}" alt="{{ item.title_en }}" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+              <span class="text-xs font-medium text-accent" data-en="{{ item.category_en }}" data-zh="{{ item.category_zh }}">{{ item.category_zh }}</span>
+              <h3 class="text-lg font-semibold text-foreground" data-en="{{ item.title_en }}" data-zh="{{ item.title_zh }}">{{ item.title_zh }}</h3>
+              <p class="text-sm text-muted-foreground line-clamp-2" data-en="{{ item.summary_en }}" data-zh="{{ item.summary_zh }}">{{ item.summary_zh }}</p>
+            </div>
+          </a>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+
+    <section id="categories" class="py-24 px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" data-en="Explore Categories" data-zh="探索分类">探索分类</h2>
+          <p class="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto" data-en="Browse AI tools organized by their primary application area to find exactly what you need for your projects." data-zh="按主要应用领域浏览AI工具，精准找到您项目所需的工具。">按主要应用领域浏览AI工具，精准找到您项目所需的工具。</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <article class="group relative overflow-hidden rounded-xl bg-card border border-border p-6 transition-all duration-300 hover:border-accent/50">
+            <div class="flex items-start gap-4">
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">D</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-semibold text-foreground group-hover:text-accent transition-colors" data-en="Design Tools" data-zh="设计工具">设计工具</h3>
+                  <span class="text-sm font-medium text-muted-foreground" data-en="15 tools" data-zh="15 款工具">15 款工具</span>
+                </div>
+                <p class="mt-2 text-sm text-muted-foreground" data-en="AI-powered tools for graphic design, UI/UX, and visual creation that accelerate your creative process." data-zh="AI驱动的图形设计、UI/UX和视觉创作工具，加速您的创意过程。">AI驱动的图形设计、UI/UX和视觉创作工具，加速您的创意过程。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="group relative overflow-hidden rounded-xl bg-card border border-border p-6 transition-all duration-300 hover:border-accent/50">
+            <div class="flex items-start gap-4">
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">L</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-semibold text-foreground group-hover:text-accent transition-colors" data-en="Landscape Architecture" data-zh="景观建筑">景观建筑</h3>
+                  <span class="text-sm font-medium text-muted-foreground" data-en="8 tools" data-zh="8 款工具">8 款工具</span>
+                </div>
+                <p class="mt-2 text-sm text-muted-foreground" data-en="Intelligent solutions for terrain analysis, garden planning, and outdoor space design." data-zh="用于地形分析、花园规划和户外空间设计的智能解决方案。">用于地形分析、花园规划和户外空间设计的智能解决方案。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="group relative overflow-hidden rounded-xl bg-card border border-border p-6 transition-all duration-300 hover:border-accent/50">
+            <div class="flex items-start gap-4">
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">I</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-semibold text-foreground group-hover:text-accent transition-colors" data-en="Image Processing" data-zh="图像处理">图像处理</h3>
+                  <span class="text-sm font-medium text-muted-foreground" data-en="12 tools" data-zh="12 款工具">12 款工具</span>
+                </div>
+                <p class="mt-2 text-sm text-muted-foreground" data-en="Advanced neural networks for image enhancement, style transfer, and visual manipulation." data-zh="用于图像增强、风格迁移和视觉处理的先进神经网络。">用于图像增强、风格迁移和视觉处理的先进神经网络。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="group relative overflow-hidden rounded-xl bg-card border border-border p-6 transition-all duration-300 hover:border-accent/50">
+            <div class="flex items-start gap-4">
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">W</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-semibold text-foreground group-hover:text-accent transition-colors" data-en="Workflow Automation" data-zh="工作流自动化">工作流自动化</h3>
+                  <span class="text-sm font-medium text-muted-foreground" data-en="10 tools" data-zh="10 款工具">10 款工具</span>
+                </div>
+                <p class="mt-2 text-sm text-muted-foreground" data-en="Smart automation tools that learn from your patterns and streamline repetitive design tasks." data-zh="智能自动化工具，学习您的工作模式并简化重复性设计任务。">智能自动化工具，学习您的工作模式并简化重复性设计任务。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="group relative overflow-hidden rounded-xl bg-card border border-border p-6 transition-all duration-300 hover:border-accent/50">
+            <div class="flex items-start gap-4">
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">3D</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-semibold text-foreground group-hover:text-accent transition-colors" data-en="3D & Visualization" data-zh="3D与可视化">3D与可视化</h3>
+                  <span class="text-sm font-medium text-muted-foreground" data-en="7 tools" data-zh="7 款工具">7 款工具</span>
+                </div>
+                <p class="mt-2 text-sm text-muted-foreground" data-en="Generate stunning 3D renders and architectural visualizations from simple inputs." data-zh="从简单输入生成令人惊叹的3D渲染和建筑可视化效果。">从简单输入生成令人惊叹的3D渲染和建筑可视化效果。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="group relative overflow-hidden rounded-xl bg-card border border-border p-6 transition-all duration-300 hover:border-accent/50">
+            <div class="flex items-start gap-4">
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">AI</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-semibold text-foreground group-hover:text-accent transition-colors" data-en="Generative AI" data-zh="生成式AI">生成式AI</h3>
+                  <span class="text-sm font-medium text-muted-foreground" data-en="9 tools" data-zh="9 款工具">9 款工具</span>
+                </div>
+                <p class="mt-2 text-sm text-muted-foreground" data-en="Create unique designs, patterns, and artwork using state-of-the-art generative models." data-zh="使用最先进的生成模型创建独特的设计、图案和艺术作品。">使用最先进的生成模型创建独特的设计、图案和艺术作品。</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="py-24 px-6 lg:px-8 bg-secondary/30">
+      <div class="mx-auto max-w-7xl">
+        <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+          <div>
+            <h2 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" data-en="About BEhop" data-zh="关于 BEhop">关于 BEhop</h2>
+            <p class="mt-6 text-lg text-muted-foreground" data-en="BEhop showcases a carefully curated collection of AI-powered products that are transforming the creative and design industries. Our mission is to inspire designers, architects, and creative professionals by highlighting the most innovative tools available today." data-zh="BEhop 展示了一系列精心策划的 AI 产品，这些产品正在改变创意和设计行业。BEhop 的使命是通过展示当今最具创新性的工具，激励设计师、建筑师和创意专业人士。">BEhop 展示了一系列精心策划的 AI 产品，这些产品正在改变创意和设计行业。BEhop 的使命是通过展示当今最具创新性的工具，激励设计师、建筑师和创意专业人士。</p>
+            <p class="mt-4 text-lg text-muted-foreground" data-en="Each product featured here has been selected for its unique approach to solving design challenges using artificial intelligence, from generative design tools to intelligent workflow automation." data-zh="这里展示的每款产品都因其使用人工智能解决设计挑战的独特方法而被选中，从生成式设计工具到智能工作流自动化。">这里展示的每款产品都因其使用人工智能解决设计挑战的独特方法而被选中，从生成式设计工具到智能工作流自动化。</p>
+
+            <ul class="mt-8 space-y-4">
+              <li class="flex items-start gap-3">
+                <span class="text-accent">✔</span>
+                <span class="text-foreground" data-en="Curated collection of professional-grade AI tools" data-zh="精选专业级 AI 工具合集">精选专业级 AI 工具合集</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-accent">✔</span>
+                <span class="text-foreground" data-en="Focus on design, architecture, and creative workflows" data-zh="专注于设计、建筑和创意工作流程">专注于设计、建筑和创意工作流程</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-accent">✔</span>
+                <span class="text-foreground" data-en="Regular updates with the latest AI innovations" data-zh="定期更新最新 AI 创新成果">定期更新最新 AI 创新成果</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-accent">✔</span>
+                <span class="text-foreground" data-en="Detailed documentation and use cases for each product" data-zh="每款产品的详细文档和使用案例">每款产品的详细文档和使用案例</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="relative">
+            <div class="aspect-square rounded-2xl bg-card border border-border p-8 flex items-center justify-center">
+              <div class="relative w-full h-full">
+                <div class="absolute inset-0 rounded-full border border-border/50"></div>
+                <div class="absolute inset-8 rounded-full border border-border/50"></div>
+                <div class="absolute inset-16 rounded-full border border-border/50"></div>
+                <div class="absolute inset-24 rounded-full border border-accent/30"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="h-24 w-24 rounded-full bg-accent/20 flex items-center justify-center">
+                    <div class="h-16 w-16 rounded-full bg-accent flex items-center justify-center">
+                      <span class="text-xl font-bold text-accent-foreground">BE</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="absolute top-1/4 left-1/4 h-3 w-3 rounded-full bg-accent animate-pulse"></div>
+                <div class="absolute top-1/3 right-1/4 h-2 w-2 rounded-full bg-accent/60 animate-pulse"></div>
+                <div class="absolute bottom-1/4 left-1/3 h-2 w-2 rounded-full bg-accent/40 animate-pulse"></div>
+                <div class="absolute bottom-1/3 right-1/3 h-3 w-3 rounded-full bg-accent/80 animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-border bg-card">
+    <div class="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+      <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
+        <div class="col-span-2 md:col-span-1">
+          <div class="flex items-center gap-3">
+            <div class="h-9 w-9 rounded-lg bg-accent flex items-center justify-center">
+              <span class="text-accent-foreground font-bold text-sm">AI</span>
+            </div>
+            <span class="text-xl font-bold text-foreground tracking-tight">BEhop</span>
+          </div>
+          <p class="mt-4 text-sm text-muted-foreground" data-en="Showcasing the future of AI-powered design tools and creative workflows." data-zh="展示 AI 驱动设计工具和创意工作流的未来。">展示 AI 驱动设计工具和创意工作流的未来。</p>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold text-foreground" data-en="Products" data-zh="产品">产品</h3>
+          <ul class="mt-4 space-y-3">
+            <li><a href="#products" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Design Tools" data-zh="设计工具">设计工具</a></li>
+            <li><a href="#products" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Image Processing" data-zh="图像处理">图像处理</a></li>
+            <li><a href="#products" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Workflow Automation" data-zh="工作流自动化">工作流自动化</a></li>
+            <li><a href="#products" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Landscape AI" data-zh="景观 AI">景观 AI</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold text-foreground" data-en="Resources" data-zh="资源">资源</h3>
+          <ul class="mt-4 space-y-3">
+            <li><a href="{{ site.baseurl }}/blog/" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Blog" data-zh="Blog">Blog</a></li>
+            <li><a href="#gallery" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Use Cases" data-zh="使用案例">使用案例</a></li>
+            <li><a href="#categories" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Categories" data-zh="分类">分类</a></li>
+            <li><a href="#about" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="About" data-zh="关于">关于</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold text-foreground" data-en="Contact" data-zh="联系">联系</h3>
+          <ul class="mt-4 space-y-3">
+            <li><a href="mailto:liuruyuan73@gmail.com" class="text-sm text-muted-foreground hover:text-foreground transition-colors">liuruyuan73@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 border-t border-border pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-muted-foreground">
+          <span data-en="BEhop AI Product" data-zh="BEhop AI 产品">BEhop AI 产品</span> · <span id="ai-year"></span>
+        </p>
+        <div class="flex items-center gap-6">
+          <a href="https://github.com/BE-hop" class="text-sm text-muted-foreground hover:text-foreground transition-colors">GitHub</a>
+          <a href="https://www.instagram.com/2000lry/" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Instagram</a>
+          <a href="https://space.bilibili.com/352517528" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Bilibili</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="lightbox fixed inset-0 z-50 items-center justify-center bg-background/95 backdrop-blur-sm" data-lightbox>
+    <button type="button" class="absolute top-6 right-6 p-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors" data-lightbox-close aria-label="Close">✕</button>
+    <button type="button" class="absolute left-6 p-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors" data-lightbox-prev aria-label="Previous">‹</button>
+    <button type="button" class="absolute right-6 p-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors" data-lightbox-next aria-label="Next">›</button>
+
+    <div class="relative max-w-5xl max-h-[80vh] w-full mx-6">
+      <img src="" alt="" class="rounded-xl object-contain w-full h-auto max-h-[70vh]" data-lightbox-image />
+      <div class="mt-4 text-center">
+        <span class="text-sm font-medium text-accent" data-lightbox-category></span>
+        <h3 class="text-xl font-semibold text-foreground" data-lightbox-title></h3>
+        <p class="text-muted-foreground" data-lightbox-description></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script src="{{ site.baseurl }}/js/behop-ai.js"></script>
+</body>
+</html>

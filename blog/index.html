@@ -1,0 +1,94 @@
+---
+layout: page
+title: "Blog"
+description: "记录设计与 AI 的灵感"
+nav-order: 10
+lang-switcher: true
+---
+
+{% for post in site.posts %}
+{% if post.lang != 'en' %}
+<div class="post-preview">
+    <a href="{{ post.url | prepend: site.baseurl }}">
+        <h2 class="post-title">
+            {{ post.title }}
+        </h2>
+        {% if post.subtitle %}
+        <h3 class="post-subtitle">
+            {{ post.subtitle }}
+        </h3>
+        {% endif %}
+        <div class="post-content-preview">
+            {{ post.content | strip_html | truncate:200 }}
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}
+    </p>
+</div>
+<hr>
+{% endif %}
+{% endfor %}
+
+<script>
+  (function () {
+    var buttons = document.querySelectorAll('.blog-lang-button');
+    var titleNode = document.querySelector('.intro-header .site-heading h1');
+    var descNode = document.querySelector('.intro-header .site-heading .subheading');
+    var navNodes = document.querySelectorAll('[data-i18n-zh][data-i18n-en]');
+    var blogRoot = document.querySelector('[data-blog-root]');
+    var blogLatest = document.querySelector('[data-blog-latest]');
+    var blogAbout = document.querySelector('[data-blog-about]');
+    var blogArchive = document.querySelector('[data-blog-archive]');
+
+    var texts = {
+      zh: { title: 'Blog', desc: '记录设计与 AI 的灵感' },
+      en: { title: 'Blog', desc: 'Notes on design and AI' }
+    };
+    var base = '{{ site.baseurl }}';
+    var paths = { zh: base + '/blog/', en: base + '/blog/en/' };
+    var current = 'zh';
+    var fallback = 'en';
+
+    function applyLang(lang) {
+      if (titleNode) titleNode.textContent = texts[lang].title;
+      if (descNode) descNode.textContent = texts[lang].desc;
+      navNodes.forEach(function (node) {
+        var value = node.getAttribute(lang === 'zh' ? 'data-i18n-zh' : 'data-i18n-en');
+        if (value) node.textContent = value;
+      });
+      if (blogRoot) blogRoot.setAttribute('href', paths[lang]);
+      if (blogLatest) blogLatest.setAttribute('href', paths[lang]);
+      if (blogAbout) {
+        blogAbout.setAttribute('href', lang === 'en' ? base + '/blog/about/en/' : base + '/blog/about/');
+      }
+      if (blogArchive) blogArchive.setAttribute('href', lang === 'en' ? base + '/archive/en/' : base + '/archive/');
+      buttons.forEach(function (btn) {
+        btn.classList.toggle('is-active', btn.getAttribute('data-blog-lang') === lang);
+      });
+      localStorage.setItem('blogLang', lang);
+    }
+
+    function setLang(lang) {
+      if (lang !== current) {
+        localStorage.setItem('blogLang', lang);
+        window.location.href = paths[lang];
+        return;
+      }
+      applyLang(lang);
+    }
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setLang(btn.getAttribute('data-blog-lang') || current);
+      });
+    });
+
+    var stored = localStorage.getItem('blogLang') || fallback;
+    if (stored !== current) {
+      window.location.href = paths[stored];
+      return;
+    }
+    applyLang(current);
+  })();
+</script>

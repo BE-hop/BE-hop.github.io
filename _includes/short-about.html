@@ -5,9 +5,13 @@
     {% if site.sidebar-avatar %}
     <img src="{{site.sidebar-avatar}}" />
     {% endif %}
-    {% if site.sidebar-about-description %}
-    <p>{{site.sidebar-about-description}}</p>
+    {% assign is_en = page.lang == 'en' or page.url contains '/en/' %}
+    {% if is_en %}
+    {% capture sidebar_about %}{% include about/sidebar-en.md %}{% endcapture %}
+    {% else %}
+    {% capture sidebar_about %}{% include about/sidebar.md %}{% endcapture %}
     {% endif %}
+    {{ sidebar_about | markdownify }}
     <!-- SNS Link -->
     {% include sns-links.html %}
   </div>

@@ -2,12 +2,40 @@
     @param {Boolean} center 
 {% endcomment %}
 
-{% if include.center %}
-<ul class="list-inline text-center">
-{% else %}
-<ul class="list-inline">
+{% if site.rednote_home or site.bilibili_home %}
+  {% if include.center %}
+  <ul class="list-inline text-center">
+  {% else %}
+  <ul class="list-inline">
+  {% endif %}
+    {% if site.rednote_home %}
+    <li>
+      <a target="_blank" rel="me noopener" href="{{ site.rednote_home }}">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <strong class="fa-stack-1x fa-inverse sns-text-icon">小红书</strong>
+        </span>
+      </a>
+    </li>
+    {% endif %}
+    {% if site.bilibili_home %}
+    <li>
+      <a target="_blank" rel="me noopener" href="{{ site.bilibili_home }}">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <strong class="fa-stack-1x fa-inverse sns-text-icon">bilibili</strong>
+        </span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
 {% endif %}
 
+{% if include.center %}
+<ul class="list-inline text-center sns-links-secondary">
+{% else %}
+<ul class="list-inline sns-links-secondary">
+{% endif %}
   {% if site.RSS %}
   <li>
     <a href="{{ "/feed.xml" | prepend: site.baseurl }}">
@@ -68,12 +96,32 @@
     </a>
   </li>
   {% endif %}
+  {% if site.instagram_home %}
+  <li>
+    <a target="_blank" rel="me noopener" href="{{ site.instagram_home }}">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  {% endif %}
   {% if site.linkedin_username %}
   <li>
     <a target="_blank" href="https://www.linkedin.com/in/{{ site.linkedin_username }}">
       <span class="fa-stack fa-lg">
         <i class="fa fa-circle fa-stack-2x"></i>
         <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  {% endif %}
+  {% if site.youtube_home %}
+  <li>
+    <a target="_blank" rel="me noopener" href="{{ site.youtube_home }}">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
       </span>
     </a>
   </li>

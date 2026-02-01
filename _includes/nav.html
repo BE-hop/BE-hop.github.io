@@ -1,97 +1,150 @@
 <!-- Navigation -->
-{% if page.nav-style == "invert" or page.header-style == "text" %}
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
-    {% else %}
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        {% endif %}
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ site.baseurl }}/">{{ site.title }}</a>
-            </div>
+<header class="site-nav" data-site-nav data-site-nav-theme="{{ page.nav-theme | default: 'light' }}">
+    <div class="site-nav__inner">
+        <a class="site-nav__brand" href="{{ site.baseurl }}/">
+            <span class="site-nav__title" data-i18n="nav.brand" data-i18n-zh="BEhooop"
+                data-i18n-en="BEhooop" data-zh="BEhooop" data-en="BEhooop">BEhooop</span>
+        </a>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div id="huxblog_navbar">
-                <div class="navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="{{ site.baseurl }}/">Home</a>
-                        </li>
-                        {% for page in site.pages %}
-                        {% if page.title and page.hide-in-nav != true %}
-                        <li>
-                            <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
-                        <li class="search-icon">
-                            <a href="javascript:void(0)">
-                                <i class="fa fa-search"></i>
-                            </a>
-                        </li>
-                    </ul>
+        <nav class="site-nav__links" aria-label="Primary">
+            <div class="site-nav__item">
+                <a class="site-nav__link" href="{{ site.baseurl }}/behop-ai-product/" data-i18n="nav.ai"
+                    data-i18n-zh="AI产品" data-i18n-en="AI Products" data-zh="AI产品" data-en="AI Products">AI产品</a>
+                <div class="site-nav__dropdown">
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/behop-ai-product/#products"
+                        data-i18n="nav.ai.products" data-i18n-zh="产品精选" data-i18n-en="Featured Products"
+                        data-zh="产品精选" data-en="Featured Products">产品精选</a>
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/behop-ai-product/#gallery"
+                        data-i18n="nav.ai.gallery" data-i18n-zh="作品集" data-i18n-en="Gallery" data-zh="作品集"
+                        data-en="Gallery">作品集</a>
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/behop-ai-product/#categories"
+                        data-i18n="nav.ai.categories" data-i18n-zh="分类" data-i18n-en="Categories" data-zh="分类"
+                        data-en="Categories">分类</a>
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/behop-ai-product/#about"
+                        data-i18n="nav.ai.about" data-i18n-zh="关于 BEhop" data-i18n-en="About BEhop" data-zh="关于 BEhop"
+                        data-en="About BEhop">关于 BEhop</a>
                 </div>
             </div>
-            <!-- /.navbar-collapse -->
+
+            <div class="site-nav__item">
+                <a class="site-nav__link" href="{{ site.baseurl }}/#projects" data-i18n="nav.projects"
+                    data-i18n-zh="项目作品" data-i18n-en="Projects" data-zh="项目作品" data-en="Projects">项目作品</a>
+                <div class="site-nav__dropdown">
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/#projects" data-i18n="nav.projects.featured"
+                        data-i18n-zh="项目精选" data-i18n-en="Featured Projects" data-zh="项目精选"
+                        data-en="Featured Projects">项目精选</a>
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/#services"
+                        data-i18n="nav.projects.services" data-i18n-zh="设计服务" data-i18n-en="Services" data-zh="设计服务"
+                        data-en="Services">设计服务</a>
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/#about" data-i18n="nav.projects.about"
+                        data-i18n-zh="关于 BEhop" data-i18n-en="About BEhop" data-zh="关于 BEhop"
+                        data-en="About BEhop">关于 BEhop</a>
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/#contact" data-i18n="nav.projects.contact"
+                        data-i18n-zh="联系 BEhop" data-i18n-en="Contact BEhop" data-zh="联系 BEhop"
+                        data-en="Contact BEhop">联系 BEhop</a>
+                </div>
+            </div>
+
+            <div class="site-nav__item">
+                <a class="site-nav__link" href="{{ site.baseurl }}/blog/" data-blog-root data-i18n="nav.blog"
+                    data-i18n-zh="Blog" data-i18n-en="Blog" data-zh="Blog" data-en="Blog">Blog</a>
+                <div class="site-nav__dropdown">
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/blog/" data-blog-latest
+                        data-i18n="nav.blog.latest" data-i18n-zh="最新文章" data-i18n-en="Latest Posts" data-zh="最新文章"
+                        data-en="Latest Posts">最新文章</a>
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/blog/about/" data-blog-about
+                        data-i18n="nav.blog.about" data-i18n-zh="关于我" data-i18n-en="About Me" data-zh="关于我"
+                        data-en="About Me">关于我</a>
+                    <a class="site-nav__sublink" href="{{ site.baseurl }}/archive/" data-blog-archive
+                        data-i18n="nav.blog.archive" data-i18n-zh="归档" data-i18n-en="Archive" data-zh="归档"
+                        data-en="Archive">归档</a>
+                </div>
+            </div>
+
+            <div class="site-nav__item">
+                <a class="site-nav__link" href="{{ site.baseurl }}/forum/" data-i18n="nav.forum"
+                    data-i18n-zh="论坛" data-i18n-en="Forum" data-zh="论坛" data-en="Forum">论坛</a>
+            </div>
+        </nav>
+
+        <div class="site-nav__actions">
+            {% if page.lang-switcher %}
+            <div class="site-nav__lang">
+                <button type="button" class="site-nav__lang-btn lang-button blog-lang-button" data-lang="zh"
+                    data-blog-lang="zh">中文</button>
+                <button type="button" class="site-nav__lang-btn lang-button blog-lang-button is-active" data-lang="en"
+                    data-blog-lang="en">EN</button>
+            </div>
+            {% endif %}
+            <button type="button" class="site-nav__toggle" data-site-nav-toggle aria-label="Toggle menu"
+                aria-expanded="false">
+                <span class="site-nav__toggle-bar"></span>
+                <span class="site-nav__toggle-bar"></span>
+                <span class="site-nav__toggle-bar"></span>
+            </button>
         </div>
-        <!-- /.container -->
-    </nav>
+    </div>
 
-    <script>
-        // Drop Bootstarp low-performance Navbar
-        // Use customize navbar with high-quality material design animation
-        // in high-perf jank-free CSS3 implementation
-        var $body = document.body;
-        var $toggle = document.querySelector('.navbar-toggle');
-        var $navbar = document.querySelector('#huxblog_navbar');
-        var $collapse = document.querySelector('.navbar-collapse');
+    <div class="site-nav__mobile" data-site-nav-mobile>
+        <div class="site-nav__mobile-inner">
+            <div class="site-nav__mobile-group">
+                <a class="site-nav__mobile-link" href="{{ site.baseurl }}/behop-ai-product/" data-i18n="nav.ai"
+                    data-i18n-zh="AI产品" data-i18n-en="AI Products" data-zh="AI产品" data-en="AI Products">AI产品</a>
+                <div class="site-nav__mobile-sub">
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/behop-ai-product/#products"
+                        data-i18n="nav.ai.products" data-i18n-zh="产品精选" data-i18n-en="Featured Products"
+                        data-zh="产品精选" data-en="Featured Products">产品精选</a>
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/behop-ai-product/#gallery"
+                        data-i18n="nav.ai.gallery" data-i18n-zh="作品集" data-i18n-en="Gallery" data-zh="作品集"
+                        data-en="Gallery">作品集</a>
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/behop-ai-product/#categories"
+                        data-i18n="nav.ai.categories" data-i18n-zh="分类" data-i18n-en="Categories" data-zh="分类"
+                        data-en="Categories">分类</a>
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/behop-ai-product/#about"
+                        data-i18n="nav.ai.about" data-i18n-zh="关于 BEhop" data-i18n-en="About BEhop" data-zh="关于 BEhop"
+                        data-en="About BEhop">关于 BEhop</a>
+                </div>
+            </div>
 
-        var __SiteNav__ = {
-            close: function () {
-                $navbar.className = " ";
-                // wait until animation end.
-                setTimeout(function () {
-                    // prevent frequently toggle
-                    if ($navbar.className.indexOf('in') < 0) {
-                        $collapse.style.height = "0px"
-                    }
-                }, 400)
-            },
-            open: function () {
-                $collapse.style.height = "auto"
-                $navbar.className += " in";
-            }
-        }
+            <div class="site-nav__mobile-group">
+                <a class="site-nav__mobile-link" href="{{ site.baseurl }}/#projects" data-i18n="nav.projects"
+                    data-i18n-zh="项目作品" data-i18n-en="Projects" data-zh="项目作品" data-en="Projects">项目作品</a>
+                <div class="site-nav__mobile-sub">
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/#projects"
+                        data-i18n="nav.projects.featured" data-i18n-zh="项目精选" data-i18n-en="Featured Projects"
+                        data-zh="项目精选" data-en="Featured Projects">项目精选</a>
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/#services"
+                        data-i18n="nav.projects.services" data-i18n-zh="设计服务" data-i18n-en="Services" data-zh="设计服务"
+                        data-en="Services">设计服务</a>
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/#about" data-i18n="nav.projects.about"
+                        data-i18n-zh="关于 BEhop" data-i18n-en="About BEhop" data-zh="关于 BEhop"
+                        data-en="About BEhop">关于 BEhop</a>
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/#contact"
+                        data-i18n="nav.projects.contact" data-i18n-zh="联系 BEhop" data-i18n-en="Contact BEhop"
+                        data-zh="联系 BEhop" data-en="Contact BEhop">联系 BEhop</a>
+                </div>
+            </div>
 
-        // Bind Event
-        $toggle.addEventListener('click', function (e) {
-            if ($navbar.className.indexOf('in') > 0) {
-                __SiteNav__.close()
-            } else {
-                __SiteNav__.open()
-            }
-        })
+            <div class="site-nav__mobile-group">
+                <a class="site-nav__mobile-link" href="{{ site.baseurl }}/blog/" data-blog-root data-i18n="nav.blog"
+                    data-i18n-zh="Blog" data-i18n-en="Blog" data-zh="Blog" data-en="Blog">Blog</a>
+                <div class="site-nav__mobile-sub">
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/blog/" data-blog-latest
+                        data-i18n="nav.blog.latest" data-i18n-zh="最新文章" data-i18n-en="Latest Posts" data-zh="最新文章"
+                        data-en="Latest Posts">最新文章</a>
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/blog/about/" data-blog-about
+                        data-i18n="nav.blog.about" data-i18n-zh="关于我" data-i18n-en="About Me" data-zh="关于我"
+                        data-en="About Me">关于我</a>
+                    <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/archive/" data-blog-archive
+                        data-i18n="nav.blog.archive" data-i18n-zh="归档" data-i18n-en="Archive" data-zh="归档"
+                        data-en="Archive">归档</a>
+                </div>
+            </div>
 
-        /**
-         * Since Fastclick is used to delegate 'touchstart' globally
-         * to hack 300ms delay in iOS by performing a fake 'click',
-         * Using 'e.stopPropagation' to stop 'touchstart' event from 
-         * $toggle/$collapse will break global delegation.
-         * 
-         * Instead, we use a 'e.target' filter to prevent handler
-         * added to document close the navigation panel.
-         *
-         * Also, we use 'click' instead of 'touchstart' as compromise
-         */
-        document.addEventListener('click', function (e) {
-            if (e.target == $toggle) return;
-            if (e.target.className == 'icon-bar') return;
-            __SiteNav__.close();
-        })
-    </script>
+            <div class="site-nav__mobile-group">
+                <a class="site-nav__mobile-link" href="{{ site.baseurl }}/forum/" data-i18n="nav.forum"
+                    data-i18n-zh="论坛" data-i18n-en="Forum" data-zh="论坛" data-en="Forum">论坛</a>
+            </div>
+        </div>
+    </div>
+</header>

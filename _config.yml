@@ -1,9 +1,9 @@
 # Site settings
-title: liu.ruyuan Blog
-SEOTitle: BEhop Experince | liu.ruyuan Blog
+title: BEhop 设计
+SEOTitle: BEhop 设计 | BEhop Blog
 header-img: img/home-bg.jpg
-email: l15836141001@163.com
-description: "这里是 @liuruyaun 的个人博客，做一个会AI的设计师 | BE(be express)hop(i am a hiphop dancer)-无论通过什么方式，尽情的表达自己；接收，表达，连接，这是人生的意义，也是我的设计哲学，我致力于创建更高效更美丽的表达方式，一起创造美好的世界吧～"
+email: liuruyuan73@gmail.com
+description: "这里是 @BEhop 的个人博客，做一个会AI的设计师 | BE(be express)hop(i am a hiphop dancer)-无论通过什么方式，尽情的表达自己；接收，表达，连接，这是人生的意义，也是我的设计哲学，我致力于创建更高效更美丽的表达方式，一起创造美好的世界吧～"
 keyword: "BEhop, BE-hop, liuruyaun, @liuruyuan, liuruyuan Blog, 博客, 个人网站, AI, Python, 设计师, 景观设计师"
 url: "https://be-hop.github.io" # your host, for absolute URL
 baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
@@ -11,12 +11,49 @@ baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
 # Publish posts or collection documents with a future date.
 future: true
 
+# Collections
+collections:
+  ai_products:
+    output: true
+    permalink: /behop-ai-product/products/:name/
+  ai_gallery:
+    output: true
+    permalink: /behop-ai-product/gallery/:name/
+  projects:
+    output: true
+    permalink: /projects/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: ai_products
+    values:
+      layout: ai-product
+      lang-switcher: true
+      nav-theme: dark
+  - scope:
+      path: ""
+      type: ai_gallery
+    values:
+      layout: ai-gallery
+      lang-switcher: true
+      nav-theme: dark
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: project
+      lang-switcher: true
+
 # SNS settings
 # RSS: false
 # weibo_username: *
-# zhihu_username: *
-# github_username: *
-# twitter_username: *
+rednote_home: https://www.xiaohongshu.com/user/profile/5b6d694af7e8b97989492d5f
+bilibili_home: https://space.bilibili.com/352517528?spm_id_from=333.1007.0.0
+instagram_home: https://www.instagram.com/2000lry/
+youtube_home: https://www.youtube.com/channel/UCRyJrb53AKBc3I_nUSDVcCw
+github_username: BE-hop
+twitter_username: "@Behop2000"
 #facebook_username:
 #linkedin_username:  firstname-lastname-idxxxx
 
@@ -80,7 +117,22 @@ netease_comment: false
 
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
-sidebar-about-description: "无论通过什么方式，尽情的表达自己；接收，表达，连接，这是人生的意义，也是我的设计哲学，我致力于创建更高效更美丽的表达方式，一起创造美好的世界吧～"
+sidebar-about-description: |
+  这里是 @BEhop 的个人博客
+  做一个会AI的设计师
+   
+  BE(be express)
+  hop(i am a hiphop dancer)
+  
+  尽情的表达自己，无论通过什么方式
+
+  接收，表达，连接
+  这是人生的意义
+  也是我的设计哲学
+   
+  BEhop致力于创建更高效、更美丽的表达方式
+  一起创造美好的世界吧～
+
 sidebar-avatar: https://github.com/BE-hop.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags

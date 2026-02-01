@@ -1694,3 +1694,18 @@ img::-moz-selection {
 .no-scroll {
   overflow-y: hidden;
 }
+.sns-text-icon {
+  display: inline-block;
+  width: 2em;
+  padding: 0 0.1em;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  line-height: 2em;
+  letter-spacing: 0.2px;
+  text-align: center;
+  text-transform: lowercase;
+}
+.sns-links-secondary {
+  margin-top: 10px;
+}

@@ -1,0 +1,196 @@
+:root {
+  --background: oklch(0.98 0.005 90);
+  --foreground: oklch(0.2 0.02 150);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.02 150);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.02 150);
+  --primary: oklch(0.45 0.12 150);
+  --primary-foreground: oklch(0.98 0.005 90);
+  --secondary: oklch(0.95 0.01 90);
+  --secondary-foreground: oklch(0.2 0.02 150);
+  --muted: oklch(0.93 0.01 90);
+  --muted-foreground: oklch(0.45 0.02 150);
+  --accent: oklch(0.92 0.02 90);
+  --accent-foreground: oklch(0.2 0.02 150);
+  --border: oklch(0.88 0.02 90);
+  --input: oklch(0.92 0.01 90);
+  --ring: oklch(0.45 0.12 150);
+  --radius: 0.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.nav-header {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.nav-header.is-scrolled {
+  background-color: color-mix(in oklab, var(--background) 92%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(16, 32, 24, 0.08);
+}
+
+.nav-header.is-scrolled .nav-logo-badge {
+  background: var(--primary);
+}
+
+.nav-header.is-scrolled .nav-logo-text {
+  color: var(--foreground);
+}
+
+.nav-header.is-scrolled .nav-link {
+  color: var(--muted-foreground);
+}
+
+.nav-header.is-scrolled .nav-link:hover {
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.nav-header.is-scrolled .lang-switch {
+  color: var(--muted-foreground);
+}
+
+.nav-header.is-scrolled .lang-button.is-active {
+  color: var(--foreground);
+}
+
+.nav-header.is-scrolled .lang-button + .lang-button::before {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.nav-header.is-scrolled .menu-button {
+  color: var(--foreground);
+}
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.lang-button {
+  position: relative;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.lang-button:hover {
+  color: #fff;
+}
+
+.lang-button.is-active {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+
+.lang-button + .lang-button::before {
+  content: "·";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.nav-mobile {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.nav-mobile.is-open {
+  max-height: 18rem;
+  padding-bottom: 1.5rem;
+}
+
+.nav-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+}
+
+.filter-button.is-active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.contact-input,
+.contact-textarea,
+.contact-select {
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--background);
+  color: var(--foreground);
+  width: 100%;
+}
+
+.contact-textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.contact-input:focus,
+.contact-textarea:focus,
+.contact-select:focus {
+  outline: 2px solid color-mix(in oklab, var(--primary) 60%, transparent);
+  outline-offset: 1px;
+}
+
+.hero-badge {
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: clamp(2.6rem, 8vw, 3.5rem);
+  }
+}

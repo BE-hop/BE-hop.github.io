@@ -1,0 +1,90 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title_zh | default: page.title }} | BEhooop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--background)",
+              foreground: "var(--foreground)",
+              card: "var(--card)",
+              "card-foreground": "var(--card-foreground)",
+              popover: "var(--popover)",
+              "popover-foreground": "var(--popover-foreground)",
+              primary: "var(--primary)",
+              "primary-foreground": "var(--primary-foreground)",
+              secondary: "var(--secondary)",
+              "secondary-foreground": "var(--secondary-foreground)",
+              muted: "var(--muted)",
+              "muted-foreground": "var(--muted-foreground)",
+              accent: "var(--accent)",
+              "accent-foreground": "var(--accent-foreground)",
+              border: "var(--border)",
+              input: "var(--input)",
+              ring: "var(--ring)",
+            },
+            fontFamily: {
+              sans: ["Sora", "sans-serif"],
+              display: ["Space Grotesk", "sans-serif"],
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/behop-ai.css">
+</head>
+<body class="bg-background text-foreground">
+  {% include nav.html %}
+
+  <main class="pt-24">
+    <section class="px-6 py-16 lg:px-8">
+      <div class="mx-auto max-w-6xl">
+        <a href="{{ site.baseurl }}/behop-ai-product/#gallery" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Back to Gallery" data-zh="返回作品展示">返回作品展示</a>
+
+        <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:items-start">
+          <div class="overflow-hidden rounded-2xl border border-border bg-card">
+            <img src="{{ page.image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" />
+          </div>
+
+          <div class="space-y-6">
+            <span class="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-muted-foreground" data-en="{{ page.category_en }}" data-zh="{{ page.category_zh }}">{{ page.category_zh }}</span>
+            <h1 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" data-en="{{ page.title_en }}" data-zh="{{ page.title_zh }}">{{ page.title_zh }}</h1>
+            <p class="text-base text-muted-foreground leading-relaxed" data-en="{{ page.summary_en }}" data-zh="{{ page.summary_zh }}">{{ page.summary_zh }}</p>
+
+            {% if page.chips %}
+            <div class="flex flex-wrap gap-2">
+              {% for chip in page.chips %}
+              <span class="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs text-muted-foreground" data-en="{{ chip.en }}" data-zh="{{ chip.zh }}">{{ chip.zh }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 pb-20 lg:px-8">
+      <div class="mx-auto max-w-4xl space-y-6 text-muted-foreground leading-relaxed">
+        {{ content }}
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script src="{{ site.baseurl }}/js/behop-ai.js"></script>
+</body>
+</html>

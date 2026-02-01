@@ -1,46 +1,517 @@
 ---
-layout: page
-description: "记录设计、AI 与舞蹈的灵感"
+layout: null
+lang-switcher: true
 ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BEhop 设计 | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--background)",
+              foreground: "var(--foreground)",
+              card: "var(--card)",
+              "card-foreground": "var(--card-foreground)",
+              popover: "var(--popover)",
+              "popover-foreground": "var(--popover-foreground)",
+              primary: "var(--primary)",
+              "primary-foreground": "var(--primary-foreground)",
+              secondary: "var(--secondary)",
+              "secondary-foreground": "var(--secondary-foreground)",
+              muted: "var(--muted)",
+              "muted-foreground": "var(--muted-foreground)",
+              accent: "var(--accent)",
+              "accent-foreground": "var(--accent-foreground)",
+              border: "var(--border)",
+              input: "var(--input)",
+              ring: "var(--ring)",
+            },
+            fontFamily: {
+              serif: ["Playfair Display", "serif"],
+              sans: ["Manrope", "sans-serif"],
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css">
+</head>
+<body class="bg-background text-foreground">
+  {% include nav.html %}
 
-{% for post in paginator.posts %}
-<div class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-        <h2 class="post-title">
-            {{ post.title }}
-        </h2>
-        {% if post.subtitle %}
-        <h3 class="post-subtitle">
-            {{ post.subtitle }}
-        </h3>
-        {% endif %}
-        <div class="post-content-preview">
-            {% if post.lang == 'en' %}
-                {{ post.content | strip_html | truncate:300 }}
-            {% else %}
-                {{ post.content | strip_html | truncate:200 }}
-            {% endif %}
+  <main id="top">
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0">
+        <img src="{{ site.baseurl }}/img/portfolio/hero-landscape.jpg" alt="Landscape design" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-b from-foreground/50 via-foreground/30 to-foreground/60"></div>
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-20">
+        <div class="max-w-4xl">
+          <div class="space-y-8">
+            <div class="hero-badge inline-flex items-center gap-2 bg-card/10 border border-card/20 rounded-full px-4 py-2">
+              <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+              <span class="text-sm text-card font-medium tracking-wide" data-i18n="hero.subtitle">让自然与生活和谐共生</span>
+            </div>
+
+            <div class="space-y-6">
+              <h1 class="hero-title font-serif text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-card tracking-tight" data-i18n="hero.title">BEhop 设计</h1>
+              <p class="max-w-2xl text-lg md:text-xl text-card/85 leading-relaxed text-pretty" data-i18n="hero.description">BEhop 专注于创造融合自然之美与功能性的景观设计，为每一个空间赋予独特的生命力。十年深耕，百余项目，只为呈现人与自然的完美对话。</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-start gap-4 pt-4">
+              <a href="#projects" class="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-14 text-base font-medium rounded-lg transition-colors" data-i18n="hero.cta">探索作品</a>
+              <a href="#about" class="inline-flex items-center gap-3 text-card hover:bg-card/10 hover:text-card px-6 h-14 text-base rounded-lg transition-colors">
+                <span class="w-12 h-12 rounded-full border-2 border-card/50 flex items-center justify-center">
+                  <svg class="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24">
+                    <polygon points="6,4 20,12 6,20" />
+                  </svg>
+                </span>
+                <span data-i18n="hero.cta2">了解更多</span>
+              </a>
+            </div>
+          </div>
         </div>
-    </a>
-    <p class="post-meta">
-        Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}
-    </p>
-</div>
-<hr>
-{% endfor %}
+      </div>
 
-<!-- Pager -->
-{% if paginator.total_pages > 1 %}
-<ul class="pager">
-    {% if paginator.previous_page %}
-    <li class="previous">
-        <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Newer Posts</a>
-    </li>
-    {% endif %}
-    {% if paginator.next_page %}
-    <li class="next">
-        <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older Posts &rarr;</a>
-    </li>
-    {% endif %}
-</ul>
-{% endif %}
+      <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
+        <a href="#projects" class="flex flex-col items-center gap-3 text-card/70 hover:text-card transition-colors group">
+          <span class="text-xs tracking-widest uppercase" data-i18n="hero.scroll">Scroll</span>
+          <div class="w-6 h-10 rounded-full border-2 border-card/30 flex items-start justify-center p-2 group-hover:border-card/50 transition-colors">
+            <svg class="w-3 h-3 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <polyline points="19 12 12 19 5 12" />
+            </svg>
+          </div>
+        </a>
+      </div>
+
+      <div class="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-8 z-10">
+        <div class="text-right">
+          <div class="font-serif text-4xl font-bold text-card">120+</div>
+          <div class="text-xs text-card/60 uppercase tracking-wider" data-i18n="about.stats.projects">完成项目</div>
+        </div>
+        <div class="w-px h-16 bg-card/20 self-end"></div>
+        <div class="text-right">
+          <div class="font-serif text-4xl font-bold text-card">10+</div>
+          <div class="text-xs text-card/60 uppercase tracking-wider" data-i18n="about.stats.years">行业经验</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="py-24 lg:py-32 bg-background">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
+          <div class="space-y-4">
+            <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="nav.portfolio">Portfolio</p>
+            <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance" data-i18n="projects.title">精选项目</h2>
+            <p class="text-muted-foreground text-lg max-w-xl" data-i18n="projects.subtitle">每一个设计都是对自然与空间的深度理解</p>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground is-active" data-filter="all" data-i18n="projects.category.all">全部</button>
+            <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="private" data-i18n="projects.category.private">私人庭院</button>
+            <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="commercial" data-i18n="projects.category.commercial">商业景观</button>
+            <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="public" data-i18n="projects.category.public">公共空间</button>
+            <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="ecological" data-i18n="projects.category.ecological">生态修复</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {%- assign project_list = site.projects | sort: "order" -%}
+          {%- for project in project_list -%}
+          <a href="{{ project.url | prepend: site.baseurl }}" class="group relative block overflow-hidden rounded-xl cursor-pointer no-underline {% if project.featured %}md:col-span-2 md:row-span-2{% endif %}" data-project data-category="{{ project.category }}" data-i18n-aria="projects.viewProject" aria-label="查看项目">
+            <div class="relative w-full {% if project.featured %}aspect-square md:aspect-[4/3]{% else %}aspect-[4/3]{% endif %}">
+              <img src="{{ project.image | relative_url }}" alt="{{ project.title_en }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent group-hover:from-foreground/90 group-hover:via-foreground/50 transition-all duration-500"></div>
+            </div>
+            <div class="absolute inset-0 p-6 lg:p-8 flex flex-col justify-end">
+              {% if project.year %}
+              <div class="absolute top-6 left-6 opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                <span class="text-xs text-card/80 bg-card/10 backdrop-blur-sm px-3 py-1 rounded-full">{{ project.year }}</span>
+              </div>
+              {% endif %}
+              <div class="space-y-3">
+                <h3 class="font-serif text-2xl lg:text-3xl font-semibold text-card" data-zh="{{ project.title_zh }}" data-en="{{ project.title_en }}">{{ project.title_zh }}</h3>
+                <p class="text-card/80 text-sm" data-zh="{{ project.meta_zh }}" data-en="{{ project.meta_en }}">{{ project.meta_zh }}</p>
+                <p class="text-card/70 text-sm leading-relaxed opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 line-clamp-2" data-zh="{{ project.detail_zh }}" data-en="{{ project.detail_en }}">{{ project.detail_zh }}</p>
+              </div>
+              <span class="absolute bottom-6 right-6 flex items-center justify-center w-12 h-12 rounded-full bg-card/20 text-card backdrop-blur-sm scale-90 group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-100 transition-all duration-300" aria-hidden="true">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </span>
+            </div>
+          </a>
+          {%- endfor -%}
+        </div>
+
+        <div class="mt-12 text-center">
+          <a href="#" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors group" data-i18n="projects.viewAll">查看全部</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="py-24 lg:py-32 bg-secondary">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start mb-24">
+          <div class="relative">
+          <div class="relative aspect-[3/4] rounded-2xl overflow-hidden">
+              <img src="{{ site.baseurl }}/img/portfolio/behop-letters.svg" alt="BEhop Design" class="w-full h-full object-cover" />
+            </div>
+            <div class="absolute -bottom-8 -right-4 lg:-right-8 bg-card p-6 rounded-xl shadow-xl max-w-xs border border-border">
+              <blockquote class="text-foreground font-serif text-lg italic leading-relaxed" data-i18n="about.quote">“设计不是装饰，而是与自然对话的语言。”</blockquote>
+              <p class="text-muted-foreground text-sm mt-3" data-i18n="about.quoteAuthor">— BEhop Design</p>
+            </div>
+          </div>
+
+          <div class="space-y-8 lg:pt-8">
+            <div class="space-y-4">
+            <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="about.title">关于 BEhop</p>
+              <h2 class="font-serif text-4xl md:text-5xl font-bold text-foreground text-balance leading-tight" data-i18n="about.subtitle">致力于创造与自然和谐共生的空间</h2>
+            </div>
+
+            <p class="text-muted-foreground leading-relaxed text-lg text-pretty" data-i18n="about.description">BEhop 设计成立于2015年，专注于景观设计与空间叙事。BEhop 相信优秀的景观能够连接人与自然，让户外空间既美观又实用，并持续为每一个项目提供独特视角与创新方案。</p>
+
+            <div class="space-y-4 pt-4">
+              <h3 class="font-serif text-xl font-semibold text-foreground" data-i18n="about.philosophy">设计理念</h3>
+              <p class="text-muted-foreground leading-relaxed text-pretty" data-i18n="about.philosophy.text">BEhop 的设计理念源于对自然的深刻理解和尊重。每一个项目都从场地分析开始，深入了解当地的气候、植被、文化和客户需求，以此为基础创造独特的景观体验。BEhop 追求的不仅是视觉上的美感，更是人与环境之间的情感连接。</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+              <div class="p-4 bg-background rounded-lg">
+                <h4 class="font-medium text-foreground mb-1" data-i18n="about.values.1.title">尊重自然</h4>
+                <p class="text-sm text-muted-foreground" data-i18n="about.values.1.desc">每一个设计都从理解场地开始</p>
+              </div>
+              <div class="p-4 bg-background rounded-lg">
+                <h4 class="font-medium text-foreground mb-1" data-i18n="about.values.2.title">以人为本</h4>
+                <p class="text-sm text-muted-foreground" data-i18n="about.values.2.desc">创造人与环境的情感连接</p>
+              </div>
+              <div class="p-4 bg-background rounded-lg">
+                <h4 class="font-medium text-foreground mb-1" data-i18n="about.values.3.title">可持续发展</h4>
+                <p class="text-sm text-muted-foreground" data-i18n="about.values.3.desc">打造经得起时间考验的设计</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div class="bg-card p-8 rounded-xl border border-border text-center group hover:border-primary/30 hover:shadow-lg transition-all">
+            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <svg class="w-6 h-6 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="10" r="3" />
+                <path d="M12 21c-4.97-4.97-8-8.03-8-11.5A8 8 0 0 1 20 9.5C20 13 16.97 16.03 12 21Z" />
+              </svg>
+            </div>
+            <div class="font-serif text-4xl lg:text-5xl font-bold text-primary mb-2">120+</div>
+            <div class="text-sm text-muted-foreground uppercase tracking-wider" data-i18n="about.stats.projects">完成项目</div>
+          </div>
+          <div class="bg-card p-8 rounded-xl border border-border text-center group hover:border-primary/30 hover:shadow-lg transition-all">
+            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <svg class="w-6 h-6 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 20A7 7 0 0 1 7.5 7.5C8.5 4 12 3 13 2c1 2 .5 3 2 4 1.5 1 3 2 3 5a7 7 0 0 1-7 9Z" />
+              </svg>
+            </div>
+            <div class="font-serif text-4xl lg:text-5xl font-bold text-primary mb-2">10+</div>
+            <div class="text-sm text-muted-foreground uppercase tracking-wider" data-i18n="about.stats.years">行业经验</div>
+          </div>
+          <div class="bg-card p-8 rounded-xl border border-border text-center group hover:border-primary/30 hover:shadow-lg transition-all">
+            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <svg class="w-6 h-6 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l2.5 7H22l-5.5 4 2.1 7L12 16l-6.6 4 2.1-7L2 9h7.5L12 2z" />
+              </svg>
+            </div>
+            <div class="font-serif text-4xl lg:text-5xl font-bold text-primary mb-2">15</div>
+            <div class="text-sm text-muted-foreground uppercase tracking-wider" data-i18n="about.stats.awards">设计奖项</div>
+          </div>
+          <div class="bg-card p-8 rounded-xl border border-border text-center group hover:border-primary/30 hover:shadow-lg transition-all">
+            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <svg class="w-6 h-6 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 11c1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3 1.3 3 3 3Z" />
+                <path d="M8 11c1.7 0 3-1.3 3-3S9.7 5 8 5 5 6.3 5 8s1.3 3 3 3Z" />
+                <path d="M2 20c0-2.8 2.3-5 5-5" />
+                <path d="M22 20c0-2.8-2.3-5-5-5" />
+                <path d="M12 20c0-2.5 2-4.5 4.5-4.5" />
+              </svg>
+            </div>
+            <div class="font-serif text-4xl lg:text-5xl font-bold text-primary mb-2">25</div>
+            <div class="text-sm text-muted-foreground uppercase tracking-wider" data-i18n="about.stats.team">专业团队</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="py-24 lg:py-32 bg-background">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="max-w-3xl mb-16">
+          <p class="text-primary font-medium tracking-wide uppercase text-sm mb-4" data-i18n="services.kicker">专业服务</p>
+          <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance mb-6" data-i18n="services.title">设计服务</h2>
+          <p class="text-muted-foreground text-lg" data-i18n="services.subtitle">从概念到落地的全流程设计服务</p>
+        </div>
+
+        <div class="space-y-4">
+          <div class="group relative border-b border-border py-8 cursor-pointer transition-all duration-300 hover:bg-secondary/50 hover:-mx-6 hover:px-6 hover:border-transparent hover:rounded-xl">
+            <div class="flex items-start gap-6 lg:gap-12">
+              <div class="hidden sm:flex items-center justify-center w-12 h-12 rounded-full bg-secondary text-muted-foreground font-serif text-lg font-medium group-hover:bg-primary group-hover:text-primary-foreground transition-colors">01</div>
+              <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors">
+                <svg class="w-7 h-7 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 10.5V21h18V10.5" />
+                  <path d="M22 10L12 3 2 10" />
+                </svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-serif text-2xl lg:text-3xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors" data-i18n="services.1.title">私人庭院设计</h3>
+                <p class="text-muted-foreground leading-relaxed max-w-2xl" data-i18n="services.1.desc">为您的家创造独特的户外生活空间，打造专属的私家花园，让每一天都与自然相伴。</p>
+              </div>
+              <div class="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-secondary text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                <svg class="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="group relative border-b border-border py-8 cursor-pointer transition-all duration-300 hover:bg-secondary/50 hover:-mx-6 hover:px-6 hover:border-transparent hover:rounded-xl">
+            <div class="flex items-start gap-6 lg:gap-12">
+              <div class="hidden sm:flex items-center justify-center w-12 h-12 rounded-full bg-secondary text-muted-foreground font-serif text-lg font-medium group-hover:bg-primary group-hover:text-primary-foreground transition-colors">02</div>
+              <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors">
+                <svg class="w-7 h-7 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="M9 21V9h6v12" />
+                </svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-serif text-2xl lg:text-3xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors" data-i18n="services.2.title">商业景观规划</h3>
+                <p class="text-muted-foreground leading-relaxed max-w-2xl" data-i18n="services.2.desc">提升商业空间的环境品质和价值，为酒店、会所、办公园区提供专业景观解决方案。</p>
+              </div>
+              <div class="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-secondary text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                <svg class="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="group relative border-b border-border py-8 cursor-pointer transition-all duration-300 hover:bg-secondary/50 hover:-mx-6 hover:px-6 hover:border-transparent hover:rounded-xl">
+            <div class="flex items-start gap-6 lg:gap-12">
+              <div class="hidden sm:flex items-center justify-center w-12 h-12 rounded-full bg-secondary text-muted-foreground font-serif text-lg font-medium group-hover:bg-primary group-hover:text-primary-foreground transition-colors">03</div>
+              <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors">
+                <svg class="w-7 h-7 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2C9 6 7 9 7 12a5 5 0 0 0 10 0c0-3-2-6-5-10Z" />
+                </svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-serif text-2xl lg:text-3xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors" data-i18n="services.3.title">屋顶花园设计</h3>
+                <p class="text-muted-foreground leading-relaxed max-w-2xl" data-i18n="services.3.desc">将城市空间转化为绿色天堂，最大化利用建筑空间，创造空中花园奇迹。</p>
+              </div>
+              <div class="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-secondary text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                <svg class="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="group relative border-b border-border py-8 cursor-pointer transition-all duration-300 hover:bg-secondary/50 hover:-mx-6 hover:px-6 hover:border-transparent hover:rounded-xl">
+            <div class="flex items-start gap-6 lg:gap-12">
+              <div class="hidden sm:flex items-center justify-center w-12 h-12 rounded-full bg-secondary text-muted-foreground font-serif text-lg font-medium group-hover:bg-primary group-hover:text-primary-foreground transition-colors">04</div>
+              <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors">
+                <svg class="w-7 h-7 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 21c0-4 4-8 7-10" />
+                  <path d="M12 11c2.5-4 5-5 7-5-1 2-2 4-4 5" />
+                  <path d="M9 21c0-5 3-9 7-11" />
+                </svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-serif text-2xl lg:text-3xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors" data-i18n="services.4.title">生态修复设计</h3>
+                <p class="text-muted-foreground leading-relaxed max-w-2xl" data-i18n="services.4.desc">恢复和保护自然生态系统，运用生态学原理，重建可持续的自然环境。</p>
+              </div>
+              <div class="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-secondary text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                <svg class="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="contact" class="py-24 lg:py-32 bg-secondary">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <p class="text-primary font-medium tracking-wide uppercase text-sm mb-4" data-i18n="contact.kicker">联系 BEhop</p>
+          <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance mb-6" data-i18n="contact.title">联系 BEhop</h2>
+          <p class="text-muted-foreground text-lg" data-i18n="contact.description">无论您是想打造梦想中的私家花园，还是为商业项目寻找景观解决方案，BEhop 都期待倾听您的想法。</p>
+        </div>
+
+        <div class="grid lg:grid-cols-5 gap-12 lg:gap-16">
+          <div class="lg:col-span-2 space-y-8">
+            <div class="space-y-6">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16v12H4z" />
+                    <path d="m4 4 8 6 8-6" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-medium text-foreground mb-1" data-i18n="contact.emailLabel">电子邮箱</h4>
+                  <p class="text-muted-foreground text-sm leading-relaxed">liuruyuan73@gmail.com</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-medium text-foreground mb-1" data-i18n="contact.hours">工作时间</h4>
+                  <p class="text-muted-foreground text-sm leading-relaxed" data-i18n="contact.hoursText">周一至周五 9:00 - 18:00</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-3">
+            <div class="bg-card rounded-2xl p-8 lg:p-10 border border-border shadow-sm">
+              <h3 class="font-serif text-2xl font-semibold text-foreground mb-6" data-i18n="contact.formTitle">发送咨询</h3>
+              <form class="space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div class="space-y-2">
+                    <label for="name" class="text-sm font-medium text-foreground" data-i18n="contact.name">姓名</label>
+                    <input id="name" type="text" class="contact-input" data-i18n-placeholder="contact.name.placeholder" required>
+                  </div>
+                  <div class="space-y-2">
+                    <label for="email" class="text-sm font-medium text-foreground" data-i18n="contact.email">邮箱</label>
+                    <input id="email" type="email" class="contact-input" data-i18n-placeholder="contact.email.placeholder" required>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div class="space-y-2">
+                    <label for="phone" class="text-sm font-medium text-foreground" data-i18n="contact.phone.input">电话</label>
+                    <input id="phone" type="tel" class="contact-input" data-i18n-placeholder="contact.phone.placeholder">
+                  </div>
+                  <div class="space-y-2">
+                    <label for="project-type" class="text-sm font-medium text-foreground" data-i18n="contact.project">项目类型</label>
+                    <select id="project-type" class="contact-select" data-i18n-placeholder="contact.project.placeholder"></select>
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <label for="message" class="text-sm font-medium text-foreground" data-i18n="contact.message">项目描述</label>
+                  <textarea id="message" class="contact-textarea" data-i18n-placeholder="contact.message.placeholder" required></textarea>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-14 text-base font-medium rounded-lg transition-colors" data-i18n="contact.submit">发送消息</button>
+                <p class="text-xs text-muted-foreground text-center" data-i18n="contact.notice">BEhop 将在24小时内回复您的咨询</p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-foreground text-card">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-20">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+        <div class="lg:col-span-5 space-y-6">
+          <a href="#top" class="inline-flex items-center gap-3">
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+              <span class="text-primary-foreground font-serif font-bold text-xl">林</span>
+            </div>
+            <span class="font-serif text-2xl font-semibold" data-i18n="nav.brand">BEhop 设计</span>
+          </a>
+          <p class="text-card/70 leading-relaxed max-w-sm" data-i18n="footer.description">专注于创造和谐自然的景观设计，为每一个空间赋予独特的生命力。让建筑与自然对话，让生活与诗意相遇。</p>
+          <div class="flex gap-3 pt-2">
+            <a href="#" class="w-11 h-11 rounded-full bg-card/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label="Instagram">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17" cy="7" r="1" />
+              </svg>
+            </a>
+            <a href="#" class="w-11 h-11 rounded-full bg-card/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label="LinkedIn">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <line x1="7" y1="10" x2="7" y2="17" />
+                <line x1="7" y1="7" x2="7" y2="7" />
+                <path d="M11 10h3a3 3 0 0 1 3 3v4" />
+                <line x1="11" y1="10" x2="11" y2="17" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-3">
+          <h4 class="font-medium text-sm uppercase tracking-wider text-card/50 mb-5" data-i18n="footer.services">设计服务</h4>
+          <nav class="flex flex-col gap-3">
+            <a href="#services" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="services.1.title">私人庭院设计</a>
+            <a href="#services" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="services.2.title">商业景观规划</a>
+            <a href="#services" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="services.3.title">屋顶花园设计</a>
+            <a href="#services" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="services.4.title">生态修复设计</a>
+          </nav>
+        </div>
+
+        <div class="lg:col-span-2">
+          <h4 class="font-medium text-sm uppercase tracking-wider text-card/50 mb-5" data-i18n="footer.company">关于 BEhop</h4>
+          <nav class="flex flex-col gap-3">
+            <a href="#about" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.about">关于 BEhop</a>
+            <a href="#projects" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.projects">项目作品</a>
+            <a href="#contact" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.contact">联系 BEhop</a>
+            <a href="{{ site.baseurl }}/blog/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.blog">Blog</a>
+          </nav>
+        </div>
+
+        <div class="lg:col-span-2">
+          <h4 class="font-medium text-sm uppercase tracking-wider text-card/50 mb-5" data-i18n="nav.contact">联系 BEhop</h4>
+          <div class="space-y-3 text-sm">
+            <p class="text-card/70">liuruyuan73@gmail.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-card/10">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 py-6">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+          <p class="text-card/50 text-sm">
+            © <span id="current-year"></span> <span data-i18n="nav.brand">BEhop 设计</span>. <span data-i18n="footer.rights">版权所有</span>.
+          </p>
+          <button class="flex items-center gap-2 text-card/50 hover:text-card text-sm transition-colors group" data-scroll-top>
+            <span data-i18n="footer.backToTop">返回顶部</span>
+            <span class="w-8 h-8 rounded-full bg-card/10 flex items-center justify-center group-hover:bg-primary transition-colors">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5" />
+                <polyline points="5 12 12 5 19 12" />
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script src="{{ site.baseurl }}/js/portfolio.js"></script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+---
+layout: null
+title: "Forum Topic"
+description: "BEhop 论坛话题详情"
+lang-switcher: true
+nav-theme: light
+---
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BEhop 论坛话题 | BEhooop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--background)",
+              foreground: "var(--foreground)",
+              card: "var(--card)",
+              "card-foreground": "var(--card-foreground)",
+              popover: "var(--popover)",
+              "popover-foreground": "var(--popover-foreground)",
+              primary: "var(--primary)",
+              "primary-foreground": "var(--primary-foreground)",
+              secondary: "var(--secondary)",
+              "secondary-foreground": "var(--secondary-foreground)",
+              muted: "var(--muted)",
+              "muted-foreground": "var(--muted-foreground)",
+              accent: "var(--accent)",
+              "accent-foreground": "var(--accent-foreground)",
+              border: "var(--border)",
+              input: "var(--input)",
+              ring: "var(--ring)",
+            },
+            fontFamily: {
+              sans: ["Sora", "sans-serif"],
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/forum.css">
+</head>
+<body class="bg-background text-foreground forum-page forum-topic-page" data-baseurl="{{ site.baseurl }}">
+  {% include nav.html %}
+
+  <div class="min-h-screen flex flex-col">
+    <section class="relative h-56 md:h-72 overflow-hidden">
+      <img src="{{ site.baseurl }}/img/forum/behop-hero-bg.jpg" alt="BEhop 社区背景" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-foreground/60"></div>
+      <div class="absolute inset-0 z-10 flex flex-col justify-end px-4 pb-8 md:pb-12">
+        <div class="max-w-6xl mx-auto w-full">
+          <a href="{{ site.baseurl }}/forum/" data-back-link class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-white/70 hover:text-white transition-colors no-underline">
+            <span aria-hidden="true">←</span>
+            <span data-i18n="forum.detail.back">返回论坛</span>
+          </a>
+          <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-white/70" data-topic-breadcrumb></div>
+          <div class="mt-3 flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-white/15 text-white" data-topic-category></span>
+            <div class="flex flex-wrap items-center gap-2" data-topic-tags></div>
+          </div>
+          <h1 class="mt-4 text-3xl md:text-5xl font-semibold text-white tracking-tight text-balance" data-topic-title>Forum Topic</h1>
+          <p class="mt-3 text-sm md:text-base text-white/80 max-w-3xl leading-relaxed" data-topic-excerpt></p>
+          <div class="mt-4 flex flex-wrap items-center gap-4 text-xs text-white/70">
+            <span class="inline-flex items-center gap-2">
+              <span class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center text-white text-xs font-semibold" data-topic-author-initials>BE</span>
+              <span data-topic-author></span>
+            </span>
+            <span data-topic-date></span>
+            <span><span data-i18n="forum.detail.replies">回复</span> · <span data-topic-replies></span></span>
+            <span><span data-i18n="forum.detail.views">浏览</span> · <span data-topic-views></span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <article class="lg:col-span-8 bg-card rounded-xl border border-border p-6 md:p-8">
+          <div class="forum-article space-y-6" data-topic-content></div>
+          <div class="mt-10 flex flex-col sm:flex-row gap-3">
+            <a href="{{ site.baseurl }}/forum/" class="inline-flex items-center justify-center px-5 h-10 rounded-md bg-primary text-primary-foreground text-sm font-medium no-underline" data-i18n="forum.detail.join">加入讨论</a>
+            <a href="{{ site.baseurl }}/blog/" class="inline-flex items-center justify-center px-5 h-10 rounded-md border border-border text-sm font-medium text-foreground hover:bg-muted no-underline" data-i18n="forum.detail.readMore">阅读更多</a>
+          </div>
+        </article>
+
+        <aside class="lg:col-span-4 space-y-4">
+          <div class="bg-card rounded-xl border border-border p-5">
+            <h2 class="text-sm font-semibold text-foreground uppercase tracking-wider mb-4" data-i18n="forum.detail.related">相关话题</h2>
+            <div class="flex flex-col gap-3" data-related-list></div>
+          </div>
+          <div class="bg-card rounded-xl border border-border p-5">
+            <h2 class="text-sm font-semibold text-foreground uppercase tracking-wider mb-4" data-i18n="forum.detail.info">话题信息</h2>
+            <dl class="space-y-3 text-sm text-muted-foreground">
+              <div class="flex items-center justify-between">
+                <dt data-i18n="forum.detail.category">分类</dt>
+                <dd class="text-foreground font-medium" data-topic-category-detail></dd>
+              </div>
+              <div class="flex items-center justify-between">
+                <dt data-i18n="forum.detail.updated">更新</dt>
+                <dd class="text-foreground font-medium" data-topic-updated></dd>
+              </div>
+              <div class="flex items-center justify-between">
+                <dt data-i18n="forum.detail.readTime">阅读时长</dt>
+                <dd class="text-foreground font-medium" data-topic-readtime></dd>
+              </div>
+            </dl>
+          </div>
+        </aside>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="{{ site.baseurl }}/forum/" class="group flex items-center justify-between px-4 py-3 rounded-lg border border-border hover:bg-muted transition-colors no-underline" data-topic-prev>
+          <div>
+            <div class="text-xs text-muted-foreground uppercase tracking-wider" data-i18n="forum.detail.prev">上一篇</div>
+            <div class="text-sm font-medium text-foreground group-hover:text-primary transition-colors" data-topic-prev-title></div>
+          </div>
+          <span class="text-xs text-muted-foreground">←</span>
+        </a>
+        <a href="{{ site.baseurl }}/forum/" class="group flex items-center justify-between px-4 py-3 rounded-lg border border-border hover:bg-muted transition-colors no-underline" data-topic-next>
+          <div>
+            <div class="text-xs text-muted-foreground uppercase tracking-wider" data-i18n="forum.detail.next">下一篇</div>
+            <div class="text-sm font-medium text-foreground group-hover:text-primary transition-colors" data-topic-next-title></div>
+          </div>
+          <span class="text-xs text-muted-foreground">→</span>
+        </a>
+      </div>
+    </main>
+
+    <footer class="bg-card border-t border-border mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div class="col-span-2 md:col-span-1">
+            <a href="{{ site.baseurl }}/" class="flex items-center gap-2 mb-4 no-underline">
+              <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <span class="text-primary-foreground font-bold text-sm">BE</span>
+              </div>
+              <span class="text-lg font-semibold text-foreground">BEhop</span>
+            </a>
+            <p class="text-sm text-muted-foreground leading-relaxed" data-i18n="forum.footer.tagline">Connecting landscape professionals with AI innovation for a sustainable future.</p>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-semibold text-foreground mb-3" data-i18n="forum.footer.community">Community</h3>
+            <ul class="space-y-2 text-sm text-muted-foreground">
+              <li><a href="{{ site.baseurl }}/forum/" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.forum">Forum</a></li>
+              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.members">Members</a></li>
+              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.guidelines">Guidelines</a></li>
+              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.events">Events</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-semibold text-foreground mb-3" data-i18n="forum.footer.resources">Resources</h3>
+            <ul class="space-y-2 text-sm text-muted-foreground">
+              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.library">Documentation</a></li>
+              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.api">API</a></li>
+              <li><a href="{{ site.baseurl }}/blog/" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.blog">Blog</a></li>
+              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.newsletter">Newsletter</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-semibold text-foreground mb-3" data-i18n="forum.footer.company">Company</h3>
+            <ul class="space-y-2 text-sm text-muted-foreground">
+              <li><a href="{{ site.baseurl }}/about/" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.about">About</a></li>
+              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.careers">Careers</a></li>
+              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.contact">Contact</a></li>
+              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.privacy">Privacy</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p class="text-xs text-muted-foreground" data-i18n="forum.footer.rights">© 2026 BEhop. All rights reserved.</p>
+          <div class="flex items-center gap-4 text-xs text-muted-foreground">
+            <a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.links.terms">Terms</a>
+            <a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.links.privacy">Privacy</a>
+            <a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.links.cookies">Cookies</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script src="{{ site.baseurl }}/js/forum-data.js"></script>
+  <script src="{{ site.baseurl }}/js/forum.js"></script>
+  <script src="{{ site.baseurl }}/js/forum-topic.js"></script>
+</body>
+</html>

@@ -157,52 +157,103 @@
     return list
   }
 
-  const renderDialogueItem = (kind, role, text, index) => {
-    const item = document.createElement("article")
-    item.className = `forum-dialogue-item forum-dialogue-item--${kind}`
+  const pickLangArray = (value, lang) => {
+    if (Array.isArray(value)) return value
+    if (!value || typeof value !== "object") return []
+    const localized = value[lang] || value.en || value.zh
+    return Array.isArray(localized) ? localized : []
+  }
 
-    const meta = document.createElement("div")
-    meta.className = "forum-dialogue-item__meta"
+  const renderQaAnswerBlock = (container, block, lang) => {
+    if (!block || typeof block !== "object") return
+    const value = pickLang(block, lang)
+    if (!value && !Array.isArray(block?.en) && !Array.isArray(block?.zh)) return
 
-    const roleNode = document.createElement("span")
-    roleNode.className = "forum-dialogue-item__role"
-    roleNode.textContent = role
+    if (block.type === "h2" || block.type === "h3") {
+      const heading = document.createElement("h3")
+      heading.className = "forum-qa-answer__heading"
+      heading.textContent = value
+      container.appendChild(heading)
+      return
+    }
 
-    const indexNode = document.createElement("span")
-    indexNode.className = "forum-dialogue-item__index"
-    indexNode.textContent = `#${index}`
+    if (block.type === "ul") {
+      const items = pickLangArray(block, lang)
+      if (!items.length) return
+      container.appendChild(
+        createBulletList(items, {
+          listClass: "forum-qa-answer__list",
+          itemClass: "forum-qa-answer__list-item",
+          dotClass: "forum-qa-answer__dot",
+        })
+      )
+      return
+    }
 
-    const textNode = document.createElement("p")
-    textNode.className = "forum-dialogue-item__text"
-    textNode.textContent = text
-
-    meta.append(roleNode, indexNode)
-    item.append(meta, textNode)
-
-    return item
+    container.appendChild(createParagraph(value, "forum-qa-answer__paragraph"))
   }
 
   const renderQaBlock = (container, block, lang) => {
     const thread = document.createElement("section")
-    thread.className = "forum-dialogue-thread"
+    thread.className = "forum-qa-thread"
 
     const items = Array.isArray(block?.items) ? block.items : []
 
     items.forEach((item, index) => {
       const questionText = pickLang(item?.question, lang)
       const answerText = pickLang(item?.answer, lang)
+      const answerBlocks = pickLangArray(item?.answerBlocks, lang)
+      if (!questionText && !answerText && !answerBlocks.length) return
+
+      const pair = document.createElement("article")
+      pair.className = "forum-qa-pair"
+
+      const questionCard = document.createElement("div")
+      questionCard.className = "forum-qa-question"
+
+      const questionMeta = document.createElement("div")
+      questionMeta.className = "forum-qa-question__meta"
+
+      const questionRole = document.createElement("span")
+      questionRole.className = "forum-qa-question__role"
+      questionRole.textContent = pickLang(qaRoleLabels.question, lang)
+
+      const questionIndex = document.createElement("span")
+      questionIndex.className = "forum-qa-question__index"
+      questionIndex.textContent = `Q${index + 1}`
+
+      questionMeta.append(questionRole, questionIndex)
+      questionCard.appendChild(questionMeta)
 
       if (questionText) {
-        thread.appendChild(
-          renderDialogueItem("q", pickLang(qaRoleLabels.question, lang), questionText, index + 1)
-        )
+        const questionBody = document.createElement("p")
+        questionBody.className = "forum-qa-question__text"
+        questionBody.textContent = questionText
+        questionCard.appendChild(questionBody)
       }
 
+      const answerCard = document.createElement("div")
+      answerCard.className = "forum-qa-answer"
+
+      const answerMeta = document.createElement("div")
+      answerMeta.className = "forum-qa-answer__meta"
+      answerMeta.textContent = pickLang(qaRoleLabels.answer, lang)
+      answerCard.appendChild(answerMeta)
+
+      const answerBody = document.createElement("div")
+      answerBody.className = "forum-qa-answer__body"
+
       if (answerText) {
-        thread.appendChild(
-          renderDialogueItem("a", pickLang(qaRoleLabels.answer, lang), answerText, index + 1)
-        )
+        answerBody.appendChild(createParagraph(answerText, "forum-qa-answer__paragraph"))
       }
+
+      answerBlocks.forEach((answerBlock) => {
+        renderQaAnswerBlock(answerBody, answerBlock, lang)
+      })
+
+      answerCard.appendChild(answerBody)
+      pair.append(questionCard, answerCard)
+      thread.appendChild(pair)
     })
 
     if (!thread.children.length) {

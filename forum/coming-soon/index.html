@@ -1,0 +1,130 @@
+---
+layout: null
+title: "Forum Coming Soon"
+description: "BEhop 论坛功能开发中"
+lang-switcher: true
+nav-theme: light
+---
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BEhop 论坛 | 功能开发中</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--background)",
+              foreground: "var(--foreground)",
+              card: "var(--card)",
+              "card-foreground": "var(--card-foreground)",
+              primary: "var(--primary)",
+              "primary-foreground": "var(--primary-foreground)",
+              muted: "var(--muted)",
+              "muted-foreground": "var(--muted-foreground)",
+              border: "var(--border)",
+            },
+            fontFamily: {
+              sans: ["Sora", "sans-serif"],
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/forum.css">
+</head>
+<body class="bg-background text-foreground forum-page" data-baseurl="{{ site.baseurl }}">
+  {% include nav.html %}
+
+  <main class="min-h-screen max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="bg-card rounded-2xl border border-border p-6 md:p-10">
+      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground uppercase tracking-wider">Forum</span>
+      <h1 class="mt-4 text-2xl md:text-4xl font-semibold tracking-tight" data-item-title>功能开发中</h1>
+      <p class="mt-4 text-sm md:text-base text-muted-foreground leading-relaxed" data-item-desc>
+        该功能页面正在开发中，你可以先返回论坛浏览已上线的内容。
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <a href="{{ site.baseurl }}/forum/" class="inline-flex items-center justify-center px-5 h-10 rounded-md bg-primary text-primary-foreground text-sm font-medium no-underline">返回论坛</a>
+        <a href="{{ site.baseurl }}/forum/?sort=latest" class="inline-flex items-center justify-center px-5 h-10 rounded-md border border-border text-sm font-medium text-foreground hover:bg-muted no-underline">查看最新话题</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script>
+    (() => {
+      const item = new URLSearchParams(window.location.search).get("item") || "feature"
+      const lang = localStorage.getItem("portfolioLang") || "zh"
+
+      const labels = {
+        members: {
+          zh: { title: "成员中心开发中", desc: "成员资料、等级和互动排行功能正在建设中。" },
+          en: { title: "Members Center Coming Soon", desc: "Member profiles, levels, and contribution rankings are under development." },
+        },
+        guidelines: {
+          zh: { title: "社区指南开发中", desc: "论坛规范与发帖建议页面正在建设中。" },
+          en: { title: "Guidelines Coming Soon", desc: "Forum rules and posting guidelines are being prepared." },
+        },
+        events: {
+          zh: { title: "活动页开发中", desc: "线上分享与线下活动日程功能正在建设中。" },
+          en: { title: "Events Coming Soon", desc: "Online sessions and event schedules are under development." },
+        },
+        library: {
+          zh: { title: "资料库开发中", desc: "文档索引与知识库检索功能正在建设中。" },
+          en: { title: "Documentation Coming Soon", desc: "Documentation index and knowledge search are under development." },
+        },
+        api: {
+          zh: { title: "API 页面开发中", desc: "接口文档与调用示例正在建设中。" },
+          en: { title: "API Page Coming Soon", desc: "API references and usage examples are being prepared." },
+        },
+        newsletter: {
+          zh: { title: "订阅功能开发中", desc: "社区周报订阅与推送功能正在建设中。" },
+          en: { title: "Newsletter Coming Soon", desc: "Community digest subscription is under development." },
+        },
+        careers: {
+          zh: { title: "招聘页面开发中", desc: "岗位列表与投递流程页面正在建设中。" },
+          en: { title: "Careers Coming Soon", desc: "Job listings and application flow are under development." },
+        },
+        contact: {
+          zh: { title: "联系页面开发中", desc: "业务咨询与反馈入口正在建设中。" },
+          en: { title: "Contact Page Coming Soon", desc: "Business inquiry and feedback channels are under development." },
+        },
+        privacy: {
+          zh: { title: "隐私页面开发中", desc: "隐私政策与数据说明页面正在建设中。" },
+          en: { title: "Privacy Page Coming Soon", desc: "Privacy policy and data notes are being prepared." },
+        },
+        terms: {
+          zh: { title: "条款页面开发中", desc: "服务条款与使用说明页面正在建设中。" },
+          en: { title: "Terms Page Coming Soon", desc: "Terms of service and usage notes are under development." },
+        },
+        cookies: {
+          zh: { title: "Cookie 页面开发中", desc: "Cookie 使用说明页面正在建设中。" },
+          en: { title: "Cookies Page Coming Soon", desc: "Cookie usage details are under development." },
+        },
+        feature: {
+          zh: { title: "功能开发中", desc: "该功能页面正在开发中，你可以先返回论坛浏览已上线的内容。" },
+          en: { title: "Feature Coming Soon", desc: "This feature page is under development. You can return to the forum for available content." },
+        },
+      }
+
+      const copy = (labels[item] || labels.feature)[lang] || (labels[item] || labels.feature).zh
+      const title = document.querySelector("[data-item-title]")
+      const desc = document.querySelector("[data-item-desc]")
+
+      if (title) title.textContent = copy.title
+      if (desc) desc.textContent = copy.desc
+      document.title = `BEhop Forum | ${copy.title}`
+    })()
+  </script>
+</body>
+</html>

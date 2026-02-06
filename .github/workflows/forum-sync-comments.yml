@@ -1,0 +1,48 @@
+name: Sync Approved Forum Comments
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forum-sync-comments
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Sync approved comments and rebuild metrics
+        run: |
+          npm run -s forum:sync-comments
+          npm run -s forum:metrics
+        env:
+          FORUM_COMMENT_SUBMIT_URL: ${{ secrets.FORUM_COMMENT_SUBMIT_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+
+      - name: Commit and push changes
+        run: |
+          if git diff --quiet -- assets/data/forum-comments-approved.json assets/data/forum-metrics-approved.json; then
+            echo "No approved comment snapshot changes."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/forum-comments-approved.json assets/data/forum-metrics-approved.json
+          git commit -m "chore(forum): sync approved comments snapshot"
+          git push

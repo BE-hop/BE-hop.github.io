@@ -19,6 +19,8 @@
     "scripts": {
         "start": "bundle exec jekyll serve",
         "dev": "grunt watch & npm run start",
+        "forum:sync-comments": "node scripts/forum-sync-approved-comments.mjs",
+        "forum:metrics": "node scripts/forum-build-metrics.mjs",
         "boil": "git push boilerplate boilerplate:master",
         "push": "git push origin master --tag"
     }

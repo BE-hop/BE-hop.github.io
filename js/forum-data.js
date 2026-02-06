@@ -293,7 +293,7 @@
     {
       slug: "ml-pest-detection",
       category: "ai",
-      tags: ["trending"],
+      tags: ["trending", "aitalk"],
       author: {
         name: "Lisa Wang",
         initials: "LW",
@@ -307,44 +307,69 @@
         zh: "机器学习在虫害识别与预防中的应用",
       },
       excerpt: {
-        en: "Computer vision models can flag early pest symptoms and reduce the need for blanket pesticide treatments.",
-        zh: "计算机视觉模型可提前识别虫害症状，降低大范围喷洒的需求。",
+        en: "AI Talk: use Q&A to break down how computer vision catches early pest risks and guides intervention.",
+        zh: "AI Talk：通过问答形式拆解计算机视觉如何提前识别虫害风险并指导干预。",
       },
       content: [
         {
           type: "p",
-          en: "High-resolution imagery from phones or fixed cameras can detect leaf discoloration, spotting, and canopy thinning. Early warnings allow targeted intervention.",
-          zh: "来自手机或固定摄像头的高分辨率图像可识别叶片变色、斑点与树冠稀疏等症状，为精准干预提供早期预警。",
-        },
-        {
-          type: "p",
-          en: "Successful programs combine labeled datasets with field validation. Human verification reduces false positives and improves model retraining.",
-          zh: "成功项目通常结合标注数据与现场验证，人工复核降低误报并提升模型迭代效果。",
+          en: "AItalk format uses a practical Q&A flow so teams can quickly understand how the model works and how to deploy it on site.",
+          zh: "AItalk 采用实战问答流，帮助团队快速理解模型原理和现场落地方式。",
         },
         {
           type: "h2",
-          en: "Deployment tips",
-          zh: "部署建议",
+          en: "AItalk Q&A",
+          zh: "AItalk 问答",
         },
         {
-          type: "ul",
-          en: [
-            "Standardize lighting and capture angles",
-            "Use edge devices for on-site inference",
-            "Schedule retraining every season",
-            "Integrate with IPM workflows",
-          ],
-          zh: [
-            "统一拍摄光线与角度",
-            "使用边缘设备进行现场识别",
-            "按季节定期重新训练",
-            "与综合虫害管理流程结合",
+          type: "qa",
+          items: [
+            {
+              question: {
+                en: "What is the earliest visible sign the model can detect?",
+                zh: "模型最早能识别哪类可见征兆？",
+              },
+              answer: {
+                en: "Usually subtle leaf discoloration and small spotting patterns. Detection is often 5-10 days earlier than manual patrol.",
+                zh: "通常是轻微叶色异常与小范围斑点模式，相比人工巡检通常可提前 5-10 天识别。",
+              },
+            },
+            {
+              question: {
+                en: "How do we reduce false positives in a real project?",
+                zh: "在真实项目中如何降低误报？",
+              },
+              answer: {
+                en: "Use fixed camera angles, standard light windows, and weekly human review. Keep image labels updated after each confirmed case.",
+                zh: "采用固定拍摄角度、统一光照时间窗，并进行每周人工复核；每次确诊后都同步更新标注数据。",
+              },
+            },
+            {
+              question: {
+                en: "Should the model run in the cloud or on edge devices?",
+                zh: "模型应该跑在云端还是边缘设备？",
+              },
+              answer: {
+                en: "For time-sensitive sites, use edge inference for alerts and sync summarized data to cloud for retraining.",
+                zh: "对时效要求高的场地建议边缘端实时识别预警，同时将摘要数据回传云端用于再训练。",
+              },
+            },
+            {
+              question: {
+                en: "How does this connect with existing maintenance SOPs?",
+                zh: "这套系统如何与现有养护 SOP 融合？",
+              },
+              answer: {
+                en: "Map each alert level to a clear action list: inspect zone, capture close-up photos, apply targeted treatment, then log outcome.",
+                zh: "将每个告警等级映射到明确动作：分区复检、补拍近景、精准处理、记录结果并回写系统。",
+              },
+            },
           ],
         },
         {
           type: "p",
-          en: "When paired with agronomic expertise, ML becomes a decision support tool rather than a black box. Start small and scale after accuracy benchmarks are met.",
-          zh: "与专业园艺知识结合时，机器学习更像决策辅助而非黑箱。建议先小规模试点，达到准确率目标后再扩展。",
+          en: "Publishing future AItalk posts only needs the `aitalk` tag plus `qa` content blocks. The detail page will switch to dialogue mode automatically.",
+          zh: "后续发布 AItalk 内容时，只需添加 `aitalk` 标签并使用 `qa` 内容块，详情页会自动切换为对话模式。",
         },
       ],
     },
@@ -464,6 +489,89 @@
         },
       ],
     },
+    {
+      slug: "aitalk-design-copilot",
+      category: "ai",
+      tags: ["aitalk", "featured"],
+      author: {
+        name: "Noah Lin",
+        initials: "NL",
+        role: { en: "Product Designer", zh: "产品设计师" },
+      },
+      stats: { replies: 18, views: 468 },
+      date: "2026-02-03T10:00:00Z",
+      readTime: { en: "6 min", zh: "6 分钟" },
+      title: {
+        en: "AI Talk: How a design copilot speeds up landscape concepting",
+        zh: "AI Talk：设计副驾如何加速景观方案概念阶段",
+      },
+      excerpt: {
+        en: "A practical Q&A case about prompts, iteration loops, and team collaboration in a real design workflow.",
+        zh: "一个实战问答案例：如何在真实设计流程中使用提示词、迭代闭环和团队协作。",
+      },
+      content: [
+        {
+          type: "p",
+          en: "This AItalk case shows a full question-answer flow from first brief to concept alignment.",
+          zh: "这个 AItalk 案例演示了从需求输入到方案对齐的完整问答流程。",
+        },
+        {
+          type: "h2",
+          en: "Project Q&A",
+          zh: "项目问答",
+        },
+        {
+          type: "qa",
+          items: [
+            {
+              question: {
+                en: "What should we feed the copilot in the first prompt?",
+                zh: "第一轮提示词应该输入哪些信息？",
+              },
+              answer: {
+                en: "Start with site constraints, target users, maintenance budget, and the emotional tone of the space. Keep each requirement as a short bullet.",
+                zh: "先输入场地约束、目标人群、维护预算和空间情绪目标，并把每项需求写成简短要点。",
+              },
+            },
+            {
+              question: {
+                en: "How many concept directions are reasonable in one round?",
+                zh: "一轮生成多少个概念方向比较合适？",
+              },
+              answer: {
+                en: "Three to five directions is usually enough. More options often reduce review quality and slow down decisions.",
+                zh: "通常 3 到 5 个方向最合适，数量太多会降低评审质量并拖慢决策。",
+              },
+            },
+            {
+              question: {
+                en: "How do we avoid pretty but unbuildable outputs?",
+                zh: "如何避免“好看但落不了地”的结果？",
+              },
+              answer: {
+                en: "Add hard constraints into every iteration: buildable slope, local species list, and material availability. Ask the model to explain tradeoffs.",
+                zh: "每轮都加入硬约束：可施工坡度、本地植物清单、材料可得性，并要求模型解释取舍理由。",
+              },
+            },
+            {
+              question: {
+                en: "How does the team review AI outputs efficiently?",
+                zh: "团队如何高效评审 AI 输出？",
+              },
+              answer: {
+                en: "Use a fixed checklist: spatial logic, climate fit, maintenance load, and cost risk. Keep only one actionable revision goal per round.",
+                zh: "使用固定清单评审：空间逻辑、气候适配、维护负担、成本风险；每轮只保留一个可执行修改目标。",
+              },
+            },
+          ],
+        },
+        {
+          type: "p",
+          en: "To publish more AItalk posts, keep using the `aitalk` tag and `qa` blocks. The detail page will stay in dialogue mode automatically.",
+          zh: "后续只要继续使用 `aitalk` 标签和 `qa` 数据块，详情页会自动保持对话展示模式。",
+        },
+      ],
+    },
   ]
 
   const categoryLabels = {
@@ -481,9 +589,22 @@
     news: { en: "News", zh: "资讯" },
     featured: { en: "Featured", zh: "精选" },
     trending: { en: "Trending", zh: "热门" },
+    aitalk: { en: "AI Talk", zh: "AI 对话" },
+  }
+
+  // Tag-driven detail template selection.
+  const detailLayoutByTag = {
+    aitalk: "dialogue",
+  }
+
+  const detailLayoutLabels = {
+    article: { en: "Article", zh: "文章" },
+    dialogue: { en: "AI Talk · Q&A", zh: "AI Talk · 问答" },
   }
 
   window.FORUM_TOPICS = topics
   window.FORUM_CATEGORY_LABELS = categoryLabels
   window.FORUM_TAG_LABELS = tagLabels
+  window.FORUM_DETAIL_LAYOUT_BY_TAG = detailLayoutByTag
+  window.FORUM_DETAIL_LAYOUT_LABELS = detailLayoutLabels
 })()

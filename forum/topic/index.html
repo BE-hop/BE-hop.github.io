@@ -86,11 +86,51 @@ nav-theme: light
     <main class="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <article class="lg:col-span-8 bg-card rounded-xl border border-border p-6 md:p-8">
+          <div class="forum-detail-layout">
+            <span class="forum-detail-layout__label" data-i18n="forum.detail.layout">展示形式</span>
+            <span class="forum-detail-layout__value" data-topic-layout-badge></span>
+          </div>
           <div class="forum-article space-y-6" data-topic-content></div>
           <div class="mt-10 flex flex-col sm:flex-row gap-3">
             <a href="{{ site.baseurl }}/forum/" class="inline-flex items-center justify-center px-5 h-10 rounded-md bg-primary text-primary-foreground text-sm font-medium no-underline" data-i18n="forum.detail.join">加入讨论</a>
             <a href="{{ site.baseurl }}/blog/" class="inline-flex items-center justify-center px-5 h-10 rounded-md border border-border text-sm font-medium text-foreground hover:bg-muted no-underline" data-i18n="forum.detail.readMore">阅读更多</a>
           </div>
+
+          <section class="mt-10 border-t border-border pt-8" data-topic-comments-section>
+            <div class="flex items-center justify-between gap-3 mb-3">
+              <h2 class="text-lg font-semibold text-foreground" data-topic-comments-title>评论</h2>
+              <span class="text-xs text-muted-foreground" data-topic-comments-count>0 条</span>
+            </div>
+            <p class="text-sm text-muted-foreground mb-5" data-topic-comments-subtitle>评论提交后会进入审核，通过后显示在本页。</p>
+
+            <div class="flex flex-col gap-3" data-topic-comments-list></div>
+            <div class="hidden rounded-lg border border-border bg-muted px-4 py-3 text-sm text-muted-foreground" data-topic-comments-empty>
+              暂无已审核评论，欢迎提交你的观点。
+            </div>
+
+            <div class="mt-8 rounded-xl border border-border bg-muted/40 p-4 md:p-5">
+              <h3 class="text-sm font-semibold text-foreground uppercase tracking-wider" data-topic-comment-form-title>发表评论</h3>
+              <form class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3" data-topic-comment-form>
+                <label class="flex flex-col gap-1.5">
+                  <span class="text-xs text-muted-foreground" data-topic-comment-label-name>昵称</span>
+                  <input type="text" maxlength="48" class="h-10 rounded-md border border-border bg-card px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30" data-topic-comment-name placeholder="输入昵称（可选）">
+                </label>
+                <label class="flex flex-col gap-1.5">
+                  <span class="text-xs text-muted-foreground" data-topic-comment-label-location>地点</span>
+                  <input type="text" maxlength="80" class="h-10 rounded-md border border-border bg-card px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30" data-topic-comment-location placeholder="城市/地区（可选）">
+                </label>
+                <label class="md:col-span-2 flex flex-col gap-1.5">
+                  <span class="text-xs text-muted-foreground" data-topic-comment-label-message>评论内容</span>
+                  <textarea rows="4" maxlength="1200" class="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30" data-topic-comment-message placeholder="输入你的评论（审核后展示）"></textarea>
+                </label>
+                <div class="md:col-span-2 flex items-center justify-between gap-3">
+                  <button type="submit" class="inline-flex items-center justify-center px-5 h-10 rounded-md bg-primary text-primary-foreground text-sm font-medium" data-topic-comment-submit>提交评论</button>
+                  <span class="text-xs text-muted-foreground text-right" data-topic-comment-form-note>提交后默认进入待审核，审核通过后会显示。</span>
+                </div>
+              </form>
+              <div class="hidden mt-3 rounded-md border px-3 py-2 text-sm" data-topic-comment-feedback></div>
+            </div>
+          </section>
         </article>
 
         <aside class="lg:col-span-4 space-y-4">
@@ -112,6 +152,31 @@ nav-theme: light
               <div class="flex items-center justify-between">
                 <dt data-i18n="forum.detail.readTime">阅读时长</dt>
                 <dd class="text-foreground font-medium" data-topic-readtime></dd>
+              </div>
+              <div class="flex items-center justify-between">
+                <dt data-i18n="forum.detail.layout">展示形式</dt>
+                <dd class="text-foreground font-medium" data-topic-layout></dd>
+              </div>
+            </dl>
+          </div>
+          <div class="bg-card rounded-xl border border-border p-5">
+            <h2 class="text-sm font-semibold text-foreground uppercase tracking-wider mb-4" data-i18n="forum.detail.analytics">互动数据</h2>
+            <dl class="space-y-3 text-sm text-muted-foreground">
+              <div class="flex items-center justify-between">
+                <dt data-i18n="forum.detail.analytics.siteVisitors">站点访客</dt>
+                <dd class="text-foreground font-medium" data-site-visitors>0</dd>
+              </div>
+              <div class="flex items-center justify-between">
+                <dt data-i18n="forum.detail.analytics.siteViews">站点浏览</dt>
+                <dd class="text-foreground font-medium" data-site-views>0</dd>
+              </div>
+              <div class="flex items-center justify-between">
+                <dt data-i18n="forum.detail.analytics.topicVisitors">本篇访客</dt>
+                <dd class="text-foreground font-medium" data-topic-visitors>0</dd>
+              </div>
+              <div class="flex items-center justify-between">
+                <dt data-i18n="forum.detail.analytics.topicComments">本篇评论</dt>
+                <dd class="text-foreground font-medium" data-topic-comments-total>0</dd>
               </div>
             </dl>
           </div>
@@ -153,19 +218,19 @@ nav-theme: light
             <h3 class="text-sm font-semibold text-foreground mb-3" data-i18n="forum.footer.community">Community</h3>
             <ul class="space-y-2 text-sm text-muted-foreground">
               <li><a href="{{ site.baseurl }}/forum/" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.forum">Forum</a></li>
-              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.members">Members</a></li>
-              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.guidelines">Guidelines</a></li>
-              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.events">Events</a></li>
+              <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=members" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.members">Members</a></li>
+              <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=guidelines" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.guidelines">Guidelines</a></li>
+              <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=events" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.events">Events</a></li>
             </ul>
           </div>
 
           <div>
             <h3 class="text-sm font-semibold text-foreground mb-3" data-i18n="forum.footer.resources">Resources</h3>
             <ul class="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.library">Documentation</a></li>
-              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.api">API</a></li>
+              <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=library" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.library">Documentation</a></li>
+              <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=api" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.api">API</a></li>
               <li><a href="{{ site.baseurl }}/blog/" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.blog">Blog</a></li>
-              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.newsletter">Newsletter</a></li>
+              <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=newsletter" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.newsletter">Newsletter</a></li>
             </ul>
           </div>
 
@@ -173,9 +238,9 @@ nav-theme: light
             <h3 class="text-sm font-semibold text-foreground mb-3" data-i18n="forum.footer.company">Company</h3>
             <ul class="space-y-2 text-sm text-muted-foreground">
               <li><a href="{{ site.baseurl }}/about/" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.about">About</a></li>
-              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.careers">Careers</a></li>
-              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.contact">Contact</a></li>
-              <li><a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.privacy">Privacy</a></li>
+              <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=careers" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.careers">Careers</a></li>
+              <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=contact" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.contact">Contact</a></li>
+              <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=privacy" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.privacy">Privacy</a></li>
             </ul>
           </div>
         </div>
@@ -183,9 +248,9 @@ nav-theme: light
         <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p class="text-xs text-muted-foreground" data-i18n="forum.footer.rights">© 2026 BEhop. All rights reserved.</p>
           <div class="flex items-center gap-4 text-xs text-muted-foreground">
-            <a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.links.terms">Terms</a>
-            <a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.links.privacy">Privacy</a>
-            <a href="#" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.links.cookies">Cookies</a>
+            <a href="{{ site.baseurl }}/forum/coming-soon/?item=terms" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.links.terms">Terms</a>
+            <a href="{{ site.baseurl }}/forum/coming-soon/?item=privacy" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.links.privacy">Privacy</a>
+            <a href="{{ site.baseurl }}/forum/coming-soon/?item=cookies" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.links.cookies">Cookies</a>
           </div>
         </div>
       </div>
@@ -193,6 +258,8 @@ nav-theme: light
   </div>
 
   <script src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script src="{{ site.baseurl }}/js/forum-config.js"></script>
+  <script src="{{ site.baseurl }}/js/forum-client.js"></script>
   <script src="{{ site.baseurl }}/js/forum-data.js"></script>
   <script src="{{ site.baseurl }}/js/forum.js"></script>
   <script src="{{ site.baseurl }}/js/forum-topic.js"></script>

@@ -121,12 +121,12 @@ It runs every 30 minutes (and manual trigger), then:
 2. Rebuilds `forum-metrics-approved.json`
 3. Commits snapshot changes automatically
 
-Optional repo secrets (recommended):
+Required repo secrets:
 
 - `FORUM_COMMENT_SUBMIT_URL` (for example `https://<project-ref>.supabase.co/rest/v1/comments`)
-- `SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
 
-If secrets are not set, sync script falls back to values in `js/forum-config.js`.
+Sync script now reads backend credentials from environment only. In GitHub Actions, provide both repository secrets above.
 
 ## 7. Quick Review SQL
 

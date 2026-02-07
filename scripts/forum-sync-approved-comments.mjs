@@ -3,25 +3,9 @@ import fs from "node:fs/promises"
 import path from "node:path"
 
 const root = process.cwd()
-const configPath = path.join(root, "js/forum-config.js")
 const outputPath = path.join(root, "assets/data/forum-comments-approved.json")
 
-const readText = async (filePath) => {
-  try {
-    return await fs.readFile(filePath, "utf8")
-  } catch (error) {
-    return ""
-  }
-}
-
 const readEnv = (key) => (process.env[key] || "").trim()
-const hasEnv = (key) => readEnv(key).length > 0
-
-const extractConfigValue = (source, key) => {
-  const pattern = new RegExp(`${key}\\s*:\\s*"([^"]*)"`)
-  const match = source.match(pattern)
-  return match?.[1] || ""
-}
 
 const parseTopicSlugFromPage = (page) => {
   if (!page) return ""
@@ -91,7 +75,7 @@ const isApprovedStatus = (value) => {
   const normalized = String(value || "")
     .trim()
     .toLowerCase()
-  return ["approved", "approve", "accepted", "published", "pass"].includes(normalized)
+  return ["approved", "aproved", "approve", "accepted", "published", "pass"].includes(normalized)
 }
 
 const looksLikeServiceRoleKey = (key) => {
@@ -110,32 +94,38 @@ const looksLikeServiceRoleKey = (key) => {
   return false
 }
 
+const countByStatus = (rows) => {
+  const map = {}
+  rows.forEach((row) => {
+    const key = String(row?.status || "")
+      .trim()
+      .toLowerCase()
+    map[key || "(empty)"] = (map[key || "(empty)"] || 0) + 1
+  })
+  return map
+}
+
 const main = async () => {
-  const source = await readText(configPath)
-  const commentSubmitUrl =
-    readEnv("FORUM_COMMENT_SUBMIT_URL") || extractConfigValue(source, "commentSubmitUrl")
-  const supabaseKey =
-    readEnv("SUPABASE_SERVICE_ROLE_KEY") ||
-    readEnv("SUPABASE_PUBLISHABLE_KEY") ||
-    extractConfigValue(source, "supabasePublishableKey")
-  const usingServiceRoleEnv = hasEnv("SUPABASE_SERVICE_ROLE_KEY")
+  const commentSubmitUrl = readEnv("FORUM_COMMENT_SUBMIT_URL")
+  const supabaseKey = readEnv("SUPABASE_SERVICE_ROLE_KEY")
 
   if (!commentSubmitUrl) {
-    throw new Error("commentSubmitUrl is empty in js/forum-config.js")
+    throw new Error("FORUM_COMMENT_SUBMIT_URL is required (use GitHub repository secret)")
   }
   if (!/\.supabase\.co\/rest\/v1\//i.test(commentSubmitUrl)) {
-    throw new Error("commentSubmitUrl is not a Supabase REST endpoint")
+    throw new Error("FORUM_COMMENT_SUBMIT_URL is not a Supabase REST endpoint")
   }
   if (!supabaseKey) {
-    throw new Error("supabasePublishableKey is empty in js/forum-config.js")
+    throw new Error("SUPABASE_SERVICE_ROLE_KEY is required (use GitHub repository secret)")
   }
-  if (usingServiceRoleEnv && !looksLikeServiceRoleKey(supabaseKey)) {
+  if (!looksLikeServiceRoleKey(supabaseKey)) {
     throw new Error(
       "SUPABASE_SERVICE_ROLE_KEY does not look like a service role key. Check GitHub secret value."
     )
   }
 
   const rows = await fetchApprovedRows({ commentSubmitUrl, supabaseKey })
+  const statusCounts = countByStatus(rows)
   const approvedRows = rows.filter((row) => isApprovedStatus(row.status))
   const normalized = approvedRows.map(normalizeRow)
   const comments = normalized.filter((item) => item.topicSlug && item.content)
@@ -152,6 +142,7 @@ const main = async () => {
   process.stdout.write(
     `Updated ${path.relative(root, outputPath)}\n` +
       `- rows fetched: ${rows.length}\n` +
+      `- rows by status: ${JSON.stringify(statusCounts)}\n` +
       `- approved status matched: ${approvedRows.length}\n` +
       `- status filtered out: ${nonApproved}\n` +
       `- comments written: ${comments.length}\n` +

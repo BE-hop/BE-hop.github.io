@@ -15,6 +15,7 @@ const readText = async (filePath) => {
 }
 
 const readEnv = (key) => (process.env[key] || "").trim()
+const hasEnv = (key) => readEnv(key).length > 0
 
 const extractConfigValue = (source, key) => {
   const pattern = new RegExp(`${key}\\s*:\\s*"([^"]*)"`)
@@ -44,7 +45,6 @@ const parseTopicSlugFromPage = (page) => {
 
 const buildApprovedCommentsUrl = (commentSubmitUrl) => {
   const endpoint = new URL(commentSubmitUrl)
-  endpoint.searchParams.set("status", "eq.approved")
   endpoint.searchParams.set("select", "id,created_at,content,author,status,location,page")
   endpoint.searchParams.set("order", "created_at.desc")
   return endpoint.toString()
@@ -75,7 +75,7 @@ const fetchApprovedRows = async ({ commentSubmitUrl, supabaseKey }) => {
 }
 
 const normalizeRow = (row) => {
-  const topicSlug = parseTopicSlugFromPage(row.page || "")
+  const topicSlug = row.topicSlug || row.topic_slug || parseTopicSlugFromPage(row.page || "")
   return {
     id: String(row.id ?? ""),
     topicSlug,
@@ -87,12 +87,38 @@ const normalizeRow = (row) => {
   }
 }
 
+const isApprovedStatus = (value) => {
+  const normalized = String(value || "")
+    .trim()
+    .toLowerCase()
+  return ["approved", "approve", "accepted", "published", "pass"].includes(normalized)
+}
+
+const looksLikeServiceRoleKey = (key) => {
+  if (!key) return false
+  if (key.startsWith("sb_secret_")) return true
+  if (key.startsWith("sb_publishable_")) return false
+  if (key.split(".").length === 3) {
+    try {
+      const payload = key.split(".")[1]
+      const decoded = Buffer.from(payload.replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("utf8")
+      return decoded.includes('"role":"service_role"') || decoded.includes('"role":"supabase_admin"')
+    } catch (error) {
+      return false
+    }
+  }
+  return false
+}
+
 const main = async () => {
   const source = await readText(configPath)
   const commentSubmitUrl =
     readEnv("FORUM_COMMENT_SUBMIT_URL") || extractConfigValue(source, "commentSubmitUrl")
   const supabaseKey =
-    readEnv("SUPABASE_PUBLISHABLE_KEY") || extractConfigValue(source, "supabasePublishableKey")
+    readEnv("SUPABASE_SERVICE_ROLE_KEY") ||
+    readEnv("SUPABASE_PUBLISHABLE_KEY") ||
+    extractConfigValue(source, "supabasePublishableKey")
+  const usingServiceRoleEnv = hasEnv("SUPABASE_SERVICE_ROLE_KEY")
 
   if (!commentSubmitUrl) {
     throw new Error("commentSubmitUrl is empty in js/forum-config.js")
@@ -103,11 +129,18 @@ const main = async () => {
   if (!supabaseKey) {
     throw new Error("supabasePublishableKey is empty in js/forum-config.js")
   }
+  if (usingServiceRoleEnv && !looksLikeServiceRoleKey(supabaseKey)) {
+    throw new Error(
+      "SUPABASE_SERVICE_ROLE_KEY does not look like a service role key. Check GitHub secret value."
+    )
+  }
 
   const rows = await fetchApprovedRows({ commentSubmitUrl, supabaseKey })
-  const normalized = rows.map(normalizeRow)
+  const approvedRows = rows.filter((row) => isApprovedStatus(row.status))
+  const normalized = approvedRows.map(normalizeRow)
   const comments = normalized.filter((item) => item.topicSlug && item.content)
   const skipped = normalized.length - comments.length
+  const nonApproved = rows.length - approvedRows.length
 
   const output = {
     updatedAt: new Date().toISOString(),
@@ -118,7 +151,9 @@ const main = async () => {
 
   process.stdout.write(
     `Updated ${path.relative(root, outputPath)}\n` +
-      `- approved rows fetched: ${rows.length}\n` +
+      `- rows fetched: ${rows.length}\n` +
+      `- approved status matched: ${approvedRows.length}\n` +
+      `- status filtered out: ${nonApproved}\n` +
       `- comments written: ${comments.length}\n` +
       `- skipped (missing topic/content): ${skipped}\n`
   )

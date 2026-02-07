@@ -35,6 +35,17 @@ const HOSTNAME_WHITELIST = [
 ]
 const DEPRECATED_CACHES = ['precache-v1', 'runtime', 'main-precache-v1', 'main-runtime']
 
+const isForumRequest = (req) => {
+  if (req.method !== "GET") return false
+  const pathname = new URL(req.url).pathname
+  return (
+    pathname.startsWith("/forum") ||
+    pathname.includes("/js/forum") ||
+    pathname.includes("/css/forum.css") ||
+    pathname.includes("/assets/data/forum-")
+  )
+}
+
 
 // The Util Function to hack URLs of intercepted requests
 const getCacheBustingUrl = (req) => {
@@ -172,6 +183,26 @@ self.addEventListener('fetch', event => {
     if (shouldRedirect(event.request)) {
       event.respondWith(Response.redirect(getRedirectUrl(event.request)))
       return;
+    }
+
+    // Forum pages and forum data/scripts should be network-first to avoid stale first render.
+    if (isForumRequest(event.request)) {
+      const networkFirst = fetch(getCacheBustingUrl(event.request), { cache: "no-store" })
+        .then(resp => {
+          if (resp && resp.ok) {
+            const respCopy = resp.clone()
+            event.waitUntil(
+              caches.open(CACHE)
+                .then(cache => cache.put(event.request, respCopy))
+                .catch(_ => {/* eat any errors */})
+            )
+          }
+          return resp
+        })
+        .catch(_ => caches.match(event.request).then(resp => resp || caches.match('offline.html')))
+
+      event.respondWith(networkFirst)
+      return
     }
 
     // Stale-while-revalidate for possiblily dynamic content

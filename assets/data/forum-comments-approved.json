@@ -1,6 +1,15 @@
 {
-  "updatedAt": "2026-02-07T11:48:19.145Z",
+  "updatedAt": "2026-02-07T13:01:11.319Z",
   "comments": [
+    {
+      "id": "4",
+      "topicSlug": "ai-class-solidification",
+      "author": "BEhop",
+      "location": "Asia/Shanghai",
+      "content": "test评论功能",
+      "createdAt": "2026-02-07T10:31:28.766458+00:00",
+      "status": "approved"
+    },
     {
       "id": "3",
       "topicSlug": "ai-class-solidification",

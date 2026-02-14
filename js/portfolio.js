@@ -8,11 +8,11 @@
       "nav.ai.categories": "分类",
       "nav.ai.about": "关于 BEhop",
       "nav.projects.featured": "项目精选",
-      "nav.projects.services": "设计服务",
+      "nav.projects.services": "创作方向",
       "nav.projects.about": "关于 BEhop",
       "nav.projects.contact": "联系 BEhop",
       "nav.about": "关于 BEhop",
-      "nav.services": "设计服务",
+      "nav.services": "创作方向",
       "nav.contact": "联系 BEhop",
       "nav.portfolio": "作品集",
       "nav.blog": "Blog",
@@ -59,60 +59,63 @@
       "project.6.detail": "通过生态修复技术，恢复湿地生态系统，重建野生动植物栖息地。",
 
       "about.title": "关于 BEhop",
-      "about.subtitle": "致力于创造与自然和谐共生的空间",
-      "about.description": "BEhop 设计成立于2015年，专注于景观设计与空间叙事。BEhop 相信优秀的景观设计能够连接人与自然，创造出既美观又实用的户外空间，并持续为每一个项目带来独特的视角与创新方案。",
-      "about.philosophy": "设计理念",
-      "about.philosophy.text": "BEhop 的设计理念源于对自然的深刻理解和尊重。每一个项目都从场地分析开始，深入了解当地的气候、植被、文化和客户需求，以此为基础创造独特的景观体验。BEhop 追求的不仅是视觉上的美感，更是人与环境之间的情感连接。",
-      "about.stats.projects": "完成项目",
-      "about.stats.years": "行业经验",
-      "about.stats.awards": "设计奖项",
-      "about.stats.team": "专业团队",
-      "about.quote": "“设计不是装饰，而是与自然对话的语言。”",
-      "about.quoteAuthor": "— BEhop Design",
-      "about.values.1.title": "尊重自然",
-      "about.values.1.desc": "每一个设计都从理解场地开始",
-      "about.values.2.title": "以人为本",
-      "about.values.2.desc": "创造人与环境的情感连接",
-      "about.values.3.title": "可持续发展",
-      "about.values.3.desc": "打造经得起时间考验的设计",
+      "about.subtitle": "专注展示 AI 产品驱动的创作成果",
+      "about.description": "BEhop 当前定位为 AI 创作展示平台，重点分享基于 AI 产品与工作流完成的项目成果、实验过程和方法复盘。内容目标是沉淀可复用经验，而非面向外部的业务承接页面。",
+      "about.philosophy": "创作方法",
+      "about.philosophy.text": "每个案例都围绕统一流程展开：明确目标、选择工具、记录参数、对比结果、总结可复用模板。通过结构化沉淀，让一次创作能持续转化为后续项目的能力资产。",
+      "about.stats.projects": "案例成果",
+      "about.stats.years": "流程沉淀",
+      "about.stats.awards": "工具实验",
+      "about.stats.team": "知识分享",
+      "about.quote": "“AI 不是替代创作，而是放大认知与表达的工具。”",
+      "about.quoteAuthor": "— BEhooop",
+      "about.values.1.title": "成果导向",
+      "about.values.1.desc": "以可验证结果展示 AI 工具价值",
+      "about.values.2.title": "流程透明",
+      "about.values.2.desc": "记录从输入到输出的关键决策",
+      "about.values.3.title": "持续迭代",
+      "about.values.3.desc": "通过复盘与实验不断优化方法",
 
-      "services.kicker": "专业服务",
-      "services.title": "设计服务",
-      "services.subtitle": "从概念到落地的全流程设计服务",
-      "services.1.title": "私人庭院设计",
-      "services.1.desc": "为您的家创造独特的户外生活空间，打造专属的私家花园，让每一天都与自然相伴。",
-      "services.2.title": "商业景观规划",
-      "services.2.desc": "提升商业空间的环境品质和价值，为酒店、会所、办公园区提供专业景观解决方案。",
-      "services.3.title": "屋顶花园设计",
-      "services.3.desc": "将城市空间转化为绿色天堂，最大化利用建筑空间，创造空中花园奇迹。",
-      "services.4.title": "生态修复设计",
-      "services.4.desc": "恢复和保护自然生态系统，运用生态学原理，重建可持续的自然环境。",
-      "services.cta.title": "准备开始您的项目？",
-      "services.cta.desc": "与 BEhop 一起探讨如何将您的愿景变为现实",
+      "services.kicker": "创作方向",
+      "services.title": "AI 创作展示",
+      "services.subtitle": "以成果、流程与复盘为核心",
+      "services.1.title": "工作流拆解",
+      "services.1.desc": "拆解从需求到产出的关键步骤，沉淀可复用流程。",
+      "services.2.title": "工具组合实践",
+      "services.2.desc": "比较不同 AI 工具组合在真实任务下的表现与边界。",
+      "services.3.title": "结果对比评估",
+      "services.3.desc": "通过版本对比与指标验证，提升输出质量和稳定性。",
+      "services.4.title": "方法模板沉淀",
+      "services.4.desc": "把有效经验固化为模板，支持后续快速复现。",
+      "services.cta.title": "欢迎交流你的实践",
+      "services.cta.desc": "共同完善可复用的 AI 创作方法",
 
       "contact.kicker": "联系 BEhop",
       "contact.title": "联系 BEhop",
-      "contact.description": "无论您是想打造梦想中的私家花园，还是为商业项目寻找景观解决方案，BEhop 都期待倾听您的想法。",
+      "contact.description": "这里主要接收合作需求，以及 AI 相关的产品服务与咨询服务需求。欢迎留下你的场景、目标和时间安排。",
       "contact.name": "姓名",
       "contact.email": "邮箱",
       "contact.phone.input": "电话",
-      "contact.project": "项目类型",
-      "contact.message": "项目描述",
+      "contact.project": "需求类型",
+      "contact.message": "需求说明",
       "contact.submit": "发送消息",
       "contact.emailLabel": "电子邮箱",
       "contact.hours": "工作时间",
       "contact.hoursText": "周一至周五 9:00 - 18:00",
-      "contact.formTitle": "发送咨询",
-      "contact.notice": "BEhop 将在24小时内回复您的咨询",
+      "contact.formTitle": "发送合作需求",
+      "contact.notice": "通常会在 24 小时内回复你的需求。",
       "contact.name.placeholder": "您的姓名",
       "contact.email.placeholder": "您的邮箱",
       "contact.phone.placeholder": "联系电话",
-      "contact.project.placeholder": "选择项目类型",
-      "contact.message.placeholder": "请描述您的项目需求...",
+      "contact.project.placeholder": "选择需求类型",
+      "contact.message.placeholder": "请说明你的合作背景、目标、预算范围与时间安排...",
+      "contact.status.sending": "正在发送，请稍候...",
+      "contact.status.success": "发送成功，我会尽快通过邮件回复你。",
+      "contact.status.error": "发送失败，请稍后重试，或直接发邮件联系我。",
 
       "footer.rights": "版权所有",
-      "footer.description": "BEhop 专注于创造和谐自然的景观设计，为每一个空间赋予独特的生命力。让建筑与自然对话，让生活与诗意相遇。",
-      "footer.services": "设计服务",
+      "footer.description": "BEhop 专注于展示 AI 产品驱动的创作成果与方法沉淀，持续分享可复用的工作流与实践经验。",
+      "footer.services": "创作方向",
       "footer.company": "关于 BEhop",
       "footer.backToTop": "返回顶部",
     },
@@ -124,11 +127,11 @@
       "nav.ai.categories": "Categories",
       "nav.ai.about": "About BEhop",
       "nav.projects.featured": "Featured Projects",
-      "nav.projects.services": "Services",
+      "nav.projects.services": "Directions",
       "nav.projects.about": "About BEhop",
       "nav.projects.contact": "Contact BEhop",
       "nav.about": "About BEhop",
-      "nav.services": "Services",
+      "nav.services": "Directions",
       "nav.contact": "Contact BEhop",
       "nav.portfolio": "Portfolio",
       "nav.blog": "Blog",
@@ -175,60 +178,63 @@
       "project.6.detail": "Restoring wetland ecosystems through ecological restoration techniques, rebuilding wildlife habitats.",
 
       "about.title": "About Us",
-      "about.subtitle": "Dedicated to creating spaces in harmony with nature",
-      "about.description": "Founded in 2015, BEhop Design is a creative studio specializing in landscape architecture and spatial storytelling. BEhop believes excellent landscape design connects people with nature, creating outdoor spaces that are both beautiful and functional, while bringing fresh perspectives and innovative solutions to every project.",
-      "about.philosophy": "Design Philosophy",
-      "about.philosophy.text": "BEhop's design philosophy stems from a deep understanding and respect for nature. Every project begins with site analysis, understanding local climate, vegetation, culture, and client needs to create unique landscape experiences. BEhop pursues not only visual beauty but also the emotional connection between people and their environment.",
-      "about.stats.projects": "Projects",
-      "about.stats.years": "Years",
-      "about.stats.awards": "Awards",
-      "about.stats.team": "Team Members",
-      "about.quote": "\"Design is not decoration, but a language of dialogue with nature.\"",
-      "about.quoteAuthor": "— BEhop Design",
-      "about.values.1.title": "Respect Nature",
-      "about.values.1.desc": "Every design begins with understanding the site",
-      "about.values.2.title": "Human-Centered",
-      "about.values.2.desc": "Creating emotional connections between people and environment",
-      "about.values.3.title": "Sustainability",
-      "about.values.3.desc": "Building designs that stand the test of time",
+      "about.subtitle": "Focused on AI Product-Driven Creative Outcomes",
+      "about.description": "BEhop is positioned as an AI creation showcase, focusing on project outcomes, experiments, and workflow retrospectives built with AI products. The goal is to accumulate reusable methods rather than serving as an external client-service channel.",
+      "about.philosophy": "Creative Method",
+      "about.philosophy.text": "Each case follows a structured loop: define goals, pick tools, record parameters, compare outputs, and extract reusable templates. This turns one-off creation into long-term capability assets.",
+      "about.stats.projects": "Showcases",
+      "about.stats.years": "Process Assets",
+      "about.stats.awards": "Tool Experiments",
+      "about.stats.team": "Knowledge Notes",
+      "about.quote": "\"AI does not replace creativity; it amplifies cognition and expression.\"",
+      "about.quoteAuthor": "— BEhooop",
+      "about.values.1.title": "Outcome-First",
+      "about.values.1.desc": "Show tool value through verifiable results",
+      "about.values.2.title": "Transparent Process",
+      "about.values.2.desc": "Document key decisions from input to output",
+      "about.values.3.title": "Continuous Iteration",
+      "about.values.3.desc": "Improve methods through review and experimentation",
 
-      "services.kicker": "Services",
-      "services.title": "Services",
-      "services.subtitle": "Full-process design services from concept to completion",
-      "services.1.title": "Private Garden Design",
-      "services.1.desc": "Create unique outdoor living spaces for your home, crafting exclusive private gardens where you can connect with nature every day.",
-      "services.2.title": "Commercial Landscape",
-      "services.2.desc": "Enhance environmental quality and value of commercial spaces, providing professional landscape solutions for hotels, resorts, and office parks.",
-      "services.3.title": "Rooftop Garden",
-      "services.3.desc": "Transform urban spaces into green paradises, maximizing building space to create sky garden wonders.",
-      "services.4.title": "Ecological Restoration",
-      "services.4.desc": "Restore and protect natural ecosystems, applying ecological principles to rebuild sustainable natural environments.",
-      "services.cta.title": "Ready to Start Your Project?",
-      "services.cta.desc": "Talk with BEhop about turning your vision into reality",
+      "services.kicker": "Directions",
+      "services.title": "AI Creation Showcase",
+      "services.subtitle": "Focused on outcomes, process, and retrospectives",
+      "services.1.title": "Workflow Breakdown",
+      "services.1.desc": "Decompose key steps from intent to output and keep them reusable.",
+      "services.2.title": "Toolchain Practice",
+      "services.2.desc": "Compare AI tool combinations under real tasks and constraints.",
+      "services.3.title": "Result Evaluation",
+      "services.3.desc": "Validate quality through version comparisons and measurable criteria.",
+      "services.4.title": "Method Templates",
+      "services.4.desc": "Convert successful experience into templates for faster reuse.",
+      "services.cta.title": "Share Your Practice",
+      "services.cta.desc": "Co-build reusable AI creation methods",
 
       "contact.kicker": "Contact BEhop",
       "contact.title": "Contact BEhop",
-      "contact.description": "Whether you want to create your dream private garden or find landscape solutions for commercial projects, BEhop looks forward to hearing your ideas.",
+      "contact.description": "This section is for collaboration needs, plus AI-related product services and consulting requests. Share your scenario, goals, and timeline.",
       "contact.name": "Name",
       "contact.email": "Email",
       "contact.phone.input": "Phone",
-      "contact.project": "Project Type",
-      "contact.message": "Project Description",
+      "contact.project": "Request Type",
+      "contact.message": "Request Details",
       "contact.submit": "Send Message",
       "contact.emailLabel": "Email",
       "contact.hours": "Working Hours",
       "contact.hoursText": "Mon - Fri, 9:00 AM - 6:00 PM",
-      "contact.formTitle": "Send an Inquiry",
-      "contact.notice": "BEhop will respond to your inquiry within 24 hours",
+      "contact.formTitle": "Send Collaboration Request",
+      "contact.notice": "Typical response time is within 24 hours.",
       "contact.name.placeholder": "Your name",
       "contact.email.placeholder": "Your email",
       "contact.phone.placeholder": "Phone number",
-      "contact.project.placeholder": "Select project type",
-      "contact.message.placeholder": "Please describe your project requirements...",
+      "contact.project.placeholder": "Select request type",
+      "contact.message.placeholder": "Share your context, goals, budget range, and timeline...",
+      "contact.status.sending": "Sending your message...",
+      "contact.status.success": "Message sent successfully. I will reply by email soon.",
+      "contact.status.error": "Failed to send. Please try again later or email me directly.",
 
       "footer.rights": "All Rights Reserved",
-      "footer.description": "BEhop creates harmonious landscape designs, bringing unique vitality to every space. Let architecture converse with nature, let life meet poetry.",
-      "footer.services": "Services",
+      "footer.description": "BEhop showcases AI product-driven creative outcomes and method assets, sharing reusable workflows and practical learnings.",
+      "footer.services": "Directions",
       "footer.company": "About BEhop",
       "footer.backToTop": "Back to Top",
     },
@@ -236,19 +242,19 @@
 
   const projectTypes = {
     zh: [
-      { value: "", label: "选择项目类型" },
-      { value: "private", label: "私人庭院" },
-      { value: "commercial", label: "商业景观" },
-      { value: "rooftop", label: "屋顶花园" },
-      { value: "ecological", label: "生态修复" },
+      { value: "", label: "选择需求类型" },
+      { value: "cooperation", label: "合作需求" },
+      { value: "ai-product-service", label: "AI 产品服务" },
+      { value: "ai-consulting", label: "AI 咨询服务" },
+      { value: "integration", label: "工具接入与落地" },
       { value: "other", label: "其他" },
     ],
     en: [
-      { value: "", label: "Select project type" },
-      { value: "private", label: "Private Garden" },
-      { value: "commercial", label: "Commercial Landscape" },
-      { value: "rooftop", label: "Rooftop Garden" },
-      { value: "ecological", label: "Ecological Restoration" },
+      { value: "", label: "Select request type" },
+      { value: "cooperation", label: "Collaboration" },
+      { value: "ai-product-service", label: "AI Product Service" },
+      { value: "ai-consulting", label: "AI Consulting" },
+      { value: "integration", label: "Tool Integration" },
       { value: "other", label: "Other" },
     ],
   }
@@ -318,6 +324,76 @@
   })
 
   setLang(localStorage.getItem("portfolioLang") || "en")
+
+  const getCurrentLang = () => (document.documentElement.lang === "zh" ? "zh" : "en")
+  const getCurrentDict = () => translations[getCurrentLang()] || translations.en
+
+  const contactForm = document.querySelector("#contact-form")
+  const contactStatus = document.querySelector("#contact-form-status")
+  const contactSubmitButton = contactForm ? contactForm.querySelector('button[type="submit"]') : null
+
+  const setContactStatus = (message = "") => {
+    if (!contactStatus) return
+    contactStatus.textContent = message
+    contactStatus.classList.toggle("hidden", !message)
+  }
+
+  if (contactForm) {
+    contactForm.addEventListener("submit", async (event) => {
+      event.preventDefault()
+
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity()
+        return
+      }
+
+      const dict = getCurrentDict()
+      const endpoint = contactForm.getAttribute("data-ajax-endpoint")
+      if (!endpoint) {
+        setContactStatus(dict["contact.status.error"] || translations.en["contact.status.error"])
+        return
+      }
+
+      if (contactSubmitButton) {
+        contactSubmitButton.disabled = true
+        contactSubmitButton.setAttribute("aria-busy", "true")
+      }
+
+      setContactStatus(dict["contact.status.sending"] || translations.en["contact.status.sending"])
+
+      const formData = new FormData(contactForm)
+      formData.set("_subject", getCurrentLang() === "zh" ? "BEhop 联系表单新消息" : "New message from BEhop contact form")
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+          },
+        })
+
+        const payload = await response.json().catch(() => null)
+        const success = payload && Object.prototype.hasOwnProperty.call(payload, "success")
+          ? payload.success === true || payload.success === "true"
+          : response.ok
+
+        if (!response.ok || !success) {
+          throw new Error("Contact form request failed")
+        }
+
+        contactForm.reset()
+        setContactStatus(dict["contact.status.success"] || translations.en["contact.status.success"])
+      } catch (error) {
+        setContactStatus(dict["contact.status.error"] || translations.en["contact.status.error"])
+      } finally {
+        if (contactSubmitButton) {
+          contactSubmitButton.disabled = false
+          contactSubmitButton.removeAttribute("aria-busy")
+        }
+      }
+    })
+  }
 
   const filterButtons = document.querySelectorAll("[data-filter]")
   const projectCards = document.querySelectorAll("[data-project]")

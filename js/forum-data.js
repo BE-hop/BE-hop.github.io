@@ -1113,6 +1113,116 @@
         },
       ],
     },
+    {
+      slug: "design-cognition-encoding",
+      category: "ai",
+      tags: ["design-cognition"],
+      author: {
+        name: "BEhop",
+        initials: "BH",
+        role: { en: "Design Strategy", zh: "设计策略" },
+      },
+      stats: { replies: 0, views: 0 },
+      date: "2026-02-14T09:00:00Z",
+      readTime: { en: "7 min", zh: "7 分钟" },
+      title: {
+        en: "Design Cognition Encoding: A New Core Capability for Designers in the AI Era",
+        zh: "Design Cognition Encoding：AI时代设计师的新核心能力",
+      },
+      excerpt: {
+        en: "When execution gets automated, the real moat shifts to encoding design judgment into reusable systems and workflows.",
+        zh: "当执行能力被 AI 快速普及，设计师真正的稀缺性将转向“把设计认知编码成可复用系统”的能力。",
+      },
+      content: [
+        {
+          type: "p",
+          en: "Design Cognition Encoding means turning a designer's implicit judgment into reusable structures: rules, workflows, data models, and evaluation standards.",
+          zh: "Design Cognition Encoding 指的是：把设计师脑中的经验、判断逻辑与审美标准，转化为可表达、可计算、可复用的结构，如规则、流程、数据模型和评估标准。",
+        },
+        {
+          type: "h2",
+          en: "1) Why it becomes critical now",
+          zh: "1）为什么现在必须重视",
+        },
+        {
+          type: "p",
+          en: "AI can generate sketches and options quickly, so pure execution is no longer scarce. The new edge is whether your logic can guide AI consistently.",
+          zh: "AI 已能快速生成效果图、草图和方案建议，单纯“会做图”正在变成基础能力。新的竞争力在于：你是否能把设计逻辑结构化，并稳定地驱动 AI 产出高质量结果。",
+        },
+        {
+          type: "h2",
+          en: "2) This shift is already happening",
+          zh: "2）这件事其实已经在发生",
+        },
+        {
+          type: "ul",
+          en: [
+            "Parametric design that converts constraints into adjustable systems.",
+            "Prompt engineering and workflow automation that encode experience into repeatable steps.",
+            "Template libraries and scripts that preserve methods as long-term assets.",
+          ],
+          zh: [
+            "参数化设计：把空间尺度、人流、光照等约束转化为可调系统。",
+            "Prompt 工程与自动化工作流：把经验写成可重复调用的步骤。",
+            "模板库与脚本：把方法沉淀为团队可复用的长期资产。",
+          ],
+        },
+        {
+          type: "h2",
+          en: "3) Designer roles will split",
+          zh: "3）设计师角色会加速分化",
+        },
+        {
+          type: "ul",
+          en: [
+            "Executors: use AI to deliver faster, but face higher substitutability.",
+            "Cognition encoders: define principles, build systems, and shape tools with stronger long-term leverage.",
+          ],
+          zh: [
+            "执行型设计师：借助 AI 提升效率，但可替代性更高。",
+            "认知编码型设计师：能抽象原则、构建流程、定义工具，长期杠杆更强。",
+          ],
+        },
+        {
+          type: "h2",
+          en: "4) From selling time to selling cognition assets",
+          zh: "4）从“卖时间”到“卖认知资产”",
+        },
+        {
+          type: "p",
+          en: "Once knowledge becomes modules, checklists, and toolchains, it can be reused across projects and create compounding value instead of one-off labor income.",
+          zh: "当设计经验被编码为模块、检查清单和工具链，它就能在多个项目中复用，从“一次劳动一次收入”转向“持续复利的认知资产收益”。",
+        },
+        {
+          type: "h2",
+          en: "5) Practical starting path for individual designers",
+          zh: "5）普通设计师的可执行起点",
+        },
+        {
+          type: "ul",
+          en: [
+            "Short-term: write down your decision rules and project checklists.",
+            "Mid-term: map repeatable workflows and connect them with AI tools.",
+            "Long-term: productize your know-how into templates, plugins, or internal standards.",
+          ],
+          zh: [
+            "短期：先写出你的决策规则与项目 checklist。",
+            "中期：把高频流程标准化，并接入 AI 工具形成固定链路。",
+            "长期：将经验产品化为模板、插件、模型或内部标准。",
+          ],
+        },
+        {
+          type: "h2",
+          en: "Final takeaway",
+          zh: "一句话结论",
+        },
+        {
+          type: "p",
+          en: "AI will not replace designers, but it will reprice design work. Scarcity moves from making outputs to encoding design cognition into systems.",
+          zh: "AI 不会直接取代设计师，但会重估设计工作的价值。未来真正稀缺的，不是“会做设计的人”，而是“能把设计认知转化为系统的人”。",
+        },
+      ],
+    },
   ]
 
   const categoryLabels = {
@@ -1131,16 +1241,19 @@
     featured: { en: "Featured", zh: "精选" },
     trending: { en: "Trending", zh: "热门" },
     aitalk: { en: "AI Talk", zh: "AI 对话" },
+    "design-cognition": { en: "Design Cognition", zh: "设计认知" },
   }
 
   // Tag-driven detail template selection.
   const detailLayoutByTag = {
     aitalk: "dialogue",
+    "design-cognition": "insight",
   }
 
   const detailLayoutLabels = {
     article: { en: "Article", zh: "文章" },
     dialogue: { en: "AI Talk · Q&A", zh: "AI Talk · 问答" },
+    insight: { en: "Insight Brief", zh: "洞察长文" },
   }
 
   window.FORUM_TOPICS = topics

@@ -325,6 +325,64 @@
     container.appendChild(createParagraph(blockValue, "forum-dialogue-note text-sm leading-relaxed"))
   }
 
+  const renderInsightBlock = (container, block, lang) => {
+    if (block.type === "qa") {
+      renderQaBlock(container, block, lang)
+      return
+    }
+
+    const blockValue = pickLang(block, lang)
+    const hasArrayValue = Array.isArray(block?.en) || Array.isArray(block?.zh)
+    if (!blockValue && !hasArrayValue) return
+
+    if (block.type === "h2") {
+      const section = document.createElement("section")
+      section.className = "forum-insight-section"
+      section.appendChild(createHeading(blockValue, "forum-insight-section__title"))
+      container.appendChild(section)
+      return
+    }
+
+    const lastSection =
+      container.lastElementChild && container.lastElementChild.classList.contains("forum-insight-section")
+        ? container.lastElementChild
+        : null
+
+    if (block.type === "ul") {
+      const items = pickLangArray(block, lang)
+      if (!items.length) return
+
+      const list = createBulletList(items, {
+        listClass: "forum-insight-list",
+        itemClass: "forum-insight-list__item",
+        dotClass: "forum-insight-list__dot",
+      })
+
+      if (lastSection) {
+        lastSection.appendChild(list)
+        return
+      }
+
+      const section = document.createElement("section")
+      section.className = "forum-insight-section"
+      section.appendChild(list)
+      container.appendChild(section)
+      return
+    }
+
+    const paragraph = createParagraph(
+      blockValue,
+      container.childElementCount === 0 ? "forum-insight-lead" : "forum-insight-paragraph"
+    )
+
+    if (lastSection) {
+      lastSection.appendChild(paragraph)
+      return
+    }
+
+    container.appendChild(paragraph)
+  }
+
   const setCommentFeedback = (type, text) => {
     const node = document.querySelector("[data-topic-comment-feedback]")
     if (!node) return
@@ -637,11 +695,22 @@
     const contentWrap = document.querySelector("[data-topic-content]")
     if (contentWrap) {
       contentWrap.innerHTML = ""
-      contentWrap.className = layout === "dialogue" ? "forum-dialogue" : "forum-article space-y-6"
+      if (layout === "dialogue") {
+        contentWrap.className = "forum-dialogue"
+      } else if (layout === "insight") {
+        contentWrap.className = "forum-insight"
+      } else {
+        contentWrap.className = "forum-article space-y-6"
+      }
 
       ;(topic.content || []).forEach((block) => {
         if (layout === "dialogue") {
           renderDialogueBlock(contentWrap, block, lang)
+          return
+        }
+
+        if (layout === "insight") {
+          renderInsightBlock(contentWrap, block, lang)
           return
         }
 

@@ -178,6 +178,13 @@ img {
   min-height: 140px;
 }
 
+@media (min-width: 1024px) {
+  .contact-textarea--desktop-landscape {
+    min-height: 96px;
+    height: 112px;
+  }
+}
+
 .contact-input:focus,
 .contact-textarea:focus,
 .contact-select:focus {

@@ -143,6 +143,13 @@
       return node
     }
 
+    if (tag === "design-cognition") {
+      node.className =
+        "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-sky-100 text-sky-700"
+      node.textContent = label
+      return node
+    }
+
     node.className = "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-muted text-muted-foreground"
     node.textContent = label
     return node
@@ -201,7 +208,7 @@
 
     const meta = link.querySelector("[data-topic-meta]")
     const renderedTags = []
-    ;["pinned", "news", "aitalk"].forEach((tag) => {
+    ;["pinned", "news", "aitalk", "design-cognition"].forEach((tag) => {
       if (Array.isArray(topic.tags) && topic.tags.includes(tag)) renderedTags.push(tag)
     })
     if (!renderedTags.length && Array.isArray(topic.tags) && topic.tags[0]) {
@@ -282,7 +289,7 @@
     link.href = buildUrl({ category: linkCategory, page: 1 })
   })
 
-  const filterOptions = ["all", "pinned", "news", "aitalk"]
+  const filterOptions = ["all", "pinned", "news", "aitalk", "design-cognition"]
   const sortOptions = ["latest", "oldest", "views", "replies"]
   const labelMap = {
     filter: {
@@ -290,6 +297,7 @@
       pinned: { en: "Filter · Pinned", zh: "筛选 · 置顶" },
       news: { en: "Filter · News", zh: "筛选 · 资讯" },
       aitalk: { en: "Filter · AI Talk", zh: "筛选 · AI 对话" },
+      "design-cognition": { en: "Filter · Design Cognition", zh: "筛选 · 设计认知" },
     },
     sort: {
       latest: { en: "Sort · Newest", zh: "排序 · 最新" },

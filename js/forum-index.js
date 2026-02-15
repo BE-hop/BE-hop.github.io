@@ -150,6 +150,13 @@
       return node
     }
 
+    if (tag === "design-rules") {
+      node.className =
+        "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700"
+      node.textContent = label
+      return node
+    }
+
     node.className = "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-muted text-muted-foreground"
     node.textContent = label
     return node
@@ -208,7 +215,7 @@
 
     const meta = link.querySelector("[data-topic-meta]")
     const renderedTags = []
-    ;["pinned", "news", "aitalk", "design-cognition"].forEach((tag) => {
+    ;["pinned", "news", "aitalk", "design-cognition", "design-rules"].forEach((tag) => {
       if (Array.isArray(topic.tags) && topic.tags.includes(tag)) renderedTags.push(tag)
     })
     if (!renderedTags.length && Array.isArray(topic.tags) && topic.tags[0]) {

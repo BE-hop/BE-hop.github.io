@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-02-15T06:00:50.315Z",
+  "updatedAt": "2026-02-15T06:02:34.960Z",
   "site": {
     "visitors": 0,
     "pageViews": 0,
-    "comments": 2,
+    "comments": 4,
     "todayVisitors": 0
   },
   "topics": {
@@ -11,7 +11,13 @@
       "visitors": 0,
       "views": 0,
       "comments": 2,
-      "updatedAt": "2026-02-15T04:58:39.227Z"
+      "updatedAt": "2026-02-15T06:02:34.960Z"
+    },
+    "aitalk-design-copilot": {
+      "visitors": 0,
+      "views": 0,
+      "comments": 2,
+      "updatedAt": "2026-02-15T06:02:34.960Z"
     }
   }
 }

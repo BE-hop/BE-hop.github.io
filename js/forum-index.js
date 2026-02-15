@@ -25,9 +25,17 @@
     return value[lang] || value.en || value.zh || ""
   }
 
-  const category = getParam("category", "all")
-  const filter = getParam("filter", "all")
-  const sort = getParam("sort", "latest")
+  const categoryOptions = ["all", "landscape", "ai", "news", "featured", "trending"]
+  const filterOptions = ["all", "pinned", "news", "aitalk", "design-cognition", "design-rules"]
+  const sortOptions = ["latest", "oldest", "views", "replies"]
+
+  const categoryParam = getParam("category", "all")
+  const filterParam = getParam("filter", "all")
+  const sortParam = getParam("sort", "latest")
+
+  const category = categoryOptions.includes(categoryParam) ? categoryParam : "all"
+  const filter = filterOptions.includes(filterParam) ? filterParam : "all"
+  const sort = sortOptions.includes(sortParam) ? sortParam : "latest"
   const initialPage = Math.max(1, Number.parseInt(getParam("page", "1"), 10) || 1)
   const pageSize = 6
 
@@ -71,7 +79,33 @@
     return query ? `${baseForum}?${query}` : baseForum
   }
 
+  // Normalize unsupported query values to prevent empty/invalid states.
+  if (category !== categoryParam || filter !== filterParam || sort !== sortParam) {
+    window.history.replaceState({}, "", buildUrl({ category, filter, sort, page: initialPage }))
+  }
+
   const getTopicMetric = (slug) => approvedMetrics?.topics?.[slug] || {}
+
+  const getCategoryCounts = () => {
+    const counts = {
+      all: topics.length,
+      landscape: 0,
+      ai: 0,
+      news: 0,
+      featured: 0,
+      trending: 0,
+    }
+
+    topics.forEach((topic) => {
+      if (Object.prototype.hasOwnProperty.call(counts, topic.category)) {
+        counts[topic.category] += 1
+      }
+      if (Array.isArray(topic.tags) && topic.tags.includes("featured")) counts.featured += 1
+      if (Array.isArray(topic.tags) && topic.tags.includes("trending")) counts.trending += 1
+    })
+
+    return counts
+  }
 
   const getApprovedCommentCountMap = () => {
     const map = {}
@@ -246,19 +280,82 @@
     return article
   }
 
+  const updateCategoryCountBadges = () => {
+    const lang = getLang()
+    const counts = getCategoryCounts()
+
+    document.querySelectorAll("[data-category-count]").forEach((node) => {
+      const key = node.dataset.categoryCount
+      node.textContent = formatNumber(counts[key] || 0, lang)
+    })
+  }
+
   const updateSidebarStatsFromApprovedData = () => {
     const lang = getLang()
     const membersNode = document.querySelector("[data-forum-stat-members]")
     const topicsNode = document.querySelector("[data-forum-stat-topics]")
     const repliesNode = document.querySelector("[data-forum-stat-replies]")
     const onlineNode = document.querySelector("[data-forum-stat-online]")
+    const commentMap = getApprovedCommentCountMap()
+    const totalReplies = topics.reduce((sum, topic) => sum + getRepliesCount(topic, commentMap), 0)
 
     if (topicsNode) topicsNode.textContent = formatNumber(topics.length, lang)
-    if (!approvedMetrics) return
 
-    if (membersNode) membersNode.textContent = formatNumber(approvedMetrics.site?.visitors || 0, lang)
-    if (repliesNode) repliesNode.textContent = formatNumber(approvedMetrics.site?.comments || 0, lang)
-    if (onlineNode) onlineNode.textContent = formatNumber(approvedMetrics.site?.todayVisitors || 0, lang)
+    if (membersNode) membersNode.textContent = formatNumber(Number(approvedMetrics?.site?.visitors) || 0, lang)
+    if (repliesNode) repliesNode.textContent = formatNumber(Number(approvedMetrics?.site?.comments) || totalReplies, lang)
+    if (onlineNode) onlineNode.textContent = formatNumber(Number(approvedMetrics?.site?.todayVisitors) || 0, lang)
+  }
+
+  const renderTopContributors = () => {
+    const wrap = document.querySelector("[data-forum-contributors]")
+    if (!wrap) return
+
+    const lang = getLang()
+    const commentMap = getApprovedCommentCountMap()
+    const byAuthor = new Map()
+
+    topics.forEach((topic) => {
+      const authorName = topic.author?.name || "BEhop"
+      const existing = byAuthor.get(authorName) || {
+        name: authorName,
+        initials: topic.author?.initials || "BE",
+        role: pickLang(topic.author?.role, lang) || "",
+        score: 0,
+      }
+
+      existing.role = pickLang(topic.author?.role, lang) || existing.role
+      existing.score += 1
+      existing.score += getRepliesCount(topic, commentMap)
+      byAuthor.set(authorName, existing)
+    })
+
+    const rows = [...byAuthor.values()].sort((a, b) => b.score - a.score).slice(0, 4)
+    wrap.innerHTML = ""
+
+    rows.forEach((entry) => {
+      const row = document.createElement("div")
+      row.className = "flex items-center gap-3"
+
+      row.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
+          <span class="text-xs font-medium text-muted-foreground">${entry.initials}</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-medium text-foreground truncate">${entry.name}</div>
+          <div class="text-xs text-muted-foreground">${entry.role || "-"}</div>
+        </div>
+        <div class="text-xs text-muted-foreground">${formatNumber(entry.score, lang)}</div>
+      `
+
+      wrap.appendChild(row)
+    })
+
+    if (!rows.length) {
+      const empty = document.createElement("div")
+      empty.className = "text-xs text-muted-foreground"
+      empty.textContent = "-"
+      wrap.appendChild(empty)
+    }
   }
 
   const renderList = () => {
@@ -280,7 +377,9 @@
       }
     }
 
+    updateCategoryCountBadges()
     updateSidebarStatsFromApprovedData()
+    renderTopContributors()
     return { total: sorted.length }
   }
 
@@ -296,8 +395,6 @@
     link.href = buildUrl({ category: linkCategory, page: 1 })
   })
 
-  const filterOptions = ["all", "pinned", "news", "aitalk", "design-cognition"]
-  const sortOptions = ["latest", "oldest", "views", "replies"]
   const labelMap = {
     filter: {
       all: { en: "Filter · All", zh: "筛选 · 全部" },
@@ -305,6 +402,7 @@
       news: { en: "Filter · News", zh: "筛选 · 资讯" },
       aitalk: { en: "Filter · AI Talk", zh: "筛选 · AI 对话" },
       "design-cognition": { en: "Filter · Design Cognition", zh: "筛选 · 设计认知" },
+      "design-rules": { en: "Filter · Design Rules", zh: "筛选 · 设计规则" },
     },
     sort: {
       latest: { en: "Sort · Newest", zh: "排序 · 最新" },

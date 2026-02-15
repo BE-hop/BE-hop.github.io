@@ -4,8 +4,8 @@
     "slug": "geometry-algorithm-to-design-rules",
     "category": "ai",
     "tags": [
-      "design-rules",
-      "design-cognition"
+      "design-cognition",
+      "design-rules"
     ],
     "author": {
       "name": "BEhop",
@@ -25,33 +25,49 @@
       "zh": "9 分钟"
     },
     "title": {
-      "en": "From Geometry Algorithms to Design Rules: The Real AI Design Watershed",
-      "zh": "从“几何算法”到“设计规则”：AI 设计的真正分水岭"
+      "en": "From \"Geometry Algorithms\" to \"Design Rules\": The Real Watershed of AI Design 🧠✏️",
+      "zh": "从“几何算法”到“设计规则”：AI 设计的真正分水岭 🧠✏️"
     },
     "excerpt": {
-      "en": "The watershed in AI design is shifting from how to draw to why to draw: from geometry algorithms to design rules.",
-      "zh": "AI 设计的分水岭正在从“怎么画”转向“为什么画”：从几何算法走向设计规则。"
+      "en": "The true watershed is shifting from \"how to draw\" to \"why to draw\": from geometric generation to design cognition rules.",
+      "zh": "真正的分水岭不在“怎么画”，而在“为什么画”：从几何算法走向设计规则。"
     },
     "content": [
       {
         "type": "p",
-        "zh": "我们常常把“AI 做设计”理解成：它能帮我画得更快、更像、更漂亮。"
+        "zh": "我们常常把“AI做设计”理解成：它能帮我画得更快、更像、更漂亮。"
       },
       {
-        "type": "p",
-        "zh": "但当我把设计拆成两个层级后，我意识到：真正的分水岭不在“画线”，而在“为什么画这条线”。"
+        "type": "p-rich",
+        "zh": "但当我把设计拆成两个层级后，我意识到：<strong>真正的分水岭不在“画线”，而在“为什么画这条线”。</strong>"
+      },
+      {
+        "type": "hr"
       },
       {
         "type": "h2",
-        "zh": "1）几何算法：解决“怎么画线？”"
+        "zh": "1）几何算法：解决“怎么画线？”📐"
+      },
+      {
+        "type": "p-rich",
+        "zh": "<strong>几何算法</strong>关注的是“形式生成的可执行性”。"
       },
       {
         "type": "p",
-        "zh": "几何算法关注的是“形式生成的可执行性”。它回答的问题是：怎么画线？怎么生成面？怎么切割？怎么布置？怎么变形？"
+        "zh": "它回答的问题是："
+      },
+      {
+        "type": "quote",
+        "lines": {
+          "zh": [
+            "👉 <strong>怎么画线？</strong>",
+            "👉 怎么生成面？怎么切割？怎么布置？怎么变形？"
+          ]
+        }
       },
       {
         "type": "p",
-        "zh": "它对应的是技术层能力，包含参数化、约束求解、形态生成，以及网格/曲面运算。"
+        "zh": "它对应的是“技术层”的能力："
       },
       {
         "type": "ul",
@@ -63,20 +79,40 @@
         ]
       },
       {
+        "type": "p-rich",
+        "zh": "这一层的本质是：<strong>把动作变成可复用的规则，把规则变成可运行的算法。</strong>"
+      },
+      {
         "type": "p",
-        "zh": "这一层的本质是：把动作变成可复用规则，再把规则变成可运行算法。工业化、数字化、CAD/BIM/参数化都属于这条提升劳动效率的路线。"
+        "zh": "而这件事在人类社会里其实早已发生：工业化、数字化、计算机辅助设计（CAD/BIM/参数化）都属于同一条路线——提升劳动效率。"
+      },
+      {
+        "type": "hr"
       },
       {
         "type": "h2",
-        "zh": "2）设计规则：解决“为什么画这条线？”"
+        "zh": "2）设计规则：解决“为什么画这条线？”🎯"
+      },
+      {
+        "type": "p-rich",
+        "zh": "<strong>设计规则</strong>关注的是“决策的合理性与目标性”。"
       },
       {
         "type": "p",
-        "zh": "设计规则关注的是“决策的合理性与目标性”。它回答的问题是：这条线服务谁？满足什么目标？取舍依据是什么？它和系统的关系是什么？"
+        "zh": "它回答的问题是："
+      },
+      {
+        "type": "quote",
+        "lines": {
+          "zh": [
+            "👉 <strong>为什么画这条线？</strong>",
+            "👉 这条线服务谁？满足什么目标？取舍依据是什么？它和系统的关系是什么？"
+          ]
+        }
       },
       {
         "type": "p",
-        "zh": "这一层不是生成，而是意图与价值。"
+        "zh": "这一层不是“生成”，而是意图与价值："
       },
       {
         "type": "ul",
@@ -91,90 +127,176 @@
       },
       {
         "type": "p",
-        "zh": "如果说几何算法让设计“能跑起来”，那设计规则决定的是：跑向哪里、为什么要跑、值不值得跑。"
+        "zh": "如果说几何算法让设计“能跑起来”，那设计规则决定的是："
+      },
+      {
+        "type": "p-rich",
+        "zh": "<strong>跑向哪里、为什么要跑、值得不值得跑。</strong>"
+      },
+      {
+        "type": "hr"
       },
       {
         "type": "h2",
-        "zh": "3）AI 现在真正的重点：第二个"
+        "zh": "3）AI 现在真正的重点：第二个 🧩"
       },
       {
         "type": "p",
-        "zh": "很多人以为 AI 的重点是更强生成模型：更高分辨率、更真实图像、更顺滑网格。"
+        "zh": "很多人以为 AI 的重点是“更强的生成模型”：更高分辨率、更真实的图、更顺滑的网格。"
+      },
+      {
+        "type": "p-rich",
+        "zh": "但我认为：<strong>AI 最关键的战场在“设计规则层”。</strong>"
       },
       {
         "type": "p",
-        "zh": "但更关键的战场在“设计规则层”。也就是 Design Cognition Encoding（设计认知编码）：把设计师的判断结构编码成可被 AI 理解、调用、组合、演化的认知系统。"
+        "zh": "也就是类似我之前提到的："
+      },
+      {
+        "type": "quote",
+        "lines": {
+          "zh": [
+            "<strong>Design Cognition Encoding（设计认知编码）</strong>",
+            "——把设计师的“判断结构”编码成可被 AI 理解、调用、组合、演化的认知系统。"
+          ]
+        }
       },
       {
         "type": "p",
-        "zh": "这才是“让 AI 主导设计”的核心前提：AI 不只是画得像、画得快，而是能形成目标-约束-策略-权衡-结果的闭环。"
+        "zh": "这才是“让 AI 主导设计”的核心前提：AI 不只是画得像、画得快，而是能形成目标—约束—策略—权衡—结果的闭环。"
+      },
+      {
+        "type": "hr"
       },
       {
         "type": "h2",
-        "zh": "4）一个简化对比：从“工具”到“主体”"
+        "zh": "4）一个简化对比表：从“工具”到“主体”🔁"
+      },
+      {
+        "type": "table",
+        "headers": {
+          "zh": [
+            "层级",
+            "关注点",
+            "核心问题",
+            "典型形态",
+            "AI 的位置"
+          ]
+        },
+        "rows": {
+          "zh": [
+            [
+              "几何算法（Geometry）",
+              "形式生成",
+              "👉 怎么画？",
+              "参数化、求解器、建模脚本",
+              "强：已高度可用"
+            ],
+            [
+              "设计规则（Cognition）",
+              "决策与意图",
+              "👉 为什么画？",
+              "设计逻辑、价值权衡、系统策略",
+              "关键：决定未来"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "h2",
+        "zh": "5）关于未来：AI 主导设计意味着什么？🌍"
+      },
+      {
+        "type": "p",
+        "zh": "如果有一天 AI 真正掌握了“设计规则”，它就不再只是工具，而会成为一种“决策主体”。那一天到来时，人类社会的结构可能也已经发生根本变化："
       },
       {
         "type": "ul",
         "zh": [
-          "几何算法（Geometry）：关注形式生成，核心问题是“怎么画”，AI 在这一层已高度可用。",
-          "设计规则（Cognition）：关注决策与意图，核心问题是“为什么画”，这一层决定未来。"
+          "劳动效率极高 → 生产不再稀缺",
+          "大量工作自动化 → 人类从“生存劳动”中解放",
+          "人类的重心转向：生活、游戏、创造、体验 🎮🎨🌿"
         ]
       },
       {
-        "type": "h2",
-        "zh": "5）关于未来：AI 主导设计意味着什么？"
+        "type": "p",
+        "zh": "甚至可能走向一种更接近“人人躺平但创造力爆炸”的社会形态。"
       },
       {
         "type": "p",
-        "zh": "如果有一天 AI 真正掌握了设计规则，它就不再只是工具，而会成为一种决策主体。"
+        "zh": "（某种意义上，这才是技术最深的愿景。）"
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "h2",
+        "zh": "6）但我的现实选择：压住“主导”，做“辅助”🧰✨"
+      },
+      {
+        "type": "p",
+        "zh": "尽管我相信“设计规则 AI”是未来终局，但我当下更坚定押注的是："
+      },
+      {
+        "type": "quote",
+        "lines": {
+          "zh": [
+            "✅ <strong>以辅助人类为核心的 AI 设计方向</strong>"
+          ]
+        }
+      },
+      {
+        "type": "p",
+        "zh": "因为我认为这个方向已经具备确定性，甚至某种程度上已经“完成”了："
       },
       {
         "type": "ul",
         "zh": [
-          "劳动效率极高，生产不再稀缺",
-          "大量工作自动化，人类从生存劳动中解放",
-          "人类重心转向生活、游戏、创造与体验"
+          "从工业革命开始，人类就在用工具放大效率",
+          "从计算机革命开始，设计行业持续数字化",
+          "AI 只是把效率推向新的极限 🚀"
         ]
       },
       {
         "type": "p",
-        "zh": "甚至可能走向“普遍低劳动强度但创造力爆发”的社会形态，这也是技术最深层的愿景之一。"
+        "zh": "所以在当下，最现实、最可落地的路线是："
+      },
+      {
+        "type": "p-rich",
+        "zh": "<strong>让 AI 成为设计师的效率外挂、表达外挂、推演外挂。</strong>"
+      },
+      {
+        "type": "p",
+        "zh": "让设计师更专注于：目标、判断、沟通与创造本身。"
+      },
+      {
+        "type": "hr"
       },
       {
         "type": "h2",
-        "zh": "6）现实选择：压住“主导”，先做“辅助”"
+        "zh": "结语：真正的未来不在“画”，而在“判断”🧠"
       },
       {
         "type": "p",
-        "zh": "尽管“设计规则 AI”可能是终局，但当下更确定的路径是：以辅助人类为核心的 AI 设计方向。"
+        "zh": "很多技术浪潮的表面都像是在“做得更快”。但真正改变世界的，往往是它开始回答“为什么”的那一刻。"
       },
       {
-        "type": "ul",
-        "zh": [
-          "工业革命到计算机革命，本质都在用工具放大效率",
-          "AI 是这条路线的新极限，而不是完全断裂",
-          "最可落地的方案是把 AI 变成效率、表达与推演外挂"
-        ]
+        "type": "p-rich",
+        "zh": "<strong>几何算法解决“怎么做”</strong>，<br><strong>设计规则决定“做什么、为何做、值不值”。</strong>"
       },
       {
-        "type": "p",
-        "zh": "让设计师更专注于目标、判断、沟通与创造本身。"
-      },
-      {
-        "type": "h2",
-        "zh": "结语：真正的未来不在“画”，而在“判断”"
+        "type": "p-rich",
+        "zh": "AI 的时代不是“自动画图时代”，而是一个正在逼近的——<strong>认知结构被编码、设计判断被外化</strong>的时代。"
       },
       {
         "type": "p",
-        "zh": "很多技术浪潮表面都像“做得更快”，但真正改变世界的是它开始回答“为什么”的时刻。"
+        "zh": "而我们今天能做的，是先把工具用到极致，同时把自己的设计认知整理成可被表达、可被编码、可被复利的结构。📌"
       },
       {
-        "type": "p",
-        "zh": "几何算法解决“怎么做”，设计规则决定“做什么、为何做、值不值”。AI 时代不是自动画图时代，而是认知结构被编码、设计判断被外化的时代。"
-      },
-      {
-        "type": "p",
-        "zh": "今天最重要的动作，是把工具用到极致，同时把设计认知整理成可表达、可编码、可复利的结构。"
+        "type": "hr"
       }
     ]
   },
@@ -198,104 +320,163 @@
     },
     "date": "2026-02-14T09:00:00Z",
     "readTime": {
-      "en": "7 min",
-      "zh": "7 分钟"
+      "en": "8 min",
+      "zh": "8 分钟"
     },
     "title": {
       "en": "Design Cognition Encoding: A New Core Capability for Designers in the AI Era",
-      "zh": "Design Cognition Encoding：AI时代设计师的新核心能力"
+      "zh": "Design Cognition Encoding：AI时代设计师的新核心能力 🧠✨"
     },
     "excerpt": {
-      "en": "When execution gets automated, the real moat shifts to encoding design judgment into reusable systems and workflows.",
-      "zh": "当执行能力被 AI 快速普及，设计师真正的稀缺性将转向“把设计认知编码成可复用系统”的能力。"
+      "en": "When execution gets automated, long-term advantage shifts to encoding design judgment into reusable systems.",
+      "zh": "当执行能力被 AI 快速普及，真正稀缺的将是把设计判断编码成可复用系统的能力。"
     },
     "content": [
       {
         "type": "p",
-        "en": "Design Cognition Encoding means turning a designer's implicit judgment into reusable structures: rules, workflows, data models, and evaluation standards.",
-        "zh": "Design Cognition Encoding 指的是：把设计师脑中的经验、判断逻辑与审美标准，转化为可表达、可计算、可复用的结构，如规则、流程、数据模型和评估标准。"
+        "zh": "很多人把 AI 设计理解为“更快出图”。但真正决定长期价值的，不是速度，而是你能不能把判断结构沉淀成系统。"
+      },
+      {
+        "type": "quote",
+        "lines": {
+          "zh": [
+            "<strong>Design Cognition Encoding（设计认知编码）</strong>",
+            "把设计师隐性的经验、逻辑和审美，转化为可表达、可计算、可复用的规则系统。"
+          ]
+        }
+      },
+      {
+        "type": "hr"
       },
       {
         "type": "h2",
-        "en": "1) Why it becomes critical now",
-        "zh": "1）为什么现在必须重视"
+        "zh": "1）为什么它在当下变得关键？⏱️"
       },
       {
         "type": "p",
-        "en": "AI can generate sketches and options quickly, so pure execution is no longer scarce. The new edge is whether your logic can guide AI consistently.",
-        "zh": "AI 已能快速生成效果图、草图和方案建议，单纯“会做图”正在变成基础能力。新的竞争力在于：你是否能把设计逻辑结构化，并稳定地驱动 AI 产出高质量结果。"
-      },
-      {
-        "type": "h2",
-        "en": "2) This shift is already happening",
-        "zh": "2）这件事其实已经在发生"
+        "zh": "AI 已经能快速生成图像、草图、方案候选。纯执行不再稀缺，真正稀缺的是“稳定产出高质量结果”的判断机制。"
       },
       {
         "type": "ul",
-        "en": [
-          "Parametric design that converts constraints into adjustable systems.",
-          "Prompt engineering and workflow automation that encode experience into repeatable steps.",
-          "Template libraries and scripts that preserve methods as long-term assets."
-        ],
         "zh": [
-          "参数化设计：把空间尺度、人流、光照等约束转化为可调系统。",
-          "Prompt 工程与自动化工作流：把经验写成可重复调用的步骤。",
-          "模板库与脚本：把方法沉淀为团队可复用的长期资产。"
+          "过去竞争：谁做得更快",
+          "现在竞争：谁定义得更准",
+          "未来竞争：谁把判断做成系统资产"
         ]
       },
       {
-        "type": "h2",
-        "en": "3) Designer roles will split",
-        "zh": "3）设计师角色会加速分化"
-      },
-      {
-        "type": "ul",
-        "en": [
-          "Executors: use AI to deliver faster, but face higher substitutability.",
-          "Cognition encoders: define principles, build systems, and shape tools with stronger long-term leverage."
-        ],
-        "zh": [
-          "执行型设计师：借助 AI 提升效率，但可替代性更高。",
-          "认知编码型设计师：能抽象原则、构建流程、定义工具，长期杠杆更强。"
-        ]
+        "type": "hr"
       },
       {
         "type": "h2",
-        "en": "4) From selling time to selling cognition assets",
-        "zh": "4）从“卖时间”到“卖认知资产”"
+        "zh": "2）这件事其实早已发生 🔄"
       },
       {
         "type": "p",
-        "en": "Once knowledge becomes modules, checklists, and toolchains, it can be reused across projects and create compounding value instead of one-off labor income.",
-        "zh": "当设计经验被编码为模块、检查清单和工具链，它就能在多个项目中复用，从“一次劳动一次收入”转向“持续复利的认知资产收益”。"
-      },
-      {
-        "type": "h2",
-        "en": "5) Practical starting path for individual designers",
-        "zh": "5）普通设计师的可执行起点"
+        "zh": "设计行业已经从“作品驱动”逐步进入“系统驱动”。你越早把经验结构化，越早形成复利。"
       },
       {
         "type": "ul",
-        "en": [
-          "Short-term: write down your decision rules and project checklists.",
-          "Mid-term: map repeatable workflows and connect them with AI tools.",
-          "Long-term: productize your know-how into templates, plugins, or internal standards."
-        ],
         "zh": [
-          "短期：先写出你的决策规则与项目 checklist。",
-          "中期：把高频流程标准化，并接入 AI 工具形成固定链路。",
-          "长期：将经验产品化为模板、插件、模型或内部标准。"
+          "参数化设计：把约束转成可调系统",
+          "Prompt 与自动化链路：把经验写成流程",
+          "模板库与脚本：把方法沉淀成团队资产"
         ]
       },
       {
+        "type": "hr"
+      },
+      {
         "type": "h2",
-        "en": "Final takeaway",
-        "zh": "一句话结论"
+        "zh": "3）设计师角色正在分化 👥"
+      },
+      {
+        "type": "table",
+        "headers": {
+          "zh": [
+            "角色",
+            "核心能力",
+            "短期表现",
+            "长期杠杆"
+          ]
+        },
+        "rows": {
+          "zh": [
+            [
+              "执行型设计师",
+              "高效产出与工具熟练度",
+              "交付更快",
+              "可替代性提升"
+            ],
+            [
+              "认知编码型设计师",
+              "抽象原则与系统构建",
+              "前期更慢但更稳",
+              "可复用性与复利更强"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "p-rich",
+        "zh": "<strong>核心差异不在“会不会用 AI”，而在“能不能定义 AI 应该如何工作”。</strong>"
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "h2",
+        "zh": "4）从“卖时间”到“卖认知资产” 💼"
       },
       {
         "type": "p",
-        "en": "AI will not replace designers, but it will reprice design work. Scarcity moves from making outputs to encoding design cognition into systems.",
-        "zh": "AI 不会直接取代设计师，但会重估设计工作的价值。未来真正稀缺的，不是“会做设计的人”，而是“能把设计认知转化为系统的人”。"
+        "zh": "当经验被编码为模块、检查清单和工具链，它就不再依赖一次性劳动，而能跨项目复用。"
+      },
+      {
+        "type": "ul",
+        "zh": [
+          "一次判断，多次调用",
+          "一次流程，团队共享",
+          "一次沉淀，长期复利"
+        ]
+      },
+      {
+        "type": "quote",
+        "lines": {
+          "zh": [
+            "设计师真正的升级，不是做得更多，而是让“判断”可以被复制。"
+          ]
+        }
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "h2",
+        "zh": "5）普通设计师怎么开始？🛠️"
+      },
+      {
+        "type": "p",
+        "zh": "不需要一步到位做平台，先从高频、小闭环、可复用开始。"
+      },
+      {
+        "type": "ul",
+        "zh": [
+          "短期：写下你的决策规则与项目 checklist",
+          "中期：把高频流程标准化，并接入 AI 工具链",
+          "长期：把经验产品化为模板、插件、内部标准或服务"
+        ]
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "h2",
+        "zh": "一句话结论 🎯"
+      },
+      {
+        "type": "p-rich",
+        "zh": "AI 不会直接取代设计师，但会重估设计工作的价值。<br><strong>未来真正稀缺的，不是“会做设计的人”，而是“能把设计认知编码成系统的人”。</strong>"
       }
     ]
   },

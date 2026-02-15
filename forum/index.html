@@ -79,7 +79,7 @@ nav-theme: light
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                   </svg>
                   <span class="flex-1" data-i18n="forum.categories.all">全部话题</span>
-                  <span class="text-xs text-primary-foreground/70">1284</span>
+                  <span class="text-xs text-primary-foreground/70" data-category-count="all">0</span>
                 </a>
                 <a href="{{ site.baseurl }}/forum/?category=landscape" data-category-link="landscape" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors text-left text-muted-foreground hover:bg-muted hover:text-foreground no-underline">
                   <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -87,7 +87,7 @@ nav-theme: light
                     <path d="M12 4a7 7 0 0 0 7 7"></path>
                   </svg>
                   <span class="flex-1" data-i18n="forum.categories.landscape">景观设计</span>
-                  <span class="text-xs text-muted-foreground">423</span>
+                  <span class="text-xs text-muted-foreground" data-category-count="landscape">0</span>
                 </a>
                 <a href="{{ site.baseurl }}/forum/?category=ai" data-category-link="ai" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors text-left text-muted-foreground hover:bg-muted hover:text-foreground no-underline">
                   <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -103,7 +103,7 @@ nav-theme: light
                     <line x1="2" y1="14" x2="4" y2="14"></line>
                   </svg>
                   <span class="flex-1" data-i18n="forum.categories.ai">AI 与技术</span>
-                  <span class="text-xs text-muted-foreground">312</span>
+                  <span class="text-xs text-muted-foreground" data-category-count="ai">0</span>
                 </a>
                 <a href="{{ site.baseurl }}/forum/?category=news" data-category-link="news" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors text-left text-muted-foreground hover:bg-muted hover:text-foreground no-underline">
                   <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -114,14 +114,14 @@ nav-theme: light
                     <path d="M5 7h14l-1.5 9.5a2 2 0 0 1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 7z"></path>
                   </svg>
                   <span class="flex-1" data-i18n="forum.categories.news">行业资讯</span>
-                  <span class="text-xs text-muted-foreground">189</span>
+                  <span class="text-xs text-muted-foreground" data-category-count="news">0</span>
                 </a>
                 <a href="{{ site.baseurl }}/forum/?category=featured" data-category-link="featured" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors text-left text-muted-foreground hover:bg-muted hover:text-foreground no-underline">
                   <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.8 5.5 21 7 14 2 9.3 9 8.5 12 2"></polygon>
                   </svg>
                   <span class="flex-1" data-i18n="forum.categories.featured">精选</span>
-                  <span class="text-xs text-muted-foreground">45</span>
+                  <span class="text-xs text-muted-foreground" data-category-count="featured">0</span>
                 </a>
                 <a href="{{ site.baseurl }}/forum/?category=trending" data-category-link="trending" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors text-left text-muted-foreground hover:bg-muted hover:text-foreground no-underline">
                   <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -129,7 +129,7 @@ nav-theme: light
                     <polyline points="14 7 21 7 21 14"></polyline>
                   </svg>
                   <span class="flex-1" data-i18n="forum.categories.trending">热门</span>
-                  <span class="text-xs text-muted-foreground">78</span>
+                  <span class="text-xs text-muted-foreground" data-category-count="trending">0</span>
                 </a>
               </nav>
             </div>
@@ -138,19 +138,19 @@ nav-theme: light
               <h2 class="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider" data-i18n="forum.stats.title">社区数据</h2>
               <div class="grid grid-cols-2 gap-4 text-center">
                 <div>
-                  <div class="text-2xl font-semibold text-foreground" data-forum-stat-members>12.4K</div>
+                  <div class="text-2xl font-semibold text-foreground" data-forum-stat-members>0</div>
                   <div class="text-xs text-muted-foreground" data-i18n="forum.stats.members">成员</div>
                 </div>
                 <div>
-                  <div class="text-2xl font-semibold text-foreground" data-forum-stat-topics>1,284</div>
+                  <div class="text-2xl font-semibold text-foreground" data-forum-stat-topics>0</div>
                   <div class="text-xs text-muted-foreground" data-i18n="forum.stats.topics">话题</div>
                 </div>
                 <div>
-                  <div class="text-2xl font-semibold text-foreground" data-forum-stat-replies>8.7K</div>
+                  <div class="text-2xl font-semibold text-foreground" data-forum-stat-replies>0</div>
                   <div class="text-xs text-muted-foreground" data-i18n="forum.stats.replies">回复</div>
                 </div>
                 <div>
-                  <div class="text-2xl font-semibold text-foreground" data-forum-stat-online>342</div>
+                  <div class="text-2xl font-semibold text-foreground" data-forum-stat-online>0</div>
                   <div class="text-xs text-muted-foreground" data-i18n="forum.stats.online">在线</div>
                 </div>
               </div>
@@ -179,406 +179,7 @@ nav-theme: light
             </div>
           </div>
 
-          <div class="flex flex-col gap-3" data-forum-list>
-            <article>
-              <a href="{{ site.baseurl }}/forum/topic/?topic=ai-irrigation-2026" data-topic="ai-irrigation-2026" class="group block bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors no-underline">
-                <div class="flex gap-4">
-                <div class="shrink-0">
-                  <div class="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span class="text-sm font-medium text-muted-foreground">SM</span>
-                  </div>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2 mb-1 flex-wrap" data-topic-meta>
-                    <span class="inline-flex items-center gap-1 text-xs font-medium text-primary">
-                      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 17v5"></path>
-                        <path d="M9 3h6"></path>
-                        <path d="M12 3v14"></path>
-                      </svg>
-                      <span data-i18n="forum.tag.pinned">置顶</span>
-                    </span>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-accent text-accent-foreground" data-i18n="forum.tag.news">资讯</span>
-                    <span class="text-xs text-muted-foreground" data-i18n="forum.categories.ai">AI 与技术</span>
-                  </div>
-                  <h3 class="text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1 mb-1" data-i18n="forum.topic1.title">How AI is revolutionizing irrigation systems in 2026</h3>
-                  <p class="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3" data-i18n="forum.topic1.excerpt">Exploring the latest developments in smart irrigation technology and how machine learning is optimizing water usage across commercial landscapes...</p>
-                  <div class="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span class="font-medium text-foreground">Sarah Mitchell</span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                      <span data-i18n="forum.topic1.replies">47</span>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      <span data-i18n="forum.topic1.views">1,234</span>
-                    </span>
-                    <span class="flex items-center gap-1 ml-auto">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      <span data-i18n="forum.topic1.time">2h ago</span>
-                    </span>
-                  </div>
-                </div>
-                </div>
-              </a>
-            </article>
-
-            <article>
-              <a href="{{ site.baseurl }}/forum/topic/?topic=sustainable-landscaping-guide" data-topic="sustainable-landscaping-guide" class="group block bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors no-underline">
-                <div class="flex gap-4">
-                <div class="shrink-0">
-                  <div class="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span class="text-sm font-medium text-muted-foreground">JC</span>
-                  </div>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2 mb-1 flex-wrap" data-topic-meta>
-                    <span class="inline-flex items-center gap-1 text-xs font-medium text-primary">
-                      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 17v5"></path>
-                        <path d="M9 3h6"></path>
-                        <path d="M12 3v14"></path>
-                      </svg>
-                      <span data-i18n="forum.tag.pinned">置顶</span>
-                    </span>
-                    <span class="text-xs text-muted-foreground" data-i18n="forum.categories.landscape">景观设计</span>
-                  </div>
-                  <h3 class="text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1 mb-1" data-i18n="forum.topic2.title">Sustainable landscaping practices: A comprehensive guide</h3>
-                  <p class="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3" data-i18n="forum.topic2.excerpt">Best practices for eco-friendly landscape design, including native plant selection, water conservation, and reducing carbon footprint in your projects.</p>
-                  <div class="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span class="font-medium text-foreground">James Chen</span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                      <span data-i18n="forum.topic2.replies">32</span>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      <span data-i18n="forum.topic2.views">892</span>
-                    </span>
-                    <span class="flex items-center gap-1 ml-auto">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      <span data-i18n="forum.topic2.time">4h ago</span>
-                    </span>
-                  </div>
-                </div>
-                </div>
-              </a>
-            </article>
-
-            <article>
-              <a href="{{ site.baseurl }}/forum/topic/?topic=epa-regulations-landscape-contractors" data-topic="epa-regulations-landscape-contractors" class="group block bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors no-underline">
-                <div class="flex gap-4">
-                <div class="shrink-0">
-                  <div class="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span class="text-sm font-medium text-muted-foreground">MT</span>
-                  </div>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2 mb-1 flex-wrap" data-topic-meta>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-accent text-accent-foreground" data-i18n="forum.tag.news">资讯</span>
-                    <span class="text-xs text-muted-foreground" data-i18n="forum.categories.news">行业资讯</span>
-                  </div>
-                  <h3 class="text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1 mb-1" data-i18n="forum.topic3.title">New EPA regulations impact on landscape contractors</h3>
-                  <p class="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3" data-i18n="forum.topic3.excerpt">Breaking down the recent Environmental Protection Agency guidelines and what they mean for landscape businesses operating in 2026.</p>
-                  <div class="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span class="font-medium text-foreground">Michael Torres</span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                      <span data-i18n="forum.topic3.replies">28</span>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      <span data-i18n="forum.topic3.views">756</span>
-                    </span>
-                    <span class="flex items-center gap-1 ml-auto">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      <span data-i18n="forum.topic3.time">6h ago</span>
-                    </span>
-                  </div>
-                </div>
-                </div>
-              </a>
-            </article>
-
-            <article>
-              <a href="{{ site.baseurl }}/forum/topic/?topic=drones-property-surveys" data-topic="drones-property-surveys" class="group block bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors no-underline">
-                <div class="flex gap-4">
-                <div class="shrink-0">
-                  <div class="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span class="text-sm font-medium text-muted-foreground">ER</span>
-                  </div>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2 mb-1 flex-wrap" data-topic-meta>
-                    <span class="text-xs text-muted-foreground" data-i18n="forum.categories.ai">AI 与技术</span>
-                  </div>
-                  <h3 class="text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1 mb-1" data-i18n="forum.topic4.title">Using drones for large-scale property surveys</h3>
-                  <p class="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3" data-i18n="forum.topic4.excerpt">A practical guide to implementing drone technology for accurate land surveys, aerial photography, and project planning in landscaping.</p>
-                  <div class="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span class="font-medium text-foreground">Emily Rodriguez</span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                      <span data-i18n="forum.topic4.replies">19</span>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      <span data-i18n="forum.topic4.views">543</span>
-                    </span>
-                    <span class="flex items-center gap-1 ml-auto">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      <span data-i18n="forum.topic4.time">8h ago</span>
-                    </span>
-                  </div>
-                </div>
-                </div>
-              </a>
-            </article>
-
-            <article>
-              <a href="{{ site.baseurl }}/forum/topic/?topic=low-maintenance-plants" data-topic="low-maintenance-plants" class="group block bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors no-underline">
-                <div class="flex gap-4">
-                <div class="shrink-0">
-                  <div class="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span class="text-sm font-medium text-muted-foreground">DP</span>
-                  </div>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2 mb-1 flex-wrap" data-topic-meta>
-                    <span class="text-xs text-muted-foreground" data-i18n="forum.categories.landscape">景观设计</span>
-                  </div>
-                  <h3 class="text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1 mb-1" data-i18n="forum.topic5.title">Best plants for low-maintenance commercial properties</h3>
-                  <p class="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3" data-i18n="forum.topic5.excerpt">Recommendations for hardy, drought-resistant plants that reduce maintenance costs while maintaining visual appeal for commercial clients.</p>
-                  <div class="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span class="font-medium text-foreground">David Park</span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                      <span data-i18n="forum.topic5.replies">41</span>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      <span data-i18n="forum.topic5.views">987</span>
-                    </span>
-                    <span class="flex items-center gap-1 ml-auto">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      <span data-i18n="forum.topic5.time">12h ago</span>
-                    </span>
-                  </div>
-                </div>
-                </div>
-              </a>
-            </article>
-
-            <article>
-              <a href="{{ site.baseurl }}/forum/topic/?topic=ml-pest-detection" data-topic="ml-pest-detection" class="group block bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors no-underline">
-                <div class="flex gap-4">
-                <div class="shrink-0">
-                  <div class="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span class="text-sm font-medium text-muted-foreground">LW</span>
-                  </div>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2 mb-1 flex-wrap" data-topic-meta>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary" data-i18n="forum.tag.aitalk">AI Talk</span>
-                    <span class="text-xs text-muted-foreground" data-i18n="forum.categories.ai">AI 与技术</span>
-                  </div>
-                  <h3 class="text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1 mb-1" data-i18n="forum.topic6.title">Machine learning for pest detection and prevention</h3>
-                  <p class="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3" data-i18n="forum.topic6.excerpt">How computer vision and AI models are being used to identify pest problems early and recommend targeted treatment solutions.</p>
-                  <div class="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span class="font-medium text-foreground">Lisa Wang</span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                      <span data-i18n="forum.topic6.replies">23</span>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      <span data-i18n="forum.topic6.views">612</span>
-                    </span>
-                    <span class="flex items-center gap-1 ml-auto">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      <span data-i18n="forum.topic6.time">1d ago</span>
-                    </span>
-                  </div>
-                </div>
-                </div>
-              </a>
-            </article>
-
-            <article>
-              <a href="{{ site.baseurl }}/forum/topic/?topic=landscapetech-summit-2026" data-topic="landscapetech-summit-2026" class="group block bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors no-underline">
-                <div class="flex gap-4">
-                <div class="shrink-0">
-                  <div class="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span class="text-sm font-medium text-muted-foreground">RK</span>
-                  </div>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2 mb-1 flex-wrap" data-topic-meta>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-accent text-accent-foreground" data-i18n="forum.tag.news">资讯</span>
-                    <span class="text-xs text-muted-foreground" data-i18n="forum.categories.news">行业资讯</span>
-                  </div>
-                  <h3 class="text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1 mb-1" data-i18n="forum.topic7.title">Industry conference recap: LandscapeTech Summit 2026</h3>
-                  <p class="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3" data-i18n="forum.topic7.excerpt">Key takeaways from this year's largest landscape technology conference, including new product announcements and industry trends.</p>
-                  <div class="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span class="font-medium text-foreground">Robert Kim</span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                      <span data-i18n="forum.topic7.replies">15</span>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      <span data-i18n="forum.topic7.views">423</span>
-                    </span>
-                    <span class="flex items-center gap-1 ml-auto">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      <span data-i18n="forum.topic7.time">1d ago</span>
-                    </span>
-                  </div>
-                </div>
-                </div>
-              </a>
-            </article>
-
-            <article>
-              <a href="{{ site.baseurl }}/forum/topic/?topic=profitable-maintenance-program" data-topic="profitable-maintenance-program" class="group block bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors no-underline">
-                <div class="flex gap-4">
-                <div class="shrink-0">
-                  <div class="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span class="text-sm font-medium text-muted-foreground">AF</span>
-                  </div>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2 mb-1 flex-wrap" data-topic-meta>
-                    <span class="text-xs text-muted-foreground" data-i18n="forum.categories.business">Business</span>
-                  </div>
-                  <h3 class="text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1 mb-1" data-i18n="forum.topic8.title">Building a profitable landscape maintenance program</h3>
-                  <p class="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3" data-i18n="forum.topic8.excerpt">Strategies for creating recurring revenue through maintenance contracts, pricing models, and client retention techniques.</p>
-                  <div class="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span class="font-medium text-foreground">Amanda Foster</span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                      <span data-i18n="forum.topic8.replies">56</span>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      <span data-i18n="forum.topic8.views">1,567</span>
-                    </span>
-                    <span class="flex items-center gap-1 ml-auto">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      <span data-i18n="forum.topic8.time">2d ago</span>
-                    </span>
-                  </div>
-                </div>
-                </div>
-              </a>
-            </article>
-
-            <article>
-              <a href="{{ site.baseurl }}/forum/topic/?topic=aitalk-design-copilot" data-topic="aitalk-design-copilot" class="group block bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors no-underline">
-                <div class="flex gap-4">
-                <div class="shrink-0">
-                  <div class="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span class="text-sm font-medium text-muted-foreground">NL</span>
-                  </div>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2 mb-1 flex-wrap" data-topic-meta>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary" data-i18n="forum.tag.aitalk">AI Talk</span>
-                    <span class="text-xs text-muted-foreground" data-i18n="forum.categories.ai">AI 与技术</span>
-                  </div>
-                  <h3 class="text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1 mb-1" data-i18n="forum.topic9.title">AI Talk: How a design copilot speeds up landscape concepting</h3>
-                  <p class="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3" data-i18n="forum.topic9.excerpt">A practical Q&A case about prompts, iteration loops, and team collaboration in a real design workflow.</p>
-                  <div class="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span class="font-medium text-foreground">Noah Lin</span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                      <span data-i18n="forum.topic9.replies">18</span>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      <span data-i18n="forum.topic9.views">468</span>
-                    </span>
-                    <span class="flex items-center gap-1 ml-auto">
-                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      <span data-i18n="forum.topic9.time">3d ago</span>
-                    </span>
-                  </div>
-                </div>
-                </div>
-              </a>
-            </article>
-          </div>
+          <div class="flex flex-col gap-3" data-forum-list></div>
 
           <div class="mt-6 text-center hidden" data-forum-empty>
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted text-muted-foreground text-sm">
@@ -637,47 +238,8 @@ nav-theme: light
 
             <div class="bg-card rounded-lg border border-border p-4 mt-4">
               <h2 class="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider" data-i18n="forum.contributors.title">Top Contributors</h2>
-              <div class="flex flex-col gap-3">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
-                    <span class="text-xs font-medium text-muted-foreground">SM</span>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <div class="text-sm font-medium text-foreground truncate">Sarah Mitchell</div>
-                    <div class="text-xs text-muted-foreground" data-i18n="forum.contributors.role.ai">AI Specialist</div>
-                  </div>
-                  <div class="text-xs text-muted-foreground">234</div>
-                </div>
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
-                    <span class="text-xs font-medium text-muted-foreground">JC</span>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <div class="text-sm font-medium text-foreground truncate">James Chen</div>
-                    <div class="text-xs text-muted-foreground" data-i18n="forum.contributors.role.landscape">Landscape Architect</div>
-                  </div>
-                  <div class="text-xs text-muted-foreground">189</div>
-                </div>
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
-                    <span class="text-xs font-medium text-muted-foreground">ER</span>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <div class="text-sm font-medium text-foreground truncate">Emily Rodriguez</div>
-                    <div class="text-xs text-muted-foreground" data-i18n="forum.contributors.role.tech">Tech Consultant</div>
-                  </div>
-                  <div class="text-xs text-muted-foreground">156</div>
-                </div>
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
-                    <span class="text-xs font-medium text-muted-foreground">DP</span>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <div class="text-sm font-medium text-foreground truncate">David Park</div>
-                    <div class="text-xs text-muted-foreground" data-i18n="forum.contributors.role.horticulture">Horticulturist</div>
-                  </div>
-                  <div class="text-xs text-muted-foreground">142</div>
-                </div>
+              <div class="flex flex-col gap-3" data-forum-contributors>
+                <div class="text-xs text-muted-foreground">-</div>
               </div>
             </div>
           </aside>

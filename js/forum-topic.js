@@ -6,7 +6,7 @@
   const baseForum = `${baseUrl}/forum/`.replace(/\/+/g, "/")
   const baseTopic = `${baseForum}topic/`
   const params = new URLSearchParams(window.location.search)
-  const slug = params.get("topic")
+  const requestedSlug = (params.get("topic") || "").trim()
   const forumClient = window.FORUM_CLIENT || null
 
   const categoryLabels = window.FORUM_CATEGORY_LABELS || {}
@@ -97,6 +97,26 @@
   )
 
   const getTopic = (targetSlug) => topics.find((topic) => topic.slug === targetSlug)
+  const fallbackTopic = sortedByDate[0] || topics[0]
+  const requestedTopic = requestedSlug ? getTopic(requestedSlug) : null
+  const activeTopicSlug = (requestedTopic || fallbackTopic)?.slug || ""
+  const showNotice = Boolean(requestedSlug) && !requestedTopic
+
+  if (!activeTopicSlug) {
+    window.location.href = baseForum
+    return
+  }
+
+  if (!requestedSlug || showNotice) {
+    const next = new URLSearchParams(params)
+    next.set("topic", activeTopicSlug)
+    if (showNotice) {
+      next.set("from", "not-found")
+    } else {
+      next.delete("from")
+    }
+    window.history.replaceState({}, "", `${baseTopic}?${next.toString()}`)
+  }
 
   const getTopicMetric = (topicSlug) => approvedMetrics?.topics?.[topicSlug] || {}
 
@@ -120,6 +140,13 @@
     const paragraph = document.createElement("p")
     paragraph.className = className
     paragraph.textContent = text
+    return paragraph
+  }
+
+  const createRichParagraph = (html, className = "text-sm leading-relaxed text-foreground/90") => {
+    const paragraph = document.createElement("p")
+    paragraph.className = className
+    paragraph.innerHTML = html
     return paragraph
   }
 
@@ -162,6 +189,77 @@
     if (!value || typeof value !== "object") return []
     const localized = value[lang] || value.en || value.zh
     return Array.isArray(localized) ? localized : []
+  }
+
+  const pickLangMatrix = (value, lang) => {
+    const localized = pickLang(value, lang)
+    if (!Array.isArray(localized)) return []
+    return localized.filter((row) => Array.isArray(row))
+  }
+
+  const createDivider = (className) => {
+    const divider = document.createElement("hr")
+    divider.className = className
+    return divider
+  }
+
+  const createQuoteBlock = (lines, className = "forum-insight-quote", lineClassName = "forum-insight-quote__line") => {
+    const quote = document.createElement("blockquote")
+    quote.className = className
+    lines.forEach((line) => {
+      const lineNode = document.createElement("p")
+      lineNode.className = lineClassName
+      lineNode.innerHTML = line
+      quote.appendChild(lineNode)
+    })
+    return quote
+  }
+
+  const createInsightTable = (headers, rows) => {
+    const wrap = document.createElement("div")
+    wrap.className = "forum-insight-table-wrap"
+
+    const table = document.createElement("table")
+    table.className = "forum-insight-table"
+
+    if (Array.isArray(headers) && headers.length) {
+      const thead = document.createElement("thead")
+      const tr = document.createElement("tr")
+      headers.forEach((header) => {
+        const th = document.createElement("th")
+        th.textContent = header
+        tr.appendChild(th)
+      })
+      thead.appendChild(tr)
+      table.appendChild(thead)
+    }
+
+    const tbody = document.createElement("tbody")
+    rows.forEach((row) => {
+      const tr = document.createElement("tr")
+      row.forEach((cell) => {
+        const td = document.createElement("td")
+        td.textContent = cell
+        tr.appendChild(td)
+      })
+      tbody.appendChild(tr)
+    })
+    table.appendChild(tbody)
+    wrap.appendChild(table)
+
+    return wrap
+  }
+
+  const appendInsightNode = (container, lastSection, node) => {
+    if (lastSection) {
+      lastSection.appendChild(node)
+      return
+    }
+
+    const section = document.createElement("section")
+    section.className = "forum-insight-section"
+    section.appendChild(node)
+    container.appendChild(section)
   }
 
   const renderQaAnswerBlock = (container, block, lang) => {
@@ -275,6 +373,11 @@
       return
     }
 
+    if (block.type === "hr") {
+      container.appendChild(createDivider("forum-insight-divider"))
+      return
+    }
+
     const blockValue = pickLang(block, lang)
     if (!blockValue && !Array.isArray(block?.en)) return
 
@@ -289,12 +392,37 @@
       return
     }
 
+    if (block.type === "quote") {
+      const lines = pickLangArray(block.lines, lang)
+      if (!lines.length) return
+      container.appendChild(createQuoteBlock(lines))
+      return
+    }
+
+    if (block.type === "table") {
+      const headers = pickLangArray(block.headers, lang)
+      const rows = pickLangMatrix(block.rows, lang)
+      if (!headers.length || !rows.length) return
+      container.appendChild(createInsightTable(headers, rows))
+      return
+    }
+
+    if (block.type === "p-rich") {
+      container.appendChild(createRichParagraph(blockValue))
+      return
+    }
+
     container.appendChild(createParagraph(blockValue))
   }
 
   const renderDialogueBlock = (container, block, lang) => {
     if (block.type === "qa") {
       renderQaBlock(container, block, lang)
+      return
+    }
+
+    if (block.type === "hr") {
+      container.appendChild(createDivider("forum-insight-divider"))
       return
     }
 
@@ -322,6 +450,26 @@
       return
     }
 
+    if (block.type === "quote") {
+      const lines = pickLangArray(block.lines, lang)
+      if (!lines.length) return
+      container.appendChild(createQuoteBlock(lines))
+      return
+    }
+
+    if (block.type === "table") {
+      const headers = pickLangArray(block.headers, lang)
+      const rows = pickLangMatrix(block.rows, lang)
+      if (!headers.length || !rows.length) return
+      container.appendChild(createInsightTable(headers, rows))
+      return
+    }
+
+    if (block.type === "p-rich") {
+      container.appendChild(createRichParagraph(blockValue, "forum-dialogue-note text-sm leading-relaxed"))
+      return
+    }
+
     container.appendChild(createParagraph(blockValue, "forum-dialogue-note text-sm leading-relaxed"))
   }
 
@@ -331,9 +479,15 @@
       return
     }
 
+    if (block.type === "hr") {
+      container.appendChild(createDivider("forum-insight-divider"))
+      return
+    }
+
     const blockValue = pickLang(block, lang)
     const hasArrayValue = Array.isArray(block?.en) || Array.isArray(block?.zh)
-    if (!blockValue && !hasArrayValue) return
+    const hasStructuredArray = Array.isArray(pickLang(block?.lines, lang)) || Array.isArray(pickLang(block?.rows, lang))
+    if (!blockValue && !hasArrayValue && !hasStructuredArray) return
 
     if (block.type === "h2") {
       const section = document.createElement("section")
@@ -358,29 +512,32 @@
         dotClass: "forum-insight-list__dot",
       })
 
-      if (lastSection) {
-        lastSection.appendChild(list)
-        return
-      }
-
-      const section = document.createElement("section")
-      section.className = "forum-insight-section"
-      section.appendChild(list)
-      container.appendChild(section)
+      appendInsightNode(container, lastSection, list)
       return
     }
 
-    const paragraph = createParagraph(
-      blockValue,
-      container.childElementCount === 0 ? "forum-insight-lead" : "forum-insight-paragraph"
-    )
-
-    if (lastSection) {
-      lastSection.appendChild(paragraph)
+    if (block.type === "quote") {
+      const lines = pickLangArray(block.lines, lang)
+      if (!lines.length) return
+      appendInsightNode(container, lastSection, createQuoteBlock(lines))
       return
     }
 
-    container.appendChild(paragraph)
+    if (block.type === "table") {
+      const headers = pickLangArray(block.headers, lang)
+      const rows = pickLangMatrix(block.rows, lang)
+      if (!headers.length || !rows.length) return
+      appendInsightNode(container, lastSection, createInsightTable(headers, rows))
+      return
+    }
+
+    const paragraphClass = container.childElementCount === 0 ? "forum-insight-lead" : "forum-insight-paragraph"
+    const paragraph =
+      block.type === "p-rich"
+        ? createRichParagraph(blockValue, paragraphClass)
+        : createParagraph(blockValue, paragraphClass)
+
+    appendInsightNode(container, lastSection, paragraph)
   }
 
   const setCommentFeedback = (type, text) => {
@@ -577,7 +734,7 @@
 
   const render = (showNotice = false) => {
     const lang = localStorage.getItem("portfolioLang") || "en"
-    const topic = getTopic(slug) || topics[0]
+    const topic = getTopic(activeTopicSlug) || topics[0]
     activeTopic = topic
 
     const layout = resolveLayout(topic)
@@ -803,8 +960,7 @@
     bindCommentForm()
   }
 
-  const topicForTracking = getTopic(slug) || topics[0]
-  const showNotice = !getTopic(slug)
+  const topicForTracking = getTopic(activeTopicSlug) || topics[0]
 
   if (forumClient?.canTrackEvents) {
     forumClient.trackEvent({

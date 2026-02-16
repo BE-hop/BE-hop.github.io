@@ -16,6 +16,23 @@ tags: [RU-LineArt, Rhino, NURBS, 手绘稳线, 项目迭代]
 在实际测试里，我们发现一个关键现象：
 同一条识别结果在 Rhino 里做一次 `Rebuild` 后会明显更顺。这说明当前流程缺的不是“更强拟合”，而是**拟合前的稳线（stabilization）**。
 
+## 结果预览（输入 vs 输出）👀
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin:12px 0 8px;">
+  <figure style="margin:0;">
+    <figcaption style="margin:0 0 8px;">输入图（Before）</figcaption>
+    <div style="height:320px; display:flex; align-items:center; justify-content:center; background:#101218; border-radius:8px; overflow:hidden;">
+      <img src="/img/ai-products/ru-lineart-input.jpg" alt="RU-LineArt 输入图" style="max-width:100%; max-height:100%; object-fit:contain;" />
+    </div>
+  </figure>
+  <figure style="margin:0;">
+    <figcaption style="margin:0 0 8px;">输出图（After）</figcaption>
+    <div style="height:320px; display:flex; align-items:center; justify-content:center; background:#101218; border-radius:8px; overflow:hidden;">
+      <img src="/img/ai-products/ru-lineart-output.png" alt="RU-LineArt 输出图" style="max-width:100%; max-height:100%; object-fit:contain;" />
+    </div>
+  </figure>
+</div>
+
 ## 本次目标 🎯
 
 1. 保留原有 baseline 行为，避免“改了全局默认导致副作用”。

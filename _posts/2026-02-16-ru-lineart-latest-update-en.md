@@ -17,6 +17,23 @@ In practical tests, we observed a key signal:
 the same extracted curve looks much smoother after one Rhino `Rebuild`.
 That indicates the missing piece is not "stronger fitting," but **pre-fit stabilization**.
 
+## Visual Result (Before vs After) 👀
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin:12px 0 8px;">
+  <figure style="margin:0;">
+    <figcaption style="margin:0 0 8px;">Input (Before)</figcaption>
+    <div style="height:320px; display:flex; align-items:center; justify-content:center; background:#101218; border-radius:8px; overflow:hidden;">
+      <img src="/img/ai-products/ru-lineart-input.jpg" alt="RU-LineArt Input" style="max-width:100%; max-height:100%; object-fit:contain;" />
+    </div>
+  </figure>
+  <figure style="margin:0;">
+    <figcaption style="margin:0 0 8px;">Output (After)</figcaption>
+    <div style="height:320px; display:flex; align-items:center; justify-content:center; background:#101218; border-radius:8px; overflow:hidden;">
+      <img src="/img/ai-products/ru-lineart-output.png" alt="RU-LineArt Output" style="max-width:100%; max-height:100%; object-fit:contain;" />
+    </div>
+  </figure>
+</div>
+
 ## Goals for This Iteration 🎯
 
 1. Keep baseline behavior intact to avoid side effects from changing global defaults.

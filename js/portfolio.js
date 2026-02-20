@@ -331,6 +331,13 @@
   const contactForm = document.querySelector("#contact-form")
   const contactStatus = document.querySelector("#contact-form-status")
   const contactSubmitButton = contactForm ? contactForm.querySelector('button[type="submit"]') : null
+  const contactSubjectInput = contactForm ? contactForm.querySelector('input[name="_subject"]') : null
+  const contactUrlInput = contactForm ? contactForm.querySelector('input[name="_url"]') : null
+
+  const getCurrentPageUrl = () => {
+    if (typeof window === "undefined" || !window.location) return ""
+    return `${window.location.href}`.split("#")[0]
+  }
 
   const setContactStatus = (message = "") => {
     if (!contactStatus) return
@@ -361,30 +368,81 @@
 
       setContactStatus(dict["contact.status.sending"] || translations.en["contact.status.sending"])
 
+      const currentSubject = getCurrentLang() === "zh" ? "BEhop 联系表单新消息" : "New message from BEhop contact form"
+      const currentPageUrl = getCurrentPageUrl()
+      const isLocalHost = typeof window !== "undefined"
+        && /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname)
+      const canUsePageUrl = /^https?:/i.test(currentPageUrl) && !isLocalHost
+
+      if (contactSubjectInput) {
+        contactSubjectInput.value = currentSubject
+      }
+      if (contactUrlInput && canUsePageUrl) {
+        contactUrlInput.value = currentPageUrl
+      }
+
       const formData = new FormData(contactForm)
-      formData.set("_subject", getCurrentLang() === "zh" ? "BEhop 联系表单新消息" : "New message from BEhop contact form")
+      formData.set("_subject", currentSubject)
+      if (canUsePageUrl) {
+        formData.set("_url", currentPageUrl)
+      }
 
       try {
         const response = await fetch(endpoint, {
           method: "POST",
-          body: formData,
           headers: {
+            "Content-Type": "application/json",
             Accept: "application/json",
           },
+          body: JSON.stringify(Object.fromEntries(formData.entries())),
         })
 
-        const payload = await response.json().catch(() => null)
+        const payloadText = await response.text()
+        const payload = payloadText
+          ? (() => {
+            try {
+              return JSON.parse(payloadText)
+            } catch (jsonError) {
+              return null
+            }
+          })()
+          : null
         const success = payload && Object.prototype.hasOwnProperty.call(payload, "success")
           ? payload.success === true || payload.success === "true"
           : response.ok
 
         if (!response.ok || !success) {
-          throw new Error("Contact form request failed")
+          const serverMessage = payload && typeof payload.message === "string" ? payload.message : ""
+          throw new Error(serverMessage || "Contact form request failed")
         }
 
         contactForm.reset()
+        if (contactUrlInput && canUsePageUrl) {
+          contactUrlInput.value = currentPageUrl
+        }
         setContactStatus(dict["contact.status.success"] || translations.en["contact.status.success"])
       } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ""
+        if (/activate|confirm/i.test(errorMessage)) {
+          setContactStatus(
+            getCurrentLang() === "zh"
+              ? "表单还未激活，请先在邮箱中确认 FormSubmit 激活邮件。"
+              : "Form is not activated yet. Please confirm the activation email from FormSubmit."
+          )
+          return
+        }
+
+        if (error instanceof TypeError) {
+          setContactStatus(
+            getCurrentLang() === "zh"
+              ? "正在切换兼容提交方式，请稍候..."
+              : "Switching to fallback submit mode..."
+          )
+          contactForm.submit()
+          return
+        }
+
+        console.error("Contact form submit failed:", error)
         setContactStatus(dict["contact.status.error"] || translations.en["contact.status.error"])
       } finally {
         if (contactSubmitButton) {

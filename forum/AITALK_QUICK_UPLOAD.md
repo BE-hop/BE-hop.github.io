@@ -74,17 +74,17 @@ Template:
 
 ```bash
 cd /Users/mac/Documents/BE-hop.github.io
-bundle exec jekyll build
-bundle exec jekyll serve --host 127.0.0.1 --port 4000
+./scripts/local-preview.sh build
+./scripts/local-preview.sh
 ```
 
 Open:
 
-- `http://localhost:4000/forum/`
+- `http://127.0.0.1:4000/forum/`
 
 Optional direct check:
 
-- `http://localhost:4000/forum/topic/?topic=your-topic-slug`
+- `http://127.0.0.1:4000/forum/topic/?topic=your-topic-slug`
 
 ## 3. Publish
 

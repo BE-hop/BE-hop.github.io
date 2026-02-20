@@ -34,36 +34,50 @@ function handleRegistration(registration){
 }
 
 if(navigator.serviceWorker){
-  // For security reasons, a service worker can only control the pages
-  // that are in the same directory level or below it. That's why we put sw.js at ROOT level.
-  navigator.serviceWorker
-    .register('/sw.js')
-    .then((registration) => handleRegistration(registration))
-    .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+  const isLocalPreviewHost = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname)
 
-  // register message receiver
-  // https://dbwriteups.wordpress.com/2015/11/16/service-workers-part-3-communication-between-sw-and-pages/
-  navigator.serviceWorker.onmessage = (e) => {
-    console.log('SW: SW Broadcasting:', e);
-    const data = e.data
-    
-    if(data.command == "UPDATE_FOUND"){
-      console.log("UPDATE_FOUND_BY_SW", data);
-      if (typeof createSnackbar === "function") {
-        createSnackbar({
-          message: "Content updated.",
-          actionText:"refresh",
-          action: function(e){location.reload()}
-        })
+  if (isLocalPreviewHost) {
+    // Avoid stale-cache behavior in local preview.
+    navigator.serviceWorker.getRegistrations()
+      .then(registrations => Promise.all(registrations.map(reg => reg.unregister())))
+      .then(() => {
+        if (!window.caches || !window.caches.keys) return
+        return window.caches.keys().then(keys => Promise.all(keys.map(key => window.caches.delete(key))))
+      })
+      .then(() => console.log("ServiceWorker disabled for local preview host."))
+      .catch((error) => {console.log("Local ServiceWorker cleanup failed: ", error)})
+  } else {
+    // For security reasons, a service worker can only control the pages
+    // that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => handleRegistration(registration))
+      .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+
+    // register message receiver
+    // https://dbwriteups.wordpress.com/2015/11/16/service-workers-part-3-communication-between-sw-and-pages/
+    navigator.serviceWorker.onmessage = (e) => {
+      console.log('SW: SW Broadcasting:', e);
+      const data = e.data
+      
+      if(data.command == "UPDATE_FOUND"){
+        console.log("UPDATE_FOUND_BY_SW", data);
+        if (typeof createSnackbar === "function") {
+          createSnackbar({
+            message: "Content updated.",
+            actionText:"refresh",
+            action: function(e){location.reload()}
+          })
+        }
       }
     }
-  }
 
-  // When the active controller changes, reload once to ensure latest assets are used.
-  let isRefreshing = false
-  navigator.serviceWorker.addEventListener("controllerchange", () => {
-    if (isRefreshing) return
-    isRefreshing = true
-    window.location.reload()
-  })
+    // When the active controller changes, reload once to ensure latest assets are used.
+    let isRefreshing = false
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (isRefreshing) return
+      isRefreshing = true
+      window.location.reload()
+    })
+  }
 }

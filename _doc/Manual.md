@@ -5,9 +5,11 @@
 ## 1. 环境准备
 
 - 安装 Ruby 及 Bundler：`gem install bundler`
-- 安装项目依赖：`bundle install`
-- 本地预览：`bundle exec jekyll serve`
+- 本地预览（推荐）：`./scripts/local-preview.sh`
+- 仅构建静态文件：`./scripts/local-preview.sh build`
+- 预览已构建静态站点：`./scripts/local-preview.sh static`
 - 如需编译 Less/压缩 JS：`npm install` 后运行 `npm run dev`
+- 预览地址（启动成功后）：`http://127.0.0.1:4000/`
 
 ## 2. 站点基础设置
 
@@ -56,7 +58,7 @@
 ## 6. 构建与部署检查表
 
 1. `npm run dev` 重新生成压缩 CSS/JS（如更新了 Less 或脚本）。
-2. `bundle exec jekyll build` 确认编译无报错。
+2. `./scripts/local-preview.sh build` 确认编译无报错。
 3. 检查站点在本地是否能正常加载字体、图片与 Service Worker。
 4. 推送至 GitHub 后，GitHub Pages 会自动部署。
 

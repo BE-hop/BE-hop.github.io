@@ -70,16 +70,13 @@ tags: [tag1, tag2, tag3]
 5. Build site:
 
 ```bash
-RUBYOPT='-r/tmp/rubyhdr_patch.rb' \
-BUNDLE_PATH=/tmp/behop-bundle \
-BUNDLE_USER_HOME=/tmp/bundle-home \
-bundle exec jekyll build
+./scripts/local-preview.sh build
 ```
 
 6. Preview static output (from `_site`):
 
 ```bash
-python3 -m http.server 4000
+./scripts/local-preview.sh static
 ```
 
 7. Open:

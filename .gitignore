@@ -9,6 +9,7 @@ vendor/
 *.log
 *.lock
 *.sh
+!scripts/local-preview.sh
 .DS_Store
 .jekyll-cache
 */.DS_Store

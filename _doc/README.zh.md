@@ -5,9 +5,11 @@
 ## 初始化环境
 
 1. 安装 Ruby / Bundler：`gem install bundler`
-2. 安装依赖：`bundle install`
-3. 本地预览：`bundle exec jekyll serve`
-4. 若需重新编译样式与脚本：`npm install` 后执行 `npm run dev`
+2. 本地预览（推荐）：`./scripts/local-preview.sh`
+3. 仅构建静态文件：`./scripts/local-preview.sh build`
+4. 预览已构建静态站点：`./scripts/local-preview.sh static`
+5. 若需重新编译样式与脚本：`npm install` 后执行 `npm run dev`
+6. 预览地址（启动成功后）：`http://127.0.0.1:4000/`
 
 ## 必改项
 

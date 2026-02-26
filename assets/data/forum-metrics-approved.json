@@ -1,23 +1,10 @@
 {
-  "updatedAt": "2026-02-26T12:04:57.454Z",
+  "updatedAt": "2026-02-26T13:19:25.034Z",
   "site": {
     "visitors": 0,
     "pageViews": 0,
-    "comments": 4,
+    "comments": 0,
     "todayVisitors": 0
   },
-  "topics": {
-    "ai-class-solidification": {
-      "visitors": 0,
-      "views": 0,
-      "comments": 2,
-      "updatedAt": "2026-02-26T12:04:57.454Z"
-    },
-    "aitalk-design-copilot": {
-      "visitors": 0,
-      "views": 0,
-      "comments": 2,
-      "updatedAt": "2026-02-26T12:04:57.454Z"
-    }
-  }
+  "topics": {}
 }

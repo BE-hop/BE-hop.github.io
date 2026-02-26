@@ -106,6 +106,14 @@
     if (!value || typeof value !== "object") return value
     return value[lang] || value.en || value.zh || ""
   }
+  const getStorageItem = (storage, key, fallback = "") => {
+    try {
+      const value = storage.getItem(key)
+      return value === null || value === undefined ? fallback : value
+    } catch (error) {
+      return fallback
+    }
+  }
 
   const formatDate = (dateValue, lang) => {
     if (!dateValue) return ""
@@ -675,7 +683,7 @@
     form.addEventListener("submit", async (event) => {
       event.preventDefault()
 
-      const lang = localStorage.getItem("portfolioLang") || "en"
+      const lang = getStorageItem(localStorage, "portfolioLang", "en")
       const copy = commentI18n[lang] || commentI18n.en
 
       if (!forumClient?.canSubmitComments) {
@@ -744,7 +752,7 @@
   }
 
   const render = () => {
-    const lang = localStorage.getItem("portfolioLang") || "en"
+    const lang = getStorageItem(localStorage, "portfolioLang", "en")
     const sorted = sortedByDate()
     const requestedTopic = requestedSlug ? getTopic(requestedSlug) : null
 

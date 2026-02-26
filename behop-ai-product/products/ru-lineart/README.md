@@ -9,7 +9,7 @@
 
 ```json
 {
-  "latest": "1.4.0",
+  "latest": "0.2.4",
   "force": false,
   "page": "https://www.behop.cn/behop-ai-product/products/ru-lineart/",
   "notes": "Bug fixes and quality improvements."

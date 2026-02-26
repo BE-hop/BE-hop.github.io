@@ -1,8 +1,8 @@
 (() => {
   const list = document.querySelector("[data-forum-list]")
-  if (!list || !Array.isArray(window.FORUM_TOPICS)) return
+  if (!list) return
 
-  const staticTopics = [...window.FORUM_TOPICS]
+  const staticTopics = Array.isArray(window.FORUM_TOPICS) ? [...window.FORUM_TOPICS] : []
   const categoryLabels = window.FORUM_CATEGORY_LABELS || {}
   const tagLabels = window.FORUM_TAG_LABELS || {}
   const forumClient = window.FORUM_CLIENT || null
@@ -19,7 +19,16 @@
   }
 
   const getParam = (key, fallback) => params.get(key) || fallback
-  const getLang = () => localStorage.getItem("portfolioLang") || "en"
+  const getStorageItem = (storage, key, fallback = "") => {
+    try {
+      const value = storage.getItem(key)
+      return value === null || value === undefined ? fallback : value
+    } catch (error) {
+      return fallback
+    }
+  }
+
+  const getLang = () => getStorageItem(localStorage, "portfolioLang", "en")
   const pickLang = (value, lang) => {
     if (!value || typeof value === "string") return value || ""
     return value[lang] || value.en || value.zh || ""

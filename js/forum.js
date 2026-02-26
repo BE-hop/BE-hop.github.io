@@ -325,6 +325,21 @@
   const langButtons = document.querySelectorAll("[data-lang]")
   const i18nNodes = document.querySelectorAll("[data-i18n]")
   const i18nPlaceholders = document.querySelectorAll("[data-i18n-placeholder]")
+  const getStorageItem = (key, fallback = "") => {
+    try {
+      const value = localStorage.getItem(key)
+      return value === null || value === undefined ? fallback : value
+    } catch (error) {
+      return fallback
+    }
+  }
+  const setStorageItem = (key, value) => {
+    try {
+      localStorage.setItem(key, value)
+    } catch (error) {
+      // ignore storage errors
+    }
+  }
 
   const setLang = (lang) => {
     const dict = translations[lang] || translations.en
@@ -352,7 +367,7 @@
       button.classList.toggle("is-active", button.dataset.lang === lang)
     })
 
-    localStorage.setItem("portfolioLang", lang)
+    setStorageItem("portfolioLang", lang)
   }
 
   langButtons.forEach((button) => {
@@ -361,7 +376,7 @@
     }
   })
 
-  setLang(localStorage.getItem("portfolioLang") || "en")
+  setLang(getStorageItem("portfolioLang", "en"))
 
   const toggle = document.querySelector("[data-forum-menu-toggle]")
   const menu = document.querySelector("[data-forum-menu]")

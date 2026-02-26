@@ -48,7 +48,7 @@ nav-theme: light
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/forum.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/forum.css?v={{ site.time | date: '%s' }}">
 </head>
 <body class="bg-background text-foreground forum-page forum-topic-page" data-baseurl="{{ site.baseurl }}">
   {% include nav.html %}

@@ -81,6 +81,14 @@ nav-theme: light
                   <span class="flex-1" data-i18n="forum.categories.all">全部话题</span>
                   <span class="text-xs text-primary-foreground/70" data-category-count="all">0</span>
                 </a>
+                <a href="{{ site.baseurl }}/forum/?category=message" data-category-link="message" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors text-left text-muted-foreground hover:bg-muted hover:text-foreground no-underline">
+                  <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14"></path>
+                    <path d="M5 12h14"></path>
+                  </svg>
+                  <span class="flex-1" data-i18n="forum.categories.message">留言</span>
+                  <span class="text-xs text-muted-foreground" data-category-count="message">0</span>
+                </a>
                 <a href="{{ site.baseurl }}/forum/?category=landscape" data-category-link="landscape" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors text-left text-muted-foreground hover:bg-muted hover:text-foreground no-underline">
                   <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 3.5 2 5a7 7 0 0 1-10 6.1"></path>
@@ -162,6 +170,13 @@ nav-theme: light
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-lg font-semibold text-foreground" data-i18n="forum.list.title">最新讨论</h2>
             <div class="flex items-center gap-2">
+              <button type="button" data-compose-open class="inline-flex items-center gap-1.5 h-8 px-3 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span data-i18n="forum.actions.publish">发布留言</span>
+              </button>
               <a href="{{ site.baseurl }}/forum/?filter=all" data-filter-link class="inline-flex items-center gap-1.5 h-8 px-3 text-xs font-medium border border-border rounded-md bg-transparent hover:bg-muted no-underline">
                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="22 3 2 3 10 12 10 19 14 21 14 12 22 3"></polygon>
@@ -301,6 +316,53 @@ nav-theme: light
         </div>
       </div>
     </footer>
+  </div>
+
+  <div class="forum-compose-modal hidden" data-compose-modal>
+    <div class="forum-compose-modal__backdrop" data-compose-close></div>
+    <div class="forum-compose-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="forum-compose-title">
+      <div class="forum-compose-modal__header">
+        <h3 id="forum-compose-title" class="forum-compose-modal__title" data-i18n="forum.compose.title">发布留言</h3>
+        <button type="button" class="forum-compose-modal__close" data-compose-close aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <p class="forum-compose-modal__subtitle" data-i18n="forum.compose.subtitle">发布后将生成一个留言页面，其他人可以在该页面评论解答。</p>
+
+      <form class="forum-compose-form" data-compose-form>
+        <label class="forum-compose-form__field">
+          <span class="forum-compose-form__label" data-i18n="forum.compose.label.name">昵称</span>
+          <input type="text" maxlength="48" data-compose-name data-i18n-placeholder="forum.compose.placeholder.name" placeholder="输入昵称（可选）">
+        </label>
+
+        <label class="forum-compose-form__field">
+          <span class="forum-compose-form__label" data-i18n="forum.compose.label.location">地点</span>
+          <input type="text" maxlength="80" data-compose-location data-i18n-placeholder="forum.compose.placeholder.location" placeholder="城市/地区（可选）">
+        </label>
+
+        <label class="forum-compose-form__field">
+          <span class="forum-compose-form__label" data-i18n="forum.compose.label.title">留言标题</span>
+          <input type="text" maxlength="120" data-compose-title required data-i18n-placeholder="forum.compose.placeholder.title" placeholder="例如：请问如何入门 AI 景观设计？">
+        </label>
+
+        <label class="forum-compose-form__field">
+          <span class="forum-compose-form__label" data-i18n="forum.compose.label.message">留言内容</span>
+          <textarea rows="6" maxlength="4000" data-compose-message required data-i18n-placeholder="forum.compose.placeholder.message" placeholder="请输入你的问题、反馈或讨论内容..."></textarea>
+        </label>
+
+        <div class="forum-compose-form__meta">
+          <span class="forum-compose-form__tag" data-i18n="forum.compose.tag">标签：留言</span>
+          <span class="forum-compose-form__note" data-i18n="forum.compose.note">发布后会根据模板自动生成话题页。</span>
+        </div>
+
+        <div class="forum-compose-form__actions">
+          <button type="button" class="forum-compose-form__btn forum-compose-form__btn--ghost" data-compose-close data-i18n="forum.compose.cancel">取消</button>
+          <button type="submit" class="forum-compose-form__btn forum-compose-form__btn--primary" data-compose-submit data-i18n="forum.compose.submit">发布留言</button>
+        </div>
+      </form>
+
+      <div class="forum-compose-feedback hidden" data-compose-feedback></div>
+    </div>
   </div>
 
   <script src="{{ site.baseurl }}/js/site-nav.js"></script>

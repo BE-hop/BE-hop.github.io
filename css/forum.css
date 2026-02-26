@@ -496,6 +496,182 @@ input {
   background: color-mix(in oklab, var(--muted) 60%, white);
 }
 
+.forum-compose-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.forum-compose-modal.hidden {
+  display: none;
+}
+
+.forum-compose-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 16, 24, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.forum-compose-modal__dialog {
+  position: relative;
+  width: min(100%, 42rem);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 97%, white);
+  box-shadow: 0 28px 70px rgba(8, 17, 28, 0.34);
+  padding: 1.2rem;
+}
+
+.forum-compose-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.forum-compose-modal__title {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.forum-compose-modal__close {
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.forum-compose-modal__close:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.forum-compose-modal__subtitle {
+  margin: 0.75rem 0 0;
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.forum-compose-form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.forum-compose-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.forum-compose-form__label {
+  font-size: 0.78rem;
+  color: var(--muted-foreground);
+}
+
+.forum-compose-form__field input,
+.forum-compose-form__field textarea {
+  border: 1px solid var(--border);
+  border-radius: 0.62rem;
+  background: var(--card);
+  color: var(--foreground);
+  font-size: 0.9rem;
+  font-family: inherit;
+  padding: 0.64rem 0.72rem;
+  outline: none;
+}
+
+.forum-compose-form__field input:focus,
+.forum-compose-form__field textarea:focus {
+  border-color: color-mix(in oklab, var(--primary) 60%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 22%, transparent);
+}
+
+.forum-compose-form__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.forum-compose-form__tag {
+  display: inline-flex;
+  align-items: center;
+  height: 1.6rem;
+  padding: 0 0.58rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: color-mix(in oklab, var(--primary) 85%, black);
+  background: color-mix(in oklab, var(--primary) 17%, white);
+}
+
+.forum-compose-form__note {
+  font-size: 0.76rem;
+  color: var(--muted-foreground);
+}
+
+.forum-compose-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+.forum-compose-form__btn {
+  height: 2.25rem;
+  padding: 0 0.95rem;
+  border-radius: 0.62rem;
+  border: 1px solid transparent;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.forum-compose-form__btn--ghost {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--foreground);
+}
+
+.forum-compose-form__btn--ghost:hover {
+  background: var(--muted);
+}
+
+.forum-compose-form__btn--primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.forum-compose-form__btn--primary:hover {
+  opacity: 0.92;
+}
+
+.forum-compose-feedback {
+  margin-top: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  padding: 0.62rem 0.74rem;
+  font-size: 0.83rem;
+}
+
 @media (max-width: 640px) {
   .forum-detail-layout {
     margin-bottom: 1.2rem;
@@ -517,5 +693,23 @@ input {
 
   .forum-insight-table {
     min-width: 30rem;
+  }
+
+  .forum-compose-modal {
+    padding: 0.6rem;
+  }
+
+  .forum-compose-modal__dialog {
+    width: 100%;
+    max-height: calc(100vh - 1.2rem);
+    padding: 1rem 0.9rem;
+  }
+
+  .forum-compose-form__actions {
+    justify-content: stretch;
+  }
+
+  .forum-compose-form__btn {
+    flex: 1 1 0;
   }
 }

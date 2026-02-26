@@ -1053,6 +1053,10 @@
     "en": "All Topics",
     "zh": "全部话题"
   },
+  "message": {
+    "en": "Messages",
+    "zh": "留言"
+  },
   "landscape": {
     "en": "Landscape Design",
     "zh": "景观设计"
@@ -1087,6 +1091,10 @@
   "news": {
     "en": "News",
     "zh": "资讯"
+  },
+  "message": {
+    "en": "Message",
+    "zh": "留言"
   },
   "featured": {
     "en": "Featured",

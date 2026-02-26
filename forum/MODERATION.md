@@ -8,6 +8,7 @@ This forum remains a static site, but comments and visit events can still be sto
 2. You review pending records in your backend panel.
 3. Approved records are exported to static JSON files in this repo:
    - `assets/data/forum-comments-approved.json`
+   - `assets/data/forum-topics-approved.json`
    - `assets/data/forum-events-approved.json`
 4. Run metrics build:
    - `npm run forum:metrics`
@@ -18,6 +19,7 @@ This forum remains a static site, but comments and visit events can still be sto
 Edit `js/forum-config.js` and set:
 
 - `commentSubmitUrl`: endpoint for new pending comments
+- `topicSubmitUrl`: endpoint for new pending topics (留言发布)
 - `eventSubmitUrl`: endpoint for new pending events
 - `supabasePublishableKey`: required when `commentSubmitUrl` / `eventSubmitUrl` use Supabase REST (`/rest/v1/...`)
 
@@ -36,6 +38,24 @@ The frontend will map payload to table columns:
 - `author`
 - `status` (forced to `pending`)
 - `location`
+- `page`
+
+For topic publishing, set:
+
+- `topicSubmitUrl: "https://<project-ref>.supabase.co/rest/v1/forum_topics"`
+
+Recommended columns:
+
+- `slug`
+- `title`
+- `message`
+- `excerpt`
+- `author`
+- `category`
+- `tags` (`text[]`)
+- `status`
+- `location`
+- `language`
 - `page`
 
 Enable RLS + policies for moderated flow:
@@ -76,6 +96,27 @@ using (status = 'approved');
 }
 ```
 
+### Topic submit payload
+
+```json
+{
+  "slug": "how-to-start-ai-landscape",
+  "title": "请问如何入门 AI 景观设计？",
+  "message": "我目前会 Rhino，希望建立 AI + 景观设计流程，请问从哪里开始？",
+  "excerpt": "我目前会 Rhino，希望建立 AI + 景观设计流程...",
+  "authorName": "Avery",
+  "category": "message",
+  "tags": ["message"],
+  "status": "pending",
+  "location": "San Diego, CA",
+  "language": "zh",
+  "pagePath": "/forum/",
+  "visitorId": "uuid",
+  "sessionId": "uuid",
+  "submittedAt": "2026-02-06T10:00:00Z"
+}
+```
+
 ### Event submit payload
 
 ```json
@@ -97,6 +138,7 @@ using (status = 'approved');
 ## 4. Approved Files
 
 - `forum-comments-approved.json`: only approved comments.
+- `forum-topics-approved.json`: only approved topics.
 - `forum-events-approved.json`: only approved visit events.
 - `forum-metrics-approved.json`: generated summary used by pages.
 
@@ -104,9 +146,11 @@ Recommended publish flow:
 
 1. Sync approved comments from Supabase:
    - `npm run forum:sync-comments`
-2. Rebuild metrics snapshot:
+2. Sync approved topics from Supabase:
+   - `npm run forum:sync-topics`
+3. Rebuild metrics snapshot:
    - `npm run forum:metrics`
-3. Build site and deploy:
+4. Build site and deploy:
    - `bundle exec jekyll build`
 
 ## 6. GitHub Actions Automation
@@ -118,12 +162,14 @@ Workflow file:
 It runs every 30 minutes (and manual trigger), then:
 
 1. Pulls approved comments from Supabase
-2. Rebuilds `forum-metrics-approved.json`
-3. Commits snapshot changes automatically
+2. Pulls approved topics from Supabase
+3. Rebuilds `forum-metrics-approved.json`
+4. Commits snapshot changes automatically
 
 Required repo secrets:
 
 - `FORUM_COMMENT_SUBMIT_URL` (for example `https://<project-ref>.supabase.co/rest/v1/comments`)
+- `FORUM_TOPIC_SUBMIT_URL` (for example `https://<project-ref>.supabase.co/rest/v1/forum_topics`)
 - `SUPABASE_SERVICE_ROLE_KEY`
 
 Sync script now reads backend credentials from environment only. In GitHub Actions, provide both repository secrets above.

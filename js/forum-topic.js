@@ -1,6 +1,5 @@
 (() => {
-  const topics = window.FORUM_TOPICS
-  if (!topics || !Array.isArray(topics) || topics.length === 0) return
+  const staticTopics = Array.isArray(window.FORUM_TOPICS) ? [...window.FORUM_TOPICS] : []
 
   const baseUrl = document.body?.dataset.baseurl || ""
   const baseForum = `${baseUrl}/forum/`.replace(/\/+/g, "/")
@@ -8,6 +7,7 @@
   const params = new URLSearchParams(window.location.search)
   const requestedSlug = (params.get("topic") || "").trim()
   const forumClient = window.FORUM_CLIENT || null
+  const localDraftKey = "forumTopicDrafts"
 
   const categoryLabels = window.FORUM_CATEGORY_LABELS || {}
   const tagLabels = window.FORUM_TAG_LABELS || {}
@@ -67,7 +67,40 @@
 
   let approvedComments = []
   let approvedMetrics = null
+  let approvedTopics = []
+  let localTopics = []
+  let topics = []
+  let topicsHydrated = false
+  let trackedTopicSlug = ""
   let activeTopic = null
+
+  const mergeTopics = (...groups) => {
+    const merged = []
+    const seen = new Set()
+    groups.forEach((group) => {
+      ;(group || []).forEach((topic) => {
+        if (!topic?.slug || seen.has(topic.slug)) return
+        seen.add(topic.slug)
+        merged.push(topic)
+      })
+    })
+    return merged
+  }
+
+  const normalizeTopicList = (raw) => {
+    if (forumClient?.normalizeTopics) return forumClient.normalizeTopics(raw)
+    const source = Array.isArray(raw) ? raw : raw?.topics
+    return Array.isArray(source) ? source : []
+  }
+
+  const loadLocalTopics = () => {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(localDraftKey) || "[]")
+      return normalizeTopicList(parsed)
+    } catch (error) {
+      return []
+    }
+  }
 
   const pickLang = (value, lang) => {
     if (!value || typeof value !== "object") return value
@@ -91,32 +124,10 @@
     const locale = lang === "zh" ? "zh-CN" : "en-US"
     return new Intl.NumberFormat(locale).format(Number(value) || 0)
   }
-
-  const sortedByDate = [...topics].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  )
+  const sortedByDate = () =>
+    [...topics].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   const getTopic = (targetSlug) => topics.find((topic) => topic.slug === targetSlug)
-  const fallbackTopic = sortedByDate[0] || topics[0]
-  const requestedTopic = requestedSlug ? getTopic(requestedSlug) : null
-  const activeTopicSlug = (requestedTopic || fallbackTopic)?.slug || ""
-  const showNotice = Boolean(requestedSlug) && !requestedTopic
-
-  if (!activeTopicSlug) {
-    window.location.href = baseForum
-    return
-  }
-
-  if (!requestedSlug || showNotice) {
-    const next = new URLSearchParams(params)
-    next.set("topic", activeTopicSlug)
-    if (showNotice) {
-      next.set("from", "not-found")
-    } else {
-      next.delete("from")
-    }
-    window.history.replaceState({}, "", `${baseTopic}?${next.toString()}`)
-  }
 
   const getTopicMetric = (topicSlug) => approvedMetrics?.topics?.[topicSlug] || {}
 
@@ -732,10 +743,34 @@
     })
   }
 
-  const render = (showNotice = false) => {
+  const render = () => {
     const lang = localStorage.getItem("portfolioLang") || "en"
-    const topic = getTopic(activeTopicSlug) || topics[0]
+    const sorted = sortedByDate()
+    const requestedTopic = requestedSlug ? getTopic(requestedSlug) : null
+
+    if (requestedSlug && !requestedTopic && !topicsHydrated) {
+      return
+    }
+
+    const topic = requestedTopic || sorted[0] || topics[0]
+    if (!topic) {
+      window.location.href = baseForum
+      return
+    }
+
     activeTopic = topic
+    const showNotice = Boolean(requestedSlug) && !requestedTopic
+
+    const next = new URLSearchParams(params)
+    next.set("topic", topic.slug)
+    if (showNotice) {
+      next.set("from", "not-found")
+    } else {
+      next.delete("from")
+    }
+    if (!requestedSlug || showNotice) {
+      window.history.replaceState({}, "", `${baseTopic}?${next.toString()}`)
+    }
 
     const layout = resolveLayout(topic)
     const topicComments = getTopicComments(topic.slug)
@@ -912,18 +947,18 @@
       })
     }
 
-    const index = sortedByDate.findIndex((item) => item.slug === topic.slug)
-    const prev = sortedByDate[index + 1]
-    const next = sortedByDate[index - 1]
+    const index = sorted.findIndex((item) => item.slug === topic.slug)
+    const prevTopic = sorted[index + 1]
+    const nextTopic = sorted[index - 1]
 
     const prevLink = document.querySelector("[data-topic-prev]")
     const nextLink = document.querySelector("[data-topic-next]")
 
     if (prevLink) {
-      if (prev) {
-        prevLink.href = `${baseTopic}?topic=${encodeURIComponent(prev.slug)}`
+      if (prevTopic) {
+        prevLink.href = `${baseTopic}?topic=${encodeURIComponent(prevTopic.slug)}`
         const prevTitle = prevLink.querySelector("[data-topic-prev-title]")
-        if (prevTitle) prevTitle.textContent = pickLang(prev.title, lang)
+        if (prevTitle) prevTitle.textContent = pickLang(prevTopic.title, lang)
         prevLink.classList.remove("hidden")
       } else {
         prevLink.classList.add("hidden")
@@ -931,10 +966,10 @@
     }
 
     if (nextLink) {
-      if (next) {
-        nextLink.href = `${baseTopic}?topic=${encodeURIComponent(next.slug)}`
+      if (nextTopic) {
+        nextLink.href = `${baseTopic}?topic=${encodeURIComponent(nextTopic.slug)}`
         const nextTitle = nextLink.querySelector("[data-topic-next-title]")
-        if (nextTitle) nextTitle.textContent = pickLang(next.title, lang)
+        if (nextTitle) nextTitle.textContent = pickLang(nextTopic.title, lang)
         nextLink.classList.remove("hidden")
       } else {
         nextLink.classList.add("hidden")
@@ -958,42 +993,51 @@
     }
 
     bindCommentForm()
-  }
 
-  const topicForTracking = getTopic(activeTopicSlug) || topics[0]
-
-  if (forumClient?.canTrackEvents) {
-    forumClient.trackEvent({
-      eventType: "page_view",
-      page: "forum_topic",
-      topicSlug: topicForTracking.slug,
-      topicTitle: pickLang(topicForTracking.title, "en"),
-      dedupeKey: `forum-topic:${topicForTracking.slug}:${window.location.pathname}${window.location.search}`,
-    })
-  }
-
-  const hydrateApprovedData = async () => {
-    if (!forumClient) return
-
-    try {
-      const [comments, metrics] = await Promise.all([
-        forumClient.fetchApprovedComments(),
-        forumClient.fetchApprovedMetrics(),
-      ])
-      approvedComments = comments
-      approvedMetrics = metrics
-      render(showNotice)
-    } catch (error) {
-      // keep fallback data
+    if (forumClient?.canTrackEvents && trackedTopicSlug !== topic.slug) {
+      trackedTopicSlug = topic.slug
+      forumClient.trackEvent({
+        eventType: "page_view",
+        page: "forum_topic",
+        topicSlug: topic.slug,
+        topicTitle: pickLang(topic.title, "en"),
+        dedupeKey: `forum-topic:${topic.slug}:${window.location.pathname}${window.location.search}`,
+      })
     }
   }
 
-  render(showNotice)
+  const hydrateApprovedData = async () => {
+    topicsHydrated = true
+    if (!forumClient) {
+      render()
+      return
+    }
+
+    try {
+      const [comments, metrics, fetchedTopics] = await Promise.all([
+        forumClient.fetchApprovedComments(),
+        forumClient.fetchApprovedMetrics(),
+        forumClient.fetchApprovedTopics ? forumClient.fetchApprovedTopics() : Promise.resolve([]),
+      ])
+      approvedComments = comments
+      approvedMetrics = metrics
+      approvedTopics = Array.isArray(fetchedTopics) ? fetchedTopics : []
+    } catch (error) {
+      // keep fallback data
+    }
+
+    topics = mergeTopics(localTopics, approvedTopics, staticTopics)
+    render()
+  }
+
+  localTopics = loadLocalTopics()
+  topics = mergeTopics(localTopics, approvedTopics, staticTopics)
+  render()
   hydrateApprovedData()
 
   document.querySelectorAll("[data-lang]").forEach((button) => {
     button.addEventListener("click", () => {
-      render(showNotice)
+      render()
     })
   })
 })()

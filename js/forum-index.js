@@ -2,7 +2,7 @@
   const list = document.querySelector("[data-forum-list]")
   if (!list || !Array.isArray(window.FORUM_TOPICS)) return
 
-  const topics = [...window.FORUM_TOPICS]
+  const staticTopics = [...window.FORUM_TOPICS]
   const categoryLabels = window.FORUM_CATEGORY_LABELS || {}
   const tagLabels = window.FORUM_TAG_LABELS || {}
   const forumClient = window.FORUM_CLIENT || null
@@ -25,8 +25,8 @@
     return value[lang] || value.en || value.zh || ""
   }
 
-  const categoryOptions = ["all", "landscape", "ai", "news", "featured", "trending"]
-  const filterOptions = ["all", "pinned", "news", "aitalk", "design-cognition", "design-rules"]
+  const categoryOptions = ["all", "message", "landscape", "ai", "news", "featured", "trending"]
+  const filterOptions = ["all", "message", "pinned", "news", "aitalk", "design-cognition", "design-rules"]
   const sortOptions = ["latest", "oldest", "views", "replies"]
 
   const categoryParam = getParam("category", "all")
@@ -42,9 +42,101 @@
   let visibleCount = initialPage * pageSize
   let approvedComments = []
   let approvedMetrics = null
+  let approvedTopics = []
+  let localTopics = []
+  let topics = [...staticTopics]
 
   const emptyState = document.querySelector("[data-forum-empty]")
   const loadMore = document.querySelector("[data-forum-load-more]")
+  const composeModal = document.querySelector("[data-compose-modal]")
+  const composeForm = document.querySelector("[data-compose-form]")
+  const composeSubmit = document.querySelector("[data-compose-submit]")
+
+  const localDraftKey = "forumTopicDrafts"
+  const defaultTopicTag =
+    String(forumClient?.config?.topicDefaultTag || "message")
+      .trim()
+      .toLowerCase() || "message"
+  const defaultTopicCategory =
+    String(forumClient?.config?.topicDefaultCategory || "message")
+      .trim()
+      .toLowerCase() || "message"
+
+  const composeI18n = {
+    zh: {
+      missingConfig:
+        "留言发布功能尚未完成配置（topicSubmitUrl 或 Supabase key 缺失）。请先在 forum-config.js 配置后再发布。",
+      titleRequired: "请先填写留言标题。",
+      messageRequired: "请先填写留言内容。",
+      submitSuccess: "发布成功，正在打开留言详情页...",
+      submitError: "发布失败，请稍后再试。",
+    },
+    en: {
+      missingConfig:
+        "Topic publishing is not configured yet (topicSubmitUrl or Supabase key missing). Configure forum-config.js first.",
+      titleRequired: "Please enter a title.",
+      messageRequired: "Please enter your message.",
+      submitSuccess: "Published. Opening the topic page...",
+      submitError: "Publish failed. Please try again later.",
+    },
+  }
+
+  const parseJsonSafe = (raw, fallback) => {
+    try {
+      return JSON.parse(raw)
+    } catch (error) {
+      return fallback
+    }
+  }
+
+  const normalizeTopicList = (raw) => {
+    if (forumClient?.normalizeTopics) {
+      return forumClient.normalizeTopics(raw)
+    }
+
+    const source = Array.isArray(raw) ? raw : raw?.topics
+    return Array.isArray(source) ? source : []
+  }
+
+  const loadLocalTopics = () => {
+    try {
+      const parsed = parseJsonSafe(localStorage.getItem(localDraftKey) || "[]", [])
+      return normalizeTopicList(parsed)
+    } catch (error) {
+      return []
+    }
+  }
+
+  const saveLocalTopics = (items) => {
+    try {
+      localStorage.setItem(localDraftKey, JSON.stringify(items || []))
+    } catch (error) {
+      // ignore storage quota and private mode errors
+    }
+  }
+
+  const mergeTopics = (...groups) => {
+    const merged = []
+    const seen = new Set()
+
+    groups.forEach((group) => {
+      ;(group || []).forEach((topic) => {
+        if (!topic?.slug || seen.has(topic.slug)) return
+        seen.add(topic.slug)
+        merged.push(topic)
+      })
+    })
+
+    return merged
+  }
+
+  const upsertLocalTopic = (topic) => {
+    if (!topic?.slug) return
+
+    localTopics = mergeTopics([topic], localTopics).slice(0, 100)
+    saveLocalTopics(localTopics)
+    topics = mergeTopics(localTopics, approvedTopics, staticTopics)
+  }
 
   const formatNumber = (value, lang = getLang()) => {
     if (forumClient?.formatNumber) return forumClient.formatNumber(value, lang)
@@ -89,6 +181,7 @@
   const getCategoryCounts = () => {
     const counts = {
       all: topics.length,
+      message: 0,
       landscape: 0,
       ai: 0,
       news: 0,
@@ -171,6 +264,13 @@
       return node
     }
 
+    if (tag === "message") {
+      node.className =
+        "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700"
+      node.textContent = label
+      return node
+    }
+
     if (tag === "aitalk") {
       node.className = "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary"
       node.textContent = label
@@ -249,7 +349,7 @@
 
     const meta = link.querySelector("[data-topic-meta]")
     const renderedTags = []
-    ;["pinned", "news", "aitalk", "design-cognition", "design-rules"].forEach((tag) => {
+    ;["pinned", "news", "message", "aitalk", "design-cognition", "design-rules"].forEach((tag) => {
       if (Array.isArray(topic.tags) && topic.tags.includes(tag)) renderedTags.push(tag)
     })
     if (!renderedTags.length && Array.isArray(topic.tags) && topic.tags[0]) {
@@ -275,6 +375,10 @@
     link.querySelector("[data-topic-replies-value]").textContent = formatNumber(replies, lang)
     link.querySelector("[data-topic-views-value]").textContent = formatNumber(views, lang)
     link.querySelector("[data-topic-date-value]").textContent = formatTopicDateTag(topic.date, lang)
+
+    link.addEventListener("click", () => {
+      upsertLocalTopic(topic)
+    })
 
     article.appendChild(link)
     return article
@@ -398,6 +502,7 @@
   const labelMap = {
     filter: {
       all: { en: "Filter · All", zh: "筛选 · 全部" },
+      message: { en: "Filter · Message", zh: "筛选 · 留言" },
       pinned: { en: "Filter · Pinned", zh: "筛选 · 置顶" },
       news: { en: "Filter · News", zh: "筛选 · 资讯" },
       aitalk: { en: "Filter · AI Talk", zh: "筛选 · AI 对话" },
@@ -441,8 +546,246 @@
     )
   }
 
+  const setComposeFeedback = (type, text) => {
+    const node = document.querySelector("[data-compose-feedback]")
+    if (!node) return
+
+    if (!text) {
+      node.classList.add("hidden")
+      node.className = "forum-compose-feedback hidden"
+      node.textContent = ""
+      return
+    }
+
+    node.classList.remove("hidden")
+    node.textContent = text
+    node.className = "forum-compose-feedback"
+
+    if (type === "success") {
+      node.classList.add("border-primary/30", "bg-primary/5", "text-foreground")
+      return
+    }
+
+    if (type === "warning") {
+      node.classList.add("border-border", "bg-muted", "text-muted-foreground")
+      return
+    }
+
+    node.classList.add("border-red-300", "bg-red-50", "text-red-700")
+  }
+
+  const setComposeOpen = (isOpen) => {
+    if (!composeModal) return
+    composeModal.classList.toggle("hidden", !isOpen)
+    document.body.style.overflow = isOpen ? "hidden" : ""
+  }
+
+  const getComposeCopy = () => composeI18n[getLang()] || composeI18n.en
+
+  const shortExcerpt = (text, max = 140) => {
+    const source = String(text || "").trim()
+    if (!source) return ""
+    if (source.length <= max) return source
+    return `${source.slice(0, max).trim()}...`
+  }
+
+  const createUniqueSlug = (title) => {
+    const normalized = String(title || "")
+      .trim()
+      .toLowerCase()
+      .replace(/['’]/g, "")
+      .replace(/[^a-z0-9\s-]/g, " ")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+
+    const base = normalized || `message-${Date.now().toString(36)}`
+    const used = new Set(topics.map((topic) => topic.slug))
+
+    if (!used.has(base)) return base
+
+    let i = 1
+    let next = `${base}-${i}`
+    while (used.has(next)) {
+      i += 1
+      next = `${base}-${i}`
+    }
+
+    return next
+  }
+
+  const buildDraftTopic = ({ slug, title, message, authorName, submittedAt, status }) => {
+    const normalized = normalizeTopicList([
+      {
+        slug,
+        category: defaultTopicCategory,
+        tags: [defaultTopicTag],
+        author: authorName,
+        status,
+        source: "community",
+        date: submittedAt,
+        title: {
+          en: title,
+          zh: title,
+        },
+        excerpt: {
+          en: shortExcerpt(message),
+          zh: shortExcerpt(message),
+        },
+        message,
+      },
+    ])
+
+    return normalized[0] || null
+  }
+
+  const bindCompose = () => {
+    if (!composeModal || !composeForm) return
+
+    document.querySelectorAll("[data-compose-open]").forEach((button) => {
+      button.addEventListener("click", () => {
+        setComposeFeedback("", "")
+        setComposeOpen(true)
+      })
+    })
+
+    document.querySelectorAll("[data-compose-close]").forEach((button) => {
+      button.addEventListener("click", () => {
+        setComposeOpen(false)
+      })
+    })
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return
+      if (composeModal.classList.contains("hidden")) return
+      setComposeOpen(false)
+    })
+
+    composeForm.addEventListener("submit", async (event) => {
+      event.preventDefault()
+
+      const copy = getComposeCopy()
+
+      if (!forumClient?.canSubmitTopics) {
+        setComposeFeedback("warning", copy.missingConfig)
+        return
+      }
+
+      const nameInput = composeForm.querySelector("[data-compose-name]")
+      const locationInput = composeForm.querySelector("[data-compose-location]")
+      const titleInput = composeForm.querySelector("[data-compose-title]")
+      const messageInput = composeForm.querySelector("[data-compose-message]")
+
+      const authorName = String(nameInput?.value || "").trim() || (getLang() === "zh" ? "匿名用户" : "Anonymous")
+      const location = String(locationInput?.value || "").trim()
+      const title = String(titleInput?.value || "").trim()
+      const message = String(messageInput?.value || "").trim()
+
+      if (!title) {
+        setComposeFeedback("error", copy.titleRequired)
+        return
+      }
+
+      if (!message) {
+        setComposeFeedback("error", copy.messageRequired)
+        return
+      }
+
+      const slug = createUniqueSlug(title)
+      const submittedAt = new Date().toISOString()
+      const status = String(forumClient?.config?.topicInitialStatus || "pending").trim() || "pending"
+
+      const payload = {
+        slug,
+        title,
+        message,
+        excerpt: shortExcerpt(message),
+        authorName,
+        category: defaultTopicCategory,
+        tags: [defaultTopicTag],
+        status,
+        language: getLang(),
+        location: location || Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+        pagePath: window.location.pathname + window.location.search,
+        visitorId: forumClient.getVisitorId(),
+        sessionId: forumClient.getSessionId(),
+        submittedAt,
+      }
+
+      if (composeSubmit) {
+        composeSubmit.disabled = true
+        composeSubmit.classList.add("opacity-70")
+      }
+
+      const result = await forumClient.submitTopic(payload)
+
+      if (composeSubmit) {
+        composeSubmit.disabled = false
+        composeSubmit.classList.remove("opacity-70")
+      }
+
+      if (!result.ok) {
+        setComposeFeedback("error", copy.submitError)
+        return
+      }
+
+      const draftTopic = buildDraftTopic(payload)
+      if (draftTopic) {
+        upsertLocalTopic(draftTopic)
+      }
+
+      renderResult = renderList()
+      setComposeFeedback("success", copy.submitSuccess)
+
+      if (forumClient?.canTrackEvents) {
+        forumClient.trackEvent({
+          eventType: "topic_submit",
+          page: "forum_index",
+          topicSlug: slug,
+          topicTitle: title,
+          category: defaultTopicCategory,
+          dedupeKey: `topic-submit:${slug}:${submittedAt}`,
+        })
+      }
+
+      window.setTimeout(() => {
+        window.location.href = `${baseTopic}?topic=${encodeURIComponent(slug)}`
+      }, 260)
+    })
+
+    if (composeSubmit) {
+      composeSubmit.disabled = !forumClient?.canSubmitTopics
+      composeSubmit.classList.toggle("opacity-60", !forumClient?.canSubmitTopics)
+      composeSubmit.classList.toggle("cursor-not-allowed", !forumClient?.canSubmitTopics)
+    }
+  }
+
+  const hydrateApprovedData = async () => {
+    if (!forumClient) return
+
+    try {
+      const [comments, metrics, fetchedTopics] = await Promise.all([
+        forumClient.fetchApprovedComments(),
+        forumClient.fetchApprovedMetrics(),
+        forumClient.fetchApprovedTopics ? forumClient.fetchApprovedTopics() : Promise.resolve([]),
+      ])
+
+      approvedComments = comments
+      approvedMetrics = metrics
+      approvedTopics = Array.isArray(fetchedTopics) ? fetchedTopics : []
+      topics = mergeTopics(localTopics, approvedTopics, staticTopics)
+      renderResult = renderList()
+    } catch (error) {
+      // keep static fallback values
+    }
+  }
+
+  localTopics = loadLocalTopics()
+  topics = mergeTopics(localTopics, approvedTopics, staticTopics)
+
   refreshToolbar()
   let renderResult = renderList()
+  bindCompose()
 
   if (loadMore) {
     loadMore.addEventListener("click", (event) => {
@@ -456,21 +799,6 @@
       const nextPageValue = Math.max(1, Math.ceil(Math.min(visibleCount, renderResult.total) / pageSize))
       window.history.replaceState({}, "", buildUrl({ page: nextPageValue }))
     })
-  }
-
-  const hydrateApprovedData = async () => {
-    if (!forumClient) return
-    try {
-      const [comments, metrics] = await Promise.all([
-        forumClient.fetchApprovedComments(),
-        forumClient.fetchApprovedMetrics(),
-      ])
-      approvedComments = comments
-      approvedMetrics = metrics
-      renderResult = renderList()
-    } catch (error) {
-      // keep static fallback values
-    }
   }
 
   hydrateApprovedData()

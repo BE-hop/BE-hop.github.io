@@ -1,4 +1,4 @@
-name: Sync Approved Forum Comments
+name: Sync Approved Forum Data
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
   sync:
     if: >-
       github.event_name != 'push' ||
-      contains(github.event.head_commit.message || '', 'sync approved comments snapshot') == false
+      contains(github.event.head_commit.message || '', 'sync approved forum snapshots') == false
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -44,27 +44,34 @@ jobs:
           fi
         env:
           FORUM_COMMENT_SUBMIT_URL: ${{ secrets.FORUM_COMMENT_SUBMIT_URL }}
+          FORUM_TOPIC_SUBMIT_URL: ${{ secrets.FORUM_TOPIC_SUBMIT_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
-      - name: Sync approved comments and rebuild metrics
+      - name: Sync approved forum snapshots and rebuild metrics
         run: |
           npm run -s forum:sync-comments
+          if [ -n "${FORUM_TOPIC_SUBMIT_URL}" ]; then
+            npm run -s forum:sync-topics
+          else
+            echo "FORUM_TOPIC_SUBMIT_URL is empty; skip topic sync."
+          fi
           npm run -s forum:metrics
         env:
           FORUM_COMMENT_SUBMIT_URL: ${{ secrets.FORUM_COMMENT_SUBMIT_URL }}
+          FORUM_TOPIC_SUBMIT_URL: ${{ secrets.FORUM_TOPIC_SUBMIT_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: Commit and push changes
         run: |
-          if git diff --quiet -- assets/data/forum-comments-approved.json assets/data/forum-metrics-approved.json; then
-            echo "No approved comment snapshot changes."
+          if git diff --quiet -- assets/data/forum-comments-approved.json assets/data/forum-topics-approved.json assets/data/forum-metrics-approved.json; then
+            echo "No approved forum snapshot changes."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/data/forum-comments-approved.json assets/data/forum-metrics-approved.json
-          git commit -m "chore(forum): sync approved comments snapshot" || {
+          git add assets/data/forum-comments-approved.json assets/data/forum-topics-approved.json assets/data/forum-metrics-approved.json
+          git commit -m "chore(forum): sync approved forum snapshots" || {
             echo "Nothing to commit after add."
             exit 0
           }

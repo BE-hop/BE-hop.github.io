@@ -55,6 +55,21 @@ layout: null
       <div class="mx-auto max-w-6xl">
         <a href="{{ site.baseurl }}/behop-ai-product/#products" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Back to Products" data-zh="返回产品列表">返回产品列表</a>
 
+        {% if page.download_url %}
+        <div class="mt-6 rounded-2xl border border-accent/40 bg-accent/10 p-5">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div class="space-y-1">
+              <p id="latest-version-label" class="text-sm font-semibold text-foreground" data-en="Latest: loading..." data-zh="最新版本：加载中...">最新版本：加载中...</p>
+              <p class="text-sm text-muted-foreground" data-en="{{ page.download_tip_en | default: 'Click the button to download the latest package.' }}" data-zh="{{ page.download_tip_zh | default: '点击右侧按钮即可下载最新安装包。' }}">{{ page.download_tip_zh | default: '点击右侧按钮即可下载最新安装包。' }}</p>
+              {% if page.download_code %}
+              <p class="text-xs text-muted-foreground" data-en="Access code: {{ page.download_code }}" data-zh="提取码：{{ page.download_code }}">提取码：{{ page.download_code }}</p>
+              {% endif %}
+            </div>
+            <a id="download-link-top" href="{{ page.download_url }}" class="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90" data-en="Download {{ page.download_label | default: 'Latest Package' }}" data-zh="下载 {{ page.download_label | default: '最新安装包' }}">下载 {{ page.download_label | default: '最新安装包' }}</a>
+          </div>
+        </div>
+        {% endif %}
+
         <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:items-start">
           <div class="overflow-hidden rounded-2xl border border-border bg-card">
             <img src="{{ page.image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" />
@@ -90,5 +105,28 @@ layout: null
 
   <script src="{{ site.baseurl }}/js/site-nav.js"></script>
   <script src="{{ site.baseurl }}/js/behop-ai.js"></script>
+  {% if page.version_json_url %}
+  <script>
+    (function () {
+      var endpoint = "{{ page.version_json_url | relative_url }}";
+      var versionLabel = document.getElementById("latest-version-label");
+      if (!versionLabel) return;
+      fetch(endpoint, { cache: "no-store" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("version fetch failed");
+          return res.json();
+        })
+        .then(function (data) {
+          if (!data || !data.latest) return;
+          var latest = "v" + data.latest;
+          versionLabel.dataset.zh = "最新版本：" + latest;
+          versionLabel.dataset.en = "Latest: " + latest;
+          var htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
+          versionLabel.textContent = htmlLang.indexOf("zh") === 0 ? versionLabel.dataset.zh : versionLabel.dataset.en;
+        })
+        .catch(function () {});
+    })();
+  </script>
+  {% endif %}
 </body>
 </html>

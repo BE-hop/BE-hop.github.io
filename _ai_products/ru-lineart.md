@@ -18,10 +18,18 @@ order: 0
 cta_url: "https://github.com/BE-hop/RU-LineArt"
 cta_zh: "查看 GitHub 项目"
 cta_en: "View on GitHub"
+version_json_url: "/behop-ai-product/products/ru-lineart/version.json"
+download_url: "https://pan.baidu.com/s/1OhS-jhTj-7js1M2jRU-ocA?pwd=hoop"
+download_label: "BEhop-LineArt_updating"
+download_code: "hoop"
+download_tip_zh: "点击按钮即可下载最新安装包。"
+download_tip_en: "Click the button to download the latest package."
 ---
 ### 中文介绍
 RU-LineArt 专注于把平面线稿图片转换为 Rhino 可编辑的 `.3dm` 开放 NURBS 曲线，帮助你从草图表达更快进入建模阶段。
 仓库地址：[https://github.com/BE-hop/RU-LineArt](https://github.com/BE-hop/RU-LineArt)
+下载包（百度网盘）：[{{ page.download_label }}]({{ page.download_url }})  
+提取码：`{{ page.download_code }}`
 
 ### 前后对比 / Before & After
 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin:12px 0 4px;">
@@ -45,6 +53,8 @@ RU-LineArt 专注于把平面线稿图片转换为 Rhino 可编辑的 `.3dm` 开
 ### English
 RU-LineArt converts planar sketch line images into editable open NURBS curves in Rhino (`.3dm`), reducing manual rebuild work between sketching and modeling.
 Repository: [https://github.com/BE-hop/RU-LineArt](https://github.com/BE-hop/RU-LineArt)
+Download package (Baidu Netdisk): [{{ page.download_label }}]({{ page.download_url }})  
+Access code: `{{ page.download_code }}`
 
 ### Highlights
 It supports topology-preserving crossing extraction, single or multi-curve export, and optional anti-jitter stabilization before fitting. Debug artifacts and reports make tuning and QA straightforward.

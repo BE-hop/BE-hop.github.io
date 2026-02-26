@@ -1,4 +1,51 @@
 {
-  "updatedAt": "2026-02-26T11:26:01.601Z",
-  "topics": []
+  "updatedAt": "2026-02-26T11:30:05.830Z",
+  "topics": [
+    {
+      "slug": "ai",
+      "category": "message",
+      "tags": [
+        "message"
+      ],
+      "author": {
+        "name": "behop",
+        "initials": "BE",
+        "role": {
+          "en": "Community",
+          "zh": "社区成员"
+        }
+      },
+      "stats": {
+        "replies": 0,
+        "views": 0
+      },
+      "date": "2026-02-26T10:39:13.604454+00:00",
+      "readTime": {
+        "en": "1 min",
+        "zh": "1 分钟"
+      },
+      "title": {
+        "en": "请问如何入门 AI景观设计？",
+        "zh": "请问如何入门 AI景观设计？"
+      },
+      "excerpt": {
+        "en": "test",
+        "zh": "test"
+      },
+      "content": [
+        {
+          "type": "h2",
+          "en": "Question",
+          "zh": "问题"
+        },
+        {
+          "type": "p",
+          "en": "test",
+          "zh": "test"
+        }
+      ],
+      "status": "approved",
+      "source": "community"
+    }
+  ]
 }

@@ -248,6 +248,7 @@
       content,
       status: toTrimmedString(item.status || config.topicInitialStatus || "approved") || "approved",
       source: toTrimmedString(item.source || "community") || "community",
+      localDraft: Boolean(item.localDraft),
     }
   }
 

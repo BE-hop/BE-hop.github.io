@@ -73,6 +73,7 @@
   let topicsHydrated = false
   let trackedTopicSlug = ""
   let activeTopic = null
+  const staticTopicSlugSet = new Set(staticTopics.map((topic) => topic?.slug).filter(Boolean))
 
   const mergeTopics = (...groups) => {
     const merged = []
@@ -93,10 +94,35 @@
     return Array.isArray(source) ? source : []
   }
 
+  const saveLocalTopics = (items) => {
+    try {
+      localStorage.setItem(localDraftKey, JSON.stringify(items || []))
+    } catch (error) {
+      // ignore storage quota and private mode errors
+    }
+  }
+
+  const isPersistentDraftTopic = (topic, approvedSlugSet = new Set()) => {
+    if (!topic?.slug) return false
+    if (!topic.localDraft) return false
+    if (staticTopicSlugSet.has(topic.slug) || approvedSlugSet.has(topic.slug)) return false
+
+    const status = String(topic.status || "").trim().toLowerCase()
+    if (status === "approved" || status === "published") return false
+
+    return true
+  }
+
+  const filterPersistentDraftTopics = (items, approvedSlugSet = new Set()) =>
+    (items || []).filter((topic) => isPersistentDraftTopic(topic, approvedSlugSet))
+
   const loadLocalTopics = () => {
     try {
       const parsed = JSON.parse(localStorage.getItem(localDraftKey) || "[]")
-      return normalizeTopicList(parsed)
+      const normalized = normalizeTopicList(parsed)
+      const filtered = filterPersistentDraftTopics(normalized).slice(0, 100)
+      if (filtered.length !== normalized.length) saveLocalTopics(filtered)
+      return filtered
     } catch (error) {
       return []
     }
@@ -1030,6 +1056,12 @@
       approvedComments = comments
       approvedMetrics = metrics
       approvedTopics = Array.isArray(fetchedTopics) ? fetchedTopics : []
+      const approvedSlugSet = new Set(approvedTopics.map((topic) => topic?.slug).filter(Boolean))
+      const cleanedLocalTopics = filterPersistentDraftTopics(localTopics, approvedSlugSet).slice(0, 100)
+      if (cleanedLocalTopics.length !== localTopics.length) {
+        localTopics = cleanedLocalTopics
+        saveLocalTopics(localTopics)
+      }
     } catch (error) {
       // keep fallback data
     }

@@ -54,6 +54,7 @@
   let approvedTopics = []
   let localTopics = []
   let topics = [...staticTopics]
+  const staticTopicSlugSet = new Set(staticTopics.map((topic) => topic?.slug).filter(Boolean))
 
   const emptyState = document.querySelector("[data-forum-empty]")
   const loadMore = document.querySelector("[data-forum-load-more]")
@@ -107,10 +108,27 @@
     return Array.isArray(source) ? source : []
   }
 
+  const isPersistentDraftTopic = (topic, approvedSlugSet = new Set()) => {
+    if (!topic?.slug) return false
+    if (!topic.localDraft) return false
+    if (staticTopicSlugSet.has(topic.slug) || approvedSlugSet.has(topic.slug)) return false
+
+    const status = String(topic.status || "").trim().toLowerCase()
+    if (status === "approved" || status === "published") return false
+
+    return true
+  }
+
+  const filterPersistentDraftTopics = (items, approvedSlugSet = new Set()) =>
+    (items || []).filter((topic) => isPersistentDraftTopic(topic, approvedSlugSet))
+
   const loadLocalTopics = () => {
     try {
       const parsed = parseJsonSafe(localStorage.getItem(localDraftKey) || "[]", [])
-      return normalizeTopicList(parsed)
+      const normalized = normalizeTopicList(parsed)
+      const filtered = filterPersistentDraftTopics(normalized).slice(0, 100)
+      if (filtered.length !== normalized.length) saveLocalTopics(filtered)
+      return filtered
     } catch (error) {
       return []
     }
@@ -142,7 +160,7 @@
   const upsertLocalTopic = (topic) => {
     if (!topic?.slug) return
 
-    localTopics = mergeTopics([topic], localTopics).slice(0, 100)
+    localTopics = filterPersistentDraftTopics(mergeTopics([topic], localTopics)).slice(0, 100)
     saveLocalTopics(localTopics)
     topics = mergeTopics(localTopics, approvedTopics, staticTopics)
   }
@@ -384,10 +402,6 @@
     link.querySelector("[data-topic-replies-value]").textContent = formatNumber(replies, lang)
     link.querySelector("[data-topic-views-value]").textContent = formatNumber(views, lang)
     link.querySelector("[data-topic-date-value]").textContent = formatTopicDateTag(topic.date, lang)
-
-    link.addEventListener("click", () => {
-      upsertLocalTopic(topic)
-    })
 
     article.appendChild(link)
     return article
@@ -642,6 +656,7 @@
           zh: shortExcerpt(message),
         },
         message,
+        localDraft: true,
       },
     ])
 
@@ -782,6 +797,12 @@
       approvedComments = comments
       approvedMetrics = metrics
       approvedTopics = Array.isArray(fetchedTopics) ? fetchedTopics : []
+      const approvedSlugSet = new Set(approvedTopics.map((topic) => topic?.slug).filter(Boolean))
+      const cleanedLocalTopics = filterPersistentDraftTopics(localTopics, approvedSlugSet).slice(0, 100)
+      if (cleanedLocalTopics.length !== localTopics.length) {
+        localTopics = cleanedLocalTopics
+        saveLocalTopics(localTopics)
+      }
       topics = mergeTopics(localTopics, approvedTopics, staticTopics)
       renderResult = renderList()
     } catch (error) {

@@ -5,7 +5,28 @@
   const menuToggle = document.querySelector("[data-menu-toggle]")
   const header = document.querySelector(".ai-header")
 
-  let currentLang = localStorage.getItem("behopAiLang") || "en"
+  const getStoredLang = () => {
+    try {
+      return localStorage.getItem("portfolioLang")
+        || localStorage.getItem("behopAiLang")
+        || localStorage.getItem("blogLang")
+        || "en"
+    } catch (error) {
+      return "en"
+    }
+  }
+
+  const syncStoredLang = (lang) => {
+    try {
+      localStorage.setItem("portfolioLang", lang)
+      localStorage.setItem("behopAiLang", lang)
+      localStorage.setItem("blogLang", lang)
+    } catch (error) {
+      // ignore storage errors
+    }
+  }
+
+  let currentLang = getStoredLang()
 
   const applyLanguage = (lang) => {
     currentLang = lang
@@ -22,7 +43,7 @@
       button.classList.toggle("is-active", button.dataset.lang === lang)
     })
 
-    localStorage.setItem("behopAiLang", lang)
+    syncStoredLang(lang)
     updateLightboxContent()
   }
 

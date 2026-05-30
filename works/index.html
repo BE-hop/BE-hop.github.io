@@ -1,0 +1,132 @@
+---
+layout: null
+title: "Works / 项目案例"
+description: "Selected landscape design, built projects, conceptual studies, and computational design experiments."
+permalink: /works/
+lang-switcher: true
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Works / 项目案例 | BEhooop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--background)",
+              foreground: "var(--foreground)",
+              card: "var(--card)",
+              "card-foreground": "var(--card-foreground)",
+              primary: "var(--primary)",
+              "primary-foreground": "var(--primary-foreground)",
+              secondary: "var(--secondary)",
+              muted: "var(--muted)",
+              "muted-foreground": "var(--muted-foreground)",
+              border: "var(--border)",
+            },
+            fontFamily: {
+              serif: ["Playfair Display", "serif"],
+              sans: ["Manrope", "sans-serif"],
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css">
+</head>
+<body class="works-page bg-background text-foreground">
+  {% include nav.html %}
+
+  <main>
+    <section class="px-6 pt-32 pb-16 lg:px-8 lg:pt-40 lg:pb-20 bg-secondary">
+      <div class="mx-auto max-w-7xl">
+        <p class="text-primary font-medium tracking-wide uppercase text-sm" data-en="Works" data-zh="项目案例">Works</p>
+        <div class="mt-5 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+          <div>
+            <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground text-balance" data-en="Works / Design Projects" data-zh="Works / 项目案例">Works / Design Projects</h1>
+          </div>
+          <p class="text-lg leading-relaxed text-muted-foreground" data-en="Selected landscape design, built projects, conceptual studies, and computational design experiments." data-zh="精选景观设计、落地项目、概念研究与计算化设计实验。">Selected landscape design, built projects, conceptual studies, and computational design experiments.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 py-12 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="mb-10 flex flex-wrap gap-2">
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground is-active" data-filter="all" data-en="All" data-zh="全部">All</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="private" data-en="Real / Built Projects" data-zh="真实 / 落地项目">Real / Built Projects</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="commercial" data-en="Landscape Design" data-zh="景观设计">Landscape Design</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="public" data-en="Academic / Conceptual" data-zh="学术 / 概念项目">Academic / Conceptual</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="ecological" data-en="Computational Design" data-zh="计算化设计">Computational Design</button>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {%- assign project_list = site.projects | sort: "order" -%}
+          {%- for project in project_list -%}
+          {%- assign cover_image = project.cover | default: project.image -%}
+          {%- assign project_type_zh = project.type_zh | default: project.project_type_zh | default: project.category_label_zh | default: project.type | default: project.project_type -%}
+          {%- assign project_type_en = project.type_en | default: project.project_type_en | default: project.category_label_en | default: project.type | default: project.project_type -%}
+          {%- assign location_zh = project.location_zh | default: project.location -%}
+          {%- assign location_en = project.location_en | default: project.location -%}
+          {%- assign role_zh = project.role_zh | default: project.role -%}
+          {%- assign role_en = project.role_en | default: project.role -%}
+          {%- assign summary_zh = project.summary_zh | default: project.summary | default: project.detail_zh -%}
+          {%- assign summary_en = project.summary_en | default: project.summary | default: project.detail_en -%}
+          {%- assign tag_list = project.tags | default: project.tools -%}
+          <article class="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-lg" data-project data-category="{{ project.category }}">
+            <a href="{{ project.url | prepend: site.baseurl }}" class="block no-underline">
+              {% if cover_image %}
+              <div class="aspect-[4/3] overflow-hidden bg-secondary">
+                <img src="{{ cover_image | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              </div>
+              {% endif %}
+              <div class="p-6">
+                <div class="mb-4 flex flex-wrap items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
+                  {% if project_type_zh or project_type_en %}
+                  <span data-en="{{ project_type_en }}" data-zh="{{ project_type_zh }}">{{ project_type_en | default: project_type_zh }}</span>
+                  {% endif %}
+                  {% if project.year %}<span>· {{ project.year }}</span>{% endif %}
+                  {% if location_zh or location_en %}<span data-en="· {{ location_en }}" data-zh="· {{ location_zh }}">· {{ location_en | default: location_zh }}</span>{% endif %}
+                </div>
+                <h2 class="font-serif text-2xl font-semibold text-foreground" data-en="{{ project.title_en }}" data-zh="{{ project.title_zh }}">{{ project.title_en | default: project.title_zh }}</h2>
+                {% if role_zh or role_en %}
+                <p class="mt-2 text-sm font-medium text-foreground/75" data-en="Role: {{ role_en }}" data-zh="角色：{{ role_zh }}">Role: {{ role_en | default: role_zh }}</p>
+                {% elsif project.meta_zh or project.meta_en %}
+                <p class="mt-2 text-sm text-muted-foreground" data-en="{{ project.meta_en }}" data-zh="{{ project.meta_zh }}">{{ project.meta_en | default: project.meta_zh }}</p>
+                {% endif %}
+                {% if summary_zh or summary_en %}
+                <p class="mt-4 text-sm leading-relaxed text-muted-foreground line-clamp-2" data-en="{{ summary_en }}" data-zh="{{ summary_zh }}">{{ summary_en | default: summary_zh }}</p>
+                {% endif %}
+                <div class="mt-5 flex flex-wrap gap-2">
+                  {% if tag_list %}
+                  {% for tag in tag_list limit: 4 %}
+                  <span class="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">{{ tag }}</span>
+                  {% endfor %}
+                  {% elsif project_type_zh or project_type_en %}
+                  <span class="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground" data-en="{{ project_type_en }}" data-zh="{{ project_type_zh }}">{{ project_type_en | default: project_type_zh }}</span>
+                  {% endif %}
+                </div>
+                <span class="mt-6 inline-flex items-center text-sm font-medium text-primary group-hover:text-primary/80" data-en="View Details" data-zh="查看详情">View Details</span>
+              </div>
+            </a>
+          </article>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script src="{{ site.baseurl }}/js/portfolio.js"></script>
+</body>
+</html>

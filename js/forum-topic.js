@@ -883,7 +883,7 @@
 
       const forumLink = document.createElement("a")
       forumLink.href = baseForum
-      forumLink.textContent = lang === "zh" ? "论坛" : "Forum"
+      forumLink.textContent = lang === "zh" ? "AI 情报" : "AI Digest"
       forumLink.className = "hover:text-white no-underline"
 
       const divider = document.createElement("span")

@@ -46,6 +46,28 @@ img {
   text-wrap: pretty;
 }
 
+h1,
+h2,
+h3,
+.ai-hero-title {
+  overflow-wrap: anywhere;
+}
+
+html[lang="zh"] h1,
+html[lang="zh"] h2,
+html[lang="zh"] h3,
+html[lang="zh"] .ai-hero-title {
+  letter-spacing: 0.01em;
+  line-height: 1.18;
+}
+
+html[lang="en"] h1,
+html[lang="en"] h2,
+html[lang="en"] h3,
+html[lang="en"] .ai-hero-title {
+  letter-spacing: -0.015em;
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

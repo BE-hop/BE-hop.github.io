@@ -50,10 +50,23 @@ layout: null
 <body class="bg-background text-foreground">
   {% include nav.html %}
 
+  {% assign cover_image = page.cover | default: page.image %}
+  {% assign subtitle_zh = page.subtitle_zh | default: page.subtitle %}
+  {% assign subtitle_en = page.subtitle_en | default: page.subtitle %}
+  {% assign summary_zh = page.summary_zh | default: page.summary %}
+  {% assign summary_en = page.summary_en | default: page.summary %}
+  {% assign problem_zh = page.problem_zh | default: page.problem.zh | default: page.problem %}
+  {% assign problem_en = page.problem_en | default: page.problem.en | default: page.problem %}
+  {% assign input_output_zh = page.input_output_zh | default: page.input_output.zh | default: page.input_output %}
+  {% assign input_output_en = page.input_output_en | default: page.input_output.en | default: page.input_output %}
+  {% assign demo_zh = page.demo_zh | default: page.demo.zh | default: page.demo %}
+  {% assign demo_en = page.demo_en | default: page.demo.en | default: page.demo %}
+  {% assign github_url = page.github_url | default: page.github | default: page.cta_url %}
+
   <main class="pt-24">
     <section class="px-6 py-16 lg:px-8">
       <div class="mx-auto max-w-6xl">
-        <a href="{{ site.baseurl }}/behop-ai-product/#products" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Back to Products" data-zh="返回产品列表">返回产品列表</a>
+        <a href="{{ site.baseurl }}/behop-ai-product/#products" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Back to AI Tools" data-zh="返回 AI 工具">返回 AI 工具</a>
 
         {% if page.download_url %}
         <div class="mt-6 rounded-2xl border border-accent/40 bg-accent/10 p-5">
@@ -71,25 +84,51 @@ layout: null
         {% endif %}
 
         <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:items-start">
+          {% if cover_image %}
           <div class="overflow-hidden rounded-2xl border border-border bg-card">
-            <img src="{{ page.image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" />
+            <img src="{{ cover_image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" />
           </div>
+          {% endif %}
 
           <div class="space-y-6">
+            {% if page.category_zh or page.category_en %}
             <span class="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-muted-foreground" data-en="{{ page.category_en }}" data-zh="{{ page.category_zh }}">{{ page.category_zh }}</span>
-            <h1 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" data-en="{{ page.title_en }}" data-zh="{{ page.title_zh }}">{{ page.title_zh }}</h1>
-            <p class="text-base text-muted-foreground leading-relaxed" data-en="{{ page.summary_en }}" data-zh="{{ page.summary_zh }}">{{ page.summary_zh }}</p>
+            {% endif %}
+            <h1 class="text-3xl font-bold tracking-tight text-foreground sm:text-5xl text-balance" data-en="{{ page.title_en }}" data-zh="{{ page.title_zh }}">{{ page.title_zh | default: page.title_en }}</h1>
+            {% if subtitle_zh or subtitle_en %}
+            <p class="text-lg text-foreground/85 leading-relaxed text-pretty" data-en="{{ subtitle_en }}" data-zh="{{ subtitle_zh }}">{{ subtitle_zh | default: subtitle_en }}</p>
+            {% endif %}
+            {% if summary_zh or summary_en %}
+            <p class="text-base text-muted-foreground leading-relaxed text-pretty" data-en="{{ summary_en }}" data-zh="{{ summary_zh }}">{{ summary_zh | default: summary_en }}</p>
+            {% endif %}
 
-            {% if page.chips %}
+            {% if page.status_zh or page.status_en or page.status or page.tags or page.chips %}
             <div class="flex flex-wrap gap-2">
+              {% if page.status_zh or page.status_en or page.status %}
+              <span class="inline-flex items-center rounded-md bg-accent px-2 py-1 text-xs font-semibold text-accent-foreground" data-en="{{ page.status_en | default: page.status }}" data-zh="{{ page.status_zh | default: page.status }}">{{ page.status_zh | default: page.status }}</span>
+              {% endif %}
+              {% if page.tags %}
+              {% for tag in page.tags %}
+              <span class="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs text-muted-foreground">{{ tag }}</span>
+              {% endfor %}
+              {% endif %}
+              {% if page.chips %}
               {% for chip in page.chips %}
               <span class="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs text-muted-foreground" data-en="{{ chip.en }}" data-zh="{{ chip.zh }}">{{ chip.zh }}</span>
               {% endfor %}
+              {% endif %}
             </div>
             {% endif %}
 
-            {% if page.cta_url %}
-            <a href="{{ page.cta_url }}" class="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent/90" data-en="{{ page.cta_en | default: 'Visit Product' }}" data-zh="{{ page.cta_zh | default: '访问产品' }}">{{ page.cta_zh | default: '访问产品' }}</a>
+            {% if github_url or page.download_url %}
+            <div class="flex flex-wrap gap-3">
+              {% if github_url %}
+              <a href="{{ github_url }}" class="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent/90" data-en="{{ page.cta_en | default: 'View GitHub' }}" data-zh="{{ page.cta_zh | default: '查看 GitHub' }}">{{ page.cta_zh | default: '查看 GitHub' }}</a>
+              {% endif %}
+              {% if page.download_url %}
+              <a href="{{ page.download_url }}" class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-2 text-sm font-semibold text-foreground hover:bg-secondary" data-en="Download" data-zh="下载">下载</a>
+              {% endif %}
+            </div>
             {% endif %}
           </div>
         </div>
@@ -97,8 +136,155 @@ layout: null
     </section>
 
     <section class="px-6 pb-20 lg:px-8">
-      <div class="mx-auto max-w-4xl space-y-6 text-muted-foreground leading-relaxed">
-        {{ content }}
+      <div class="mx-auto max-w-5xl space-y-8">
+        {% if problem_zh or problem_en %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Problem" data-zh="解决的问题">解决的问题</p>
+          <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ problem_en }}" data-zh="{{ problem_zh }}">{{ problem_zh | default: problem_en }}</p>
+        </section>
+        {% endif %}
+
+        {% if page.target_users %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Target Users" data-zh="目标用户">目标用户</p>
+          <div class="mt-5 grid gap-3 sm:grid-cols-2">
+            {% for item in page.target_users %}
+            <div class="rounded-xl bg-secondary p-4 text-sm leading-relaxed text-muted-foreground" data-en="{{ item.en | default: item }}" data-zh="{{ item.zh | default: item }}">{{ item.zh | default: item }}</div>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+
+        {% if page.workflow %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Workflow" data-zh="核心流程">核心流程</p>
+          <ol class="mt-5 grid gap-3 md:grid-cols-5">
+            {% for step in page.workflow %}
+            <li class="rounded-xl bg-secondary p-4">
+              <span class="text-xs text-muted-foreground">0{{ forloop.index }}</span>
+              <p class="mt-2 text-sm font-semibold text-foreground" data-en="{{ step.en | default: step }}" data-zh="{{ step.zh | default: step }}">{{ step.zh | default: step }}</p>
+            </li>
+            {% endfor %}
+          </ol>
+        </section>
+        {% endif %}
+
+        {% if page.features %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Features" data-zh="核心功能">核心功能</p>
+          <ul class="mt-5 grid gap-3 md:grid-cols-2">
+            {% for item in page.features %}
+            <li class="rounded-xl bg-secondary p-4 text-sm leading-relaxed text-muted-foreground" data-en="{{ item.en | default: item }}" data-zh="{{ item.zh | default: item }}">{{ item.zh | default: item }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+        {% endif %}
+
+        {% if page.tech_stack %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Tech Stack" data-zh="技术方向">技术方向</p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            {% for item in page.tech_stack %}
+            <span class="rounded-full bg-secondary px-3 py-1 text-sm text-muted-foreground" data-en="{{ item.en | default: item }}" data-zh="{{ item.zh | default: item }}">{{ item.zh | default: item }}</span>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+
+        {% if input_output_zh or input_output_en %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Input / Output" data-zh="输入 / 输出">输入 / 输出</p>
+          <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ input_output_en }}" data-zh="{{ input_output_zh }}">{{ input_output_zh | default: input_output_en }}</p>
+        </section>
+        {% endif %}
+
+        {% if page.before_image or page.after_image or demo_zh or demo_en %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Demo / Before & After" data-zh="演示 / 前后对比">演示 / 前后对比</p>
+          {% if page.before_image or page.after_image %}
+          <div class="mt-5 grid gap-4 md:grid-cols-2">
+            {% if page.before_image %}
+            <figure class="overflow-hidden rounded-xl bg-secondary">
+              <img src="{{ page.before_image | relative_url }}" alt="{{ page.before_label_en | default: 'Before' }}" class="h-80 w-full object-contain" />
+              <figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ page.before_label_en | default: 'Before' }}" data-zh="{{ page.before_label_zh | default: '输入 / Before' }}">{{ page.before_label_zh | default: '输入 / Before' }}</figcaption>
+            </figure>
+            {% endif %}
+            {% if page.after_image %}
+            <figure class="overflow-hidden rounded-xl bg-secondary">
+              <img src="{{ page.after_image | relative_url }}" alt="{{ page.after_label_en | default: 'After' }}" class="h-80 w-full object-contain" />
+              <figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ page.after_label_en | default: 'After' }}" data-zh="{{ page.after_label_zh | default: '输出 / After' }}">{{ page.after_label_zh | default: '输出 / After' }}</figcaption>
+            </figure>
+            {% endif %}
+          </div>
+          {% endif %}
+          {% if demo_zh or demo_en %}
+          <p class="mt-5 text-sm leading-relaxed text-muted-foreground" data-en="{{ demo_en }}" data-zh="{{ demo_zh }}">{{ demo_zh | default: demo_en }}</p>
+          {% endif %}
+        </section>
+        {% endif %}
+
+        {% if github_url or page.download_url %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="GitHub / Download" data-zh="代码 / 下载">代码 / 下载</p>
+          <div class="mt-5 flex flex-wrap gap-3">
+            {% if github_url %}
+            <a href="{{ github_url }}" class="inline-flex items-center justify-center rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent/90" data-en="{{ page.cta_en | default: 'View GitHub' }}" data-zh="{{ page.cta_zh | default: '查看 GitHub' }}">{{ page.cta_zh | default: '查看 GitHub' }}</a>
+            {% endif %}
+            {% if page.download_url %}
+            <a href="{{ page.download_url }}" class="inline-flex items-center justify-center rounded-full border border-border px-5 py-2 text-sm font-semibold text-foreground hover:bg-secondary" data-en="Download" data-zh="下载">下载</a>
+            {% endif %}
+          </div>
+        </section>
+        {% endif %}
+
+        {% if page.version_history %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Version History" data-zh="版本记录">版本记录</p>
+          <div class="mt-5 space-y-4">
+            {% for item in page.version_history %}
+            <article class="rounded-xl bg-secondary p-4">
+              <div class="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                {% if item.version %}<span>{{ item.version }}</span>{% endif %}
+                {% if item.date %}<span>· {{ item.date }}</span>{% endif %}
+              </div>
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground" data-en="{{ item.en | default: item }}" data-zh="{{ item.zh | default: item }}">{{ item.zh | default: item }}</p>
+            </article>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+
+        {% if page.limitations %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Limitations" data-zh="当前限制">当前限制</p>
+          <ul class="mt-5 space-y-3">
+            {% for item in page.limitations %}
+            <li class="text-sm leading-relaxed text-muted-foreground" data-en="{{ item.en | default: item }}" data-zh="{{ item.zh | default: item }}">{{ item.zh | default: item }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+        {% endif %}
+
+        {% if page.next_steps %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Next Steps" data-zh="下一步">下一步</p>
+          <ul class="mt-5 space-y-3">
+            {% for item in page.next_steps %}
+            <li class="text-sm leading-relaxed text-muted-foreground" data-en="{{ item.en | default: item }}" data-zh="{{ item.zh | default: item }}">{{ item.zh | default: item }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+        {% endif %}
+
+        {% assign body_content = content | strip %}
+        {% if body_content != "" %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Additional Notes" data-zh="补充说明">补充说明</p>
+          <div class="mt-5 space-y-6 text-muted-foreground leading-relaxed">
+            {{ content }}
+          </div>
+        </section>
+        {% endif %}
       </div>
     </section>
   </main>

@@ -1,7 +1,7 @@
 ---
 layout: null
-title: "Forum"
-description: "BEhop 社区论坛"
+title: "AI Digest"
+description: "AI 新闻、工具、趋势与设计行业应用观察"
 lang-switcher: true
 nav-theme: light
 ---
@@ -10,7 +10,7 @@ nav-theme: light
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BEhop 社区论坛 | BEhooop</title>
+  <title>BEhop AI Digest | BEhooop</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -58,11 +58,11 @@ nav-theme: light
       <img src="{{ site.baseurl }}/img/forum/behop-hero-bg.jpg" alt="BEhop 社区背景" class="w-full h-full object-cover" />
       <div class="absolute inset-0 bg-foreground/60"></div>
       <div class="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-4">
-        <span class="text-xs uppercase tracking-widest text-white/70" data-i18n="forum.hero.badge">BEhop 社区</span>
-        <h1 class="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-2 text-balance" data-i18n="forum.hero.title">论坛</h1>
-        <p class="text-sm md:text-base text-white/70 uppercase tracking-widest mb-3" data-i18n="forum.hero.subtitle">景观设计与 AI 交流社区</p>
+        <span class="text-xs uppercase tracking-widest text-white/70" data-i18n="forum.hero.badge">BEhop AI 情报</span>
+        <h1 class="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-2 text-balance" data-i18n="forum.hero.title">AI Digest</h1>
+        <p class="text-sm md:text-base text-white/70 uppercase tracking-widest mb-3" data-i18n="forum.hero.subtitle">AI news, tools, trends, and design applications</p>
         <p class="text-white/80 text-base md:text-lg max-w-2xl leading-relaxed" data-i18n="forum.hero.desc">
-          连接景观设计师与 AI 创新者，分享洞见与实践经验，共同塑造行业未来。
+          筛选 AI 新闻、工具、行业趋势、设计行业应用与技巧教程，并记录我对设计工作流的解读。
         </p>
       </div>
     </section>
@@ -72,7 +72,7 @@ nav-theme: light
         <div class="order-2 lg:order-1">
           <aside class="w-full lg:w-64 shrink-0">
             <div class="bg-card rounded-lg border border-border p-4">
-              <h2 class="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider" data-i18n="forum.categories.title">话题分类</h2>
+              <h2 class="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider" data-i18n="forum.categories.title">情报分类</h2>
               <nav class="flex flex-col gap-1">
                 <a href="{{ site.baseurl }}/forum/?category=all" data-category-link="all" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors text-left bg-primary text-primary-foreground no-underline" aria-current="page">
                   <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -143,7 +143,7 @@ nav-theme: light
             </div>
 
             <div class="bg-card rounded-lg border border-border p-4 mt-4">
-              <h2 class="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider" data-i18n="forum.stats.title">社区数据</h2>
+              <h2 class="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider" data-i18n="forum.stats.title">内容数据</h2>
               <div class="grid grid-cols-2 gap-4 text-center">
                 <div>
                   <div class="text-2xl font-semibold text-foreground" data-forum-stat-members>0</div>
@@ -168,7 +168,7 @@ nav-theme: light
 
         <div class="order-1 lg:order-2 flex-1">
           <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-semibold text-foreground" data-i18n="forum.list.title">最新讨论</h2>
+            <h2 class="text-lg font-semibold text-foreground" data-i18n="forum.list.title">最新情报</h2>
             <div class="flex items-center gap-2">
               <button type="button" data-compose-open class="inline-flex items-center gap-1.5 h-8 px-3 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity">
                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -204,12 +204,12 @@ nav-theme: light
                 <path d="M9 9h.01"></path>
                 <path d="M15 9h.01"></path>
               </svg>
-              <span data-i18n="forum.empty">暂无符合条件的话题</span>
+              <span data-i18n="forum.empty">暂无符合条件的内容</span>
             </div>
           </div>
 
           <div class="mt-6 text-center">
-            <a href="{{ site.baseurl }}/forum/?page=2" data-forum-load-more class="inline-flex items-center justify-center px-8 h-10 text-sm font-medium border border-border rounded-md bg-transparent hover:bg-muted no-underline" data-i18n="forum.actions.loadMore">Load More Topics</a>
+            <a href="{{ site.baseurl }}/forum/?page=2" data-forum-load-more class="inline-flex items-center justify-center px-8 h-10 text-sm font-medium border border-border rounded-md bg-transparent hover:bg-muted no-underline" data-i18n="forum.actions.loadMore">Load More Items</a>
           </div>
         </div>
 
@@ -217,7 +217,7 @@ nav-theme: light
           <aside class="w-full lg:w-72 shrink-0">
             <div class="bg-card rounded-lg border border-border p-4">
               <div class="flex items-center justify-between mb-4">
-                <h2 class="text-sm font-semibold text-foreground uppercase tracking-wider" data-i18n="forum.news.title">Industry News</h2>
+                <h2 class="text-sm font-semibold text-foreground uppercase tracking-wider" data-i18n="forum.news.title">AI News & Tools</h2>
                 <a href="{{ site.baseurl }}/forum/?category=news&sort=latest" class="text-xs text-primary hover:underline flex items-center gap-1 no-underline">
                   <span data-i18n="forum.news.viewAll">View All</span>
                   <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -252,7 +252,7 @@ nav-theme: light
             </div>
 
             <div class="bg-card rounded-lg border border-border p-4 mt-4">
-              <h2 class="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider" data-i18n="forum.contributors.title">Top Contributors</h2>
+              <h2 class="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider" data-i18n="forum.contributors.title">Focus Areas</h2>
               <div class="flex flex-col gap-3" data-forum-contributors>
                 <div class="text-xs text-muted-foreground">-</div>
               </div>
@@ -272,13 +272,13 @@ nav-theme: light
               </div>
               <span class="text-lg font-semibold text-foreground">BEhop</span>
             </a>
-            <p class="text-sm text-muted-foreground leading-relaxed" data-i18n="forum.footer.tagline">Connecting landscape professionals with AI innovation for a sustainable future.</p>
+            <p class="text-sm text-muted-foreground leading-relaxed" data-i18n="forum.footer.tagline">Curated AI signals, tool notes, trend observations, and design workflow applications.</p>
           </div>
 
           <div>
-            <h3 class="text-sm font-semibold text-foreground mb-3" data-i18n="forum.footer.community">Community</h3>
+            <h3 class="text-sm font-semibold text-foreground mb-3" data-i18n="forum.footer.community">Digest</h3>
             <ul class="space-y-2 text-sm text-muted-foreground">
-              <li><a href="{{ site.baseurl }}/forum/" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.forum">Forum</a></li>
+              <li><a href="{{ site.baseurl }}/forum/" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.forum">AI Digest</a></li>
               <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=members" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.members">Members</a></li>
               <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=guidelines" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.guidelines">Guidelines</a></li>
               <li><a href="{{ site.baseurl }}/forum/coming-soon/?item=events" class="hover:text-primary transition-colors no-underline" data-i18n="forum.footer.link.events">Events</a></li>

@@ -6,6 +6,31 @@ nav-order: 10
 lang-switcher: true
 ---
 
+<style>
+  .post-preview-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 0;
+  }
+
+  .post-preview-tag {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 999px;
+    color: #6b7280;
+    font-size: 12px;
+    line-height: 1;
+    padding: 6px 10px;
+    text-decoration: none;
+  }
+
+  .post-preview-tag:hover {
+    color: #111827;
+    border-color: rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+  }
+</style>
+
 {% for post in site.posts %}
 {% if post.lang != 'en' %}
 <div class="post-preview">
@@ -25,6 +50,13 @@ lang-switcher: true
     <p class="post-meta">
         Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}
     </p>
+    {% if post.tags %}
+    <div class="post-preview-tags" aria-label="Post tags">
+        {% for tag in post.tags %}
+        <a class="post-preview-tag" href="{{ site.baseurl }}/archive/?tag={{ tag | url_encode }}">{{ tag }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
 <hr>
 {% endif %}
@@ -67,11 +99,15 @@ lang-switcher: true
         btn.classList.toggle('is-active', btn.getAttribute('data-blog-lang') === lang);
       });
       localStorage.setItem('blogLang', lang);
+      localStorage.setItem('portfolioLang', lang);
+      localStorage.setItem('behopAiLang', lang);
     }
 
     function setLang(lang) {
       if (lang !== current) {
         localStorage.setItem('blogLang', lang);
+        localStorage.setItem('portfolioLang', lang);
+        localStorage.setItem('behopAiLang', lang);
         window.location.href = paths[lang];
         return;
       }
@@ -84,7 +120,7 @@ lang-switcher: true
       });
     });
 
-    var stored = localStorage.getItem('blogLang') || fallback;
+    var stored = localStorage.getItem('portfolioLang') || localStorage.getItem('blogLang') || localStorage.getItem('behopAiLang') || fallback;
     if (stored !== current) {
       window.location.href = paths[stored];
       return;

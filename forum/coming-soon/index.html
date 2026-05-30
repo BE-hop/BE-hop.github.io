@@ -1,7 +1,7 @@
 ---
 layout: null
-title: "Forum Coming Soon"
-description: "BEhop 论坛功能开发中"
+title: "AI Digest Coming Soon"
+description: "BEhop AI Digest 功能开发中"
 lang-switcher: true
 nav-theme: light
 ---
@@ -10,7 +10,7 @@ nav-theme: light
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BEhop 论坛 | 功能开发中</title>
+  <title>BEhop AI Digest | 功能开发中</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -47,14 +47,14 @@ nav-theme: light
 
   <main class="min-h-screen max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="bg-card rounded-2xl border border-border p-6 md:p-10">
-      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground uppercase tracking-wider">Forum</span>
+      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground uppercase tracking-wider">AI Digest</span>
       <h1 class="mt-4 text-2xl md:text-4xl font-semibold tracking-tight" data-item-title>功能开发中</h1>
       <p class="mt-4 text-sm md:text-base text-muted-foreground leading-relaxed" data-item-desc>
-        该功能页面正在开发中，你可以先返回论坛浏览已上线的内容。
+        该功能页面正在开发中，你可以先返回 AI Digest 浏览已上线的内容。
       </p>
 
       <div class="mt-8 flex flex-col sm:flex-row gap-3">
-        <a href="{{ site.baseurl }}/forum/" class="inline-flex items-center justify-center px-5 h-10 rounded-md bg-primary text-primary-foreground text-sm font-medium no-underline">返回论坛</a>
+        <a href="{{ site.baseurl }}/forum/" class="inline-flex items-center justify-center px-5 h-10 rounded-md bg-primary text-primary-foreground text-sm font-medium no-underline">返回 AI Digest</a>
         <a href="{{ site.baseurl }}/forum/?sort=latest" class="inline-flex items-center justify-center px-5 h-10 rounded-md border border-border text-sm font-medium text-foreground hover:bg-muted no-underline">查看最新话题</a>
       </div>
     </div>
@@ -64,7 +64,7 @@ nav-theme: light
   <script>
     (() => {
       const item = new URLSearchParams(window.location.search).get("item") || "feature"
-      const lang = localStorage.getItem("portfolioLang") || "zh"
+      const lang = localStorage.getItem("portfolioLang") || localStorage.getItem("blogLang") || localStorage.getItem("behopAiLang") || "en"
 
       const labels = {
         members: {
@@ -72,8 +72,8 @@ nav-theme: light
           en: { title: "Members Center Coming Soon", desc: "Member profiles, levels, and contribution rankings are under development." },
         },
         guidelines: {
-          zh: { title: "社区指南开发中", desc: "论坛规范与发帖建议页面正在建设中。" },
-          en: { title: "Guidelines Coming Soon", desc: "Forum rules and posting guidelines are being prepared." },
+          zh: { title: "内容指南开发中", desc: "AI 情报筛选标准与提交建议页面正在建设中。" },
+          en: { title: "Guidelines Coming Soon", desc: "AI Digest curation and submission guidelines are being prepared." },
         },
         events: {
           zh: { title: "活动页开发中", desc: "线上分享与线下活动日程功能正在建设中。" },
@@ -112,8 +112,8 @@ nav-theme: light
           en: { title: "Cookies Page Coming Soon", desc: "Cookie usage details are under development." },
         },
         feature: {
-          zh: { title: "功能开发中", desc: "该功能页面正在开发中，你可以先返回论坛浏览已上线的内容。" },
-          en: { title: "Feature Coming Soon", desc: "This feature page is under development. You can return to the forum for available content." },
+          zh: { title: "功能开发中", desc: "该功能页面正在开发中，你可以先返回 AI Digest 浏览已上线的内容。" },
+          en: { title: "Feature Coming Soon", desc: "This feature page is under development. You can return to AI Digest for available content." },
         },
       }
 
@@ -123,7 +123,7 @@ nav-theme: light
 
       if (title) title.textContent = copy.title
       if (desc) desc.textContent = copy.desc
-      document.title = `BEhop Forum | ${copy.title}`
+      document.title = `BEhop AI Digest | ${copy.title}`
     })()
   </script>
 </body>

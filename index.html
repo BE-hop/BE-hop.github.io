@@ -58,55 +58,92 @@ lang-switcher: true
         <div class="absolute inset-0 bg-gradient-to-b from-foreground/50 via-foreground/30 to-foreground/60"></div>
       </div>
 
-      <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-20">
+      <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-10">
         <div class="max-w-4xl">
           <div class="space-y-8">
             <div class="hero-badge inline-flex items-center gap-2 bg-card/10 border border-card/20 rounded-full px-4 py-2">
               <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-              <span class="text-sm text-card font-medium tracking-wide" data-i18n="hero.subtitle">让自然与生活和谐共生</span>
+              <span class="text-sm text-card font-medium tracking-wide" data-i18n="hero.subtitle">景观设计师 / AI工具开发者 / 计算化设计实践者</span>
             </div>
 
             <div class="space-y-6">
-              <h1 class="hero-title font-serif text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-card tracking-tight" data-i18n="hero.title">BEhop 设计</h1>
-              <p class="max-w-2xl text-lg md:text-xl text-card/85 leading-relaxed text-pretty" data-i18n="hero.description">BEhop 专注于创造融合自然之美与功能性的景观设计，为每一个空间赋予独特的生命力。十年深耕，百余项目，只为呈现人与自然的完美对话。</p>
+              <h1 class="hero-title font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-card tracking-tight">
+                <span class="hero-title-line" data-i18n="hero.title.line1">Landscape Designer</span>
+                <span class="hero-title-line" data-i18n="hero.title.line2">AI Tool Builder</span>
+                <span class="hero-title-line" data-i18n="hero.title.line3">Computational Design Practitioner</span>
+              </h1>
+              <p class="max-w-3xl text-lg md:text-xl text-card/85 leading-relaxed text-pretty" data-i18n="hero.description">I explore how AI, computation, and visual representation can reshape the workflow of landscape design — from sketches and images to editable spatial models.</p>
             </div>
 
-            <div class="flex flex-col sm:flex-row items-start gap-4 pt-4">
-              <a href="#projects" class="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-14 text-base font-medium rounded-lg transition-colors" data-i18n="hero.cta">探索作品</a>
-              <a href="#about" class="inline-flex items-center gap-3 text-card hover:bg-card/10 hover:text-card px-6 h-14 text-base rounded-lg transition-colors">
-                <span class="w-12 h-12 rounded-full border-2 border-card/50 flex items-center justify-center">
-                  <svg class="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24">
+            <div class="hero-actions pt-4" aria-label="Hero actions">
+              <a href="{{ site.baseurl }}/behop-ai-product/" class="hero-action hero-action--primary" data-i18n="hero.cta">Explore AI Tools</a>
+              <a href="{{ site.baseurl }}/works/" class="hero-action hero-action--ghost" data-i18n="hero.cta2">View Works</a>
+              <a href="#contact" class="hero-action hero-action--link">
+                <span class="hero-action-icon">
+                  <svg class="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24">
                     <polygon points="6,4 20,12 6,20" />
                   </svg>
                 </span>
-                <span data-i18n="hero.cta2">了解更多</span>
+                <span data-i18n="hero.cta3">Contact Me</span>
+              </a>
+              <a href="#projects" class="hero-action hero-action--scroll">
+                <span data-i18n="hero.scroll">Scroll</span>
+                <svg class="w-4 h-4 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <polyline points="19 12 12 19 5 12" />
+                </svg>
               </a>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
-        <a href="#projects" class="flex flex-col items-center gap-3 text-card/70 hover:text-card transition-colors group">
-          <span class="text-xs tracking-widest uppercase" data-i18n="hero.scroll">Scroll</span>
-          <div class="w-6 h-10 rounded-full border-2 border-card/30 flex items-start justify-center p-2 group-hover:border-card/50 transition-colors">
-            <svg class="w-3 h-3 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <polyline points="19 12 12 19 5 12" />
-            </svg>
-          </div>
-        </a>
-      </div>
-
       <div class="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-8 z-10">
         <div class="text-right">
-          <div class="font-serif text-4xl font-bold text-card">120+</div>
-          <div class="text-xs text-card/60 uppercase tracking-wider" data-i18n="about.stats.projects">案例成果</div>
+          <div class="font-serif text-4xl font-bold text-card">AI</div>
+          <div class="text-xs text-card/60 uppercase tracking-wider" data-i18n="hero.side.tools">Tools</div>
         </div>
         <div class="w-px h-16 bg-card/20 self-end"></div>
         <div class="text-right">
-          <div class="font-serif text-4xl font-bold text-card">10+</div>
-          <div class="text-xs text-card/60 uppercase tracking-wider" data-i18n="about.stats.years">流程沉淀</div>
+          <div class="font-serif text-4xl font-bold text-card">3D</div>
+          <div class="text-xs text-card/60 uppercase tracking-wider" data-i18n="hero.side.workflow">Workflow</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ai-tools" class="py-24 lg:py-28 bg-secondary">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
+          <div class="space-y-4">
+            <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="aiTools.kicker">AI Tools</p>
+            <h2 class="font-serif text-4xl md:text-5xl font-bold text-foreground text-balance" data-i18n="aiTools.title">Featured AI Tools</h2>
+            <p class="text-muted-foreground text-lg max-w-2xl" data-i18n="aiTools.subtitle">Tools and experiments for design workflows, Rhino, Grasshopper, image-to-model conversion, and automated visual representation.</p>
+          </div>
+          <a href="{{ site.baseurl }}/behop-ai-product/" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors" data-i18n="aiTools.viewAll">Explore AI Tools</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {%- assign featured_tools = site.ai_products | sort: "order" -%}
+          {%- for tool in featured_tools limit:4 -%}
+          {%- assign tool_cover = tool.cover | default: tool.image -%}
+          <a href="{{ tool.url | prepend: site.baseurl }}" class="group block overflow-hidden rounded-xl bg-card border border-border no-underline hover:border-primary/40 hover:shadow-lg transition-all">
+            {% if tool_cover %}
+            <div class="aspect-[4/3] overflow-hidden bg-secondary">
+              <img src="{{ tool_cover | relative_url }}" alt="{{ tool.title_en | default: tool.title_zh }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            </div>
+            {% endif %}
+            <div class="p-5">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <span class="text-xs uppercase tracking-wider text-primary" data-zh="{{ tool.category_zh }}" data-en="{{ tool.category_en }}">{{ tool.category_zh }}</span>
+                {% if tool.order == 0 %}
+                <span class="rounded-full bg-primary/10 px-2 py-1 text-xs text-primary">Featured</span>
+                {% endif %}
+              </div>
+              <h3 class="font-serif text-xl font-semibold text-foreground" data-zh="{{ tool.title_zh }}" data-en="{{ tool.title_en }}">{{ tool.title_zh }}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-2" data-zh="{{ tool.summary_zh }}" data-en="{{ tool.summary_en }}">{{ tool.summary_zh }}</p>
+            </div>
+          </a>
+          {%- endfor -%}
         </div>
       </div>
     </section>
@@ -115,9 +152,9 @@ lang-switcher: true
       <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
           <div class="space-y-4">
-            <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="nav.portfolio">Portfolio</p>
-            <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance" data-i18n="projects.title">精选项目</h2>
-            <p class="text-muted-foreground text-lg max-w-xl" data-i18n="projects.subtitle">每一个设计都是对自然与空间的深度理解</p>
+            <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="nav.portfolio">Works</p>
+            <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance" data-i18n="projects.title">Featured Works</h2>
+            <p class="text-muted-foreground text-lg max-w-xl" data-i18n="projects.subtitle">Selected landscape design, built projects, conceptual studies, and computational design experiments.</p>
           </div>
 
           <div class="flex flex-wrap gap-2">
@@ -132,9 +169,12 @@ lang-switcher: true
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {%- assign project_list = site.projects | sort: "order" -%}
           {%- for project in project_list -%}
+          {%- assign project_cover = project.cover | default: project.image -%}
           <a href="{{ project.url | prepend: site.baseurl }}" class="group relative block overflow-hidden rounded-xl cursor-pointer no-underline {% if project.featured %}md:col-span-2 md:row-span-2{% endif %}" data-project data-category="{{ project.category }}" data-i18n-aria="projects.viewProject" aria-label="查看项目">
             <div class="relative w-full {% if project.featured %}aspect-square md:aspect-[4/3]{% else %}aspect-[4/3]{% endif %}">
-              <img src="{{ project.image | relative_url }}" alt="{{ project.title_en }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              {% if project_cover %}
+              <img src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              {% endif %}
               <div class="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent group-hover:from-foreground/90 group-hover:via-foreground/50 transition-all duration-500"></div>
             </div>
             <div class="absolute inset-0 p-6 lg:p-8 flex flex-col justify-end">
@@ -160,7 +200,59 @@ lang-switcher: true
         </div>
 
         <div class="mt-12 text-center">
-          <a href="#" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors group" data-i18n="projects.viewAll">查看全部</a>
+          <a href="{{ site.baseurl }}/works/" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors group" data-i18n="projects.viewAll">View All Works</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="updates" class="py-24 lg:py-28 bg-secondary">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-8">
+          <div class="bg-card rounded-2xl border border-border p-6 lg:p-8">
+            <div class="mb-6 flex items-end justify-between gap-4">
+              <div>
+                <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="latestBlog.kicker">Blog</p>
+                <h2 class="font-serif text-3xl font-bold text-foreground" data-i18n="latestBlog.title">Latest Blog</h2>
+              </div>
+              <a href="{{ site.baseurl }}/blog/" class="text-sm font-medium text-primary hover:text-primary/80" data-i18n="latestBlog.viewAll">All Posts</a>
+            </div>
+            <div class="space-y-5">
+              {%- assign latest_posts = site.posts | where: "lang", "en" -%}
+              {%- for post in latest_posts limit:3 -%}
+              <article class="border-t border-border pt-5 first:border-t-0 first:pt-0">
+                <a href="{{ post.url | prepend: site.baseurl }}" class="group no-underline">
+                  <time class="text-xs uppercase tracking-wider text-muted-foreground">{{ post.date | date: "%b %-d, %Y" }}</time>
+                  <h3 class="mt-2 text-lg font-semibold text-foreground group-hover:text-primary transition-colors">{{ post.title }}</h3>
+                  {% if post.subtitle %}
+                  <p class="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">{{ post.subtitle }}</p>
+                  {% endif %}
+                </a>
+              </article>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          <div class="bg-card rounded-2xl border border-border p-6 lg:p-8">
+            <div class="mb-6 flex items-end justify-between gap-4">
+              <div>
+                <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="digest.kicker">AI Digest</p>
+                <h2 class="font-serif text-3xl font-bold text-foreground" data-i18n="digest.title">Latest AI Digest</h2>
+              </div>
+              <a href="{{ site.baseurl }}/forum/" class="text-sm font-medium text-primary hover:text-primary/80" data-i18n="digest.viewAll">Open Digest</a>
+            </div>
+            <div class="grid gap-4">
+              <a href="{{ site.baseurl }}/forum/" class="block rounded-xl border border-border bg-secondary/60 p-5 no-underline hover:border-primary/40 transition-colors">
+                <span class="text-xs uppercase tracking-wider text-primary" data-i18n="digest.card1.kicker">AI Tools</span>
+                <h3 class="mt-2 text-lg font-semibold text-foreground" data-i18n="digest.card1.title">Curated signals on AI tools, design workflow, and industry applications</h3>
+                <p class="mt-2 text-sm leading-relaxed text-muted-foreground" data-i18n="digest.card1.desc">A lightweight entry for AI news, tool notes, trends, design applications, and practical tutorials.</p>
+              </a>
+              <a href="{{ site.baseurl }}/forum/" class="block rounded-xl border border-border bg-secondary/60 p-5 no-underline hover:border-primary/40 transition-colors">
+                <span class="text-xs uppercase tracking-wider text-primary" data-i18n="digest.card2.kicker">AI Design Thinking</span>
+                <h3 class="mt-2 text-lg font-semibold text-foreground" data-i18n="digest.card2.title">From geometry algorithms to design rules</h3>
+                <p class="mt-2 text-sm leading-relaxed text-muted-foreground" data-i18n="digest.card2.desc">Notes on how AI moves from drawing faster to encoding design cognition and decision rules.</p>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -181,10 +273,10 @@ lang-switcher: true
           <div class="space-y-8 lg:pt-8">
             <div class="space-y-4">
             <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="about.title">关于 BEhop</p>
-              <h2 class="font-serif text-4xl md:text-5xl font-bold text-foreground text-balance leading-tight" data-i18n="about.subtitle">专注展示 AI 产品驱动的创作成果</h2>
+              <h2 class="font-serif text-4xl md:text-5xl font-bold text-foreground text-balance leading-tight" data-i18n="about.subtitle">景观设计师 / AI工具开发者 / 计算化设计实践者</h2>
             </div>
 
-            <p class="text-muted-foreground leading-relaxed text-lg text-pretty" data-i18n="about.description">BEhop 当前定位为 AI 创作展示平台，重点分享基于 AI 产品与工作流完成的项目成果、实验过程和方法复盘。内容目标是沉淀可复用经验，而非面向外部的业务承接页面。</p>
+            <p class="text-muted-foreground leading-relaxed text-lg text-pretty" data-i18n="about.description">我关注 AI、计算化工具与视觉表达如何改变景观设计工作流，尤其是从草图、图像到可编辑空间模型的转化过程。</p>
 
             <div class="space-y-4 pt-4">
               <h3 class="font-serif text-xl font-semibold text-foreground" data-i18n="about.philosophy">创作方法</h3>
@@ -346,7 +438,7 @@ lang-switcher: true
             </div>
             <span class="font-serif text-2xl font-semibold" data-i18n="nav.brand">BEhop 设计</span>
           </a>
-          <p class="text-card/70 leading-relaxed max-w-sm" data-i18n="footer.description">专注于展示 AI 产品驱动的创作成果与方法沉淀，持续分享可复用的工作流与实践经验。</p>
+          <p class="text-card/70 leading-relaxed max-w-sm" data-i18n="footer.description">景观设计师、AI 工具开发者与计算化设计实践者，持续记录设计项目、工具开发和研究思考。</p>
           <div class="flex gap-3 pt-2">
             <a href="#" class="w-11 h-11 rounded-full bg-card/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label="Instagram">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -370,10 +462,12 @@ lang-switcher: true
         <div class="lg:col-span-4">
           <h4 class="font-medium text-sm uppercase tracking-wider text-card/50 mb-5" data-i18n="footer.company">关于 BEhop</h4>
           <nav class="flex flex-col gap-3">
-            <a href="#about" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.about">关于 BEhop</a>
-            <a href="#projects" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.projects">项目作品</a>
-            <a href="#contact" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.contact">联系 BEhop</a>
+            <a href="{{ site.baseurl }}/behop-ai-product/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.ai">AI Tools</a>
+            <a href="{{ site.baseurl }}/works/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.projects">Works</a>
             <a href="{{ site.baseurl }}/blog/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.blog">Blog</a>
+            <a href="{{ site.baseurl }}/forum/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.forum">AI Digest</a>
+            <a href="{{ site.baseurl }}/about/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.about">About</a>
+            <a href="#contact" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.contact">联系 BEhop</a>
           </nav>
         </div>
 

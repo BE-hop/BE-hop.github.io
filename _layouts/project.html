@@ -47,29 +47,85 @@ layout: null
   <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
   <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css">
 </head>
-<body class="bg-background text-foreground">
+<body class="project-detail-page bg-background text-foreground">
   {% include nav.html %}
+
+  {% assign cover_image = page.cover | default: page.image %}
+  {% assign project_type_zh = page.type_zh | default: page.project_type_zh | default: page.category_label_zh | default: page.type | default: page.project_type %}
+  {% assign project_type_en = page.type_en | default: page.project_type_en | default: page.category_label_en | default: page.type | default: page.project_type %}
+  {% assign summary_zh = page.summary_zh | default: page.summary | default: page.detail_zh %}
+  {% assign summary_en = page.summary_en | default: page.summary | default: page.detail_en %}
+  {% assign context_zh = page.context_zh | default: page.context.zh | default: page.context %}
+  {% assign context_en = page.context_en | default: page.context.en | default: page.context %}
+  {% assign problem_zh = page.problem_zh | default: page.problem.zh | default: page.problem %}
+  {% assign problem_en = page.problem_en | default: page.problem.en | default: page.problem %}
+  {% assign concept_zh = page.concept_zh | default: page.concept.zh | default: page.concept %}
+  {% assign concept_en = page.concept_en | default: page.concept.en | default: page.concept %}
+  {% assign strategy_zh = page.design_strategy_zh | default: page.design_strategy.zh | default: page.design_strategy %}
+  {% assign strategy_en = page.design_strategy_en | default: page.design_strategy.en | default: page.design_strategy %}
+  {% assign outcome_zh = page.outcome_zh | default: page.outcome.zh | default: page.outcome %}
+  {% assign outcome_en = page.outcome_en | default: page.outcome.en | default: page.outcome %}
+  {% assign reflection_zh = page.reflection_zh | default: page.reflection.zh | default: page.reflection %}
+  {% assign reflection_en = page.reflection_en | default: page.reflection.en | default: page.reflection %}
+  {% assign credits_zh = page.credits_zh | default: page.credits.zh | default: page.credits %}
+  {% assign credits_en = page.credits_en | default: page.credits.en | default: page.credits %}
 
   <main class="pt-24">
     <section class="px-6 py-16 lg:px-8">
       <div class="mx-auto max-w-6xl">
-        <a href="{{ site.baseurl }}/#projects" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Back to Projects" data-zh="返回项目作品">返回项目作品</a>
+        <a href="{{ site.baseurl }}/works/" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Back to Works" data-zh="返回项目案例">返回项目案例</a>
 
         <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:items-start">
+          {% if cover_image %}
           <div class="overflow-hidden rounded-2xl border border-border bg-card">
-            <img src="{{ page.image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" />
+            <img src="{{ cover_image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" />
           </div>
+          {% endif %}
 
           <div class="space-y-6">
-            <span class="text-xs font-medium uppercase tracking-widest text-primary" data-en="{{ page.category_label_en }}" data-zh="{{ page.category_label_zh }}">{{ page.category_label_zh }}</span>
-            <h1 class="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl" data-en="{{ page.title_en }}" data-zh="{{ page.title_zh }}">{{ page.title_zh }}</h1>
-            <p class="text-muted-foreground" data-en="{{ page.meta_en }}" data-zh="{{ page.meta_zh }}">{{ page.meta_zh }}</p>
-            <p class="text-muted-foreground leading-relaxed" data-en="{{ page.detail_en }}" data-zh="{{ page.detail_zh }}">{{ page.detail_zh }}</p>
+            {% if project_type_zh or project_type_en %}
+            <span class="text-xs font-medium uppercase tracking-widest text-primary" data-en="{{ project_type_en }}" data-zh="{{ project_type_zh }}">{{ project_type_zh | default: project_type_en }}</span>
+            {% endif %}
+            <h1 class="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-5xl text-balance" data-en="{{ page.title_en }}" data-zh="{{ page.title_zh }}">{{ page.title_zh | default: page.title_en }}</h1>
+            {% if page.subtitle_zh or page.subtitle_en or page.subtitle %}
+            <p class="text-lg leading-relaxed text-foreground/85" data-en="{{ page.subtitle_en | default: page.subtitle }}" data-zh="{{ page.subtitle_zh | default: page.subtitle }}">{{ page.subtitle_zh | default: page.subtitle | default: page.subtitle_en }}</p>
+            {% endif %}
+            {% if summary_zh or summary_en %}
+            <p class="text-muted-foreground leading-relaxed text-pretty" data-en="{{ summary_en }}" data-zh="{{ summary_zh }}">{{ summary_zh | default: summary_en }}</p>
+            {% endif %}
 
-            {% if page.year %}
-            <div class="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">
-              <span data-en="Year" data-zh="年份">年份</span>
-              <span>{{ page.year }}</span>
+            <dl class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {% if project_type_zh or project_type_en %}
+              <div class="rounded-xl bg-secondary p-4">
+                <dt class="text-xs uppercase tracking-widest text-muted-foreground" data-en="Type" data-zh="类型">类型</dt>
+                <dd class="mt-1 text-sm font-semibold text-foreground" data-en="{{ project_type_en }}" data-zh="{{ project_type_zh }}">{{ project_type_zh | default: project_type_en }}</dd>
+              </div>
+              {% endif %}
+              {% if page.year %}
+              <div class="rounded-xl bg-secondary p-4">
+                <dt class="text-xs uppercase tracking-widest text-muted-foreground" data-en="Year" data-zh="年份">年份</dt>
+                <dd class="mt-1 text-sm font-semibold text-foreground">{{ page.year }}</dd>
+              </div>
+              {% endif %}
+              {% if page.location_zh or page.location_en or page.location %}
+              <div class="rounded-xl bg-secondary p-4">
+                <dt class="text-xs uppercase tracking-widest text-muted-foreground" data-en="Location" data-zh="地点">地点</dt>
+                <dd class="mt-1 text-sm font-semibold text-foreground" data-en="{{ page.location_en | default: page.location }}" data-zh="{{ page.location_zh | default: page.location }}">{{ page.location_zh | default: page.location | default: page.location_en }}</dd>
+              </div>
+              {% endif %}
+              {% if page.role_zh or page.role_en or page.role %}
+              <div class="rounded-xl bg-secondary p-4">
+                <dt class="text-xs uppercase tracking-widest text-muted-foreground" data-en="Role" data-zh="角色">角色</dt>
+                <dd class="mt-1 text-sm font-semibold text-foreground" data-en="{{ page.role_en | default: page.role }}" data-zh="{{ page.role_zh | default: page.role }}">{{ page.role_zh | default: page.role | default: page.role_en }}</dd>
+              </div>
+              {% endif %}
+            </dl>
+
+            {% if page.tools %}
+            <div class="flex flex-wrap gap-2">
+              {% for tool in page.tools %}
+              <span class="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">{{ tool }}</span>
+              {% endfor %}
             </div>
             {% endif %}
           </div>
@@ -78,8 +134,85 @@ layout: null
     </section>
 
     <section class="px-6 pb-20 lg:px-8">
-      <div class="mx-auto max-w-4xl space-y-6 text-muted-foreground leading-relaxed">
-        {{ content }}
+      <div class="mx-auto max-w-5xl space-y-8">
+        {% if context_zh or context_en %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="Context" data-zh="项目背景">项目背景</p>
+          <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ context_en }}" data-zh="{{ context_zh }}">{{ context_zh | default: context_en }}</p>
+        </section>
+        {% endif %}
+
+        {% if problem_zh or problem_en %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="Problem" data-zh="设计问题">设计问题</p>
+          <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ problem_en }}" data-zh="{{ problem_zh }}">{{ problem_zh | default: problem_en }}</p>
+        </section>
+        {% endif %}
+
+        {% if concept_zh or concept_en %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="Concept" data-zh="设计概念">设计概念</p>
+          <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ concept_en }}" data-zh="{{ concept_zh }}">{{ concept_zh | default: concept_en }}</p>
+        </section>
+        {% endif %}
+
+        {% if strategy_zh or strategy_en %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="Design Strategy" data-zh="设计策略">设计策略</p>
+          <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ strategy_en }}" data-zh="{{ strategy_zh }}">{{ strategy_zh | default: strategy_en }}</p>
+        </section>
+        {% endif %}
+
+        {% if page.drawings or page.renderings %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="Drawings / Visual Materials" data-zh="图纸 / 视觉材料">图纸 / 视觉材料</p>
+          <div class="mt-5 grid gap-4 md:grid-cols-2">
+            {% for item in page.drawings %}
+            <figure class="overflow-hidden rounded-xl bg-secondary">
+              {% if item.image %}<img src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Drawing' }}" class="h-72 w-full object-cover" />{% endif %}
+              {% if item.caption_zh or item.caption_en %}<figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ item.caption_en }}" data-zh="{{ item.caption_zh }}">{{ item.caption_zh | default: item.caption_en }}</figcaption>{% endif %}
+            </figure>
+            {% endfor %}
+            {% for item in page.renderings %}
+            <figure class="overflow-hidden rounded-xl bg-secondary">
+              {% if item.image %}<img src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Rendering' }}" class="h-72 w-full object-cover" />{% endif %}
+              {% if item.caption_zh or item.caption_en %}<figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ item.caption_en }}" data-zh="{{ item.caption_zh }}">{{ item.caption_zh | default: item.caption_en }}</figcaption>{% endif %}
+            </figure>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+
+        {% if outcome_zh or outcome_en %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="Outcome" data-zh="结果">结果</p>
+          <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ outcome_en }}" data-zh="{{ outcome_zh }}">{{ outcome_zh | default: outcome_en }}</p>
+        </section>
+        {% endif %}
+
+        {% if reflection_zh or reflection_en %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="Reflection" data-zh="复盘反思">复盘反思</p>
+          <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ reflection_en }}" data-zh="{{ reflection_zh }}">{{ reflection_zh | default: reflection_en }}</p>
+        </section>
+        {% endif %}
+
+        {% if credits_zh or credits_en %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="Credits / Collaboration" data-zh="协作 / 鸣谢">协作 / 鸣谢</p>
+          <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ credits_en }}" data-zh="{{ credits_zh }}">{{ credits_zh | default: credits_en }}</p>
+        </section>
+        {% endif %}
+
+        {% assign body_content = content | strip %}
+        {% if body_content != "" %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="Additional Notes" data-zh="补充说明">补充说明</p>
+          <div class="mt-5 space-y-6 text-muted-foreground leading-relaxed">
+            {{ content }}
+          </div>
+        </section>
+        {% endif %}
       </div>
     </section>
   </main>

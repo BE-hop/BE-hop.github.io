@@ -73,10 +73,17 @@ exclude:
   - Gemfile.lock
   - node_modules/
   - less/
+  - scripts/
   - Gruntfile.js
+  - Rakefile
   - package.json
+  - package-lock.json
   - README.md
   - README.zh.md
+  - README_AI_BLOG_PUBLISH.md
+  - behop-ai-product/products/ru-lineart/README.md
+  - forum/MODERATION.md
+  - forum/AITALK_QUICK_UPLOAD.md
 anchorjs: true # if you want to customize anchor. check out line:181 of `post.html`
 # If you have timezone issue (e.g. #68) in China, uncomment to use this:
 #timezone: CN

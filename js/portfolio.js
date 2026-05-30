@@ -1,37 +1,49 @@
 (() => {
   const translations = {
     zh: {
-      "nav.projects": "项目作品",
-      "nav.ai": "AI产品",
-      "nav.ai.products": "产品精选",
-      "nav.ai.gallery": "作品集",
+      "nav.projects": "项目案例",
+      "nav.ai": "AI工具",
+      "nav.ai.products": "工具精选",
+      "nav.ai.gallery": "工具实验",
       "nav.ai.categories": "分类",
       "nav.ai.about": "关于 BEhop",
-      "nav.projects.featured": "项目精选",
+      "nav.projects.featured": "全部案例",
+      "nav.projects.home": "首页精选",
       "nav.projects.services": "创作方向",
       "nav.projects.about": "关于 BEhop",
       "nav.projects.contact": "联系 BEhop",
-      "nav.about": "关于 BEhop",
+      "nav.about": "关于我",
       "nav.services": "创作方向",
       "nav.contact": "联系 BEhop",
-      "nav.portfolio": "作品集",
+      "nav.portfolio": "项目案例",
       "nav.blog": "Blog",
       "nav.blog.latest": "最新文章",
       "nav.blog.about": "关于我",
       "nav.blog.archive": "归档",
-      "nav.forum": "论坛",
+      "nav.forum": "AI情报",
       "nav.brand": "BEhooop",
 
-      "hero.title": "BEhop 设计",
-      "hero.subtitle": "让自然与生活和谐共生",
-      "hero.description": "BEhop 专注于创造融合自然之美与功能性的景观设计，为每一个空间赋予独特的生命力。十年深耕，百余项目，只为呈现人与自然的完美对话。",
-      "hero.cta": "探索作品",
-      "hero.cta2": "了解更多",
+      "hero.title": "Landscape Designer / AI Tool Builder / Computational Design Practitioner",
+      "hero.title.line1": "Landscape Designer",
+      "hero.title.line2": "AI Tool Builder",
+      "hero.title.line3": "Computational Design Practitioner",
+      "hero.subtitle": "景观设计师 / AI工具开发者 / 计算化设计实践者",
+      "hero.description": "我关注 AI、计算化工具与视觉表达如何改变景观设计工作流，尤其是从草图、图像到可编辑空间模型的转化过程。",
+      "hero.cta": "探索 AI 工具",
+      "hero.cta2": "查看项目案例",
+      "hero.cta3": "联系我",
       "hero.scroll": "滚动",
+      "hero.side.tools": "AI 工具",
+      "hero.side.workflow": "设计工作流",
 
-      "projects.title": "精选项目",
-      "projects.subtitle": "每一个设计都是对自然与空间的深度理解",
-      "projects.viewAll": "查看全部",
+      "aiTools.kicker": "AI 工具",
+      "aiTools.title": "精选 AI 工具",
+      "aiTools.subtitle": "面向设计工作流、Rhino、Grasshopper、图像到模型转换与自动化表达的工具开发和实验。",
+      "aiTools.viewAll": "查看 AI 工具",
+
+      "projects.title": "精选项目案例",
+      "projects.subtitle": "精选景观设计、落地项目、概念研究与计算化设计实验。",
+      "projects.viewAll": "查看全部项目",
       "projects.viewProject": "查看项目",
       "projects.category.all": "全部",
       "projects.category.private": "私人庭院",
@@ -59,10 +71,10 @@
       "project.6.detail": "通过生态修复技术，恢复湿地生态系统，重建野生动植物栖息地。",
 
       "about.title": "关于 BEhop",
-      "about.subtitle": "专注展示 AI 产品驱动的创作成果",
-      "about.description": "BEhop 当前定位为 AI 创作展示平台，重点分享基于 AI 产品与工作流完成的项目成果、实验过程和方法复盘。内容目标是沉淀可复用经验，而非面向外部的业务承接页面。",
-      "about.philosophy": "创作方法",
-      "about.philosophy.text": "每个案例都围绕统一流程展开：明确目标、选择工具、记录参数、对比结果、总结可复用模板。通过结构化沉淀，让一次创作能持续转化为后续项目的能力资产。",
+      "about.subtitle": "景观设计师 / AI工具开发者 / 计算化设计实践者",
+      "about.description": "我关注 AI、计算化工具与视觉表达如何改变景观设计工作流，尤其是从草图、图像到可编辑空间模型的转化过程。",
+      "about.philosophy": "方法方向",
+      "about.philosophy.text": "我把设计项目、工具开发和研究笔记放在同一个系统中记录：既展示空间设计结果，也展示背后的工作流、参数化方法和 AI 辅助表达过程。",
       "about.stats.projects": "案例成果",
       "about.stats.years": "流程沉淀",
       "about.stats.awards": "工具实验",
@@ -70,11 +82,24 @@
       "about.quote": "“AI 不是替代创作，而是放大认知与表达的工具。”",
       "about.quoteAuthor": "— BEhooop",
       "about.values.1.title": "成果导向",
-      "about.values.1.desc": "以可验证结果展示 AI 工具价值",
+      "about.values.1.desc": "以真实项目和可验证工具展示能力",
       "about.values.2.title": "流程透明",
       "about.values.2.desc": "记录从输入到输出的关键决策",
       "about.values.3.title": "持续迭代",
       "about.values.3.desc": "通过复盘与实验不断优化方法",
+
+      "latestBlog.kicker": "博客",
+      "latestBlog.title": "最新博客",
+      "latestBlog.viewAll": "全部文章",
+      "digest.kicker": "AI 情报",
+      "digest.title": "最新 AI 情报",
+      "digest.viewAll": "打开 AI 情报",
+      "digest.card1.kicker": "AI 工具",
+      "digest.card1.title": "筛选 AI 工具、设计工作流与行业应用信号",
+      "digest.card1.desc": "用于记录 AI 新闻、工具观察、行业趋势、设计行业应用和技巧教程。",
+      "digest.card2.kicker": "AI 设计思考",
+      "digest.card2.title": "从几何算法到设计规则",
+      "digest.card2.desc": "记录 AI 如何从“画得更快”走向设计认知和决策规则编码。",
 
       "services.kicker": "创作方向",
       "services.title": "AI 创作展示",
@@ -92,65 +117,77 @@
 
       "contact.kicker": "联系 BEhop",
       "contact.title": "联系 BEhop",
-      "contact.description": "这里主要接收合作需求，以及 AI 相关的产品服务与咨询服务需求。欢迎留下你的场景、目标和时间安排。",
+      "contact.description": "欢迎联系我交流设计项目、AI 工具开发、计算化设计工作流、研究合作或作品集相关事宜。",
       "contact.name": "姓名",
       "contact.email": "邮箱",
       "contact.phone.input": "电话",
-      "contact.project": "需求类型",
-      "contact.message": "需求说明",
+      "contact.project": "联系类型",
+      "contact.message": "说明",
       "contact.submit": "发送消息",
       "contact.emailLabel": "电子邮箱",
       "contact.hours": "工作时间",
       "contact.hoursText": "周一至周五 9:00 - 18:00",
-      "contact.formTitle": "发送合作需求",
+      "contact.formTitle": "发送消息",
       "contact.notice": "通常会在 24 小时内回复你的需求。",
       "contact.name.placeholder": "您的姓名",
       "contact.email.placeholder": "您的邮箱",
       "contact.phone.placeholder": "联系电话",
-      "contact.project.placeholder": "选择需求类型",
-      "contact.message.placeholder": "请说明你的合作背景、目标、预算范围与时间安排...",
+      "contact.project.placeholder": "选择联系类型",
+      "contact.message.placeholder": "请说明你的背景、目标、时间安排或想了解的内容...",
       "contact.status.sending": "正在发送，请稍候...",
       "contact.status.success": "发送成功，我会尽快通过邮件回复你。",
       "contact.status.error": "发送失败，请稍后重试，或直接发邮件联系我。",
 
       "footer.rights": "版权所有",
-      "footer.description": "BEhop 专注于展示 AI 产品驱动的创作成果与方法沉淀，持续分享可复用的工作流与实践经验。",
+      "footer.description": "景观设计师、AI 工具开发者与计算化设计实践者，持续记录设计项目、工具开发和研究思考。",
       "footer.services": "创作方向",
       "footer.company": "关于 BEhop",
       "footer.backToTop": "返回顶部",
     },
     en: {
-      "nav.projects": "Projects",
-      "nav.ai": "AI Products",
-      "nav.ai.products": "Featured Products",
-      "nav.ai.gallery": "Gallery",
+      "nav.projects": "Works",
+      "nav.ai": "AI Tools",
+      "nav.ai.products": "Featured Tools",
+      "nav.ai.gallery": "Tool Experiments",
       "nav.ai.categories": "Categories",
       "nav.ai.about": "About BEhop",
-      "nav.projects.featured": "Featured Projects",
+      "nav.projects.featured": "All Works",
+      "nav.projects.home": "Home Featured",
       "nav.projects.services": "Directions",
       "nav.projects.about": "About BEhop",
       "nav.projects.contact": "Contact BEhop",
-      "nav.about": "About BEhop",
+      "nav.about": "About",
       "nav.services": "Directions",
       "nav.contact": "Contact BEhop",
-      "nav.portfolio": "Portfolio",
+      "nav.portfolio": "Works",
       "nav.blog": "Blog",
       "nav.blog.latest": "Latest Posts",
       "nav.blog.about": "About Me",
       "nav.blog.archive": "Archive",
-      "nav.forum": "Forum",
+      "nav.forum": "AI Digest",
       "nav.brand": "BEhooop",
 
-      "hero.title": "BEhop Design",
-      "hero.subtitle": "Where Nature Meets Life",
-      "hero.description": "BEhop focuses on creating landscape designs that blend natural beauty with functionality, bringing unique vitality to every space. A decade of dedication, over a hundred projects, all for the perfect dialogue between humanity and nature.",
-      "hero.cta": "Explore Works",
-      "hero.cta2": "Learn More",
+      "hero.title": "Landscape Designer / AI Tool Builder / Computational Design Practitioner",
+      "hero.title.line1": "Landscape Designer",
+      "hero.title.line2": "AI Tool Builder",
+      "hero.title.line3": "Computational Design Practitioner",
+      "hero.subtitle": "Landscape Designer / AI Tool Builder / Computational Design Practitioner",
+      "hero.description": "I explore how AI, computation, and visual representation can reshape the workflow of landscape design — from sketches and images to editable spatial models.",
+      "hero.cta": "Explore AI Tools",
+      "hero.cta2": "View Works",
+      "hero.cta3": "Contact Me",
       "hero.scroll": "Scroll",
+      "hero.side.tools": "AI Tools",
+      "hero.side.workflow": "Workflow",
 
-      "projects.title": "Featured Projects",
-      "projects.subtitle": "Each design reflects a deep understanding of nature and space",
-      "projects.viewAll": "View All",
+      "aiTools.kicker": "AI Tools",
+      "aiTools.title": "Featured AI Tools",
+      "aiTools.subtitle": "Tools and experiments for design workflows, Rhino, Grasshopper, image-to-model conversion, and automated visual representation.",
+      "aiTools.viewAll": "Explore AI Tools",
+
+      "projects.title": "Featured Works",
+      "projects.subtitle": "Selected landscape design, built projects, conceptual studies, and computational design experiments.",
+      "projects.viewAll": "View All Works",
       "projects.viewProject": "View Project",
       "projects.category.all": "All",
       "projects.category.private": "Private Gardens",
@@ -177,11 +214,11 @@
       "project.6.desc": "Ecological Restoration · Chengdu",
       "project.6.detail": "Restoring wetland ecosystems through ecological restoration techniques, rebuilding wildlife habitats.",
 
-      "about.title": "About Us",
-      "about.subtitle": "Focused on AI Product-Driven Creative Outcomes",
-      "about.description": "BEhop is positioned as an AI creation showcase, focusing on project outcomes, experiments, and workflow retrospectives built with AI products. The goal is to accumulate reusable methods rather than serving as an external client-service channel.",
-      "about.philosophy": "Creative Method",
-      "about.philosophy.text": "Each case follows a structured loop: define goals, pick tools, record parameters, compare outputs, and extract reusable templates. This turns one-off creation into long-term capability assets.",
+      "about.title": "About BEhop",
+      "about.subtitle": "Landscape Designer / AI Tool Builder / Computational Design Practitioner",
+      "about.description": "I explore how AI, computation, and visual representation can reshape landscape design workflows, especially the transition from sketches and images to editable spatial models.",
+      "about.philosophy": "Practice Direction",
+      "about.philosophy.text": "I document design projects, tool development, and research notes in one system: not only the spatial outcomes, but also the workflows, computational methods, and AI-assisted representation behind them.",
       "about.stats.projects": "Showcases",
       "about.stats.years": "Process Assets",
       "about.stats.awards": "Tool Experiments",
@@ -189,11 +226,24 @@
       "about.quote": "\"AI does not replace creativity; it amplifies cognition and expression.\"",
       "about.quoteAuthor": "— BEhooop",
       "about.values.1.title": "Outcome-First",
-      "about.values.1.desc": "Show tool value through verifiable results",
+      "about.values.1.desc": "Show capability through real projects and verifiable tools",
       "about.values.2.title": "Transparent Process",
       "about.values.2.desc": "Document key decisions from input to output",
       "about.values.3.title": "Continuous Iteration",
       "about.values.3.desc": "Improve methods through review and experimentation",
+
+      "latestBlog.kicker": "Blog",
+      "latestBlog.title": "Latest Blog",
+      "latestBlog.viewAll": "All Posts",
+      "digest.kicker": "AI Digest",
+      "digest.title": "Latest AI Digest",
+      "digest.viewAll": "Open Digest",
+      "digest.card1.kicker": "AI Tools",
+      "digest.card1.title": "Curated signals on AI tools, design workflow, and industry applications",
+      "digest.card1.desc": "A lightweight entry for AI news, tool notes, trends, design applications, and practical tutorials.",
+      "digest.card2.kicker": "AI Design Thinking",
+      "digest.card2.title": "From geometry algorithms to design rules",
+      "digest.card2.desc": "Notes on how AI moves from drawing faster to encoding design cognition and decision rules.",
 
       "services.kicker": "Directions",
       "services.title": "AI Creation Showcase",
@@ -211,29 +261,29 @@
 
       "contact.kicker": "Contact BEhop",
       "contact.title": "Contact BEhop",
-      "contact.description": "This section is for collaboration needs, plus AI-related product services and consulting requests. Share your scenario, goals, and timeline.",
+      "contact.description": "Contact me about design projects, AI tool development, computational design workflows, research collaboration, or portfolio review.",
       "contact.name": "Name",
       "contact.email": "Email",
       "contact.phone.input": "Phone",
-      "contact.project": "Request Type",
-      "contact.message": "Request Details",
+      "contact.project": "Contact Type",
+      "contact.message": "Message",
       "contact.submit": "Send Message",
       "contact.emailLabel": "Email",
       "contact.hours": "Working Hours",
       "contact.hoursText": "Mon - Fri, 9:00 AM - 6:00 PM",
-      "contact.formTitle": "Send Collaboration Request",
+      "contact.formTitle": "Send Message",
       "contact.notice": "Typical response time is within 24 hours.",
       "contact.name.placeholder": "Your name",
       "contact.email.placeholder": "Your email",
       "contact.phone.placeholder": "Phone number",
-      "contact.project.placeholder": "Select request type",
-      "contact.message.placeholder": "Share your context, goals, budget range, and timeline...",
+      "contact.project.placeholder": "Select contact type",
+      "contact.message.placeholder": "Share your context, goals, timeline, or what you want to know...",
       "contact.status.sending": "Sending your message...",
       "contact.status.success": "Message sent successfully. I will reply by email soon.",
       "contact.status.error": "Failed to send. Please try again later or email me directly.",
 
       "footer.rights": "All Rights Reserved",
-      "footer.description": "BEhop showcases AI product-driven creative outcomes and method assets, sharing reusable workflows and practical learnings.",
+      "footer.description": "Landscape designer, AI tool builder, and computational design practitioner documenting design projects, tool development, and research notes.",
       "footer.services": "Directions",
       "footer.company": "About BEhop",
       "footer.backToTop": "Back to Top",
@@ -242,19 +292,19 @@
 
   const projectTypes = {
     zh: [
-      { value: "", label: "选择需求类型" },
-      { value: "cooperation", label: "合作需求" },
-      { value: "ai-product-service", label: "AI 产品服务" },
-      { value: "ai-consulting", label: "AI 咨询服务" },
-      { value: "integration", label: "工具接入与落地" },
+      { value: "", label: "选择联系类型" },
+      { value: "design-project", label: "设计项目交流" },
+      { value: "ai-tool", label: "AI 工具开发" },
+      { value: "workflow", label: "计算化设计工作流" },
+      { value: "research", label: "研究 / 申请 / 招聘" },
       { value: "other", label: "其他" },
     ],
     en: [
-      { value: "", label: "Select request type" },
-      { value: "cooperation", label: "Collaboration" },
-      { value: "ai-product-service", label: "AI Product Service" },
-      { value: "ai-consulting", label: "AI Consulting" },
-      { value: "integration", label: "Tool Integration" },
+      { value: "", label: "Select contact type" },
+      { value: "design-project", label: "Design Project Discussion" },
+      { value: "ai-tool", label: "AI Tool Development" },
+      { value: "workflow", label: "Computational Design Workflow" },
+      { value: "research", label: "Research / Application / Hiring" },
       { value: "other", label: "Other" },
     ],
   }
@@ -265,6 +315,27 @@
   const i18nPlaceholders = document.querySelectorAll("[data-i18n-placeholder]")
   const i18nAria = document.querySelectorAll("[data-i18n-aria]")
   const projectTypeSelect = document.querySelector("#project-type")
+
+  const getStoredLang = () => {
+    try {
+      return localStorage.getItem("portfolioLang")
+        || localStorage.getItem("blogLang")
+        || localStorage.getItem("behopAiLang")
+        || "en"
+    } catch (error) {
+      return "en"
+    }
+  }
+
+  const syncStoredLang = (lang) => {
+    try {
+      localStorage.setItem("portfolioLang", lang)
+      localStorage.setItem("blogLang", lang)
+      localStorage.setItem("behopAiLang", lang)
+    } catch (error) {
+      // ignore storage errors
+    }
+  }
 
   const setLang = (lang) => {
     const dict = translations[lang] || translations.en
@@ -316,14 +387,14 @@
       button.classList.toggle("is-active", button.dataset.lang === lang)
     })
 
-    localStorage.setItem("portfolioLang", lang)
+    syncStoredLang(lang)
   }
 
   langButtons.forEach((button) => {
     button.addEventListener("click", () => setLang(button.dataset.lang || "en"))
   })
 
-  setLang(localStorage.getItem("portfolioLang") || "en")
+  setLang(getStoredLang())
 
   const getCurrentLang = () => (document.documentElement.lang === "zh" ? "zh" : "en")
   const getCurrentDict = () => translations[getCurrentLang()] || translations.en

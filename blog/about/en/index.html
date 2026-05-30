@@ -42,11 +42,15 @@ lang-switcher: true
         btn.classList.toggle('is-active', btn.getAttribute('data-blog-lang') === lang);
       });
       localStorage.setItem('blogLang', lang);
+      localStorage.setItem('portfolioLang', lang);
+      localStorage.setItem('behopAiLang', lang);
     }
 
     function setLang(lang) {
       if (lang !== current) {
         localStorage.setItem('blogLang', lang);
+        localStorage.setItem('portfolioLang', lang);
+        localStorage.setItem('behopAiLang', lang);
         window.location.href = paths[lang];
         return;
       }
@@ -59,7 +63,7 @@ lang-switcher: true
       });
     });
 
-    var stored = localStorage.getItem('blogLang') || current;
+    var stored = localStorage.getItem('portfolioLang') || localStorage.getItem('blogLang') || localStorage.getItem('behopAiLang') || current;
     if (stored !== current) {
       window.location.href = paths[stored];
       return;

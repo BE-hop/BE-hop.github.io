@@ -14,6 +14,34 @@
   --nav-dropdown-shadow-scrolled: 0 18px 36px rgba(0, 0, 0, 0.15);
 }
 
+h1,
+h2,
+h3,
+.post-title,
+.post-subtitle,
+.site-heading h1 {
+  overflow-wrap: anywhere;
+}
+
+html[lang="zh"] h1,
+html[lang="zh"] h2,
+html[lang="zh"] h3,
+html[lang="zh"] .post-title,
+html[lang="zh"] .post-subtitle,
+html[lang="zh"] .site-heading h1 {
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+html[lang="en"] h1,
+html[lang="en"] h2,
+html[lang="en"] h3,
+html[lang="en"] .post-title,
+html[lang="en"] .post-subtitle,
+html[lang="en"] .site-heading h1 {
+  letter-spacing: -0.01em;
+}
+
 .site-nav {
   position: fixed;
   top: 0;
@@ -47,7 +75,7 @@
   justify-content: space-between;
   gap: 16px;
   height: 72px;
-  max-width: 1120px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -86,7 +114,7 @@
 .site-nav__links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   margin-left: auto;
 }
 
@@ -281,7 +309,7 @@
 }
 
 .site-nav__mobile.is-open {
-  max-height: 520px;
+  max-height: 720px;
   padding-bottom: 16px;
 }
 

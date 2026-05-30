@@ -221,53 +221,110 @@
 {% if page.multilingual %}
 <!-- Handle Language Change -->
 <script type="text/javascript">
-    // get nodes
-    var $zh = document.querySelector(".zh");
-    var $en = document.querySelector(".en");
-    var $select = document.querySelector("select");
+    (function () {
+        var $zh = document.querySelector(".zh");
+        var $en = document.querySelector(".en");
+        var langButtons = document.querySelectorAll("[data-lang]");
+        var i18nNodes = document.querySelectorAll("[data-zh][data-en], [data-i18n-zh][data-i18n-en]");
+        var blogRoot = document.querySelectorAll("[data-blog-root]");
+        var blogLatest = document.querySelectorAll("[data-blog-latest]");
+        var blogAbout = document.querySelectorAll("[data-blog-about]");
+        var blogArchive = document.querySelectorAll("[data-blog-archive]");
+        var siteBase = "{{ site.baseurl }}";
 
-    // Changes at v1.8.1: include lang flag as a url query. This interop well with catalog hash anchors.
-    function getLang() { return new URLSearchParams(document.location.search).get("lang") }
-
-    function setLang(newLang) {
-        var params = new URLSearchParams(document.location.search)
-        params.set("lang", newLang)
-        document.location.search = params.toString()  // refresh.
-    }
-
-    // handle render
-    function _render() {
-        var lang = getLang()
-        // default to English when no explicit lang is set
-        if (lang == "zh") {
-            $select.selectedIndex = 0;
-            $zh.style.display = "block";
-            $zh.classList.add("active");
-            $en.style.display = "none";
-            $en.classList.remove("active");
-        } else {
-            $select.selectedIndex = 1;
-            $en.style.display = "block";
-            $en.classList.add("active");
-            $zh.style.display = "none";
-            $zh.classList.remove("active");
+        function storageGet(key, fallback) {
+            try {
+                var value = localStorage.getItem(key);
+                return value === null || value === undefined ? fallback : value;
+            } catch (error) {
+                return fallback;
+            }
         }
-        // interop with catalog 
-        generateCatalog(".catalog-body");
-    }
 
-    // handle select change
-    function onLanChange(index) {
-        if (index == 0) {
-            lang = "zh"
-        } else {
-            lang = "en"
+        function storageSet(key, value) {
+            try {
+                localStorage.setItem(key, value);
+            } catch (error) {
+                // ignore storage errors
+            }
         }
-        setLang(lang)
-    }
 
-    // init
-    _render();
+        function normalizeLang(lang) {
+            return lang === "zh" ? "zh" : "en";
+        }
+
+        function getInitialLang() {
+            var queryLang = new URLSearchParams(document.location.search).get("lang");
+            return normalizeLang(queryLang || storageGet("portfolioLang", storageGet("blogLang", storageGet("behopAiLang", "en"))));
+        }
+
+        function syncLanguage(lang) {
+            storageSet("portfolioLang", lang);
+            storageSet("blogLang", lang);
+            storageSet("behopAiLang", lang);
+        }
+
+        function applyI18nText(lang) {
+            i18nNodes.forEach(function (node) {
+                var directValue = node.getAttribute(lang === "zh" ? "data-zh" : "data-en");
+                var fallbackValue = node.getAttribute(lang === "zh" ? "data-i18n-zh" : "data-i18n-en");
+                var value = directValue || fallbackValue;
+                if (value) {
+                    node.textContent = value;
+                }
+            });
+        }
+
+        function applyLocalizedLinks(lang) {
+            blogRoot.forEach(function (node) {
+                node.setAttribute("href", lang === "en" ? siteBase + "/blog/en/" : siteBase + "/blog/");
+            });
+            blogLatest.forEach(function (node) {
+                node.setAttribute("href", lang === "en" ? siteBase + "/blog/en/" : siteBase + "/blog/");
+            });
+            blogAbout.forEach(function (node) {
+                node.setAttribute("href", lang === "en" ? siteBase + "/blog/about/en/" : siteBase + "/blog/about/");
+            });
+            blogArchive.forEach(function (node) {
+                node.setAttribute("href", lang === "en" ? siteBase + "/archive/en/" : siteBase + "/archive/");
+            });
+        }
+
+        function renderLang(lang) {
+            lang = normalizeLang(lang);
+            document.documentElement.lang = lang;
+            syncLanguage(lang);
+            applyI18nText(lang);
+            applyLocalizedLinks(lang);
+
+            if ($zh && $en) {
+                var isZh = lang === "zh";
+                $zh.style.display = isZh ? "block" : "none";
+                $zh.classList.toggle("active", isZh);
+                $en.style.display = isZh ? "none" : "block";
+                $en.classList.toggle("active", !isZh);
+            }
+
+            langButtons.forEach(function (button) {
+                if (button.dataset.lang) {
+                    button.classList.toggle("is-active", button.dataset.lang === lang);
+                }
+            });
+
+            if (typeof generateCatalog === "function") {
+                generateCatalog(".catalog-body");
+            }
+        }
+
+        langButtons.forEach(function (button) {
+            if (!button.dataset.lang) return;
+            button.addEventListener("click", function () {
+                renderLang(button.dataset.lang || "en");
+            });
+        });
+
+        renderLang(getInitialLang());
+    })();
 </script>
 {% endif %}
 

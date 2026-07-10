@@ -1,0 +1,97 @@
+hero:
+  background_image: "/img/portfolio/hero-landscape.jpg"
+  badge_zh: 景观设计师 / AI工具开发者 / 计算化设计实践者
+  badge_en: Landscape Designer / AI Tool Builder / Computational Design Practitioner
+  title_lines_zh:
+  - Landscape Designer
+  - AI Tool Builder
+  - Computational Design Practitioner
+  title_lines_en:
+  - Landscape Designer
+  - AI Tool Builder
+  - Computational Design Practitioner
+  description_zh: 我关注 AI、计算化工具与视觉表达如何改变景观设计工作流，尤其是从草图、图像到可编辑空间模型的转化过程。
+  description_en: I explore how AI, computation, and visual representation can reshape
+    the workflow of landscape design — from sketches and images to editable spatial
+    models.
+  primary_cta_zh: 探索 AI 工具
+  primary_cta_en: Explore AI Tools
+  secondary_cta_zh: 查看项目案例
+  secondary_cta_en: View Works
+  contact_cta_zh: 联系我
+  contact_cta_en: Contact Me
+  scroll_label_zh: 滚动
+  scroll_label_en: Scroll
+  side_tools_label_zh: AI 工具
+  side_tools_label_en: AI Tools
+  side_workflow_label_zh: 设计工作流
+  side_workflow_label_en: Workflow
+ai_tools:
+  kicker_zh: AI 工具
+  kicker_en: AI Tools
+  title_zh: 精选 AI 工具
+  title_en: Featured AI Tools
+  subtitle_zh: 面向设计工作流、Rhino、Grasshopper、图像到模型转换与自动化表达的工具开发和实验。
+  subtitle_en: Tools and experiments for design workflows, Rhino, Grasshopper, image-to-model
+    conversion, and automated visual representation.
+  view_all_zh: 查看 AI 工具
+  view_all_en: Explore AI Tools
+works:
+  kicker_zh: 项目案例
+  kicker_en: Works
+  title_zh: 精选项目案例
+  title_en: Featured Works
+  subtitle_zh: 精选真实工作成果、研究生作品、空间研究与 AI 辅助工作流实验。
+  subtitle_en: Selected professional work, graduate portfolio projects, spatial studies,
+    and AI-assisted workflow experiments.
+  view_all_zh: 查看全部项目
+  view_all_en: View All Works
+  archive_label_zh: 全部归档
+  archive_label_en: Archive
+  filter_all_zh: 全部
+  filter_all_en: All
+  filter_professional_zh: 真实工作
+  filter_professional_en: Professional
+  filter_academic_zh: 学术研究
+  filter_academic_en: Academic
+  filter_landscape_zh: 景观设计
+  filter_landscape_en: Landscape
+  filter_interior_zh: 空间概念
+  filter_interior_en: Spatial Concept
+  role_prefix_zh: 角色：
+  role_prefix_en: 'Role: '
+  view_project_zh: 查看项目
+  view_project_en: View Project
+contact:
+  kicker_zh: 联系 BEhop
+  kicker_en: Contact BEhop
+  title_zh: 联系 BEhop
+  title_en: Contact BEhop
+  description_zh: 欢迎联系我交流设计项目、AI 工具开发、计算化设计工作流、研究合作或作品集相关事宜。
+  description_en: Contact me about design projects, AI tool development, computational
+    design workflows, research collaboration, or portfolio review.
+  email_label_zh: 电子邮箱
+  email_label_en: Email
+  email: liuruyuan73@gmail.com
+  hours_label_zh: 工作时间
+  hours_label_en: Working Hours
+  hours_text_zh: 周一至周五 9:00 - 18:00
+  hours_text_en: Mon - Fri, 9:00 AM - 6:00 PM
+  form_title_zh: 发送消息
+  form_title_en: Send Message
+  notice_zh: 通常会在 24 小时内回复你的需求。
+  notice_en: Typical response time is within 24 hours.
+footer:
+  brand_zh: BEhooop
+  brand_en: BEhooop
+  description_zh: 景观设计师、AI 工具开发者与计算化设计实践者，持续记录设计项目、工具开发和研究思考。
+  description_en: Landscape designer, AI tool builder, and computational design practitioner
+    documenting design projects, tool development, and research notes.
+  company_label_zh: 关于 BEhop
+  company_label_en: About BEhop
+  contact_label_zh: 联系 BEhop
+  contact_label_en: Contact BEhop
+  rights_zh: 版权所有
+  rights_en: All Rights Reserved
+  back_to_top_zh: 返回顶部
+  back_to_top_en: Back to Top

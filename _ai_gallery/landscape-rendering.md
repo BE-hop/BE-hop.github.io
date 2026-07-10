@@ -3,6 +3,7 @@ title_zh: "景观渲染"
 title_en: "Landscape Rendering"
 category_zh: "景观"
 category_en: "Landscape"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1400&h=1000&fit=crop"
 summary_zh: "自动化地形分析和景观设计可视化。"
 summary_en: "Automated terrain analysis and landscape design visualization."

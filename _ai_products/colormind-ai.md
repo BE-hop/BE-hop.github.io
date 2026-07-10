@@ -4,6 +4,7 @@ title_en: "ColorMind AI"
 category: "Design Tools"
 category_zh: "设计工具"
 category_en: "Design Tools"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1525909002-1b05e0c869d8?w=1200&h=900&fit=crop"
 summary_zh: "智能配色方案生成和色彩和谐分析，为任何设计项目提供完美的色彩组合。"
 summary_en: "Intelligent color palette generation and harmony analysis for perfect color combinations in any design project."

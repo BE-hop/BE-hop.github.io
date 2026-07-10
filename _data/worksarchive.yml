@@ -1,0 +1,196 @@
+- id: shilih-lake
+  title_zh: 十里湖项目
+  title_en: Shilih Lake Project
+  year: 2025-2026
+  source_group: professional
+  type_zh: 最新工作成果
+  type_en: Latest Professional Work
+  status: featured
+  visibility: public
+  source_label_zh: 工作成果
+  source_label_en: Professional
+  thumbnail: "/img/portfolio/real-works/shilih/cover.jpg"
+  project_url: "/projects/shilih-lake/"
+  summary_zh: 大型湖区文旅与公共开放空间项目，展示方案参与、深化协作、水乐园专项和系统性汇报能力。
+  summary_en: Large lakefront cultural-tourism and public open-space project showing
+    concept participation, development coordination, water park work, and systematic
+    presentation.
+  tags:
+  - Professional
+  - Landscape
+  - Design Development
+- id: didi-campus
+  title_zh: 企业园区景观设计深化
+  title_en: Corporate Campus Landscape Development
+  year: '2026'
+  source_group: professional
+  type_zh: 最新工作成果
+  type_en: Latest Professional Work
+  status: featured
+  visibility: limited
+  source_label_zh: 工作成果
+  source_label_en: Professional
+  thumbnail: "/img/portfolio/real-works/didi/cover.jpg"
+  project_url: "/projects/didi-campus/"
+  summary_zh: 企业园区景观汇报系统，覆盖品牌理解、总图、重点区域、植物材料与专项研究。
+  summary_en: Corporate campus landscape presentation system covering brand interpretation,
+    master plan, key precincts, planting, materials, and specialist research.
+  tags:
+  - Professional
+  - Campus
+  - Presentation
+- id: graduation-design
+  title_zh: 毕业设计综合研究
+  title_en: Graduate Design Research
+  year: '2024'
+  source_group: graduate
+  type_zh: 研究生作品
+  type_en: Graduate Portfolio
+  status: featured
+  visibility: public
+  source_label_zh: 研究生作品
+  source_label_en: Graduate
+  thumbnail: "/img/portfolio/real-works/graduate/graduation-cover.jpg"
+  project_url: "/projects/graduation-design/"
+  summary_zh: 从场地问题、分析方法到空间策略的综合设计训练。
+  summary_en: A comprehensive design exercise from site problems and analysis methods
+    to spatial strategy.
+  tags:
+  - Academic
+  - Research
+  - Portfolio
+- id: railway-park
+  title_zh: 铁路公园更新设计
+  title_en: Railway Park Regeneration
+  year: '2024'
+  source_group: graduate
+  type_zh: 研究生作品
+  type_en: Graduate Portfolio
+  status: featured
+  visibility: public
+  source_label_zh: 研究生作品
+  source_label_en: Graduate
+  thumbnail: "/img/portfolio/real-works/graduate/railway-cover.jpg"
+  project_url: "/projects/railway-park/"
+  summary_zh: 以线性遗存、城市记忆与公共活动组织为核心的公共空间研究。
+  summary_en: A public-space study around linear heritage, urban memory, and everyday
+    activity.
+  tags:
+  - Landscape
+  - Public Space
+  - Urban Renewal
+- id: ecology-music-restaurant
+  title_zh: 生态音乐餐厅
+  title_en: Ecology Music Restaurant
+  year: '2024'
+  source_group: graduate
+  type_zh: 研究生作品
+  type_en: Graduate Portfolio
+  status: featured
+  visibility: public
+  source_label_zh: 研究生作品
+  source_label_en: Graduate
+  thumbnail: "/img/portfolio/real-works/graduate/restaurant-cover.jpg"
+  project_url: "/projects/ecology-music-restaurant/"
+  summary_zh: 融合室内氛围、生态材料与体验场景的空间概念。
+  summary_en: A spatial concept combining interior atmosphere, ecological materiality,
+    and experiential scenes.
+  tags:
+  - Interior
+  - Experience
+  - Concept
+- id: campus-landscape
+  title_zh: 校园景观更新
+  title_en: Campus Landscape Renewal
+  year: '2024'
+  source_group: graduate
+  type_zh: 研究生作品
+  type_en: Graduate Portfolio
+  status: archived
+  visibility: public
+  source_label_zh: 研究生作品
+  source_label_en: Graduate
+  thumbnail: "/img/portfolio/real-works/graduate/campus-cover.jpg"
+  project_url: "/projects/campus-landscape/"
+  summary_zh: 面向校园日常、公共活动与场地秩序的景观训练。
+  summary_en: A landscape exercise for campus daily life, public activity, and site
+    order.
+  tags:
+  - Campus
+  - Landscape
+- id: jinan-garden-interior
+  title_zh: 园博园室内概念方案
+  title_en: Garden Expo Interior Concept
+  year: '2025'
+  source_group: graduate
+  type_zh: 研究生作品
+  type_en: Graduate Portfolio
+  status: archived
+  visibility: limited
+  source_label_zh: 研究生作品
+  source_label_en: Graduate
+  thumbnail: "/img/portfolio/real-works/graduate/garden-interior-cover.jpg"
+  project_url: "/projects/jinan-garden-interior/"
+  summary_zh: 从建筑语境到室内氛围的跨尺度空间表达。
+  summary_en: Cross-scale spatial representation from architectural context to interior
+    atmosphere.
+  tags:
+  - Interior
+  - Spatial Narrative
+- id: aranya-study
+  title_zh: 阿那亚空间研究
+  title_en: Aranya Spatial Study
+  year: '2025'
+  source_group: graduate
+  type_zh: 单页作品板
+  type_en: Visual Boards
+  status: archived
+  visibility: limited
+  source_label_zh: 单页作品板
+  source_label_en: Visual Board
+  thumbnail: "/img/portfolio/real-works/archive/aranya-study.jpg"
+  project_url:
+  summary_zh: 旧作品文件夹中的双页空间研究材料，后续可补充为独立案例。
+  summary_en: A two-page spatial study from the earlier portfolio folder, available
+    for future case expansion.
+  tags:
+  - Archive
+  - Concept
+- id: published-design-result
+  title_zh: "《设计》发表成果"
+  title_en: Published Design Result
+  year: '2025'
+  source_group: research
+  type_zh: 研究与发表成果
+  type_en: Research & Publication
+  status: archived
+  visibility: limited
+  source_label_zh: 研究发表
+  source_label_en: Publication
+  thumbnail: "/img/portfolio/real-works/archive/published-design-result.jpg"
+  project_url:
+  summary_zh: 研究与发表成果材料，适合在介绍背景时作为补充证明，不作为主要项目卡片。
+  summary_en: Research and publication material used as supporting evidence rather
+    than a primary project card.
+  tags:
+  - Research
+  - Publication
+- id: shanxi-reception-building
+  title_zh: 山西接待建筑
+  title_en: Shanxi Reception Building
+  year: '2025'
+  source_group: graduate
+  type_zh: 单页作品板
+  type_en: Visual Boards
+  status: archived
+  visibility: limited
+  source_label_zh: 单页作品板
+  source_label_en: Visual Board
+  thumbnail: "/img/portfolio/real-works/archive/shanxi-reception-building.jpg"
+  project_url:
+  summary_zh: 旧作品文件夹中的单页建筑/空间表达材料，后续可视素材成熟后再升级。
+  summary_en: A single-board architectural/spatial representation item for future
+    expansion when material is ready.
+  tags:
+  - Architecture
+  - Archive

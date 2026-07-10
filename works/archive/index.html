@@ -1,0 +1,136 @@
+---
+layout: null
+title: "Works Archive / 全部作品归档"
+description: "A quieter archive of selected professional work, graduate portfolio pieces, research outputs, and visual boards."
+permalink: /works/archive/
+lang-switcher: true
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Works Archive / 全部作品归档 | BEhooop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--background)",
+              foreground: "var(--foreground)",
+              card: "var(--card)",
+              "card-foreground": "var(--card-foreground)",
+              primary: "var(--primary)",
+              "primary-foreground": "var(--primary-foreground)",
+              secondary: "var(--secondary)",
+              muted: "var(--muted)",
+              "muted-foreground": "var(--muted-foreground)",
+              border: "var(--border)",
+            },
+            fontFamily: {
+              serif: ["Playfair Display", "serif"],
+              sans: ["Manrope", "sans-serif"],
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css">
+</head>
+<body class="works-page bg-background text-foreground">
+  {% include nav.html %}
+
+  <main>
+    <section class="px-6 pt-32 pb-16 lg:px-8 lg:pt-40 lg:pb-20 bg-secondary">
+      <div class="mx-auto max-w-7xl">
+        <a href="{{ site.baseurl }}/works/" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Back to Featured Works" data-zh="返回精选项目">返回精选项目</a>
+        <div class="mt-5 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+          <div>
+            <p class="text-primary font-medium tracking-wide uppercase text-sm" data-en="Archive" data-zh="归档">Archive</p>
+            <h1 class="mt-4 font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground text-balance" data-en="All Works Archive" data-zh="全部作品归档">All Works Archive</h1>
+          </div>
+          <p class="text-lg leading-relaxed text-muted-foreground" data-en="A quieter archive for professional work, graduate portfolio pieces, research outputs, and visual boards. Featured cases remain on the main Works page." data-zh="这里低调收纳工作成果、研究生作品、研究发表与单页作品板；精选案例仍以 Works 主页面为准。">A quieter archive for professional work, graduate portfolio pieces, research outputs, and visual boards. Featured cases remain on the main Works page.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 py-12 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="mb-10 flex flex-wrap gap-2">
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground is-active" data-filter="all" data-en="All" data-zh="全部">All</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="professional" data-en="Latest Professional Work" data-zh="最新工作成果">Latest Professional Work</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="graduate" data-en="Graduate Portfolio" data-zh="研究生作品">Graduate Portfolio</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="research" data-en="Research & Publication" data-zh="研究与发表">Research & Publication</button>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {%- for item in site.data.worksarchive -%}
+          {%- if item.visibility == "public" or item.visibility == "limited" -%}
+          <article class="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-lg" data-project data-category="{{ item.source_group }}">
+            {% if item.project_url %}
+            <a href="{{ item.project_url | prepend: site.baseurl }}" class="block no-underline">
+            {% else %}
+            <div class="block">
+            {% endif %}
+              {% if item.thumbnail %}
+              <div class="aspect-[4/3] overflow-hidden bg-secondary">
+                <img src="{{ item.thumbnail | relative_url }}" alt="{{ item.title_en | default: item.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              </div>
+              {% endif %}
+              <div class="p-6">
+                <div class="mb-4 flex flex-wrap items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
+                  <span data-en="{{ item.type_en }}" data-zh="{{ item.type_zh }}">{{ item.type_en | default: item.type_zh }}</span>
+                  {% if item.year %}<span>· {{ item.year }}</span>{% endif %}
+                  {% if item.visibility == "limited" %}<span data-en="· Anonymized" data-zh="· 已脱敏">· Anonymized</span>{% endif %}
+                </div>
+                <div class="mb-4 flex flex-wrap gap-2">
+                  {% if item.source_label_zh or item.source_label_en %}
+                  <span class="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground" data-en="{{ item.source_label_en }}" data-zh="{{ item.source_label_zh }}">{{ item.source_label_en | default: item.source_label_zh }}</span>
+                  {% endif %}
+                  <span class="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground" data-en="{{ item.status | capitalize }}" data-zh="{% if item.status == 'featured' %}精选{% elsif item.status == 'archived' %}归档{% else %}草稿{% endif %}">{{ item.status | capitalize }}</span>
+                  <span class="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground" data-en="{{ item.visibility | capitalize }}" data-zh="{% if item.visibility == 'public' %}公开{% elsif item.visibility == 'limited' %}脱敏公开{% else %}私有{% endif %}">{{ item.visibility | capitalize }}</span>
+                  {% if item.project_url %}
+                  <span class="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground" data-en="Detail page" data-zh="有详情页">Detail page</span>
+                  {% else %}
+                  <span class="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground" data-en="Archive only" data-zh="仅归档">Archive only</span>
+                  {% endif %}
+                </div>
+                <h2 class="font-serif text-2xl font-semibold text-foreground" data-en="{{ item.title_en }}" data-zh="{{ item.title_zh }}">{{ item.title_en | default: item.title_zh }}</h2>
+                <p class="mt-4 text-sm leading-relaxed text-muted-foreground line-clamp-3" data-en="{{ item.summary_en }}" data-zh="{{ item.summary_zh }}">{{ item.summary_en | default: item.summary_zh }}</p>
+                {% if item.tags %}
+                <div class="mt-5 flex flex-wrap gap-2">
+                  {% for tag in item.tags limit: 4 %}
+                  <span class="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">{{ tag }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+                {% if item.project_url %}
+                <span class="mt-6 inline-flex items-center text-sm font-medium text-primary group-hover:text-primary/80" data-en="View Details" data-zh="查看详情">View Details</span>
+                {% else %}
+                <span class="mt-6 inline-flex items-center text-sm font-medium text-muted-foreground" data-en="Archive note" data-zh="归档记录">Archive note</span>
+                {% endif %}
+              </div>
+            {% if item.project_url %}
+            </a>
+            {% else %}
+            </div>
+            {% endif %}
+          </article>
+          {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script src="{{ site.baseurl }}/js/portfolio.js"></script>
+</body>
+</html>

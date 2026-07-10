@@ -198,6 +198,20 @@ layout: null
         </section>
         {% endif %}
 
+        {% if page.result_gallery %}
+        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Result Gallery" data-zh="结果图组">结果图组</p>
+          <div class="mt-5 grid gap-4 md:grid-cols-3">
+            {% for item in page.result_gallery %}
+            <figure class="overflow-hidden rounded-xl bg-secondary">
+              {% if item.image %}<img src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Result' }}" class="h-64 w-full object-cover" />{% endif %}
+              {% if item.caption_zh or item.caption_en %}<figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ item.caption_en }}" data-zh="{{ item.caption_zh }}">{{ item.caption_zh | default: item.caption_en }}</figcaption>{% endif %}
+            </figure>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+
         {% if page.before_image or page.after_image or demo_zh or demo_en %}
         <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Demo / Before & After" data-zh="演示 / 前后对比">演示 / 前后对比</p>

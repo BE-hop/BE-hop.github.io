@@ -1,0 +1,48 @@
+---
+title_zh: "园博园室内概念方案"
+title_en: "Garden Expo Interior Concept"
+subtitle_zh: "从建筑语境到室内氛围的跨尺度空间表达"
+subtitle_en: "Cross-scale spatial representation from architectural context to interior atmosphere"
+category: "interior"
+category_label_zh: "空间概念"
+category_label_en: "Spatial Concept"
+status_zh: "归档精选"
+status_en: "Archive Selected"
+year: "2025"
+location_zh: "济南"
+location_en: "Jinan"
+role_zh: "概念方案与视觉表达参与"
+role_en: "Participated in concept proposal and visual representation"
+tools:
+  - Interior Concept
+  - Rendering
+  - Spatial Narrative
+summary_zh: "该室内概念方案展示了我对空间氛围、材料界面和跨尺度表达的理解，可作为景观作品之外的空间能力补充。"
+summary_en: "This interior concept proposal demonstrates my understanding of atmosphere, material interface, and cross-scale representation, complementing the landscape-focused portfolio."
+context_zh: "项目围绕园博园相关空间展开，需要在建筑语境、室内功能和东方氛围之间建立统一表达。"
+context_en: "The project relates to a Garden Expo setting and required a unified expression across architectural context, interior function, and Eastern atmosphere."
+problem_zh: "核心问题是如何把大尺度场地印象转化为室内空间的秩序、材质、光影和体验。"
+problem_en: "The key problem was translating large-scale site impressions into interior order, materiality, light, shadow, and experience."
+concept_zh: "方案通过连续界面、室内庭院感、材质层次和视觉焦点组织，形成具有场所记忆的接待与体验空间。"
+concept_en: "The proposal uses continuous interfaces, courtyard-like interior atmosphere, material layers, and visual focal points to create a memorable reception and experience space."
+design_strategy_zh: "以多张效果图和方案页面展示概念如何落到空间界面与氛围营造中。"
+design_strategy_en: "Multiple renderings and proposal boards show how the concept is translated into spatial interfaces and atmosphere."
+outcome_zh: "该案例适合在 Archive 与精选页中补充我的室内概念和空间表达能力。"
+outcome_en: "This case supports the archive and selected works by adding evidence of interior concept and spatial communication ability."
+reflection_zh: "公开展示时默认脱敏，不展示完整原始方案文件。"
+reflection_en: "The public version is anonymized and does not expose the full original proposal file."
+cover: "/img/portfolio/real-works/graduate/garden-interior-cover.jpg"
+image: "/img/portfolio/real-works/graduate/garden-interior-cover.jpg"
+renderings:
+  - image: "/img/portfolio/real-works/graduate/garden-interior-cover.jpg"
+    caption_zh: "室内概念方案页面片段。"
+    caption_en: "Interior concept proposal page."
+  - image: "/img/portfolio/real-works/graduate/garden-interior-board-36.jpg"
+    caption_zh: "室内空间氛围与节点表达。"
+    caption_en: "Interior atmosphere and spatial node representation."
+  - image: "/img/portfolio/real-works/graduate/garden-interior-board-38.jpg"
+    caption_zh: "空间效果与材质意向片段。"
+    caption_en: "Spatial effect and material direction."
+order: 7
+archive_ref: "jinan-garden-interior"
+---

@@ -4,6 +4,7 @@ title_en: "DesignSync Hub"
 category: "Workflow"
 category_zh: "工作流程"
 category_en: "Workflow"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=900&fit=crop"
 summary_zh: "集中式协作平台，为设计团队提供AI辅助的版本控制和智能资产管理。"
 summary_en: "Centralized collaboration platform with AI-assisted version control and intelligent asset management for design teams."

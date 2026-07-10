@@ -6,6 +6,7 @@ subtitle_en: "A line-art to editable Rhino curve tool for design workflows"
 category: "Design Tools"
 category_zh: "设计工具"
 category_en: "Design Tools"
+visibility: public
 image: "img/ai-products/ru-lineart-output.png"
 cover: "img/ai-products/ru-lineart-output.png"
 summary_zh: "将平面单线草图自动转换为 Rhino 可编辑的开放 NURBS 曲线，保留交叉拓扑并支持手绘稳线。"

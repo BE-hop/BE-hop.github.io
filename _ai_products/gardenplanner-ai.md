@@ -4,6 +4,7 @@ title_en: "GardenPlanner AI"
 category: "Landscape Architecture"
 category_zh: "景观建筑"
 category_en: "Landscape Architecture"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1200&h=900&fit=crop"
 summary_zh: "智能花园和景观设计，具备植物识别、季节性规划和维护调度功能。"
 summary_en: "Smart garden and landscape design with plant recognition, seasonal planning, and maintenance scheduling."

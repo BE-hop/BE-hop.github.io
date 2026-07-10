@@ -1,7 +1,7 @@
 ---
 layout: null
 title: "Works / 项目案例"
-description: "Selected landscape design, built projects, conceptual studies, and computational design experiments."
+description: "Selected professional work, graduate portfolio projects, spatial studies, and AI-assisted workflow experiments."
 permalink: /works/
 lang-switcher: true
 ---
@@ -55,7 +55,7 @@ lang-switcher: true
           <div>
             <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground text-balance" data-en="Works / Design Projects" data-zh="Works / 项目案例">Works / Design Projects</h1>
           </div>
-          <p class="text-lg leading-relaxed text-muted-foreground" data-en="Selected landscape design, built projects, conceptual studies, and computational design experiments." data-zh="精选景观设计、落地项目、概念研究与计算化设计实验。">Selected landscape design, built projects, conceptual studies, and computational design experiments.</p>
+          <p class="text-lg leading-relaxed text-muted-foreground" data-en="Selected professional work, graduate portfolio projects, spatial studies, and AI-assisted workflow experiments. The focus is design judgment, workflow thinking, and transferable methods." data-zh="精选真实工作成果、研究生作品、空间研究与 AI 辅助工作流实验；重点展示设计判断、流程思维与可迁移方法。">Selected professional work, graduate portfolio projects, spatial studies, and AI-assisted workflow experiments. The focus is design judgment, workflow thinking, and transferable methods.</p>
         </div>
       </div>
     </section>
@@ -64,10 +64,10 @@ lang-switcher: true
       <div class="mx-auto max-w-7xl">
         <div class="mb-10 flex flex-wrap gap-2">
           <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground is-active" data-filter="all" data-en="All" data-zh="全部">All</button>
-          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="private" data-en="Real / Built Projects" data-zh="真实 / 落地项目">Real / Built Projects</button>
-          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="commercial" data-en="Landscape Design" data-zh="景观设计">Landscape Design</button>
-          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="public" data-en="Academic / Conceptual" data-zh="学术 / 概念项目">Academic / Conceptual</button>
-          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="ecological" data-en="Computational Design" data-zh="计算化设计">Computational Design</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="professional" data-en="Professional" data-zh="真实工作">Professional</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="academic" data-en="Academic" data-zh="学术研究">Academic</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="landscape" data-en="Landscape" data-zh="景观设计">Landscape</button>
+          <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="interior" data-en="Spatial Concept" data-zh="空间概念">Spatial Concept</button>
         </div>
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -97,6 +97,7 @@ lang-switcher: true
                   {% endif %}
                   {% if project.year %}<span>· {{ project.year }}</span>{% endif %}
                   {% if location_zh or location_en %}<span data-en="· {{ location_en }}" data-zh="· {{ location_zh }}">· {{ location_en | default: location_zh }}</span>{% endif %}
+                  {% if project.status_zh or project.status_en %}<span data-en="· {{ project.status_en }}" data-zh="· {{ project.status_zh }}">· {{ project.status_en | default: project.status_zh }}</span>{% endif %}
                 </div>
                 <h2 class="font-serif text-2xl font-semibold text-foreground" data-en="{{ project.title_en }}" data-zh="{{ project.title_zh }}">{{ project.title_en | default: project.title_zh }}</h2>
                 {% if role_zh or role_en %}
@@ -121,6 +122,14 @@ lang-switcher: true
             </a>
           </article>
           {%- endfor -%}
+        </div>
+
+        <div class="mt-12 rounded-2xl border border-border bg-secondary p-6 md:flex md:items-center md:justify-between md:gap-6">
+          <div>
+            <h2 class="font-serif text-2xl font-semibold text-foreground" data-en="Need the full archive?" data-zh="需要查看全部作品？">Need the full archive?</h2>
+            <p class="mt-2 text-sm leading-relaxed text-muted-foreground" data-en="The archive keeps additional graduate works, visual boards, research outputs, and limited professional notes without crowding the featured page." data-zh="归档页收纳更多研究生作品、单页作品板、研究发表和脱敏工作记录，不干扰精选页的重点。">The archive keeps additional graduate works, visual boards, research outputs, and limited professional notes without crowding the featured page.</p>
+          </div>
+          <a href="{{ site.baseurl }}/works/archive/" class="mt-5 inline-flex shrink-0 items-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 md:mt-0" data-en="Open Archive" data-zh="打开归档">Open Archive</a>
         </div>
       </div>
     </section>

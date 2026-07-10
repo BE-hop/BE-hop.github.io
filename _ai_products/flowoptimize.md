@@ -4,6 +4,7 @@ title_en: "FlowOptimize"
 category: "Workflow"
 category_zh: "工作流程"
 category_en: "Workflow"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop"
 summary_zh: "通过AI自动化简化您的设计工作流程，学习您的工作模式并加速重复任务。"
 summary_en: "Streamline your design workflow with AI automation that learns from your patterns and accelerates repetitive tasks."

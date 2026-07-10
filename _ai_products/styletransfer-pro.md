@@ -4,6 +4,7 @@ title_en: "StyleTransfer Pro"
 category: "Image Processing"
 category_zh: "图像处理"
 category_en: "Image Processing"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=1200&h=900&fit=crop"
 summary_zh: "使用先进的神经风格迁移算法，将艺术风格应用于任何图像，并提供精细控制。"
 summary_en: "Apply artistic styles to any image using advanced neural style transfer algorithms with fine-tuned control."

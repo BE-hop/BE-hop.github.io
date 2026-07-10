@@ -3,6 +3,7 @@ title_zh: "建筑可视化"
 title_en: "Architectural Visualization"
 category_zh: "建筑"
 category_en: "Architecture"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1400&h=1000&fit=crop"
 summary_zh: "AI生成的现代住宅建筑概念设计。"
 summary_en: "AI-generated concept design for modern residential architecture."

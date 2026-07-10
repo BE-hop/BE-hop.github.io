@@ -4,6 +4,7 @@ title_en: "TerraSculpt AI"
 category: "Landscape Architecture"
 category_zh: "景观建筑"
 category_en: "Landscape Architecture"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=900&fit=crop"
 summary_zh: "通过智能地形分析和自动化设计建议，革新景观规划和户外空间设计。"
 summary_en: "Transform landscape planning with intelligent terrain analysis and automated design suggestions for outdoor spaces."

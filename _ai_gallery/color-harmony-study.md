@@ -3,6 +3,7 @@ title_zh: "色彩和谐研究"
 title_en: "Color Harmony Study"
 category_zh: "设计"
 category_en: "Design"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=1400&h=1000&fit=crop"
 summary_zh: "AI生成的品牌配色方案探索。"
 summary_en: "AI-generated color palette exploration for branding."

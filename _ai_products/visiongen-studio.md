@@ -4,6 +4,7 @@ title_en: "VisionGen Studio"
 category: "Design Tools"
 category_zh: "设计工具"
 category_en: "Design Tools"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=900&fit=crop"
 summary_zh: "AI驱动的生成式设计工具，能够从简单草图和描述中创建令人惊叹的建筑可视化效果。"
 summary_en: "AI-powered generative design tool that creates stunning architectural visualizations from simple sketches and descriptions."

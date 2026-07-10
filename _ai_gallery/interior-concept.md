@@ -3,6 +3,7 @@ title_zh: "室内概念"
 title_en: "Interior Concept"
 category_zh: "设计"
 category_en: "Design"
+visibility: hidden
 image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1400&h=1000&fit=crop"
 summary_zh: "AI辅助的室内设计概念生成。"
 summary_en: "AI-assisted interior design concept generation."

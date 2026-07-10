@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BE-hop Content Editor</title>
+  <link rel="stylesheet" href="/assets/editor.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Local only</p>
+      <h1>BE-hop 内容编辑器</h1>
+    </div>
+    <div class="topbar-actions">
+      <button id="refresh-button" type="button">刷新内容</button>
+      <a id="preview-link" href="http://127.0.0.1:4001/" target="_blank" rel="noreferrer">打开预览</a>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <aside class="sidebar">
+      <div class="notice">
+        <strong>编辑范围</strong>
+        <span>主页、AI Tools、Works、Archive。Blog、AI Digest、About 不在这里编辑。</span>
+      </div>
+      <nav class="tabs" aria-label="Content types">
+        <button class="tab is-active" type="button" data-type="homepage">Homepage</button>
+        <button class="tab" type="button" data-type="projects">Works</button>
+        <button class="tab" type="button" data-type="ai-products">AI Tools</button>
+        <button class="tab" type="button" data-type="archive">Archive</button>
+      </nav>
+      <div id="record-list" class="record-list"></div>
+    </aside>
+
+    <section class="editor-panel">
+      <div class="editor-toolbar">
+        <div>
+          <p id="current-type" class="eyebrow">Homepage</p>
+          <h2 id="current-title">选择一个内容项</h2>
+        </div>
+        <div class="toolbar-actions">
+          <button class="mode-button is-active" type="button" data-mode="simple">简单区块</button>
+          <button class="mode-button" type="button" data-mode="advanced">高级字段</button>
+          <button id="save-button" type="button" disabled>保存修改</button>
+          <button id="reload-record-button" type="button" disabled>重载当前项</button>
+        </div>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+      <nav id="section-nav" class="section-nav" aria-label="Page sections"></nav>
+      <form id="content-form" class="content-form"></form>
+    </section>
+
+    <section class="preview-panel">
+      <div class="preview-toolbar">
+        <div>
+          <p class="eyebrow">Quick preview</p>
+          <h2>网站预览</h2>
+        </div>
+        <p>请先运行 <code>PORT=4001 ./scripts/local-preview.sh</code></p>
+      </div>
+      <div id="preview-shortcuts" class="preview-shortcuts" aria-label="Preview shortcuts"></div>
+      <iframe id="preview-frame" title="Jekyll preview" src="http://127.0.0.1:4001/"></iframe>
+    </section>
+  </main>
+
+  <script src="/assets/editor.js"></script>
+</body>
+</html>

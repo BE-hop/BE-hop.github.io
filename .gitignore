@@ -14,3 +14,6 @@ vendor/
 .jekyll-cache
 */.DS_Store
 */*/.DS_Store
+career-trend-file/**/sources/
+-tmp-behop-*.json
+.content-editor/

@@ -63,6 +63,12 @@ highlighter: rouge
 permalink: pretty
 paginate: 10
 exclude:
+  - AGENTS.md
+  - .codex/
+  - career-trend-file/
+  - content-editor/
+  - docs/
+  - test/
   - vendor/
   - vendor/bundle/
   - vendor/cache/

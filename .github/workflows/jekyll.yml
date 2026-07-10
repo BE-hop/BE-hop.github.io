@@ -52,7 +52,7 @@ jobs:
       - name: Check generated CSS
         run: npm run css:check
       - name: Test local content editor
-        run: npm run editor:test
+        run: bundle exec ruby test/content_editor_test.rb
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5

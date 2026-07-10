@@ -1,7 +1,7 @@
 ---
 ---
 
-### Three Selves
+### About This Site
 
 - The self I believe I am  
 - The self I present  

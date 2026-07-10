@@ -1,15 +1,16 @@
+{% assign site_settings = site.data.site_settings %}
 <!-- Navigation -->
 <header class="site-nav" data-site-nav data-site-nav-theme="{{ page.nav-theme | default: 'light' }}">
     <div class="site-nav__inner">
         <a class="site-nav__brand" href="{{ site.baseurl }}/">
-            <span class="site-nav__title" data-i18n="nav.brand" data-i18n-zh="BEhooop"
-                data-i18n-en="BEhooop" data-zh="BEhooop" data-en="BEhooop">BEhooop</span>
+            <span class="site-nav__title" data-i18n="nav.brand" data-i18n-zh="{{ site_settings.brand_zh }}"
+                data-i18n-en="{{ site_settings.brand_en }}" data-zh="{{ site_settings.brand_zh }}" data-en="{{ site_settings.brand_en }}">{{ site_settings.brand_en }}</span>
         </a>
 
         <nav class="site-nav__links" aria-label="Primary">
             <div class="site-nav__item">
                 <a class="site-nav__link" href="{{ site.baseurl }}/behop-ai-product/" data-i18n="nav.ai"
-                    data-i18n-zh="AI工具" data-i18n-en="AI Tools" data-zh="AI工具" data-en="AI Tools">AI工具</a>
+                    data-i18n-zh="{{ site_settings.navigation.ai_tools_zh }}" data-i18n-en="{{ site_settings.navigation.ai_tools_en }}" data-zh="{{ site_settings.navigation.ai_tools_zh }}" data-en="{{ site_settings.navigation.ai_tools_en }}">{{ site_settings.navigation.ai_tools_en }}</a>
                 <div class="site-nav__dropdown">
                     <a class="site-nav__sublink" href="{{ site.baseurl }}/behop-ai-product/#products"
                         data-i18n="nav.ai.products" data-i18n-zh="工具精选" data-i18n-en="Featured Tools"
@@ -28,7 +29,7 @@
 
             <div class="site-nav__item">
                 <a class="site-nav__link" href="{{ site.baseurl }}/works/" data-i18n="nav.projects"
-                    data-i18n-zh="项目案例" data-i18n-en="Works" data-zh="项目案例" data-en="Works">项目案例</a>
+                    data-i18n-zh="{{ site_settings.navigation.works_zh }}" data-i18n-en="{{ site_settings.navigation.works_en }}" data-zh="{{ site_settings.navigation.works_zh }}" data-en="{{ site_settings.navigation.works_en }}">{{ site_settings.navigation.works_en }}</a>
                 <div class="site-nav__dropdown">
                     <a class="site-nav__sublink" href="{{ site.baseurl }}/works/" data-i18n="nav.projects.featured"
                         data-i18n-zh="全部案例" data-i18n-en="All Works" data-zh="全部案例"
@@ -50,7 +51,7 @@
 
             <div class="site-nav__item">
                 <a class="site-nav__link" href="{{ site.baseurl }}/blog/" data-blog-root data-i18n="nav.blog"
-                    data-i18n-zh="Blog" data-i18n-en="Blog" data-zh="Blog" data-en="Blog">Blog</a>
+                    data-i18n-zh="{{ site_settings.navigation.blog_zh }}" data-i18n-en="{{ site_settings.navigation.blog_en }}" data-zh="{{ site_settings.navigation.blog_zh }}" data-en="{{ site_settings.navigation.blog_en }}">{{ site_settings.navigation.blog_en }}</a>
                 <div class="site-nav__dropdown">
                     <a class="site-nav__sublink" href="{{ site.baseurl }}/blog/" data-blog-latest
                         data-i18n="nav.blog.latest" data-i18n-zh="最新文章" data-i18n-en="Latest Posts" data-zh="最新文章"
@@ -66,12 +67,12 @@
 
             <div class="site-nav__item">
                 <a class="site-nav__link" href="{{ site.baseurl }}/forum/" data-i18n="nav.forum"
-                    data-i18n-zh="AI情报" data-i18n-en="AI Digest" data-zh="AI情报" data-en="AI Digest">AI情报</a>
+                    data-i18n-zh="{{ site_settings.navigation.digest_zh }}" data-i18n-en="{{ site_settings.navigation.digest_en }}" data-zh="{{ site_settings.navigation.digest_zh }}" data-en="{{ site_settings.navigation.digest_en }}">{{ site_settings.navigation.digest_en }}</a>
             </div>
 
             <div class="site-nav__item">
                 <a class="site-nav__link" href="{{ site.baseurl }}/about/" data-i18n="nav.about"
-                    data-i18n-zh="关于我" data-i18n-en="About" data-zh="关于我" data-en="About">关于我</a>
+                    data-i18n-zh="{{ site_settings.navigation.about_zh }}" data-i18n-en="{{ site_settings.navigation.about_en }}" data-zh="{{ site_settings.navigation.about_zh }}" data-en="{{ site_settings.navigation.about_en }}">{{ site_settings.navigation.about_en }}</a>
             </div>
         </nav>
 
@@ -97,7 +98,7 @@
         <div class="site-nav__mobile-inner">
             <div class="site-nav__mobile-group">
                 <a class="site-nav__mobile-link" href="{{ site.baseurl }}/behop-ai-product/" data-i18n="nav.ai"
-                    data-i18n-zh="AI工具" data-i18n-en="AI Tools" data-zh="AI工具" data-en="AI Tools">AI工具</a>
+                    data-i18n-zh="{{ site_settings.navigation.ai_tools_zh }}" data-i18n-en="{{ site_settings.navigation.ai_tools_en }}" data-zh="{{ site_settings.navigation.ai_tools_zh }}" data-en="{{ site_settings.navigation.ai_tools_en }}">{{ site_settings.navigation.ai_tools_en }}</a>
                 <div class="site-nav__mobile-sub">
                     <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/behop-ai-product/#products"
                         data-i18n="nav.ai.products" data-i18n-zh="工具精选" data-i18n-en="Featured Tools"
@@ -116,7 +117,7 @@
 
             <div class="site-nav__mobile-group">
                 <a class="site-nav__mobile-link" href="{{ site.baseurl }}/works/" data-i18n="nav.projects"
-                    data-i18n-zh="项目案例" data-i18n-en="Works" data-zh="项目案例" data-en="Works">项目案例</a>
+                    data-i18n-zh="{{ site_settings.navigation.works_zh }}" data-i18n-en="{{ site_settings.navigation.works_en }}" data-zh="{{ site_settings.navigation.works_zh }}" data-en="{{ site_settings.navigation.works_en }}">{{ site_settings.navigation.works_en }}</a>
                 <div class="site-nav__mobile-sub">
                     <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/works/"
                         data-i18n="nav.projects.featured" data-i18n-zh="全部案例" data-i18n-en="All Works"
@@ -138,7 +139,7 @@
 
             <div class="site-nav__mobile-group">
                 <a class="site-nav__mobile-link" href="{{ site.baseurl }}/blog/" data-blog-root data-i18n="nav.blog"
-                    data-i18n-zh="Blog" data-i18n-en="Blog" data-zh="Blog" data-en="Blog">Blog</a>
+                    data-i18n-zh="{{ site_settings.navigation.blog_zh }}" data-i18n-en="{{ site_settings.navigation.blog_en }}" data-zh="{{ site_settings.navigation.blog_zh }}" data-en="{{ site_settings.navigation.blog_en }}">{{ site_settings.navigation.blog_en }}</a>
                 <div class="site-nav__mobile-sub">
                     <a class="site-nav__mobile-sublink" href="{{ site.baseurl }}/blog/" data-blog-latest
                         data-i18n="nav.blog.latest" data-i18n-zh="最新文章" data-i18n-en="Latest Posts" data-zh="最新文章"
@@ -154,12 +155,12 @@
 
             <div class="site-nav__mobile-group">
                 <a class="site-nav__mobile-link" href="{{ site.baseurl }}/forum/" data-i18n="nav.forum"
-                    data-i18n-zh="AI情报" data-i18n-en="AI Digest" data-zh="AI情报" data-en="AI Digest">AI情报</a>
+                    data-i18n-zh="{{ site_settings.navigation.digest_zh }}" data-i18n-en="{{ site_settings.navigation.digest_en }}" data-zh="{{ site_settings.navigation.digest_zh }}" data-en="{{ site_settings.navigation.digest_en }}">{{ site_settings.navigation.digest_en }}</a>
             </div>
 
             <div class="site-nav__mobile-group">
                 <a class="site-nav__mobile-link" href="{{ site.baseurl }}/about/" data-i18n="nav.about"
-                    data-i18n-zh="关于我" data-i18n-en="About" data-zh="关于我" data-en="About">关于我</a>
+                    data-i18n-zh="{{ site_settings.navigation.about_zh }}" data-i18n-en="{{ site_settings.navigation.about_en }}" data-zh="{{ site_settings.navigation.about_zh }}" data-en="{{ site_settings.navigation.about_en }}">{{ site_settings.navigation.about_en }}</a>
             </div>
         </div>
     </div>

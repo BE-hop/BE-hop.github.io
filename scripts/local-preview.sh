@@ -7,6 +7,7 @@ cd "$ROOT_DIR"
 MODE="${1:-serve}"
 HOST="${HOST:-127.0.0.1}"
 PORT="${PORT:-4000}"
+JEKYLL_DESTINATION="${JEKYLL_DESTINATION:-$ROOT_DIR/_site}"
 
 usage() {
   cat <<'EOF'
@@ -23,6 +24,7 @@ Environment overrides:
   PORT=4000
   BUNDLE_PATH=/tmp/behop-bundle
   BUNDLE_USER_HOME=/tmp/bundle-home
+  JEKYLL_DESTINATION=/tmp/behop-build
 EOF
 }
 
@@ -137,8 +139,8 @@ fi
 install_dependencies_if_needed
 
 if [[ "$MODE" == "build" ]]; then
-  echo "[info] Building static site into $ROOT_DIR/_site"
-  bundle exec jekyll build
+  echo "[info] Building static site into $JEKYLL_DESTINATION"
+  bundle exec jekyll build --destination "$JEKYLL_DESTINATION"
   echo "[ok] Build complete."
   exit 0
 fi

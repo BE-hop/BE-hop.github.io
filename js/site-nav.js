@@ -31,4 +31,24 @@
   document.addEventListener("click", (event) => {
     if (!nav.contains(event.target)) setOpen(false)
   })
+
+  window.addEventListener("message", (event) => {
+    let origin
+    try {
+      origin = new URL(event.origin)
+    } catch (error) {
+      return
+    }
+    if (!["127.0.0.1", "localhost"].includes(origin.hostname)) return
+    if (!event.data || event.data.type !== "behop:set-language") return
+    const lang = event.data.lang === "zh" ? "zh" : "en"
+    try {
+      localStorage.setItem("portfolioLang", lang)
+      localStorage.setItem("blogLang", lang)
+      localStorage.setItem("behopAiLang", lang)
+    } catch (error) {
+      // Ignore storage failures and still refresh the preview.
+    }
+    window.location.reload()
+  })
 })()

@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BE-hop Content Editor</title>
+  <title>BE-hop Content Studio</title>
   <link rel="stylesheet" href="/assets/editor.css">
 </head>
 <body>
   <header class="topbar">
     <div>
-      <p class="eyebrow">Local only</p>
-      <h1>BE-hop 内容编辑器</h1>
+      <p class="eyebrow">Local content studio</p>
+      <h1>BE-hop 网站内容工作台</h1>
     </div>
     <div class="topbar-actions">
+      <span id="preview-health" class="health-pill">检查预览…</span>
       <button id="refresh-button" type="button">刷新内容</button>
-      <a id="preview-link" href="http://127.0.0.1:4001/" target="_blank" rel="noreferrer">打开预览</a>
+      <a id="preview-link" href="http://127.0.0.1:4001/" target="_blank" rel="noreferrer">新窗口预览</a>
     </div>
   </header>
 
@@ -22,28 +23,37 @@
     <aside class="sidebar">
       <div class="notice">
         <strong>编辑范围</strong>
-        <span>主页、AI Tools、Works、Archive。Blog、AI Digest、About 不在这里编辑。</span>
+        <span>全站设置、主页、Works、AI Tools、AI Gallery、Archive、About 和双语 Blog。</span>
       </div>
-      <nav class="tabs" aria-label="Content types">
-        <button class="tab is-active" type="button" data-type="homepage">Homepage</button>
-        <button class="tab" type="button" data-type="projects">Works</button>
-        <button class="tab" type="button" data-type="ai-products">AI Tools</button>
-        <button class="tab" type="button" data-type="archive">Archive</button>
-      </nav>
+      <nav id="type-tabs" class="tabs" aria-label="Content types"></nav>
+      <label class="search-field">
+        <span>搜索当前内容</span>
+        <input id="record-search" type="search" placeholder="标题、年份或状态">
+      </label>
+      <div class="list-toolbar">
+        <span id="record-count">0 项</span>
+        <button id="new-button" type="button">新建</button>
+      </div>
       <div id="record-list" class="record-list"></div>
     </aside>
 
     <section class="editor-panel">
       <div class="editor-toolbar">
         <div>
-          <p id="current-type" class="eyebrow">Homepage</p>
+          <p id="current-type" class="eyebrow">Content</p>
           <h2 id="current-title">选择一个内容项</h2>
+          <div class="state-line">
+            <span id="save-state" class="state-badge">正在初始化</span>
+            <span id="validation-state" class="state-badge state-badge--muted">尚未校验</span>
+          </div>
         </div>
         <div class="toolbar-actions">
-          <button class="mode-button is-active" type="button" data-mode="simple">简单区块</button>
-          <button class="mode-button" type="button" data-mode="advanced">高级字段</button>
-          <button id="save-button" type="button" disabled>保存修改</button>
-          <button id="reload-record-button" type="button" disabled>重载当前项</button>
+          <button class="mode-button is-active" type="button" data-mode="structured">结构化</button>
+          <button class="mode-button" type="button" data-mode="advanced">高级</button>
+          <button id="duplicate-button" type="button" disabled>复制</button>
+          <button id="history-button" type="button" disabled>历史</button>
+          <button id="delete-button" class="danger-button" type="button" disabled>删除</button>
+          <button id="save-button" type="button" disabled>保存到本地</button>
         </div>
       </div>
 
@@ -55,15 +65,53 @@
     <section class="preview-panel">
       <div class="preview-toolbar">
         <div>
-          <p class="eyebrow">Quick preview</p>
+          <p class="eyebrow">Saved local preview</p>
           <h2>网站预览</h2>
         </div>
-        <p>请先运行 <code>PORT=4001 ./scripts/local-preview.sh</code></p>
+        <div class="preview-language" aria-label="Preview language">
+          <button type="button" data-preview-lang="en" class="is-active">EN</button>
+          <button type="button" data-preview-lang="zh">中文</button>
+        </div>
       </div>
       <div id="preview-shortcuts" class="preview-shortcuts" aria-label="Preview shortcuts"></div>
       <iframe id="preview-frame" title="Jekyll preview" src="http://127.0.0.1:4001/"></iframe>
+
+      <section class="publish-card">
+        <div>
+          <p class="eyebrow">Publish</p>
+          <h3>发布本次编辑器改动</h3>
+          <p id="publish-summary">仅发布当前会话中由编辑器修改的内容和图片。</p>
+        </div>
+        <button id="publish-button" type="button">检查并发布</button>
+      </section>
     </section>
   </main>
+
+  <dialog id="history-dialog">
+    <form method="dialog" class="dialog-card">
+      <div class="dialog-heading">
+        <h2>历史版本</h2>
+        <button value="cancel" type="submit">关闭</button>
+      </div>
+      <div id="history-list" class="history-list"></div>
+    </form>
+  </dialog>
+
+  <dialog id="publish-dialog">
+    <form method="dialog" class="dialog-card">
+      <div class="dialog-heading">
+        <h2>确认发布</h2>
+        <button value="cancel" type="submit">取消</button>
+      </div>
+      <p>以下文件将被提交并推送到 GitHub Pages：</p>
+      <ul id="publish-files" class="publish-files"></ul>
+      <label class="field compact-field">
+        <span>提交说明</span>
+        <input id="commit-message" value="content(site): update website content" maxlength="120">
+      </label>
+      <button id="confirm-publish-button" type="button">二次确认并推送</button>
+    </form>
+  </dialog>
 
   <script src="/assets/editor.js"></script>
 </body>

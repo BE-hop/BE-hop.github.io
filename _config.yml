@@ -65,10 +65,13 @@ paginate: 10
 exclude:
   - AGENTS.md
   - .codex/
+  - .content-editor/
   - career-trend-file/
   - content-editor/
   - docs/
   - test/
+  - tailwind.config.cjs
+  - css/tailwind-input.css
   - vendor/
   - vendor/bundle/
   - vendor/cache/

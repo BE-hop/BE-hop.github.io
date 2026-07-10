@@ -1,0 +1,267 @@
+version: 1
+types:
+  site-settings:
+    label: Site Settings
+    label_zh: 全站设置
+    singleton: true
+    preview_url: /
+    required: [brand_zh, brand_en, email, default_language]
+    sections:
+      - id: identity
+        title: 品牌与联系
+        description: 全站品牌、默认语言和联系邮箱。
+        fields:
+          - { path: brand_zh, label: 品牌名（中文） }
+          - { path: brand_en, label: 品牌名（英文） }
+          - { path: email, label: 联系邮箱, type: email }
+          - { path: default_language, label: 默认语言, type: select, options: [en, zh] }
+      - id: navigation
+        title: 导航文字
+        description: 桌面端和移动端共用。
+        fields:
+          - { path: navigation, label: 导航双语字段, type: object }
+      - id: social
+        title: 社交链接
+        description: 留空的链接不会显示。
+        fields:
+          - { path: social, label: 社交平台, type: object }
+  homepage:
+    label: Homepage
+    label_zh: 主页
+    singleton: true
+    preview_url: /
+    required: [hero.background_image, hero.title_lines_zh, hero.title_lines_en]
+    sections:
+      - id: hero
+        title: 主页首屏 Hero
+        description: 背景图、身份、标题、说明和行动按钮。
+        fields:
+          - { path: hero.background_image, label: 首屏背景图, type: image }
+          - { path: hero.badge_zh, label: 身份标签（中文） }
+          - { path: hero.badge_en, label: 身份标签（英文） }
+          - { path: hero.title_lines_zh, label: 主标题分行（中文）, type: array }
+          - { path: hero.title_lines_en, label: 主标题分行（英文）, type: array }
+          - { path: hero.description_zh, label: 首屏说明（中文）, type: textarea }
+          - { path: hero.description_en, label: 首屏说明（英文）, type: textarea }
+          - { path: hero.primary_cta_zh, label: 主按钮（中文） }
+          - { path: hero.primary_cta_en, label: 主按钮（英文） }
+          - { path: hero.secondary_cta_zh, label: 次按钮（中文） }
+          - { path: hero.secondary_cta_en, label: 次按钮（英文） }
+      - id: sections
+        title: 首页内容入口
+        description: AI Tools、Works、Contact 和 Footer。
+        fields:
+          - { path: ai_tools, label: AI Tools 区, type: object }
+          - { path: works, label: Works 区, type: object }
+          - { path: contact, label: Contact 区, type: object }
+          - { path: footer, label: Footer 区, type: object }
+  projects:
+    label: Works
+    label_zh: 项目案例
+    required: [title_zh, title_en, summary_zh, summary_en, category, cover, order]
+    defaults:
+      layout: project
+      title_zh: 新项目
+      title_en: New Project
+      category: professional
+      visibility: hidden
+      featured: false
+      order: 99
+      tools: []
+      drawings: []
+      renderings: []
+    sections:
+      - id: card
+        title: 列表卡片
+        description: 首页和 Works 列表使用。
+        fields:
+          - { path: cover, label: 封面, type: image }
+          - { path: title_zh, label: 标题（中文） }
+          - { path: title_en, label: 标题（英文） }
+          - { path: subtitle_zh, label: 副标题（中文） }
+          - { path: subtitle_en, label: 副标题（英文） }
+          - { path: summary_zh, label: 摘要（中文）, type: textarea }
+          - { path: summary_en, label: 摘要（英文）, type: textarea }
+          - { path: category, label: 分类代码 }
+          - { path: category_label_zh, label: 分类（中文） }
+          - { path: category_label_en, label: 分类（英文） }
+          - { path: year, label: 年份 }
+      - id: detail
+        title: 项目详情
+        description: 角色、问题、策略、结果与复盘。
+        fields:
+          - { path: role_zh, label: 角色（中文）, type: textarea }
+          - { path: role_en, label: 角色（英文）, type: textarea }
+          - { path: tools, label: 工具, type: array }
+          - { path: context_zh, label: 背景（中文）, type: textarea }
+          - { path: context_en, label: 背景（英文）, type: textarea }
+          - { path: problem_zh, label: 问题（中文）, type: textarea }
+          - { path: problem_en, label: 问题（英文）, type: textarea }
+          - { path: design_strategy_zh, label: 策略（中文）, type: textarea }
+          - { path: design_strategy_en, label: 策略（英文）, type: textarea }
+          - { path: outcome_zh, label: 结果（中文）, type: textarea }
+          - { path: outcome_en, label: 结果（英文）, type: textarea }
+          - { path: reflection_zh, label: 复盘（中文）, type: textarea }
+          - { path: reflection_en, label: 复盘（英文）, type: textarea }
+      - id: media
+        title: 图片与排序
+        description: 图纸、效果图、精选与顺序。
+        fields:
+          - { path: drawings, label: 图纸 / 流程, type: array }
+          - { path: renderings, label: 效果图, type: array }
+          - { path: featured, label: 是否精选, type: boolean }
+          - { path: order, label: 排序, type: number }
+  ai-products:
+    label: AI Tools
+    label_zh: AI 工具
+    required: [title_zh, title_en, summary_zh, summary_en, visibility, order]
+    defaults:
+      layout: ai-product
+      title_zh: 新工具
+      title_en: New Tool
+      visibility: hidden
+      order: 99
+      tags: []
+      workflow: []
+      features: []
+      result_gallery: []
+    sections:
+      - id: card
+        title: 工具卡片
+        description: 标题、封面、状态和摘要。
+        fields:
+          - { path: cover, label: 封面, type: image }
+          - { path: title_zh, label: 标题（中文） }
+          - { path: title_en, label: 标题（英文） }
+          - { path: subtitle_zh, label: 副标题（中文） }
+          - { path: subtitle_en, label: 副标题（英文） }
+          - { path: summary_zh, label: 摘要（中文）, type: textarea }
+          - { path: summary_en, label: 摘要（英文）, type: textarea }
+          - { path: visibility, label: 可见性, type: select, options: [public, hidden, concept] }
+          - { path: order, label: 排序, type: number }
+      - id: detail
+        title: 工具详情
+        description: 问题、用户、工作流、功能、限制与下一步。
+        fields:
+          - { path: problem_zh, label: 问题（中文）, type: textarea }
+          - { path: problem_en, label: 问题（英文）, type: textarea }
+          - { path: target_users, label: 目标用户, type: array }
+          - { path: workflow, label: 工作流, type: array }
+          - { path: features, label: 功能, type: array }
+          - { path: tech_stack, label: 技术栈, type: array }
+          - { path: limitations, label: 限制, type: array }
+          - { path: next_steps, label: 下一步, type: array }
+      - id: media
+        title: 对比与结果
+        description: 前后对比和结果图片。
+        fields:
+          - { path: before_image, label: 对比前, type: image }
+          - { path: after_image, label: 对比后, type: image }
+          - { path: result_gallery, label: 结果图组, type: array }
+  ai-gallery:
+    label: AI Gallery
+    label_zh: AI 图库
+    required: [title_zh, title_en, summary_zh, summary_en, image, visibility]
+    defaults:
+      layout: ai-gallery
+      title_zh: 新图库项目
+      title_en: New Gallery Item
+      visibility: hidden
+      chips: []
+    sections:
+      - id: main
+        title: Gallery 内容
+        description: 图片、标题、摘要和分类。
+        fields:
+          - { path: image, label: 主图, type: image }
+          - { path: title_zh, label: 标题（中文） }
+          - { path: title_en, label: 标题（英文） }
+          - { path: summary_zh, label: 摘要（中文）, type: textarea }
+          - { path: summary_en, label: 摘要（英文）, type: textarea }
+          - { path: category_zh, label: 分类（中文） }
+          - { path: category_en, label: 分类（英文） }
+          - { path: visibility, label: 可见性, type: select, options: [public, hidden, concept] }
+          - { path: chips, label: 标签, type: array }
+  archive:
+    label: Archive
+    label_zh: 作品归档
+    required: [id, title_zh, title_en, year, visibility, thumbnail]
+    defaults:
+      title_zh: 新归档
+      title_en: New Archive Item
+      visibility: hidden
+      status: draft
+      tags: []
+    sections:
+      - id: card
+        title: 归档卡片
+        description: 归档页显示的内容。
+        fields:
+          - { path: thumbnail, label: 缩略图, type: image }
+          - { path: title_zh, label: 标题（中文） }
+          - { path: title_en, label: 标题（英文） }
+          - { path: summary_zh, label: 摘要（中文）, type: textarea }
+          - { path: summary_en, label: 摘要（英文）, type: textarea }
+          - { path: year, label: 年份 }
+          - { path: source_group, label: 分组 }
+          - { path: visibility, label: 可见性, type: select, options: [public, limited, hidden] }
+          - { path: project_url, label: 详情链接 }
+          - { path: tags, label: 标签, type: array }
+  about:
+    label: About
+    label_zh: 关于我
+    singleton: true
+    preview_url: /about/
+    required: [title_zh, title_en, subtitle_zh, subtitle_en, background_image]
+    sections:
+      - id: intro
+        title: About 首屏
+        description: 标题、背景和个人介绍。
+        fields:
+          - { path: background_image, label: 背景图, type: image }
+          - { path: title_zh, label: 标题（中文） }
+          - { path: title_en, label: 标题（英文） }
+          - { path: subtitle_zh, label: 副标题（中文） }
+          - { path: subtitle_en, label: 副标题（英文） }
+          - { path: intro_zh, label: 介绍（中文）, type: textarea }
+          - { path: intro_en, label: 介绍（英文）, type: textarea }
+          - { path: sections, label: 内容区块, type: array }
+  blog:
+    label: Bilingual Blog
+    label_zh: 双语 Blog
+    paired: true
+    required: [shared.date, zh.title, en.title]
+    defaults:
+      shared:
+        layout: post
+        date:
+        author: liu.ruyuan
+        tags: []
+      zh:
+        title: 新文章
+        subtitle: ""
+        lang: zh
+      en:
+        title: New Post
+        subtitle: ""
+        lang: en
+    sections:
+      - id: shared
+        title: 文章设置
+        description: 中英文共用日期、作者和标签。
+        fields:
+          - { path: shared.date, label: 发布日期, type: date }
+          - { path: shared.author, label: 作者 }
+          - { path: shared.tags, label: 标签, type: array }
+      - id: zh
+        title: 中文文章
+        description: 中文标题、副标题和 Markdown 正文。
+        fields:
+          - { path: zh.title, label: 中文标题 }
+          - { path: zh.subtitle, label: 中文副标题, type: textarea }
+      - id: en
+        title: English Post
+        description: English title, subtitle, and Markdown body.
+        fields:
+          - { path: en.title, label: English title }
+          - { path: en.subtitle, label: English subtitle, type: textarea }

@@ -15,7 +15,7 @@ PORT=4001 ./scripts/local-preview.sh
 再启动内容编辑器：
 
 ```bash
-ruby scripts/content-editor.rb
+npm run editor
 ```
 
 打开：
@@ -26,29 +26,31 @@ http://127.0.0.1:4567/
 
 编辑器覆盖：
 
-- Homepage：主页 Hero、首页 AI Tools 入口区、首页 Works 入口区、Contact / Footer 展示文字与首页主图。
-- AI Tools：读取 `_ai_products/*.md`。
+- Site Settings：品牌、联系邮箱、默认语言、导航文字和社交链接，读取 `_data/site_settings.yml`。
+- Homepage：主页 Hero、AI Tools、Works、Contact / Footer，读取 `_data/homepage.yml`。
 - Works：读取 `_projects/*.md`。
+- AI Tools：读取 `_ai_products/*.md`。
+- AI Gallery：读取 `_ai_gallery/*.md`。
 - Archive：读取 `_data/worksarchive.yml`。
+- About：读取 `_data/about.yml`。
+- Bilingual Blog：成对读取和写入 `_posts/YYYY-MM-DD-slug.md` 与 `-en.md`。
 
-编辑器不覆盖：
-
-- Blog
-- AI Digest
-- About
+AI Digest 仍使用原有审核数据和同步脚本，不进入内容编辑器。
 
 图片替换方式：
 
 1. 在编辑器里选择内容项。
-2. 在“简单区块”模式里找到对应页面位置，例如“主页首屏 Hero”“项目详情图片”“Archive 归档卡片”。
+2. 在“结构化”模式里找到对应页面位置，例如“主页首屏 Hero”“项目详情图片”“Archive 归档卡片”。
 3. 点击“替换图片”。
-4. 选择本地图片后，编辑器会复制图片到网站图片目录，并自动更新路径。
-5. 保存后重新构建或等待 Jekyll 预览刷新。
+4. 选择本地图片后，编辑器会校验真实文件类型并暂存到被 Git 忽略的草稿目录；图片路径先进入当前草稿。
+5. 点击“保存到本地”后，图片才原子移动到对应网站图片目录并更新内容文件，等待 Jekyll 预览刷新。
 
 编辑器有两种模式：
 
-- 简单区块：推荐日常使用。内容按真实页面位置组织，例如“主页首屏 Hero”“Works 列表卡片”“项目详情图片”“Archive 归档卡片”。
-- 高级字段：用于 agent 或排查问题时查看完整 YAML 字段。
+- 结构化：推荐日常使用。内容按真实页面位置组织，数组内容支持新增、删除和上下排序。
+- 高级：用于 agent 或排查问题时查看完整 JSON 数据和 Markdown 正文；保存时仍由服务端生成安全 YAML front matter。
+
+编辑器支持搜索、新建隐藏草稿、复制、软删除、历史恢复、中英文 Blog 章节数量校验，以及预览语言切换。
 
 图片替换卡住时的排查：
 
@@ -61,15 +63,34 @@ http://127.0.0.1:4567/
 
 ```text
 _data/homepage.yml
+_data/site_settings.yml
+_data/about.yml
 _data/worksarchive.yml
 _projects/
 _ai_products/
+_ai_gallery/
+_posts/
 img/portfolio/homepage/
 img/portfolio/real-works/
+img/portfolio/about/
 img/ai-products/
+img/ai-gallery/
+img/posts/
 ```
 
-不要把 `scripts/content-editor.rb` 或 `content-editor/` 部署成线上后台。它只给本机维护内容使用。
+历史和回收站保存在被 Git 忽略的 `.content-editor/`，不会进入网站或提交。
+
+### 发布到 GitHub Pages
+
+“检查并发布”只处理本次编辑器会话创建、修改或删除的内容文件：
+
+1. 检查启动前是否已有同路径改动。
+2. 检查远端 `master` 是否领先或分叉。
+3. 验证生成 CSS、编辑器测试、Jekyll 构建、链接、图片和双语文章。
+4. 展示精确文件列表并要求二次确认。
+5. 仅暂存列表中的文件，提交并推送 `origin/master`。
+
+编辑器不会自动 pull、rebase、强制推送或暂存整个工作区。不要把 `scripts/content-editor.rb` 或 `content-editor/` 部署成线上后台。
 
 ## 1. 首页内容在哪里改
 

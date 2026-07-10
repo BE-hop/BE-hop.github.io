@@ -1,0 +1,16 @@
+title_zh: 关于我
+title_en: About
+subtitle_zh: 景观设计师 / AI 工具开发者 / 计算化设计实践者
+subtitle_en: Landscape Designer / AI Tool Builder / Computational Design Practitioner
+background_image: /img/about.me.jpg
+intro_zh: 我关注 AI、计算化工具与视觉表达如何改变景观设计工作流，尤其是从草图、图像到可编辑空间模型的转化过程。
+intro_en: I explore how AI, computation, and visual representation can reshape landscape design workflows, especially the transition from sketches and images to editable spatial models.
+sections:
+  - title_zh: 实践方向
+    title_en: Practice Direction
+    body_zh: 我把真实设计项目、工具开发和研究笔记放在同一个系统中记录，既展示空间结果，也展示背后的判断、流程与技术方法。
+    body_en: I document real design projects, tool development, and research notes in one system, showing spatial outcomes together with the judgment, workflow, and technical methods behind them.
+  - title_zh: 工作方法
+    title_en: Working Method
+    body_zh: 从问题、约束和角色出发，通过原型、设计评估和持续复盘，把一次性的经验沉淀为可复用工作流。
+    body_en: I start with the problem, constraints, and role, then use prototypes, design evaluation, and reflection to turn one-off experience into reusable workflows.

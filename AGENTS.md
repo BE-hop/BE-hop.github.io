@@ -2,10 +2,20 @@
 
 This repository is a personal Jekyll/GitHub Pages site for BEhop Experience. Follow these instructions when working here as Codex or another AI coding agent.
 
+## Instruction Order And Defaults
+
+1. Follow the nearest applicable `AGENTS.md`; this root file is the canonical project policy.
+2. Read `.codex/memory.md` before substantive work, then open only the linked memory files relevant to the task.
+3. For career-facing content, also follow `docs/career-content-strategy-memory.md` and its dated evidence rules.
+4. Communicate with the site owner in Chinese. Keep code, file names, schema keys, and public professional content English-first unless a Chinese mirror is required.
+5. Preserve unrelated working-tree changes. Never stage, publish, or rewrite files outside the task scope.
+
+The public site defaults to English, remembers the visitor's language choice locally, and retains complete Chinese mirrors where the page supports both languages.
+
 ## Project Overview
 
 - Site type: Jekyll 3.x static site, deployed through GitHub Pages.
-- Primary language/content: Chinese first, with selected English mirrors.
+- Owner communication is Chinese; public professional content is English-first with Chinese mirrors.
 - Main focus: personal blog, AI/design knowledge base, portfolio projects, AI product pages, gallery pages, and a small forum experience.
 - Production URL: `https://be-hop.github.io`
 - Core config: `_config.yml`
@@ -84,6 +94,14 @@ For forum metrics after approved data changes:
 npm run forum:metrics
 ```
 
+Before handing off a substantive change, prefer the consolidated quality gate:
+
+```bash
+npm run check
+```
+
+If a narrowly scoped change does not require every check, run the relevant subset and state exactly what was skipped. A successful Jekyll build alone is not sufficient for editor, schema, generated-CSS, or publishing changes.
+
 Forum sync scripts require secrets and should not be run casually:
 
 - `FORUM_COMMENT_SUBMIT_URL`
@@ -119,17 +137,29 @@ The site owner prefers agent-managed design/code changes and owner-friendly cont
 
 - The local content editor is started with `ruby scripts/content-editor.rb` and opens at `http://127.0.0.1:4567/`.
 - The editor is local-only and must not be positioned as an online admin panel or deployed backend.
-- The editor covers Homepage, AI Tools, Works, and Archive.
-- The editor intentionally does not cover Blog, AI Digest, or About unless the site owner asks for a future expansion.
+- The editor covers Site Settings, Homepage, Works, AI Tools, AI Gallery, Archive, About, and bilingual Blog pairs.
+- The editor intentionally does not cover AI Digest moderation or approved-data synchronization.
 - Homepage owner-editable text and images live in `_data/homepage.yml`.
+- Global owner-editable settings live in `_data/site_settings.yml`; About content lives in `_data/about.yml`.
 - Works content lives in `_projects/*.md`.
 - AI Tools content lives in `_ai_products/*.md`.
+- AI Gallery content lives in `_ai_gallery/*.md`; bilingual Blog content lives in paired `_posts/*.md` files.
 - Archive content lives in `_data/worksarchive.yml`.
-- Owner-replaceable images should stay under `img/portfolio/homepage/`, `img/portfolio/real-works/`, or `img/ai-products/`.
+- Owner-replaceable images should stay under the explicit editor media roots documented in `docs/site-content-map.md`.
 - If an agent changes the content schema, front matter fields, image fields, or page data flow for these areas, update `scripts/content-editor.rb`, `content-editor/`, and `docs/site-content-map.md` in the same work.
 - Keep editor writes restricted to explicit content and image paths. Never allow it to write secrets, `.env`, `.git`, `_site`, `node_modules`, caches, or files outside the repository.
 - After each substantive site/content workflow, proactively report reusable process or memory candidates to the site owner.
 - Do not write Codex long-term memory updates unless the site owner explicitly grants permission for that memory write.
+
+The site owner has granted ongoing permission to maintain repository-local project memory under `.codex/` after substantive work. This does not grant permission to write Codex global memory. Repository memory must record durable facts, decisions, or verified workflows only; do not append transient task logs.
+
+Editor publishing rules:
+
+- The editor may publish only files changed during its current session and only inside its explicit content/media allowlist.
+- Files already dirty when the editor starts are baseline conflicts and must never be staged automatically.
+- Publishing must run build and audit checks, show the exact file list, require a second confirmation, and refuse remote divergence.
+- Never auto-pull, auto-rebase, force-push, or stage the entire working tree from the editor.
+- Keep `content-editor/`, `.content-editor/`, `.codex/`, internal docs, tests, and career evidence out of the generated site.
 
 Blog publishing rules are documented in `README_AI_BLOG_PUBLISH.md`. For bilingual posts:
 

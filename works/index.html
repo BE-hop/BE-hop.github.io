@@ -14,33 +14,7 @@ lang-switcher: true
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind = {
-      config: {
-        theme: {
-          extend: {
-            colors: {
-              background: "var(--background)",
-              foreground: "var(--foreground)",
-              card: "var(--card)",
-              "card-foreground": "var(--card-foreground)",
-              primary: "var(--primary)",
-              "primary-foreground": "var(--primary-foreground)",
-              secondary: "var(--secondary)",
-              muted: "var(--muted)",
-              "muted-foreground": "var(--muted-foreground)",
-              border: "var(--border)",
-            },
-            fontFamily: {
-              serif: ["Playfair Display", "serif"],
-              sans: ["Manrope", "sans-serif"],
-            },
-          },
-        },
-      },
-    }
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  {% include tailwind-head.html %}
   <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
   <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css">
 </head>
@@ -73,6 +47,7 @@ lang-switcher: true
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {%- assign project_list = site.projects | sort: "order" -%}
           {%- for project in project_list -%}
+          {%- if project.visibility != "hidden" -%}
           {%- assign cover_image = project.cover | default: project.image -%}
           {%- assign project_type_zh = project.type_zh | default: project.project_type_zh | default: project.category_label_zh | default: project.type | default: project.project_type -%}
           {%- assign project_type_en = project.type_en | default: project.project_type_en | default: project.category_label_en | default: project.type | default: project.project_type -%}
@@ -121,6 +96,7 @@ lang-switcher: true
               </div>
             </a>
           </article>
+          {%- endif -%}
           {%- endfor -%}
         </div>
 

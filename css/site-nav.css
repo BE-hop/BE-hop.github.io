@@ -42,6 +42,16 @@ html[lang="en"] .site-heading h1 {
   letter-spacing: -0.01em;
 }
 
+.catalog-toggle {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
 .site-nav {
   position: fixed;
   top: 0;
@@ -259,6 +269,7 @@ html[lang="en"] .site-heading h1 {
 
 .site-nav__toggle {
   display: none;
+  flex-direction: column;
   width: 40px;
   height: 40px;
   border: 0;
@@ -273,6 +284,12 @@ html[lang="en"] .site-heading h1 {
 
 .site-nav__toggle:hover {
   background: rgba(255, 255, 255, 0.12);
+}
+
+.site-nav a:focus-visible,
+.site-nav button:focus-visible {
+  outline: 3px solid color-mix(in oklab, var(--nav-accent) 70%, white);
+  outline-offset: 4px;
 }
 
 .site-nav.is-scrolled .site-nav__toggle:hover {

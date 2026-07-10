@@ -1,336 +1,107 @@
 const state = {
-  type: "homepage",
+  bootstrap: null,
+  csrfToken: "",
+  schema: null,
+  type: "site-settings",
   records: [],
-  currentId: "homepage",
+  currentId: null,
   current: null,
-  dirty: false,
-  mode: "simple",
+  mode: "structured",
   activeSection: null,
-  uploadingField: null,
+  dirty: false,
+  valid: false,
+  search: "",
+  previewLang: "en",
+  publishToken: null,
+  pendingMedia: {},
 }
 
-const typeLabels = {
-  homepage: "Homepage",
-  projects: "Works",
-  "ai-products": "AI Tools",
-  archive: "Archive",
-}
-
-const rootFields = {
-  homepage: ["hero", "ai_tools", "works", "contact", "footer"],
-  projects: [
-    "title_zh", "title_en", "subtitle_zh", "subtitle_en", "category",
-    "category_label_zh", "category_label_en", "status_zh", "status_en",
-    "year", "location_zh", "location_en", "role_zh", "role_en", "tools",
-    "summary_zh", "summary_en", "context_zh", "context_en", "problem_zh",
-    "problem_en", "concept_zh", "concept_en", "design_strategy_zh",
-    "design_strategy_en", "outcome_zh", "outcome_en", "reflection_zh",
-    "reflection_en", "cover", "image", "drawings", "renderings",
-    "related_posts", "order", "featured", "archive_ref",
-  ],
-  "ai-products": [
-    "title_zh", "title_en", "subtitle_zh", "subtitle_en", "category",
-    "category_zh", "category_en", "visibility", "status_zh", "status_en",
-    "summary_zh", "summary_en", "image", "cover", "tags", "chips",
-    "problem_zh", "problem_en", "target_users", "workflow", "features",
-    "tech_stack", "input_output_zh", "input_output_en", "demo_zh",
-    "demo_en", "before_image", "after_image", "before_label_zh",
-    "before_label_en", "after_label_zh", "after_label_en", "result_gallery",
-    "limitations", "next_steps", "order",
-  ],
-  archive: [
-    "id", "title_zh", "title_en", "year", "source_group", "type_zh",
-    "type_en", "status", "visibility", "source_label_zh",
-    "source_label_en", "thumbnail", "project_url", "summary_zh",
-    "summary_en", "tags",
-  ],
-}
-
-const schemas = {
-  homepage: [
-    {
-      id: "hero",
-      title: "主页首屏 Hero",
-      position: "对应刚进入网站看到的第一屏：背景图、身份标签、主标题、说明文字和按钮。",
-      fields: [
-        ["hero.background_image", "首屏背景图", "建议 1800px 宽以内，复杂图片会影响文字可读性。"],
-        ["hero.badge_zh", "身份标签（中文）"],
-        ["hero.badge_en", "身份标签（英文）"],
-        ["hero.title_lines_zh", "主标题分行（中文）"],
-        ["hero.title_lines_en", "主标题分行（英文）"],
-        ["hero.description_zh", "首屏说明（中文）"],
-        ["hero.description_en", "首屏说明（英文）"],
-        ["hero.primary_cta_zh", "主按钮（中文）"],
-        ["hero.primary_cta_en", "主按钮（英文）"],
-        ["hero.secondary_cta_zh", "次按钮（中文）"],
-        ["hero.secondary_cta_en", "次按钮（英文）"],
-      ],
-    },
-    {
-      id: "home-ai",
-      title: "首页 AI Tools 入口区",
-      position: "对应主页中 AI Tools 卡片组上方的标题和说明，具体工具卡片来自 AI Tools 内容。",
-      fields: [
-        ["ai_tools.kicker_zh", "小标题（中文）"],
-        ["ai_tools.kicker_en", "小标题（英文）"],
-        ["ai_tools.title_zh", "区块标题（中文）"],
-        ["ai_tools.title_en", "区块标题（英文）"],
-        ["ai_tools.subtitle_zh", "区块说明（中文）"],
-        ["ai_tools.subtitle_en", "区块说明（英文）"],
-        ["ai_tools.view_all_zh", "查看全部按钮（中文）"],
-        ["ai_tools.view_all_en", "查看全部按钮（英文）"],
-      ],
-    },
-    {
-      id: "home-works",
-      title: "首页 Works 入口区",
-      position: "对应主页精选项目区标题、说明、筛选按钮和 Archive 入口。",
-      fields: [
-        ["works.kicker_zh", "小标题（中文）"],
-        ["works.kicker_en", "小标题（英文）"],
-        ["works.title_zh", "区块标题（中文）"],
-        ["works.title_en", "区块标题（英文）"],
-        ["works.subtitle_zh", "区块说明（中文）"],
-        ["works.subtitle_en", "区块说明（英文）"],
-        ["works.view_all_zh", "查看全部项目按钮（中文）"],
-        ["works.view_all_en", "查看全部项目按钮（英文）"],
-        ["works.archive_label_zh", "归档入口（中文）"],
-        ["works.archive_label_en", "归档入口（英文）"],
-      ],
-    },
-    {
-      id: "contact",
-      title: "主页 Contact 区",
-      position: "对应主页底部联系表单上方说明、邮箱和工作时间。",
-      fields: [
-        ["contact.kicker_zh", "小标题（中文）"],
-        ["contact.kicker_en", "小标题（英文）"],
-        ["contact.title_zh", "标题（中文）"],
-        ["contact.title_en", "标题（英文）"],
-        ["contact.description_zh", "说明（中文）"],
-        ["contact.description_en", "说明（英文）"],
-        ["contact.email", "展示邮箱"],
-        ["contact.hours_text_zh", "工作时间（中文）"],
-        ["contact.hours_text_en", "工作时间（英文）"],
-      ],
-    },
-    {
-      id: "footer",
-      title: "页脚 Footer",
-      position: "对应网站最底部品牌名、描述、版权和返回顶部文字。",
-      fields: [
-        ["footer.brand_zh", "品牌名（中文）"],
-        ["footer.brand_en", "品牌名（英文）"],
-        ["footer.description_zh", "页脚描述（中文）"],
-        ["footer.description_en", "页脚描述（英文）"],
-        ["footer.rights_zh", "版权文字（中文）"],
-        ["footer.rights_en", "版权文字（英文）"],
-        ["footer.back_to_top_zh", "返回顶部（中文）"],
-        ["footer.back_to_top_en", "返回顶部（英文）"],
-      ],
-    },
-  ],
-  projects: [
-    {
-      id: "work-card",
-      title: "Works 列表卡片",
-      position: "对应首页 Works 卡片、Works 列表页卡片和项目入口信息。",
-      fields: [
-        ["cover", "卡片封面 / 详情封面", "首页和 Works 列表优先使用这张图。"],
-        ["title_zh", "项目标题（中文）"],
-        ["title_en", "项目标题（英文）"],
-        ["subtitle_zh", "项目副标题（中文）"],
-        ["subtitle_en", "项目副标题（英文）"],
-        ["summary_zh", "卡片摘要（中文）"],
-        ["summary_en", "卡片摘要（英文）"],
-        ["category", "分类代码"],
-        ["category_label_zh", "分类标签（中文）"],
-        ["category_label_en", "分类标签（英文）"],
-        ["status_zh", "状态标签（中文）"],
-        ["status_en", "状态标签（英文）"],
-        ["year", "年份"],
-      ],
-    },
-    {
-      id: "work-detail",
-      title: "项目详情正文",
-      position: "对应项目详情页：概览、背景、问题、概念、策略、结果和复盘。",
-      fields: [
-        ["role_zh", "我的角色（中文）"],
-        ["role_en", "我的角色（英文）"],
-        ["tools", "工具列表"],
-        ["location_zh", "地点（中文）"],
-        ["location_en", "地点（英文）"],
-        ["context_zh", "项目背景（中文）"],
-        ["context_en", "项目背景（英文）"],
-        ["problem_zh", "设计问题（中文）"],
-        ["problem_en", "设计问题（英文）"],
-        ["concept_zh", "概念（中文）"],
-        ["concept_en", "概念（英文）"],
-        ["design_strategy_zh", "设计策略（中文）"],
-        ["design_strategy_en", "设计策略（英文）"],
-        ["outcome_zh", "结果（中文）"],
-        ["outcome_en", "结果（英文）"],
-        ["reflection_zh", "复盘（中文）"],
-        ["reflection_en", "复盘（英文）"],
-      ],
-    },
-    {
-      id: "work-images",
-      title: "项目详情图片",
-      position: "对应项目详情页中的图纸/流程图和效果图区域。",
-      fields: [
-        ["image", "备用主图"],
-        ["drawings", "图纸 / 流程图组"],
-        ["renderings", "效果图组"],
-      ],
-    },
-    {
-      id: "work-settings",
-      title: "排序与关联",
-      position: "控制首页和 Works 列表排序，以及归档关联。",
-      fields: [
-        ["order", "排序，数字越小越靠前"],
-        ["featured", "是否精选"],
-        ["archive_ref", "Archive 对应 ID"],
-        ["related_posts", "相关博客链接"],
-      ],
-    },
-  ],
-  "ai-products": [
-    {
-      id: "ai-card",
-      title: "AI Tools 列表卡片",
-      position: "对应首页 AI Tools 卡片和 AI Tools 列表页卡片。",
-      fields: [
-        ["cover", "工具封面图"],
-        ["title_zh", "工具标题（中文）"],
-        ["title_en", "工具标题（英文）"],
-        ["subtitle_zh", "工具副标题（中文）"],
-        ["subtitle_en", "工具副标题（英文）"],
-        ["summary_zh", "卡片摘要（中文）"],
-        ["summary_en", "卡片摘要（英文）"],
-        ["category_zh", "分类（中文）"],
-        ["category_en", "分类（英文）"],
-        ["status_zh", "状态（中文）"],
-        ["status_en", "状态（英文）"],
-        ["visibility", "公开状态"],
-        ["order", "排序"],
-      ],
-    },
-    {
-      id: "ai-detail",
-      title: "工具详情说明",
-      position: "对应 AI 工具详情页的问题、目标用户、工作流、功能和技术栈。",
-      fields: [
-        ["problem_zh", "解决的问题（中文）"],
-        ["problem_en", "解决的问题（英文）"],
-        ["target_users", "目标用户"],
-        ["workflow", "工作流步骤"],
-        ["features", "功能点"],
-        ["tech_stack", "技术栈"],
-        ["input_output_zh", "输入输出（中文）"],
-        ["input_output_en", "输入输出（英文）"],
-        ["limitations", "限制"],
-        ["next_steps", "下一步"],
-      ],
-    },
-    {
-      id: "ai-images",
-      title: "工具图片与结果",
-      position: "对应 AI 工具详情页封面、前后对比和结果图组。",
-      fields: [
-        ["image", "备用主图"],
-        ["before_image", "对比前图片"],
-        ["after_image", "对比后图片"],
-        ["before_label_zh", "对比前标签（中文）"],
-        ["before_label_en", "对比前标签（英文）"],
-        ["after_label_zh", "对比后标签（中文）"],
-        ["after_label_en", "对比后标签（英文）"],
-        ["result_gallery", "结果图组"],
-      ],
-    },
-  ],
-  archive: [
-    {
-      id: "archive-card",
-      title: "Archive 归档卡片",
-      position: "对应 /works/archive/ 页面中每一张归档卡片。",
-      fields: [
-        ["thumbnail", "归档缩略图"],
-        ["title_zh", "标题（中文）"],
-        ["title_en", "标题（英文）"],
-        ["summary_zh", "说明（中文）"],
-        ["summary_en", "说明（英文）"],
-        ["year", "年份"],
-        ["type_zh", "类型（中文）"],
-        ["type_en", "类型（英文）"],
-        ["source_label_zh", "来源标签（中文）"],
-        ["source_label_en", "来源标签（英文）"],
-      ],
-    },
-    {
-      id: "archive-settings",
-      title: "归档状态与链接",
-      position: "控制归档项是否公开、是否跳转到详情页以及标签。",
-      fields: [
-        ["id", "归档 ID"],
-        ["source_group", "来源分组"],
-        ["status", "状态"],
-        ["visibility", "公开程度"],
-        ["project_url", "详情链接，可留空"],
-        ["tags", "标签"],
-      ],
-    },
-  ],
-}
-
+const typeTabs = document.querySelector("#type-tabs")
 const listEl = document.querySelector("#record-list")
+const recordCount = document.querySelector("#record-count")
+const searchInput = document.querySelector("#record-search")
 const formEl = document.querySelector("#content-form")
 const statusEl = document.querySelector("#status")
+const saveState = document.querySelector("#save-state")
+const validationState = document.querySelector("#validation-state")
 const saveButton = document.querySelector("#save-button")
-const reloadButton = document.querySelector("#reload-record-button")
 const refreshButton = document.querySelector("#refresh-button")
+const newButton = document.querySelector("#new-button")
+const duplicateButton = document.querySelector("#duplicate-button")
+const deleteButton = document.querySelector("#delete-button")
+const historyButton = document.querySelector("#history-button")
+const publishButton = document.querySelector("#publish-button")
+const confirmPublishButton = document.querySelector("#confirm-publish-button")
 const currentTitle = document.querySelector("#current-title")
 const currentType = document.querySelector("#current-type")
 const previewFrame = document.querySelector("#preview-frame")
 const previewLink = document.querySelector("#preview-link")
+const previewHealth = document.querySelector("#preview-health")
 const modeButtons = document.querySelectorAll("[data-mode]")
+const previewLangButtons = document.querySelectorAll("[data-preview-lang]")
 const sectionNav = document.querySelector("#section-nav")
 const previewShortcuts = document.querySelector("#preview-shortcuts")
+const publishSummary = document.querySelector("#publish-summary")
+const historyDialog = document.querySelector("#history-dialog")
+const historyList = document.querySelector("#history-list")
+const publishDialog = document.querySelector("#publish-dialog")
+const publishFiles = document.querySelector("#publish-files")
+const commitMessage = document.querySelector("#commit-message")
+
+function typeSchema(type = state.type) {
+  return state.schema?.types?.[type] || null
+}
 
 function setStatus(message, isError = false) {
   statusEl.textContent = message || ""
   statusEl.classList.toggle("is-error", isError)
 }
 
+function setSaveState(label, kind = "") {
+  saveState.textContent = label
+  saveState.classList.toggle("is-ready", kind === "ready")
+  saveState.classList.toggle("is-error", kind === "error")
+}
+
+function setValidation(errors = []) {
+  state.valid = errors.length === 0
+  validationState.textContent = state.valid ? "内容校验通过" : `${errors.length} 项需要处理`
+  validationState.classList.toggle("is-ready", state.valid)
+  validationState.classList.toggle("is-error", !state.valid)
+  validationState.title = errors.join("\n")
+  return errors
+}
+
 async function api(path, options = {}) {
-  const timeoutMs = options.timeoutMs || 15000
+  const timeoutMs = options.timeoutMs || 20000
   const controller = new AbortController()
   const timeout = window.setTimeout(() => controller.abort(), timeoutMs)
-
+  const headers = new Headers(options.headers || {})
+  if (options.method && options.method !== "GET") {
+    headers.set("X-CSRF-Token", state.csrfToken)
+  }
   try {
-    const response = await fetch(path, { ...options, signal: controller.signal })
+    const response = await fetch(path, { ...options, headers, signal: controller.signal })
     const text = await response.text()
     const payload = text ? JSON.parse(text) : {}
-    if (!response.ok) {
-      throw new Error(payload.error || `Request failed: ${response.status}`)
-    }
+    if (!response.ok) throw new Error(payload.error || `Request failed: ${response.status}`)
     return payload
   } catch (error) {
-    if (error.name === "AbortError") {
-      throw new Error("请求超时。请确认编辑器服务仍在运行，或图片文件不要过大。")
-    }
+    if (error.name === "AbortError") throw new Error("请求超时，请确认本地服务仍在运行。")
     throw error
   } finally {
     window.clearTimeout(timeout)
   }
 }
 
+function previewBase() {
+  return state.bootstrap?.preview_url || "http://127.0.0.1:4001"
+}
+
 function normalizePath(path) {
   if (!path) return ""
   if (/^https?:\/\//.test(path)) return path
-  return `http://127.0.0.1:4001${path.startsWith("/") ? path : `/${path}`}`
+  return `${previewBase()}${path.startsWith("/") ? path : `/${path}`}`
 }
 
 function getByPath(value, path) {
@@ -345,149 +116,161 @@ function setByPath(value, path, next) {
   const parts = path.split(".")
   let cursor = value
   parts.slice(0, -1).forEach((part) => {
-    if (Array.isArray(cursor) && /^\d+$/.test(part)) {
+    const numeric = /^\d+$/.test(part)
+    if (Array.isArray(cursor) && numeric) {
       cursor = cursor[Number(part)]
-      return
+    } else {
+      if (cursor[part] == null) cursor[part] = {}
+      cursor = cursor[part]
     }
-    if (cursor[part] == null) cursor[part] = {}
-    cursor = cursor[part]
   })
   const last = parts[parts.length - 1]
-  if (Array.isArray(cursor) && /^\d+$/.test(last)) {
-    cursor[Number(last)] = next
-  } else {
-    cursor[last] = next
-  }
+  if (Array.isArray(cursor) && /^\d+$/.test(last)) cursor[Number(last)] = next
+  else cursor[last] = next
 }
 
 function deleteByPath(value, path) {
   const parts = path.split(".")
   const key = parts.pop()
   const parent = getByPath(value, parts.join("."))
-  if (Array.isArray(parent) && /^\d+$/.test(key)) {
-    parent.splice(Number(key), 1)
-  } else if (parent && key) {
-    delete parent[key]
+  if (Array.isArray(parent) && /^\d+$/.test(key)) parent.splice(Number(key), 1)
+  else if (parent && key) delete parent[key]
+}
+
+function blankValueFor(field) {
+  if (field.type === "array") return []
+  if (field.type === "object") return {}
+  if (field.type === "boolean") return false
+  if (field.type === "number") return 0
+  return ""
+}
+
+function ensureFieldValue(field) {
+  let value = getByPath(state.current.data, field.path)
+  if (typeof value === "undefined") {
+    value = blankValueFor(field)
+    setByPath(state.current.data, field.path, value)
   }
+  return value
 }
 
 function markDirty() {
   state.dirty = true
   saveButton.disabled = false
-  setStatus("有未保存修改。")
+  setSaveState("有未保存修改", "error")
+  validateCurrent()
 }
 
-function fieldConfig(raw) {
-  return Array.isArray(raw) ? { path: raw[0], label: raw[1], help: raw[2] } : raw
+function isBlank(value) {
+  return value == null || value === "" || (Array.isArray(value) && value.length === 0)
 }
 
-function displayLabel(path) {
-  return path
-    .split(".")
-    .map((part) => (/^\d+$/.test(part) ? `#${Number(part) + 1}` : part.replaceAll("_", " ")))
-    .join(" / ")
+function validateCurrent() {
+  if (!state.current) return setValidation(["尚未选择内容"])
+  const errors = []
+  const schema = typeSchema()
+  const hiddenDraft = state.current.data?.visibility === "hidden"
+  if (!hiddenDraft) {
+    ;(schema.required || []).forEach((path) => {
+      if (isBlank(getByPath(state.current.data, path))) errors.push(`缺少必填字段：${path}`)
+    })
+  }
+  if (state.type === "blog") {
+    const zhCount = (state.current.body?.zh || "").split("\n").filter((line) => /^##\s+/.test(line)).length
+    const enCount = (state.current.body?.en || "").split("\n").filter((line) => /^##\s+/.test(line)).length
+    if (zhCount !== enCount) errors.push(`中英文二级章节数量不一致：${zhCount} / ${enCount}`)
+  }
+  return setValidation(errors)
 }
 
-function isImageField(path, value) {
-  const key = path.split(".").pop()
-  return typeof value === "string" && (
-    /(^|_)(image|cover|thumbnail)$/.test(key)
-    || key === "background_image"
-    || value.startsWith("/img/")
-  )
+function fieldLabel(path) {
+  return path.split(".").map((part) => /^\d+$/.test(part) ? `#${Number(part) + 1}` : part.replaceAll("_", " ")).join(" / ")
 }
 
-function isLongText(value) {
-  return typeof value === "string" && (value.length > 90 || value.includes("\n"))
-}
-
-function renderScalar(path, value, meta = {}) {
+function imageField(path, value, meta = {}) {
   const wrapper = document.createElement("div")
-  wrapper.className = isImageField(path, value) ? "image-field" : "field"
-
+  wrapper.className = "image-field"
   const label = document.createElement("label")
-  label.textContent = meta.label || displayLabel(path)
+  label.textContent = meta.label || fieldLabel(path)
   wrapper.appendChild(label)
 
-  if (isImageField(path, value)) {
+  if (value) {
     const img = document.createElement("img")
-    img.alt = meta.label || displayLabel(path)
-    img.src = normalizePath(value)
+    img.alt = meta.label || fieldLabel(path)
+    img.src = state.pendingMedia[value]?.previewUrl || normalizePath(value)
     wrapper.appendChild(img)
+  }
 
-    const actions = document.createElement("div")
-    actions.className = "image-actions"
-
-    const input = document.createElement("input")
-    input.type = "file"
-    input.accept = "image/*"
-    input.hidden = true
-
-    const replace = document.createElement("button")
-    replace.type = "button"
-    replace.textContent = state.uploadingField === path ? "正在上传..." : "替换图片"
-    replace.disabled = state.uploadingField === path
-    replace.addEventListener("click", () => input.click())
-    input.addEventListener("change", () => {
-      uploadImage(path, input.files[0], replace).catch((error) => setStatus(error.message, true))
-    })
-
-    const pathText = document.createElement("span")
-    pathText.className = "image-path"
-    pathText.textContent = value || "暂无图片路径"
-
-    actions.append(replace, input, pathText)
-    wrapper.appendChild(actions)
-  } else {
-    const input = isLongText(value) ? document.createElement("textarea") : document.createElement("input")
-    input.value = value == null ? "" : value
-    input.addEventListener("input", () => {
-      setByPath(state.current.data, path, input.value)
+  const actions = document.createElement("div")
+  actions.className = "image-actions"
+  const input = document.createElement("input")
+  input.type = "file"
+  input.accept = "image/jpeg,image/png,image/webp,image/gif"
+  input.multiple = false
+  input.hidden = true
+  const upload = document.createElement("button")
+  upload.type = "button"
+  upload.textContent = value ? "替换图片" : "上传图片"
+  upload.addEventListener("click", () => input.click())
+  input.addEventListener("change", async () => {
+    const file = input.files?.[0]
+    if (!file) return
+    upload.disabled = true
+    upload.textContent = "正在上传…"
+    try {
+      const body = new FormData()
+      body.append("field", path)
+      body.append("file", file)
+      const result = await api(`/api/media/${state.type}/${state.currentId}`, { method: "POST", body, timeoutMs: 70000 })
+      state.pendingMedia[result.path] = { token: result.draft_token, previewUrl: result.preview_url }
+      setByPath(state.current.data, path, result.path)
       markDirty()
-    })
-    wrapper.appendChild(input)
-  }
-
-  if (meta.help) {
-    const help = document.createElement("small")
-    help.textContent = meta.help
-    wrapper.appendChild(help)
-  }
-
+      renderForm()
+      setStatus(`图片已进入当前草稿：${result.path}`)
+    } catch (error) {
+      setStatus(error.message, true)
+    } finally {
+      upload.disabled = false
+      upload.textContent = value ? "替换图片" : "上传图片"
+    }
+  })
+  const pathText = document.createElement("span")
+  pathText.className = "image-path"
+  pathText.textContent = value || "尚未选择图片"
+  actions.append(upload, input, pathText)
+  wrapper.appendChild(actions)
   return wrapper
 }
 
-function renderBoolean(path, value, meta = {}) {
+function scalarField(path, value, meta = {}) {
+  if (meta.type === "image") return imageField(path, value, meta)
   const wrapper = document.createElement("div")
   wrapper.className = "field"
   const label = document.createElement("label")
-  label.textContent = meta.label || displayLabel(path)
-  const select = document.createElement("select")
-  ;[true, false].forEach((optionValue) => {
-    const option = document.createElement("option")
-    option.value = String(optionValue)
-    option.textContent = optionValue ? "是 / true" : "否 / false"
-    option.selected = optionValue === value
-    select.appendChild(option)
-  })
-  select.addEventListener("change", () => {
-    setByPath(state.current.data, path, select.value === "true")
+  label.textContent = meta.label || fieldLabel(path)
+  let input
+  if (meta.type === "textarea" || (typeof value === "string" && (value.length > 100 || value.includes("\n")))) {
+    input = document.createElement("textarea")
+  } else if (meta.type === "select") {
+    input = document.createElement("select")
+    ;(meta.options || []).forEach((item) => {
+      const option = document.createElement("option")
+      option.value = item
+      option.textContent = item
+      option.selected = item === value
+      input.appendChild(option)
+    })
+  } else {
+    input = document.createElement("input")
+    input.type = meta.type === "email" ? "email" : meta.type === "date" ? "date" : "text"
+  }
+  input.value = meta.type === "date" && value ? String(value).slice(0, 10) : value == null ? "" : value
+  input.addEventListener("input", () => {
+    setByPath(state.current.data, path, input.value)
     markDirty()
   })
-  wrapper.append(label, select)
-  return wrapper
-}
-
-function renderNumber(path, value, meta = {}) {
-  const wrapper = document.createElement("div")
-  wrapper.className = "field"
-  const label = document.createElement("label")
-  label.textContent = meta.label || displayLabel(path)
-  const input = document.createElement("input")
-  input.type = "number"
-  input.value = value
-  input.addEventListener("input", () => {
-    setByPath(state.current.data, path, input.value === "" ? "" : Number(input.value))
+  input.addEventListener("change", () => {
+    setByPath(state.current.data, path, input.value)
     markDirty()
   })
   wrapper.append(label, input)
@@ -499,49 +282,93 @@ function renderNumber(path, value, meta = {}) {
   return wrapper
 }
 
-function blankFromExample(example) {
-  if (Array.isArray(example)) return []
-  if (example && typeof example === "object") {
-    return Object.fromEntries(Object.keys(example).map((key) => [key, ""]))
+function booleanField(path, value, meta = {}) {
+  const wrapper = document.createElement("div")
+  wrapper.className = "field"
+  const label = document.createElement("label")
+  label.textContent = meta.label || fieldLabel(path)
+  const select = document.createElement("select")
+  ;[[true, "是 / true"], [false, "否 / false"]].forEach(([optionValue, text]) => {
+    const option = document.createElement("option")
+    option.value = String(optionValue)
+    option.textContent = text
+    option.selected = optionValue === value
+    select.appendChild(option)
+  })
+  select.addEventListener("change", () => {
+    setByPath(state.current.data, path, select.value === "true")
+    markDirty()
+  })
+  wrapper.append(label, select)
+  return wrapper
+}
+
+function numberField(path, value, meta = {}) {
+  const wrapper = scalarField(path, value, meta)
+  const input = wrapper.querySelector("input")
+  if (input) {
+    input.type = "number"
+    input.addEventListener("input", () => {
+      setByPath(state.current.data, path, input.value === "" ? "" : Number(input.value))
+    })
   }
+  return wrapper
+}
+
+function defaultArrayItem(path, current) {
+  if (current[0] && typeof current[0] === "object") {
+    return Object.fromEntries(Object.keys(current[0]).map((key) => [key, ""]))
+  }
+  if (/sections$/.test(path)) return { title_zh: "", title_en: "", body_zh: "", body_en: "" }
+  if (/(drawings|renderings|result_gallery)$/.test(path)) return { image: "", caption_zh: "", caption_en: "" }
   return ""
 }
 
-function renderArray(path, value, meta = {}) {
+function arrayField(path, value, meta = {}) {
   const wrapper = document.createElement("div")
   wrapper.className = "group-field"
   const title = document.createElement("div")
   title.className = "group-title"
-  title.textContent = meta.label || displayLabel(path)
+  title.textContent = meta.label || fieldLabel(path)
   wrapper.appendChild(title)
-
-  if (meta.help) {
-    const help = document.createElement("p")
-    help.className = "field-help"
-    help.textContent = meta.help
-    wrapper.appendChild(help)
-  }
 
   value.forEach((item, index) => {
     const itemPath = `${path}.${index}`
     const itemEl = document.createElement("div")
     itemEl.className = "array-item"
-
-    const arrayHeader = document.createElement("div")
-    arrayHeader.className = "array-header"
-    const titleText = document.createElement("strong")
-    titleText.textContent = `${meta.label || displayLabel(path)} #${index + 1}`
+    const header = document.createElement("div")
+    header.className = "array-header"
+    const strong = document.createElement("strong")
+    strong.textContent = `${meta.label || fieldLabel(path)} #${index + 1}`
+    const actions = document.createElement("div")
+    actions.className = "array-actions"
+    const up = document.createElement("button")
+    up.type = "button"
+    up.textContent = "上移"
+    up.disabled = index === 0
+    up.addEventListener("click", () => {
+      ;[value[index - 1], value[index]] = [value[index], value[index - 1]]
+      markDirty(); renderForm()
+    })
+    const down = document.createElement("button")
+    down.type = "button"
+    down.textContent = "下移"
+    down.disabled = index === value.length - 1
+    down.addEventListener("click", () => {
+      ;[value[index + 1], value[index]] = [value[index], value[index + 1]]
+      markDirty(); renderForm()
+    })
     const remove = document.createElement("button")
     remove.type = "button"
-    remove.textContent = "删除这一项"
+    remove.textContent = "删除"
+    remove.className = "danger-button"
     remove.addEventListener("click", () => {
       deleteByPath(state.current.data, itemPath)
-      markDirty()
-      renderForm()
+      markDirty(); renderForm()
     })
-    arrayHeader.append(titleText, remove)
-    itemEl.appendChild(arrayHeader)
-    itemEl.appendChild(renderField(itemPath, item))
+    actions.append(up, down, remove)
+    header.append(strong, actions)
+    itemEl.append(header, renderValue(itemPath, item, {}))
     wrapper.appendChild(itemEl)
   })
 
@@ -549,53 +376,46 @@ function renderArray(path, value, meta = {}) {
   add.type = "button"
   add.textContent = "新增一项"
   add.addEventListener("click", () => {
-    value.push(blankFromExample(value[0]))
-    markDirty()
-    renderForm()
+    value.push(defaultArrayItem(path, value))
+    markDirty(); renderForm()
   })
   wrapper.appendChild(add)
   return wrapper
 }
 
-function renderObject(path, value, meta = {}) {
+function objectField(path, value, meta = {}) {
   const wrapper = document.createElement("div")
   wrapper.className = "group-field"
   const title = document.createElement("div")
   title.className = "group-title"
-  title.textContent = meta.label || displayLabel(path)
+  title.textContent = meta.label || fieldLabel(path)
   wrapper.appendChild(title)
-
-  Object.keys(value).forEach((key) => {
-    wrapper.appendChild(renderField(path ? `${path}.${key}` : key, value[key]))
-  })
+  Object.keys(value).forEach((key) => wrapper.appendChild(renderValue(`${path}.${key}`, value[key], {})))
   return wrapper
 }
 
-function renderField(path, value, meta = {}) {
-  if (Array.isArray(value)) return renderArray(path, value, meta)
-  if (value && typeof value === "object") return renderObject(path, value, meta)
-  if (typeof value === "boolean") return renderBoolean(path, value, meta)
-  if (typeof value === "number") return renderNumber(path, value, meta)
-  return renderScalar(path, value, meta)
-}
-
-function orderedKeys() {
-  const preferred = rootFields[state.type] || []
-  const existing = Object.keys(state.current.data || {})
-  return [...preferred.filter((key) => existing.includes(key)), ...existing.filter((key) => !preferred.includes(key))]
+function renderValue(path, value, meta = {}) {
+  const key = path.split(".").pop()
+  if (!meta.type && typeof value === "string" && /(^|_)(image|cover|thumbnail)$/.test(key)) {
+    meta = { ...meta, type: "image" }
+  }
+  if (Array.isArray(value)) return arrayField(path, value, meta)
+  if (value && typeof value === "object") return objectField(path, value, meta)
+  if (typeof value === "boolean") return booleanField(path, value, meta)
+  if (typeof value === "number") return numberField(path, value, meta)
+  return scalarField(path, value, meta)
 }
 
 function renderSectionNav() {
   sectionNav.innerHTML = ""
-  const sections = schemas[state.type] || []
-  if (state.mode !== "simple") {
+  if (state.mode !== "structured") {
     sectionNav.hidden = true
     return
   }
-
+  const sections = typeSchema()?.sections || []
   if (!state.activeSection && sections[0]) state.activeSection = sections[0].id
   sectionNav.hidden = false
-  sections.forEach((section, index) => {
+  sections.forEach((section) => {
     const button = document.createElement("button")
     button.type = "button"
     button.textContent = section.title
@@ -608,85 +428,113 @@ function renderSectionNav() {
   })
 }
 
-function renderSimpleForm() {
-  const sections = schemas[state.type] || []
-  if (!state.activeSection || !sections.some((section) => section.id === state.activeSection)) {
-    state.activeSection = sections[0] ? sections[0].id : null
-  }
-  renderSectionNav()
-
-  sections
-    .filter((section) => section.id === state.activeSection)
-    .forEach((section) => {
-      const card = document.createElement("section")
-      card.className = "editor-section-card"
-
-      const header = document.createElement("div")
-      header.className = "section-heading"
-      const title = document.createElement("h3")
-      title.textContent = section.title
-      const position = document.createElement("p")
-      position.textContent = section.position
-      header.append(title, position)
-      card.appendChild(header)
-
-      section.fields.map(fieldConfig).forEach((field) => {
-        const value = getByPath(state.current.data, field.path)
-        if (typeof value === "undefined") return
-        card.appendChild(renderField(field.path, value, field))
+function renderBodyEditors() {
+  if (typeof state.current.body === "undefined") return
+  const wrapper = document.createElement("div")
+  wrapper.className = "group-field body-editor-grid"
+  const title = document.createElement("div")
+  title.className = "group-title"
+  title.textContent = state.type === "blog" ? "Markdown 正文" : "Markdown body / 详情页补充"
+  wrapper.appendChild(title)
+  if (state.type === "blog") {
+    ;[["zh", "中文正文"], ["en", "English body"]].forEach(([lang, labelText]) => {
+      const field = document.createElement("div")
+      field.className = "field"
+      const label = document.createElement("label")
+      label.textContent = labelText
+      const textarea = document.createElement("textarea")
+      textarea.value = state.current.body?.[lang] || ""
+      textarea.addEventListener("input", () => {
+        state.current.body[lang] = textarea.value
+        markDirty()
       })
-
-      formEl.appendChild(card)
+      field.append(label, textarea)
+      wrapper.appendChild(field)
     })
+  } else {
+    const textarea = document.createElement("textarea")
+    textarea.value = state.current.body || ""
+    textarea.addEventListener("input", () => {
+      state.current.body = textarea.value
+      markDirty()
+    })
+    wrapper.appendChild(textarea)
+  }
+  formEl.appendChild(wrapper)
 }
 
-function renderAdvancedForm() {
+function renderStructured() {
+  const sections = typeSchema()?.sections || []
+  if (!sections.some((section) => section.id === state.activeSection)) state.activeSection = sections[0]?.id || null
+  renderSectionNav()
+  const section = sections.find((item) => item.id === state.activeSection)
+  if (section) {
+    const card = document.createElement("section")
+    card.className = "editor-section-card"
+    const header = document.createElement("div")
+    header.className = "section-heading"
+    const title = document.createElement("h3")
+    title.textContent = section.title
+    const desc = document.createElement("p")
+    desc.textContent = section.description || ""
+    header.append(title, desc)
+    card.appendChild(header)
+    ;(section.fields || []).forEach((field) => card.appendChild(renderValue(field.path, ensureFieldValue(field), field)))
+    formEl.appendChild(card)
+  }
+  renderBodyEditors()
+}
+
+function renderAdvanced() {
   sectionNav.hidden = true
-  orderedKeys().forEach((key) => {
-    formEl.appendChild(renderField(key, state.current.data[key]))
+  const wrapper = document.createElement("div")
+  wrapper.className = "field"
+  const label = document.createElement("label")
+  label.textContent = "高级 JSON / Markdown 数据"
+  const textarea = document.createElement("textarea")
+  textarea.className = "advanced-editor"
+  textarea.value = JSON.stringify({ data: state.current.data, body: state.current.body }, null, 2)
+  textarea.addEventListener("input", () => {
+    try {
+      const parsed = JSON.parse(textarea.value)
+      state.current.data = parsed.data || {}
+      state.current.body = parsed.body
+      markDirty()
+      setStatus("高级数据格式有效。")
+    } catch (error) {
+      setValidation(["高级 JSON 格式无效"])
+      setStatus(`高级 JSON 格式错误：${error.message}`, true)
+    }
   })
+  wrapper.append(label, textarea)
+  formEl.appendChild(wrapper)
 }
 
 function renderForm() {
   formEl.innerHTML = ""
   if (!state.current) return
+  if (state.mode === "structured") renderStructured()
+  else renderAdvanced()
+  validateCurrent()
+}
 
-  if (state.mode === "simple") {
-    renderSimpleForm()
-  } else {
-    renderAdvancedForm()
-  }
-
-  if (typeof state.current.body === "string") {
-    const wrapper = document.createElement("div")
-    wrapper.className = "field"
-    const label = document.createElement("label")
-    label.textContent = "Markdown body / 详情页底部补充"
-    const textarea = document.createElement("textarea")
-    textarea.value = state.current.body
-    textarea.addEventListener("input", () => {
-      state.current.body = textarea.value
-      markDirty()
-    })
-    const help = document.createElement("small")
-    help.textContent = "一般优先改上方结构化字段；这里用于保留详情页底部补充说明。"
-    wrapper.append(label, textarea, help)
-    formEl.appendChild(wrapper)
-  }
+function recordMatches(record) {
+  const haystack = [record.title_zh, record.title_en, record.id, record.year, record.visibility, record.status].filter(Boolean).join(" ").toLowerCase()
+  return haystack.includes(state.search.toLowerCase())
 }
 
 function renderRecords() {
   listEl.innerHTML = ""
-  state.records.forEach((record) => {
+  const records = state.records.filter(recordMatches)
+  recordCount.textContent = `${records.length} 项`
+  records.forEach((record) => {
     const button = document.createElement("button")
     button.type = "button"
     button.className = `record${record.id === state.currentId ? " is-active" : ""}`
-    button.addEventListener("click", () => loadRecord(record.id))
-
+    button.addEventListener("click", () => selectRecord(record.id))
     const image = document.createElement("img")
     image.alt = record.title_en || record.title_zh || record.id
-    image.src = normalizePath(record.image || "/img/portfolio/hero-landscape.jpg")
-
+    image.src = normalizePath(record.image || "/img/profile-small.png")
     const text = document.createElement("span")
     const title = document.createElement("span")
     title.className = "record-title"
@@ -695,21 +543,34 @@ function renderRecords() {
     meta.className = "record-meta"
     meta.textContent = [record.year, record.visibility, record.status].filter(Boolean).join(" · ") || record.id
     text.append(title, meta)
-
     button.append(image, text)
     listEl.appendChild(button)
   })
 }
 
+function renderTypeTabs() {
+  typeTabs.innerHTML = ""
+  Object.entries(state.schema.types).forEach(([type, schema]) => {
+    const button = document.createElement("button")
+    button.type = "button"
+    button.className = `tab${type === state.type ? " is-active" : ""}`
+    button.textContent = schema.label_zh || schema.label || type
+    button.addEventListener("click", () => switchType(type))
+    typeTabs.appendChild(button)
+  })
+}
+
 function shortcutLinks() {
-  const links = [
-    ["首页", "http://127.0.0.1:4001/"],
-    ["AI Tools", "http://127.0.0.1:4001/behop-ai-product/"],
-    ["Works", "http://127.0.0.1:4001/works/"],
-    ["Archive", "http://127.0.0.1:4001/works/archive/"],
+  const base = previewBase()
+  return [
+    ["当前详情", previewLink.href || `${base}/`],
+    ["首页", `${base}/`],
+    ["AI Tools", `${base}/behop-ai-product/`],
+    ["Works", `${base}/works/`],
+    ["Archive", `${base}/works/archive/`],
+    ["Blog", `${base}/blog/en/`],
+    ["About", `${base}/about/`],
   ]
-  if (previewLink.href) links.unshift(["当前详情", previewLink.href])
-  return links
 }
 
 function renderPreviewShortcuts() {
@@ -726,144 +587,310 @@ function renderPreviewShortcuts() {
   })
 }
 
-async function loadRecords() {
-  setStatus("正在读取列表...")
+async function updatePreview(cacheBust = false) {
+  if (!state.currentId) return
+  try {
+    const payload = await api(`/api/preview-url/${state.type}/${state.currentId}`)
+    previewFrame.src = cacheBust ? `${payload.url}${payload.url.includes("?") ? "&" : "?"}editor=${Date.now()}` : payload.url
+    previewLink.href = payload.url
+    renderPreviewShortcuts()
+  } catch (error) {
+    setStatus(`内容已加载，但预览地址不可用：${error.message}`, true)
+  }
+}
+
+async function loadRecords(selectFirst = true) {
+  setStatus("正在读取内容列表…")
   const payload = await api(`/api/content/${state.type}`)
   state.records = payload.records || []
-  if (!state.currentId || !state.records.some((record) => record.id === state.currentId)) {
-    state.currentId = state.records[0] ? state.records[0].id : null
-  }
+  const exists = state.records.some((record) => record.id === state.currentId)
+  if (!exists) state.currentId = selectFirst ? state.records[0]?.id || null : null
   renderRecords()
   if (state.currentId) await loadRecord(state.currentId)
+  else {
+    state.current = null
+    currentTitle.textContent = "暂无内容"
+    formEl.innerHTML = ""
+  }
 }
 
 async function loadRecord(id) {
   state.currentId = id
   state.activeSection = null
-  setStatus("正在读取内容...")
   const payload = await api(`/api/content/${state.type}/${id}`)
   state.current = payload
   state.dirty = false
-  saveButton.disabled = false
-  reloadButton.disabled = false
-  currentType.textContent = typeLabels[state.type] || state.type
-  currentTitle.textContent = payload.data.title_zh || payload.data.title_en || id
+  saveButton.disabled = true
+  duplicateButton.disabled = Boolean(typeSchema()?.singleton)
+  deleteButton.disabled = Boolean(typeSchema()?.singleton)
+  historyButton.disabled = false
+  currentType.textContent = typeSchema()?.label || state.type
+  currentTitle.textContent = payload.data?.title_zh || payload.data?.zh?.title || payload.data?.title_en || payload.data?.en?.title || id
+  setSaveState("已保存到本地", "ready")
   renderRecords()
   renderForm()
   await updatePreview()
   setStatus("内容已加载。")
 }
 
+async function discardPendingMedia() {
+  const paths = Object.keys(state.pendingMedia)
+  for (const path of paths) {
+    await api(`/api/media/${state.type}/${state.currentId}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path }),
+    })
+  }
+  state.pendingMedia = {}
+}
+
+async function confirmDiscard(message) {
+  if (!state.dirty) return true
+  if (!window.confirm(message)) return false
+  await discardPendingMedia()
+  state.dirty = false
+  return true
+}
+
+async function selectRecord(id) {
+  if (!await confirmDiscard("当前内容尚未保存，确定切换吗？")) return
+  await loadRecord(id).catch((error) => setStatus(error.message, true))
+}
+
+async function switchType(type) {
+  if (type === state.type) return
+  if (!await confirmDiscard("当前内容尚未保存，确定切换类型吗？")) return
+  state.type = type
+  state.currentId = null
+  state.current = null
+  state.activeSection = null
+  state.search = ""
+  searchInput.value = ""
+  renderTypeTabs()
+  newButton.disabled = Boolean(typeSchema()?.singleton)
+  await loadRecords()
+}
+
 async function saveCurrent() {
   if (!state.current) return
-  setStatus("正在保存...")
+  const errors = validateCurrent()
+  if (errors.length) {
+    setStatus(errors.join("；"), true)
+    return
+  }
+  setStatus("正在保存到本地…")
   const payload = await api(`/api/content/${state.type}/${state.currentId}`, {
-    method: "POST",
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(state.current),
   })
   state.current = payload
+  state.pendingMedia = {}
   state.dirty = false
-  saveButton.disabled = false
+  saveButton.disabled = true
+  setSaveState("已保存到本地", "ready")
+  await loadRecords(false)
+  state.currentId = payload.id
+  state.current = payload
+  renderRecords()
   renderForm()
-  await loadRecords()
   await updatePreview(true)
-  setStatus("保存成功。Jekyll 预览会在重新构建后显示最新内容。")
+  await refreshBootstrapStatus()
+  setStatus("保存成功，预览会在 Jekyll 自动重建后更新。")
 }
 
-function validateImageFile(file) {
-  if (!file) return "没有选择文件。"
-  if (!file.type || !file.type.startsWith("image/")) return "请选择图片文件，不要上传 PDF、PPT 或其他文件。"
-  if (file.size > 10 * 1024 * 1024) return "图片超过 10MB，请先压缩后再上传。"
-  return ""
+async function createNew(prefill = null) {
+  if (typeSchema()?.singleton) return
+  const suggestion = state.type === "blog" ? "new-post" : "new-item"
+  const rawId = window.prompt("请输入英文 slug（小写字母、数字和连字符）", suggestion)
+  if (!rawId) return
+  const payload = { id: rawId }
+  if (prefill) {
+    payload.data = structuredClone(prefill.data)
+    payload.body = structuredClone(prefill.body)
+  }
+  const created = await api(`/api/content/${state.type}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  })
+  state.currentId = created.id
+  await loadRecords(false)
+  await loadRecord(created.id)
+  setStatus(prefill ? "副本已创建，请修改标题和内容。" : "草稿已创建。")
 }
 
-async function uploadImage(fieldPath, file, button) {
-  const validationError = validateImageFile(file)
-  if (validationError) {
-    setStatus(validationError, true)
-    return
-  }
-  if (!state.current) return
-
-  state.uploadingField = fieldPath
-  if (button) {
-    button.disabled = true
-    button.textContent = "正在上传..."
-  }
-  setStatus("正在上传并替换图片...")
-
-  try {
-    const body = new FormData()
-    body.append("field", fieldPath)
-    body.append("file", file)
-    const payload = await api(`/api/image/${state.type}/${state.currentId}`, {
-      method: "POST",
-      body,
-      timeoutMs: 60000,
-    })
-    state.current = payload.content
-    state.dirty = false
-    await loadRecords()
-    renderForm()
-    await updatePreview(true)
-    setStatus(`图片已替换：${payload.path}`)
-  } catch (error) {
-    setStatus(error.message || "图片上传失败。", true)
-  } finally {
-    state.uploadingField = null
-    if (button) {
-      button.disabled = false
-      button.textContent = "替换图片"
-    }
-  }
+async function deleteCurrent() {
+  if (!state.current || typeSchema()?.singleton) return
+  if (!window.confirm(`确定将 ${state.currentId} 移入本地回收站吗？`)) return
+  await discardPendingMedia()
+  state.dirty = false
+  await api(`/api/content/${state.type}/${state.currentId}`, { method: "DELETE" })
+  state.currentId = null
+  state.current = null
+  await loadRecords()
+  await refreshBootstrapStatus()
+  setStatus("内容已移入本地回收站，可通过历史快照恢复。")
 }
 
-async function updatePreview(cacheBust = false) {
+async function openHistory() {
   if (!state.currentId) return
-  const payload = await api(`/api/preview-url/${state.type}/${state.currentId}`)
-  const url = cacheBust ? `${payload.url}?editor=${Date.now()}` : payload.url
-  previewFrame.src = url
-  previewLink.href = payload.url
-  renderPreviewShortcuts()
+  const payload = await api(`/api/history/${state.type}/${state.currentId}`)
+  historyList.innerHTML = ""
+  const records = payload.records || []
+  if (!records.length) historyList.textContent = "还没有历史快照。"
+  records.forEach((record) => {
+    const item = document.createElement("div")
+    item.className = "history-item"
+    const info = document.createElement("div")
+    const time = document.createElement("strong")
+    time.textContent = new Date(record.created_at).toLocaleString()
+    const path = document.createElement("code")
+    path.textContent = record.original
+    info.append(time, document.createElement("br"), path)
+    const restore = document.createElement("button")
+    restore.type = "button"
+    restore.textContent = "恢复"
+    restore.addEventListener("click", async () => {
+      if (!window.confirm("恢复会覆盖当前本地内容，并先创建新的快照。继续吗？")) return
+      await discardPendingMedia()
+      const restored = await api(`/api/history/${state.type}/${state.currentId}/restore`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: record.token }),
+      })
+      state.current = restored
+      state.dirty = false
+      renderForm()
+      await updatePreview(true)
+      historyDialog.close()
+      setStatus("历史版本已恢复。")
+    })
+    item.append(info, restore)
+    historyList.appendChild(item)
+  })
+  historyDialog.showModal()
+}
+
+async function refreshBootstrapStatus() {
+  const bootstrap = await api("/api/bootstrap")
+  state.bootstrap = bootstrap
+  state.csrfToken = bootstrap.csrf_token
+  previewHealth.textContent = bootstrap.preview_healthy ? "预览运行中" : "预览未启动"
+  previewHealth.classList.toggle("is-healthy", bootstrap.preview_healthy)
+  previewHealth.classList.toggle("is-error", !bootstrap.preview_healthy)
+  const changed = bootstrap.git?.session_changed || []
+  publishSummary.textContent = changed.length ? `本次会话有 ${changed.length} 个文件待发布。` : "当前会话没有待发布内容。"
+  publishButton.disabled = changed.length === 0
+  return bootstrap
+}
+
+async function startPublish() {
+  publishButton.disabled = true
+  publishButton.textContent = "正在构建和检查…"
+  try {
+    const result = await api("/api/publish/preflight", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+      timeoutMs: 180000,
+    })
+    state.publishToken = result.token
+    publishFiles.innerHTML = ""
+    result.paths.forEach((path) => {
+      const li = document.createElement("li")
+      li.textContent = path
+      publishFiles.appendChild(li)
+    })
+    publishDialog.showModal()
+    setStatus("发布检查通过，请复核文件并二次确认。")
+  } catch (error) {
+    setStatus(`发布被阻止：${error.message}`, true)
+  } finally {
+    publishButton.disabled = false
+    publishButton.textContent = "检查并发布"
+  }
+}
+
+async function confirmPublish() {
+  if (!state.publishToken) return
+  confirmPublishButton.disabled = true
+  confirmPublishButton.textContent = "正在提交并推送…"
+  try {
+    const result = await api("/api/publish/confirm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: state.publishToken, commit_message: commitMessage.value }),
+      timeoutMs: 180000,
+    })
+    state.publishToken = null
+    publishDialog.close()
+    await refreshBootstrapStatus()
+    setStatus(`发布成功：${result.commit.slice(0, 12)}。GitHub Pages 正在部署。`)
+  } catch (error) {
+    setStatus(`推送失败：${error.message}`, true)
+  } finally {
+    confirmPublishButton.disabled = false
+    confirmPublishButton.textContent = "二次确认并推送"
+  }
 }
 
 function bindEvents() {
-  document.querySelectorAll(".tab").forEach((tab) => {
-    tab.addEventListener("click", async () => {
-      if (state.dirty && !window.confirm("当前内容还没保存，确定切换吗？")) return
-      document.querySelectorAll(".tab").forEach((node) => node.classList.remove("is-active"))
-      tab.classList.add("is-active")
-      state.type = tab.dataset.type
-      state.currentId = state.type === "homepage" ? "homepage" : null
-      state.current = null
-      state.activeSection = null
-      await loadRecords().catch((error) => setStatus(error.message, true))
-    })
+  searchInput.addEventListener("input", () => {
+    state.search = searchInput.value
+    renderRecords()
   })
-
-  modeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      state.mode = button.dataset.mode
-      modeButtons.forEach((node) => node.classList.toggle("is-active", node === button))
-      renderForm()
-    })
-  })
-
-  saveButton.addEventListener("click", () => {
-    saveCurrent().catch((error) => setStatus(error.message, true))
-  })
-
-  reloadButton.addEventListener("click", () => {
-    if (!state.currentId) return
-    loadRecord(state.currentId).catch((error) => setStatus(error.message, true))
-  })
-
-  refreshButton.addEventListener("click", () => {
+  refreshButton.addEventListener("click", async () => {
+    if (!await confirmDiscard("当前内容尚未保存，确定刷新吗？")) return
     loadRecords().catch((error) => setStatus(error.message, true))
+  })
+  newButton.addEventListener("click", async () => {
+    if (!await confirmDiscard("当前内容尚未保存，确定新建内容吗？")) return
+    createNew().catch((error) => setStatus(error.message, true))
+  })
+  duplicateButton.addEventListener("click", () => {
+    if (state.dirty) {
+      setStatus("复制前请先保存当前内容。", true)
+      return
+    }
+    createNew(state.current).catch((error) => setStatus(error.message, true))
+  })
+  deleteButton.addEventListener("click", () => deleteCurrent().catch((error) => setStatus(error.message, true)))
+  historyButton.addEventListener("click", () => openHistory().catch((error) => setStatus(error.message, true)))
+  saveButton.addEventListener("click", () => saveCurrent().catch((error) => setStatus(error.message, true)))
+  publishButton.addEventListener("click", startPublish)
+  confirmPublishButton.addEventListener("click", confirmPublish)
+  modeButtons.forEach((button) => button.addEventListener("click", () => {
+    state.mode = button.dataset.mode
+    modeButtons.forEach((node) => node.classList.toggle("is-active", node === button))
+    renderForm()
+  }))
+  previewLangButtons.forEach((button) => button.addEventListener("click", () => {
+    state.previewLang = button.dataset.previewLang
+    previewLangButtons.forEach((node) => node.classList.toggle("is-active", node === button))
+    previewFrame.contentWindow?.postMessage({ type: "behop:set-language", lang: state.previewLang }, previewBase())
+  }))
+  window.addEventListener("beforeunload", (event) => {
+    if (!state.dirty) return
+    event.preventDefault()
+    event.returnValue = ""
   })
 }
 
-bindEvents()
-renderPreviewShortcuts()
-loadRecords().catch((error) => setStatus(error.message, true))
+async function initialize() {
+  bindEvents()
+  setStatus("正在初始化内容工作台…")
+  const bootstrap = await refreshBootstrapStatus()
+  state.schema = bootstrap.schema
+  state.type = Object.keys(state.schema.types)[0]
+  renderTypeTabs()
+  newButton.disabled = Boolean(typeSchema()?.singleton)
+  renderPreviewShortcuts()
+  await loadRecords()
+}
+
+initialize().catch((error) => {
+  setSaveState("初始化失败", "error")
+  setStatus(error.message, true)
+})

@@ -9,16 +9,26 @@ multilingual: true
 lang-switcher: true
 ---
 
+{% assign about = site.data.about %}
+
 <!-- Chinese Version -->
 <div class="zh post-container">
-    {% capture about_zh %}{% include about/zh.md %}{% endcapture %}
-    {{ about_zh | markdownify }}
+    <h2>{{ about.subtitle_zh }}</h2>
+    <p>{{ about.intro_zh }}</p>
+    {% for section in about.sections %}
+    <h3>{{ section.title_zh }}</h3>
+    <p>{{ section.body_zh }}</p>
+    {% endfor %}
 </div>
 
 <!-- English Version -->
 <div class="en post-container">
-    {% capture about_en %}{% include about/en.md %}{% endcapture %}
-    {{ about_en | markdownify }}
+    <h2>{{ about.subtitle_en }}</h2>
+    <p>{{ about.intro_en }}</p>
+    {% for section in about.sections %}
+    <h3>{{ section.title_en }}</h3>
+    <p>{{ section.body_en }}</p>
+    {% endfor %}
 </div>
 
 

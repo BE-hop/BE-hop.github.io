@@ -1,7 +1,7 @@
 {
     "name": "behop-blog",
     "title": "BEhop Experience",
-  "author": "liu.ruyuan <liuruyuan73@gmail.com>",
+    "author": "liu.ruyuan <liuruyuan73@gmail.com>",
     "version": "1.0.0",
     "homepage": "https://be-hop.github.io",
     "repository": {
@@ -14,14 +14,22 @@
         "grunt-banner": "~0.2.3",
         "grunt-contrib-less": "^2.0.0",
         "grunt-contrib-uglify": "^4.0.1",
-        "grunt-contrib-watch": "^1.1.0"
+        "grunt-contrib-watch": "^1.1.0",
+        "tailwindcss": "^3.4.17"
     },
     "scripts": {
-    "start": "bundle exec jekyll serve",
-    "dev": "grunt watch & npm run start",
-    "forum:sync-comments": "node scripts/forum-sync-approved-comments.mjs",
-    "forum:sync-topics": "node scripts/forum-sync-approved-topics.mjs",
-    "forum:metrics": "node scripts/forum-build-metrics.mjs",
+        "start": "./scripts/local-preview.sh",
+        "build": "./scripts/local-preview.sh build",
+        "dev": "grunt watch & npm run start",
+        "editor": "ruby scripts/content-editor.rb",
+        "css:build": "tailwindcss -c tailwind.config.cjs -i css/tailwind-input.css -o css/tailwind.css --minify",
+        "css:check": "node scripts/check-generated-css.mjs",
+        "site:audit": "node scripts/site-audit.mjs",
+        "editor:test": "ruby test/content_editor_test.rb",
+        "check": "npm run css:check && npm run editor:test && npm run build && npm run site:audit",
+        "forum:sync-comments": "node scripts/forum-sync-approved-comments.mjs",
+        "forum:sync-topics": "node scripts/forum-sync-approved-topics.mjs",
+        "forum:metrics": "node scripts/forum-build-metrics.mjs",
         "boil": "git push boilerplate boilerplate:master",
         "push": "git push origin master --tag"
     }

@@ -14,39 +14,7 @@ nav-theme: light
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind = {
-      config: {
-        theme: {
-          extend: {
-            colors: {
-              background: "var(--background)",
-              foreground: "var(--foreground)",
-              card: "var(--card)",
-              "card-foreground": "var(--card-foreground)",
-              popover: "var(--popover)",
-              "popover-foreground": "var(--popover-foreground)",
-              primary: "var(--primary)",
-              "primary-foreground": "var(--primary-foreground)",
-              secondary: "var(--secondary)",
-              "secondary-foreground": "var(--secondary-foreground)",
-              muted: "var(--muted)",
-              "muted-foreground": "var(--muted-foreground)",
-              accent: "var(--accent)",
-              "accent-foreground": "var(--accent-foreground)",
-              border: "var(--border)",
-              input: "var(--input)",
-              ring: "var(--ring)",
-            },
-            fontFamily: {
-              sans: ["Sora", "sans-serif"],
-            },
-          },
-        },
-      },
-    }
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  {% include tailwind-head.html %}
   <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
   <link rel="stylesheet" href="{{ site.baseurl }}/css/forum.css?v={{ site.time | date: '%s' }}">
 </head>

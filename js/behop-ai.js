@@ -57,8 +57,6 @@
     })
   })
 
-  applyLanguage(currentLang)
-
   if (menuToggle && mobileMenu) {
     menuToggle.addEventListener("click", () => {
       mobileMenu.classList.toggle("hidden")
@@ -135,6 +133,8 @@
     if (lightboxDescription) lightboxDescription.textContent = desc
     if (lightboxCategory) lightboxCategory.textContent = cat
   }
+
+  applyLanguage(currentLang)
 
   galleryItems.forEach((item, index) => {
     item.addEventListener("click", () => {

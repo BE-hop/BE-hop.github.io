@@ -5,8 +5,8 @@ description: "About BEhop"
 lang-switcher: true
 ---
 
-{% capture sidebar_about_en %}{% include about/sidebar-en.md %}{% endcapture %}
-{{ sidebar_about_en | markdownify }}
+{% capture about_content_en %}{% include about/en.md %}{% endcapture %}
+{{ about_content_en | markdownify }}
 
 <script>
   (function () {

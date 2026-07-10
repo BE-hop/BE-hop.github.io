@@ -147,10 +147,76 @@ button:disabled {
   color: var(--ink);
 }
 
+.health-pill,
+.state-badge {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  display: inline-flex;
+  font-size: 12px;
+  min-height: 30px;
+  padding: 0 10px;
+}
+
+.health-pill.is-healthy,
+.state-badge.is-ready {
+  border-color: #86b9a7;
+  background: #e0eee8;
+  color: var(--accent);
+}
+
+.health-pill.is-error,
+.state-badge.is-error {
+  border-color: #dfaaa7;
+  background: #f7e7e4;
+  color: var(--danger);
+}
+
+.state-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.state-badge--muted {
+  opacity: 0.85;
+}
+
 .tabs {
   display: grid;
   gap: 8px;
   margin: 16px 0;
+}
+
+.search-field {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.search-field input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 10px 12px;
+}
+
+.list-toolbar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.list-toolbar button {
+  min-height: 32px;
 }
 
 .tab {
@@ -231,6 +297,10 @@ button:disabled {
 }
 
 .status.is-error {
+  color: var(--danger);
+}
+
+.danger-button {
   color: var(--danger);
 }
 
@@ -369,6 +439,17 @@ button:disabled {
   font-size: 13px;
 }
 
+.array-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.array-actions button {
+  min-height: 30px;
+  padding: 0 9px;
+}
+
 .image-field {
   display: grid;
   gap: 12px;
@@ -410,6 +491,149 @@ button:disabled {
   margin: 0 0 12px;
 }
 
+.preview-language {
+  display: flex;
+  gap: 6px;
+}
+
+.preview-language button {
+  min-height: 32px;
+  padding: 0 10px;
+}
+
+.preview-language button.is-active {
+  border-color: var(--accent);
+  background: #e0eee8;
+  color: var(--accent);
+}
+
+.publish-card {
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding: 14px;
+}
+
+.publish-card h3,
+.publish-card p {
+  margin: 0;
+}
+
+.publish-card h3 {
+  font-size: 15px;
+}
+
+.publish-card > div > p:last-child {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+  margin-top: 5px;
+}
+
+#publish-button,
+#confirm-publish-button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+dialog {
+  width: min(680px, calc(100vw - 32px));
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  padding: 0;
+}
+
+dialog::backdrop {
+  background: rgba(24, 30, 27, 0.48);
+  backdrop-filter: blur(4px);
+}
+
+.dialog-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  display: grid;
+  gap: 16px;
+  max-height: 80vh;
+  overflow: auto;
+  padding: 20px;
+}
+
+.dialog-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dialog-heading h2 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.history-list {
+  display: grid;
+  gap: 10px;
+}
+
+.history-item {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+}
+
+.history-item code {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.publish-files {
+  background: #fffdf8;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin: 0;
+  max-height: 220px;
+  overflow: auto;
+  padding: 12px 12px 12px 30px;
+}
+
+.publish-files li {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  margin: 5px 0;
+  overflow-wrap: anywhere;
+}
+
+.compact-field {
+  padding: 12px;
+}
+
+.advanced-editor {
+  min-height: 420px !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+}
+
+.body-editor-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.body-editor-grid textarea {
+  min-height: 280px;
+}
+
 @media (max-width: 1180px) {
   .app-shell {
     grid-template-columns: 260px 1fr;
@@ -441,5 +665,10 @@ button:disabled {
   .editor-panel {
     border-right: 0;
     border-bottom: 1px solid var(--line);
+  }
+
+  .publish-card {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

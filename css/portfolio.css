@@ -256,7 +256,43 @@ html[lang="en"] .post-title {
 
 .hero-title-line {
   display: block;
-  white-space: nowrap;
+  white-space: normal;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid color-mix(in oklab, var(--primary) 72%, white);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .hero-title {
+    font-size: clamp(2.55rem, 12vw, 4rem);
+    line-height: 1.02;
+  }
+
+  .hero-title-line {
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .hero-title-line:nth-child(3) {

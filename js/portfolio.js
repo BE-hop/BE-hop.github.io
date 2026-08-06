@@ -390,6 +390,7 @@
     })
 
     syncStoredLang(lang)
+    document.dispatchEvent(new CustomEvent("portfolio:languagechange", { detail: { lang } }))
   }
 
   langButtons.forEach((button) => {
@@ -528,20 +529,129 @@
 
   const filterButtons = document.querySelectorAll("[data-filter]")
   const projectCards = document.querySelectorAll("[data-project]")
+  const projectGroups = document.querySelectorAll("[data-project-group]")
+  const projectFilterStatus = document.querySelector("#project-filter-status")
+  const filterTimers = new WeakMap()
+  let activeProjectFilter = "all"
+
+  const updateProjectFilterStatus = () => {
+    if (!projectFilterStatus) return
+    const activeButton = [...filterButtons].find((button) => button.dataset.filter === activeProjectFilter)
+    const label = activeButton?.getAttribute(getCurrentLang() === "zh" ? "data-zh" : "data-en") || ""
+    const count = [...projectCards].filter((card) => !card.classList.contains("hidden")).length
+    projectFilterStatus.textContent = getCurrentLang() === "zh"
+      ? `正在显示 ${count} 个${label}项目。`
+      : activeProjectFilter === "all"
+        ? `Showing all ${count} projects.`
+        : `Showing ${count} ${label} project${count === 1 ? "" : "s"}.`
+  }
+
+  const setProjectCardVisibility = (card, shouldShow) => {
+    const activeTimer = filterTimers.get(card)
+    if (activeTimer) window.clearTimeout(activeTimer)
+
+    if (shouldShow) {
+      if (card.classList.contains("hidden")) {
+        card.classList.remove("hidden")
+        card.classList.add("is-filtered-out")
+        window.requestAnimationFrame(() => card.classList.remove("is-filtered-out"))
+      } else {
+        card.classList.remove("is-filtered-out")
+      }
+      card.setAttribute("aria-hidden", "false")
+      return
+    }
+
+    card.setAttribute("aria-hidden", "true")
+    card.classList.add("is-filtered-out")
+    const timer = window.setTimeout(() => card.classList.add("hidden"), 190)
+    filterTimers.set(card, timer)
+  }
+
+  const applyProjectFilter = (category) => {
+    activeProjectFilter = category
+    filterButtons.forEach((button) => {
+      const isActive = button.dataset.filter === category
+      button.classList.toggle("is-active", isActive)
+      button.setAttribute("aria-pressed", String(isActive))
+    })
+
+    projectCards.forEach((card) => {
+      const shouldShow = category === "all" || category === card.dataset.category
+      setProjectCardVisibility(card, shouldShow)
+    })
+
+    window.setTimeout(() => {
+      projectGroups.forEach((group) => {
+        const hasVisibleProject = [...group.querySelectorAll("[data-project]")]
+          .some((card) => !card.classList.contains("hidden"))
+        group.classList.toggle("hidden", !hasVisibleProject)
+      })
+      updateProjectFilterStatus()
+    }, 200)
+  }
 
   filterButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const category = button.getAttribute("data-filter") || "all"
-      filterButtons.forEach((btn) => btn.classList.remove("is-active"))
-      button.classList.add("is-active")
-
-      projectCards.forEach((card) => {
-        const cardCategory = card.getAttribute("data-category")
-        const shouldShow = category === "all" || category === cardCategory
-        card.classList.toggle("hidden", !shouldShow)
-      })
-    })
+    button.addEventListener("click", () => applyProjectFilter(button.dataset.filter || "all"))
   })
+
+  document.addEventListener("portfolio:languagechange", updateProjectFilterStatus)
+  updateProjectFilterStatus()
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
+  const homePage = document.querySelector(".portfolio-home")
+  const heroMedia = document.querySelector("[data-hero-media]")
+
+  if (homePage && !reduceMotion.matches) {
+    homePage.classList.add("has-motion")
+    window.requestAnimationFrame(() => homePage.classList.add("is-ready"))
+
+    if (heroMedia) {
+      let parallaxFrame = null
+      const updateHeroParallax = () => {
+        parallaxFrame = null
+        const offset = Math.min(window.scrollY * -0.07, 42)
+        heroMedia.style.setProperty("--hero-media-shift", `${offset}px`)
+      }
+      window.addEventListener("scroll", () => {
+        if (parallaxFrame === null) parallaxFrame = window.requestAnimationFrame(updateHeroParallax)
+      }, { passive: true })
+      updateHeroParallax()
+    }
+
+    const revealNodes = document.querySelectorAll("[data-reveal]")
+    if ("IntersectionObserver" in window) {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          entry.target.classList.remove("is-pending")
+          entry.target.classList.add("is-visible")
+          observer.unobserve(entry.target)
+        })
+      }, { threshold: 0.12, rootMargin: "0px 0px -8%" })
+
+      revealNodes.forEach((node) => {
+        node.classList.add("is-pending")
+        revealObserver.observe(node)
+      })
+    }
+  }
+
+  const homeSections = document.querySelectorAll("[data-home-section]")
+  const chapterLinks = document.querySelectorAll("[data-home-nav]")
+  if (homeSections.length && chapterLinks.length && "IntersectionObserver" in window) {
+    const setActiveChapter = (key) => {
+      chapterLinks.forEach((link) => link.setAttribute("aria-current", String(link.dataset.homeNav === key)))
+    }
+    const chapterObserver = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+      if (visible?.target.dataset.sectionKey) setActiveChapter(visible.target.dataset.sectionKey)
+    }, { threshold: [0.25, 0.5, 0.75], rootMargin: "-20% 0px -55%" })
+
+    homeSections.forEach((section) => chapterObserver.observe(section))
+  }
 
   const header = document.querySelector(".nav-header")
   const mobileMenu = document.querySelector(".nav-mobile")

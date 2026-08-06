@@ -9,12 +9,13 @@ layout: null
   <title>{{ page.title_zh | default: page.title }} | BEhooop</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   {% include tailwind-head.html %}
   <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
   <link rel="stylesheet" href="{{ site.baseurl }}/css/behop-ai.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/showcase-system.css">
 </head>
-<body class="bg-background text-foreground">
+<body class="ai-detail-page showcase-page theme-ai bg-background text-foreground">
   {% include nav.html %}
 
   {% assign cover_image = page.cover | default: page.image %}
@@ -30,8 +31,8 @@ layout: null
   {% assign demo_en = page.demo_en | default: page.demo.en | default: page.demo %}
   {% assign github_url = page.github_url | default: page.github | default: page.cta_url %}
 
-  <main class="pt-24">
-    <section class="px-6 py-16 lg:px-8">
+  <main class="ai-grid-scan pt-24">
+    <section class="detail-hero px-6 py-16 lg:px-8">
       <div class="mx-auto max-w-6xl">
         <a href="{{ site.baseurl }}/behop-ai-product/#products" class="text-sm text-muted-foreground hover:text-foreground transition-colors" data-en="Back to AI Tools" data-zh="返回 AI 工具">返回 AI 工具</a>
 
@@ -52,8 +53,8 @@ layout: null
 
         <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:items-start">
           {% if cover_image %}
-          <div class="overflow-hidden rounded-2xl border border-border bg-card">
-            <img src="{{ cover_image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" />
+          <div class="detail-cover overflow-hidden rounded-2xl border border-border bg-card">
+            <img src="{{ cover_image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" fetchpriority="high" decoding="async" />
           </div>
           {% endif %}
 
@@ -61,7 +62,7 @@ layout: null
             {% if page.category_zh or page.category_en %}
             <span class="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-muted-foreground" data-en="{{ page.category_en }}" data-zh="{{ page.category_zh }}">{{ page.category_zh }}</span>
             {% endif %}
-            <h1 class="text-3xl font-bold tracking-tight text-foreground sm:text-5xl text-balance" data-en="{{ page.title_en }}" data-zh="{{ page.title_zh }}">{{ page.title_zh | default: page.title_en }}</h1>
+            <h1 class="ai-heading text-3xl font-semibold tracking-tight text-foreground sm:text-5xl text-balance" data-scroll-reveal data-en="{{ page.title_en }}" data-zh="{{ page.title_zh }}">{{ page.title_zh | default: page.title_en }}</h1>
             {% if subtitle_zh or subtitle_en %}
             <p class="text-lg text-foreground/85 leading-relaxed text-pretty" data-en="{{ subtitle_en }}" data-zh="{{ subtitle_zh }}">{{ subtitle_zh | default: subtitle_en }}</p>
             {% endif %}
@@ -105,14 +106,14 @@ layout: null
     <section class="px-6 pb-20 lg:px-8">
       <div class="mx-auto max-w-5xl space-y-8">
         {% if problem_zh or problem_en %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Problem" data-zh="解决的问题">解决的问题</p>
           <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ problem_en }}" data-zh="{{ problem_zh }}">{{ problem_zh | default: problem_en }}</p>
         </section>
         {% endif %}
 
         {% if page.target_users %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Target Users" data-zh="目标用户">目标用户</p>
           <div class="mt-5 grid gap-3 sm:grid-cols-2">
             {% for item in page.target_users %}
@@ -123,7 +124,7 @@ layout: null
         {% endif %}
 
         {% if page.workflow %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Workflow" data-zh="核心流程">核心流程</p>
           <ol class="mt-5 grid gap-3 md:grid-cols-5">
             {% for step in page.workflow %}
@@ -137,7 +138,7 @@ layout: null
         {% endif %}
 
         {% if page.features %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Features" data-zh="核心功能">核心功能</p>
           <ul class="mt-5 grid gap-3 md:grid-cols-2">
             {% for item in page.features %}
@@ -148,7 +149,7 @@ layout: null
         {% endif %}
 
         {% if page.tech_stack %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Tech Stack" data-zh="技术方向">技术方向</p>
           <div class="mt-5 flex flex-wrap gap-2">
             {% for item in page.tech_stack %}
@@ -159,14 +160,14 @@ layout: null
         {% endif %}
 
         {% if input_output_zh or input_output_en %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Input / Output" data-zh="输入 / 输出">输入 / 输出</p>
           <p class="mt-4 text-base leading-relaxed text-muted-foreground text-pretty" data-en="{{ input_output_en }}" data-zh="{{ input_output_zh }}">{{ input_output_zh | default: input_output_en }}</p>
         </section>
         {% endif %}
 
         {% if page.result_gallery %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Result Gallery" data-zh="结果图组">结果图组</p>
           <div class="mt-5 grid gap-4 md:grid-cols-3">
             {% for item in page.result_gallery %}
@@ -180,7 +181,7 @@ layout: null
         {% endif %}
 
         {% if page.before_image or page.after_image or demo_zh or demo_en %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Demo / Before & After" data-zh="演示 / 前后对比">演示 / 前后对比</p>
           {% if page.before_image or page.after_image %}
           <div class="mt-5 grid gap-4 md:grid-cols-2">
@@ -205,7 +206,7 @@ layout: null
         {% endif %}
 
         {% if github_url or page.download_url %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="GitHub / Download" data-zh="代码 / 下载">代码 / 下载</p>
           <div class="mt-5 flex flex-wrap gap-3">
             {% if github_url %}
@@ -219,7 +220,7 @@ layout: null
         {% endif %}
 
         {% if page.version_history %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Version History" data-zh="版本记录">版本记录</p>
           <div class="mt-5 space-y-4">
             {% for item in page.version_history %}
@@ -236,7 +237,7 @@ layout: null
         {% endif %}
 
         {% if page.limitations %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Limitations" data-zh="当前限制">当前限制</p>
           <ul class="mt-5 space-y-3">
             {% for item in page.limitations %}
@@ -247,7 +248,7 @@ layout: null
         {% endif %}
 
         {% if page.next_steps %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Next Steps" data-zh="下一步">下一步</p>
           <ul class="mt-5 space-y-3">
             {% for item in page.next_steps %}
@@ -259,7 +260,7 @@ layout: null
 
         {% assign body_content = content | strip %}
         {% if body_content != "" %}
-        <section class="rounded-2xl border border-border bg-card p-6 md:p-8">
+        <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Additional Notes" data-zh="补充说明">补充说明</p>
           <div class="mt-5 space-y-6 text-muted-foreground leading-relaxed">
             {{ content }}
@@ -272,6 +273,7 @@ layout: null
 
   <script src="{{ site.baseurl }}/js/site-nav.js"></script>
   <script src="{{ site.baseurl }}/js/behop-ai.js"></script>
+  <script src="{{ site.baseurl }}/js/showcase-system.js"></script>
   {% if page.version_json_url %}
   <script>
     (function () {

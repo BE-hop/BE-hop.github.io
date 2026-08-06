@@ -45,6 +45,7 @@
 
     syncStoredLang(lang)
     updateLightboxContent()
+    updateFilterStatus()
   }
 
   langButtons.forEach((button) => {
@@ -79,18 +80,57 @@
 
   const filterButtons = document.querySelectorAll("[data-filter]")
   const productCards = document.querySelectorAll("[data-category]")
+  const filterStatus = document.querySelector("#ai-filter-status")
+  const filterTimers = new WeakMap()
+  let activeFilter = "All"
+
+  const updateFilterStatus = () => {
+    if (!filterStatus) return
+    const visibleCount = [...productCards].filter((card) => !card.classList.contains("hidden")).length
+    const activeButton = [...filterButtons].find((button) => button.dataset.filter === activeFilter)
+    const label = activeButton?.getAttribute(`data-${currentLang}`) || activeFilter
+    filterStatus.textContent = currentLang === "zh"
+      ? `正在显示 ${visibleCount} 个${activeFilter === "All" ? "" : label}工具。`
+      : activeFilter === "All"
+        ? `Showing all ${visibleCount} tools.`
+        : `Showing ${visibleCount} ${label} tool${visibleCount === 1 ? "" : "s"}.`
+  }
+
+  const setProductVisibility = (card, shouldShow) => {
+    const activeTimer = filterTimers.get(card)
+    if (activeTimer) window.clearTimeout(activeTimer)
+
+    if (shouldShow) {
+      card.classList.remove("hidden")
+      card.setAttribute("aria-hidden", "false")
+      window.requestAnimationFrame(() => card.classList.remove("is-filtered-out"))
+      return
+    }
+
+    card.setAttribute("aria-hidden", "true")
+    card.classList.add("is-filtered-out")
+    const timer = window.setTimeout(() => card.classList.add("hidden"), 190)
+    filterTimers.set(card, timer)
+  }
+
+  const applyFilter = (target) => {
+    activeFilter = target
+    filterButtons.forEach((button) => {
+      const isActive = button.dataset.filter === target
+      button.classList.toggle("is-active", isActive)
+      button.setAttribute("aria-pressed", String(isActive))
+    })
+
+    productCards.forEach((card) => {
+      const category = card.getAttribute("data-category")
+      setProductVisibility(card, target === "All" || target === category)
+    })
+    window.setTimeout(updateFilterStatus, 200)
+  }
 
   filterButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const target = button.getAttribute("data-filter")
-      filterButtons.forEach((btn) => btn.classList.remove("is-active"))
-      button.classList.add("is-active")
-
-      productCards.forEach((card) => {
-        const category = card.getAttribute("data-category")
-        const show = target === "All" || target === category
-        card.classList.toggle("hidden", !show)
-      })
+      applyFilter(button.getAttribute("data-filter") || "All")
     })
   })
 

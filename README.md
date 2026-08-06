@@ -1,3 +1,7 @@
+# LIFE Project Entry
+
+本项目属于 LIFE 的 `express` 分类。智能体先阅读同级 `AGENTS.md` 与本文件，再按任务使用下方文档地图。
+
 # BEhop Experience
 
 个人博客与知识库，基于 [Jekyll](https://jekyllrb.com/) 自行定制，由 [liu.ruyuan](https://github.com/BE-hop) 维护。站点内容聚焦于 AI、设计、景观以及日常创作，托管在 GitHub Pages：<https://be-hop.github.io>。
@@ -97,9 +101,42 @@
 - 文章与页面使用 Markdown 撰写，存放在 [`_posts/`](./_posts) 与根目录中的 HTML 文件中。
 - PWA 设置位于 [`pwa/manifest.json`](./pwa/manifest.json) 与 [`sw.js`](./sw.js)。
 
+## 作品展示视觉系统
+
+首页、AI Tools、Works 列表页及两类详情页继续使用 Jekyll、原生 CSS 与 JavaScript。共享设计变量和动效组件位于 [`css/showcase-system.css`](./css/showcase-system.css) 与 [`js/showcase-system.js`](./js/showcase-system.js)；页面原有样式和双语、筛选逻辑保持分层维护。
+
+- Manrope 用于导航和正文，Playfair Display 用于 Works 标题，Space Grotesk 用于 AI 标题。
+- 全站共享导航品牌使用克制的 Depth Text：正面文字保持真实 DOM，彩色深度层由 CSS 伪元素生成，桌面指针只提供小幅倾斜；语言变化由 `js/site-nav.js` 自动同步深度文字。
+- `theme-works` 使用暖白编辑背景与原站森林绿主色；`theme-ai` 使用深石墨主题与冰青强调，两类内容在统一中性色基础上保留明确辨识度。
+- 首页 Hero 使用首次 Masked Heading，并通过内联 SVG 的外框、多层矩形深度框、内框和四组纵深线建立接近 ReactBits Grid Scan 的连续隧道；CSS 使用 `#06b6d4` 扫描框和局部光源，指针在整个 Hero 内连续跟随。章节标题使用 Scroll Reveal；AI 区域使用 Grid Scan、Bento 和指针 Spotlight；Works 卡片使用绿色 Glare，`featured: true` 项目在桌面形成 Scroll Stack。
+- 首页主标题的每一行使用字形内白色—冰青流动纹理模拟 Masked Heading 的动态媒体效果；中英文继续由原 `data-zh` / `data-en` 文本控制，减少动态模式下保留静态纹理。
+- 首页 AI Tools 到 Works 使用深石墨、深绿、雾灰绿和暖白的长距离连续过渡，并在 Works 顶部保留逐渐消失的绿色网格，避免黑白主题直接切换。
+- 桌面左侧章节导航会随深浅板块切换对比色并标记当前章节；在 Hero 或长章节边界继续滚动时，页面会快速对齐下一/上一章节，章节内部仍保持普通滚动。移动端、触屏和减少动态模式不启用滚轮接管。
+- `_data/homepage.yml` 的 `hero.background_image` 继续作为可维护的 Hero 深度底图，当前为 `img/portfolio/system/behop-hero-ai-workbench-v2.webp`，但仅以极低透明度辅助网格层。原植物景观图 `img/portfolio/hero-landscape.jpg` 保留为 Works Hero。
+- 新增 AI 工具仍创建 `_ai_products/*.md`，新增案例仍创建 `_projects/*.md`。模板继续读取既有 `cover`、`order`、`featured`、`status_zh/en` 等字段，不需要复制页面结构或增加编辑器字段。
+- 首页保留 AI Tools、Works、Contact 与 Scroll 四个入口；移动端按钮必须完整换行，不得产生横向裁切。
+- 交互是渐进增强：键盘和触屏保持可用，筛选同步 `aria-pressed` 与实时状态；`prefers-reduced-motion` 下关闭揭示、扫描、聚光、扫光和堆叠动画。
+
+视觉改动后运行：
+
+```bash
+npm run check
+PORT=4001 ./scripts/local-preview.sh
+```
+
+浏览器至少检查首页、`/behop-ai-product/`、`/works/` 和两类详情页，并覆盖桌面、768px 与 390px 视口。确认无横向溢出、Hero 裁切正确、Featured 排序正常，且控制台无错误。
+
 ## 发布
 
-将代码推送到 `main`（或 `master`）分支即可触发 GitHub Pages 自动部署。如果使用自定义域名，请在仓库设置中配置并同步修改 DNS 记录。
+当前 GitHub Pages 工作流只监听 `master`，因此 `master` 始终代表线上正在展示的版本。视觉版本使用以下分支约定：
+
+- `archive/visual-v1`：新版发布前的原版视觉快照，只用于查阅和恢复，不继续日常开发。
+- `codex/visual-v2`：新版视觉的独立开发分支，可以继续深化；确认稳定后再合并到 `master` 发布。
+- `master`：唯一线上发布入口。推送后触发 `.github/workflows/jekyll.yml`，同一 GitHub Pages 域名同一时间只展示这个分支构建出的版本。
+
+恢复旧视觉时，不要把较旧的归档分支直接合并到 `master`，因为它是 `master` 的历史祖先，Git 不会自动生成“回退”改动。应从最新 `master` 建立恢复分支，再用 `git restore --source archive/visual-v1 -- <visual-files>` 取回所需视觉文件，完成检查后提交并合并。这样可以保留后续新增的内容和论坛数据。若要同时公开访问两套网站，需要另外配置独立 Pages 仓库、域名或预览部署，而不是只建立两个普通分支。
+
+如果使用自定义域名，请在仓库设置中配置并同步修改 DNS 记录。
 
 ## AI 开发合规约束（必须遵守）
 

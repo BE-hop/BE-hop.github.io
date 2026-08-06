@@ -10,33 +10,66 @@ lang-switcher: true
   <title>BEhop 设计 | Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   {% include tailwind-head.html %}
   <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
   <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/showcase-system.css">
 </head>
-<body class="bg-background text-foreground">
+<body class="portfolio-home showcase-page showcase-home theme-home bg-background text-foreground">
   {% include nav.html %}
   {% assign home = site.data.homepage %}
   {% assign site_settings = site.data.site_settings %}
 
+  <nav class="home-chapter-nav" aria-label="Homepage sections" data-home-chapter-nav>
+    <a href="#ai-tools" data-home-nav="ai-tools"><span>01</span><span data-zh="AI 工具" data-en="AI Tools">AI Tools</span></a>
+    <a href="#projects" data-home-nav="projects"><span>02</span><span data-zh="项目案例" data-en="Works">Works</span></a>
+    <a href="#updates" data-home-nav="updates"><span>03</span><span data-zh="更新" data-en="Updates">Updates</span></a>
+    <a href="#about" data-home-nav="about"><span>04</span><span data-zh="关于" data-en="About">About</span></a>
+  </nav>
+
   <main id="top">
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div class="absolute inset-0">
-        <img src="{{ home.hero.background_image | relative_url }}" alt="Landscape design" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-gradient-to-b from-foreground/50 via-foreground/30 to-foreground/60"></div>
+    <section class="showcase-home-hero relative min-h-screen flex items-center justify-center overflow-hidden" data-home-section data-section-key="top" data-nav-tone="dark">
+      <div class="hero-grid-stage absolute inset-0" aria-hidden="true" data-hero-grid-scan>
+        <img src="{{ home.hero.background_image | relative_url }}" alt="" class="hero-grid-stage__depth w-full h-full object-cover" data-hero-media fetchpriority="high" decoding="async" />
+        <svg class="hero-grid-stage__tunnel" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="presentation">
+          <g class="hero-grid-stage__faces">
+            <path d="M0 0H1600L1000 330H600Z" />
+            <path d="M0 900H1600L1000 570H600Z" />
+            <path d="M0 0L600 330V570L0 900Z" />
+            <path d="M1600 0L1000 330V570L1600 900Z" />
+          </g>
+          <g class="hero-grid-stage__frames">
+            <rect x="1" y="1" width="1598" height="898" />
+            <rect x="100" y="55" width="1400" height="790" />
+            <rect x="200" y="110" width="1200" height="680" />
+            <rect x="300" y="165" width="1000" height="570" />
+            <rect x="390" y="220" width="820" height="460" />
+            <rect x="470" y="265" width="660" height="370" />
+            <rect x="535" y="300" width="530" height="300" />
+            <rect x="600" y="330" width="400" height="240" />
+          </g>
+          <g class="hero-grid-stage__rays">
+            <path d="M0 0L600 330M200 0L650 330M400 0L700 330M600 0L750 330M800 0L800 330M1000 0L850 330M1200 0L900 330M1400 0L950 330M1600 0L1000 330" />
+            <path d="M0 900L600 570M200 900L650 570M400 900L700 570M600 900L750 570M800 900L800 570M1000 900L850 570M1200 900L900 570M1400 900L950 570M1600 900L1000 570" />
+            <path d="M0 0L600 330M0 150L600 370M0 300L600 410M0 450L600 450M0 600L600 490M0 750L600 530M0 900L600 570" />
+            <path d="M1600 0L1000 330M1600 150L1000 370M1600 300L1000 410M1600 450L1000 450M1600 600L1000 490M1600 750L1000 530M1600 900L1000 570" />
+          </g>
+          <rect class="hero-grid-stage__scan-frame" x="600" y="330" width="400" height="240" />
+        </svg>
+        <div class="hero-grid-stage__focus"></div>
       </div>
 
       <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-10">
         <div class="max-w-4xl">
           <div class="space-y-8">
-            <div class="hero-badge inline-flex items-center gap-2 bg-card/10 border border-card/20 rounded-full px-4 py-2">
+            <div class="hero-badge inline-flex items-center gap-2 bg-card/10 border border-card/20 rounded-full px-4 py-2" data-hero-reveal>
               <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
               <span class="text-sm text-card font-medium tracking-wide" data-zh="{{ home.hero.badge_zh }}" data-en="{{ home.hero.badge_en }}">{{ home.hero.badge_en }}</span>
             </div>
 
-            <div class="space-y-6">
-              <h1 class="hero-title font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-card tracking-tight">
+            <div class="space-y-6" data-hero-reveal>
+              <h1 class="hero-title text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-card tracking-tight" data-masked-heading>
                 {% for line in home.hero.title_lines_en %}
                 <span class="hero-title-line" data-zh="{{ home.hero.title_lines_zh[forloop.index0] | default: line }}" data-en="{{ line }}">{{ line }}</span>
                 {% endfor %}
@@ -44,7 +77,7 @@ lang-switcher: true
               <p class="max-w-3xl text-lg md:text-xl text-card/85 leading-relaxed text-pretty" data-zh="{{ home.hero.description_zh }}" data-en="{{ home.hero.description_en }}">{{ home.hero.description_en }}</p>
             </div>
 
-            <div class="hero-actions pt-4" aria-label="Hero actions">
+            <div class="hero-actions pt-4" aria-label="Hero actions" data-hero-reveal>
               <a href="{{ site.baseurl }}/behop-ai-product/" class="hero-action hero-action--primary" data-zh="{{ home.hero.primary_cta_zh }}" data-en="{{ home.hero.primary_cta_en }}">{{ home.hero.primary_cta_en }}</a>
               <a href="{{ site.baseurl }}/works/" class="hero-action hero-action--ghost" data-zh="{{ home.hero.secondary_cta_zh }}" data-en="{{ home.hero.secondary_cta_en }}">{{ home.hero.secondary_cta_en }}</a>
               <a href="#contact" class="hero-action hero-action--link">
@@ -67,39 +100,28 @@ lang-switcher: true
         </div>
       </div>
 
-      <div class="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-8 z-10">
-        <div class="text-right">
-          <div class="font-serif text-4xl font-bold text-card">AI</div>
-          <div class="text-xs text-card/60 uppercase tracking-wider" data-zh="{{ home.hero.side_tools_label_zh }}" data-en="{{ home.hero.side_tools_label_en }}">{{ home.hero.side_tools_label_en }}</div>
-        </div>
-        <div class="w-px h-16 bg-card/20 self-end"></div>
-        <div class="text-right">
-          <div class="font-serif text-4xl font-bold text-card">3D</div>
-          <div class="text-xs text-card/60 uppercase tracking-wider" data-zh="{{ home.hero.side_workflow_label_zh }}" data-en="{{ home.hero.side_workflow_label_en }}">{{ home.hero.side_workflow_label_en }}</div>
-        </div>
-      </div>
     </section>
 
-    <section id="ai-tools" class="py-24 lg:py-28 bg-secondary">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <section id="ai-tools" class="theme-ai ai-grid-scan py-24 lg:py-28" data-home-section data-section-key="ai-tools" data-nav-tone="dark">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8" data-reveal>
         <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
           <div class="space-y-4">
-            <p class="text-primary font-medium tracking-wide uppercase text-sm" data-zh="{{ home.ai_tools.kicker_zh }}" data-en="{{ home.ai_tools.kicker_en }}">{{ home.ai_tools.kicker_en }}</p>
-            <h2 class="font-serif text-4xl md:text-5xl font-bold text-foreground text-balance" data-zh="{{ home.ai_tools.title_zh }}" data-en="{{ home.ai_tools.title_en }}">{{ home.ai_tools.title_en }}</h2>
+            <p class="showcase-kicker text-primary font-medium tracking-wide uppercase text-sm" data-zh="{{ home.ai_tools.kicker_zh }}" data-en="{{ home.ai_tools.kicker_en }}">{{ home.ai_tools.kicker_en }}</p>
+            <h2 class="ai-heading showcase-section-heading text-4xl md:text-5xl font-bold text-foreground text-balance" data-scroll-reveal data-zh="{{ home.ai_tools.title_zh }}" data-en="{{ home.ai_tools.title_en }}">{{ home.ai_tools.title_en }}</h2>
             <p class="text-muted-foreground text-lg max-w-2xl" data-zh="{{ home.ai_tools.subtitle_zh }}" data-en="{{ home.ai_tools.subtitle_en }}">{{ home.ai_tools.subtitle_en }}</p>
           </div>
           <a href="{{ site.baseurl }}/behop-ai-product/" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors" data-zh="{{ home.ai_tools.view_all_zh }}" data-en="{{ home.ai_tools.view_all_en }}">{{ home.ai_tools.view_all_en }}</a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="ai-bento-grid" data-bento-grid>
           {%- assign featured_tools = site.ai_products | sort: "order" -%}
           {%- for tool in featured_tools -%}
           {%- if tool.visibility != "hidden" and tool.visibility != "concept" -%}
           {%- assign tool_cover = tool.cover | default: tool.image -%}
-          <a href="{{ tool.url | prepend: site.baseurl }}" class="group block overflow-hidden rounded-xl bg-card border border-border no-underline hover:border-primary/40 hover:shadow-lg transition-all">
+          <a href="{{ tool.url | prepend: site.baseurl }}" class="group ai-bento-card{% if tool.order == 0 or tool.featured == true %} ai-bento-card--featured{% endif %} block overflow-hidden rounded-xl bg-card border border-border no-underline" data-spotlight-card>
             {% if tool_cover %}
-            <div class="aspect-[4/3] overflow-hidden bg-secondary">
-              <img src="{{ tool_cover | relative_url }}" alt="{{ tool.title_en | default: tool.title_zh }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <div class="ai-bento-media aspect-[4/3] overflow-hidden bg-secondary">
+              <img src="{{ tool_cover | relative_url }}" alt="{{ tool.title_en | default: tool.title_zh }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
             </div>
             {% endif %}
             <div class="p-5">
@@ -119,33 +141,34 @@ lang-switcher: true
       </div>
     </section>
 
-    <section id="projects" class="py-24 lg:py-32 bg-background">
+    <section id="projects" class="theme-works py-24 lg:py-32" data-home-section data-section-key="projects" data-nav-tone="light">
       <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
           <div class="space-y-4">
-            <p class="text-primary font-medium tracking-wide uppercase text-sm" data-zh="{{ home.works.kicker_zh }}" data-en="{{ home.works.kicker_en }}">{{ home.works.kicker_en }}</p>
-            <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance" data-zh="{{ home.works.title_zh }}" data-en="{{ home.works.title_en }}">{{ home.works.title_en }}</h2>
+            <p class="showcase-kicker text-primary font-medium tracking-wide uppercase text-sm" data-zh="{{ home.works.kicker_zh }}" data-en="{{ home.works.kicker_en }}">{{ home.works.kicker_en }}</p>
+            <h2 class="works-heading showcase-section-heading text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance" data-scroll-reveal data-zh="{{ home.works.title_zh }}" data-en="{{ home.works.title_en }}">{{ home.works.title_en }}</h2>
             <p class="text-muted-foreground text-lg max-w-xl" data-zh="{{ home.works.subtitle_zh }}" data-en="{{ home.works.subtitle_en }}">{{ home.works.subtitle_en }}</p>
           </div>
 
-          <div class="flex flex-wrap gap-2">
-            <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground is-active" data-filter="all" data-zh="{{ home.works.filter_all_zh }}" data-en="{{ home.works.filter_all_en }}">{{ home.works.filter_all_en }}</button>
-            <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="professional" data-zh="{{ home.works.filter_professional_zh }}" data-en="{{ home.works.filter_professional_en }}">{{ home.works.filter_professional_en }}</button>
-            <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="academic" data-zh="{{ home.works.filter_academic_zh }}" data-en="{{ home.works.filter_academic_en }}">{{ home.works.filter_academic_en }}</button>
-            <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="landscape" data-zh="{{ home.works.filter_landscape_zh }}" data-en="{{ home.works.filter_landscape_en }}">{{ home.works.filter_landscape_en }}</button>
-            <button class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="interior" data-zh="{{ home.works.filter_interior_zh }}" data-en="{{ home.works.filter_interior_en }}">{{ home.works.filter_interior_en }}</button>
+          <div class="flex flex-wrap gap-2" role="group" aria-label="Project filters">
+            <button type="button" class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground is-active" data-filter="all" data-zh="{{ home.works.filter_all_zh }}" data-en="{{ home.works.filter_all_en }}" aria-pressed="true" aria-controls="project-results">{{ home.works.filter_all_en }}</button>
+            <button type="button" class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="professional" data-zh="{{ home.works.filter_professional_zh }}" data-en="{{ home.works.filter_professional_en }}" aria-pressed="false" aria-controls="project-results">{{ home.works.filter_professional_en }}</button>
+            <button type="button" class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="academic" data-zh="{{ home.works.filter_academic_zh }}" data-en="{{ home.works.filter_academic_en }}" aria-pressed="false" aria-controls="project-results">{{ home.works.filter_academic_en }}</button>
+            <button type="button" class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="landscape" data-zh="{{ home.works.filter_landscape_zh }}" data-en="{{ home.works.filter_landscape_en }}" aria-pressed="false" aria-controls="project-results">{{ home.works.filter_landscape_en }}</button>
+            <button type="button" class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="interior" data-zh="{{ home.works.filter_interior_zh }}" data-en="{{ home.works.filter_interior_en }}" aria-pressed="false" aria-controls="project-results">{{ home.works.filter_interior_en }}</button>
           </div>
+          <p class="project-filter-status" id="project-filter-status" role="status" aria-live="polite"></p>
         </div>
 
         {%- assign project_list = site.projects | sort: "order" -%}
-        <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <div class="grid grid-cols-1 gap-5 lg:grid-cols-2" id="project-results">
           {%- for project in project_list -%}
           {%- if project.category == "professional" and project.visibility != "hidden" -%}
           {%- assign project_cover = project.cover | default: project.image -%}
-          <a href="{{ project.url | prepend: site.baseurl }}" class="group grid overflow-hidden rounded-xl border border-border bg-card no-underline transition-all hover:border-primary/40 hover:shadow-lg md:grid-cols-[0.95fr_1.05fr]" data-project data-category="{{ project.category }}" data-i18n-aria="projects.viewProject" aria-label="查看项目">
-            <div class="aspect-[16/10] overflow-hidden bg-secondary md:aspect-auto">
+          <a href="{{ project.url | prepend: site.baseurl }}" class="group project-card works-card project-card--feature grid overflow-hidden rounded-xl border border-border bg-card no-underline transition-all md:grid-cols-[0.95fr_1.05fr]" data-project data-category="{{ project.category }}" data-glare-card data-i18n-aria="projects.viewProject" aria-label="查看项目">
+            <div class="works-card-media aspect-[16/10] overflow-hidden bg-secondary md:aspect-auto">
               {% if project_cover %}
-              <img src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
               {% endif %}
             </div>
             <div class="flex min-h-[260px] flex-col justify-between p-6">
@@ -170,10 +193,10 @@ lang-switcher: true
           {%- for project in project_list -%}
           {%- if project.category != "professional" and project.visibility != "hidden" -%}
           {%- assign project_cover = project.cover | default: project.image -%}
-          <a href="{{ project.url | prepend: site.baseurl }}" class="group overflow-hidden rounded-xl border border-border bg-card no-underline transition-all hover:border-primary/40 hover:shadow-lg" data-project data-category="{{ project.category }}" data-i18n-aria="projects.viewProject" aria-label="查看项目">
-            <div class="aspect-[4/3] overflow-hidden bg-secondary">
+          <a href="{{ project.url | prepend: site.baseurl }}" class="group project-card works-card overflow-hidden rounded-xl border border-border bg-card no-underline transition-all" data-project data-category="{{ project.category }}" data-glare-card data-i18n-aria="projects.viewProject" aria-label="查看项目">
+            <div class="works-card-media aspect-[4/3] overflow-hidden bg-secondary">
               {% if project_cover %}
-              <img src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
               {% endif %}
             </div>
             <div class="p-5">
@@ -193,14 +216,14 @@ lang-switcher: true
       </div>
     </section>
 
-    <section id="updates" class="py-24 lg:py-28 bg-secondary">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <section id="updates" class="theme-works py-24 lg:py-28" data-home-section data-section-key="updates" data-nav-tone="light">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8" data-reveal>
         <div class="grid lg:grid-cols-2 gap-8">
           <div class="bg-card rounded-2xl border border-border p-6 lg:p-8">
             <div class="mb-6 flex items-end justify-between gap-4">
               <div>
                 <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="latestBlog.kicker">Blog</p>
-                <h2 class="font-serif text-3xl font-bold text-foreground" data-i18n="latestBlog.title">Latest Blog</h2>
+                <h2 class="font-serif text-3xl font-bold text-foreground" data-scroll-reveal data-i18n="latestBlog.title">Latest Blog</h2>
               </div>
               <a href="{{ site.baseurl }}/blog/" class="text-sm font-medium text-primary hover:text-primary/80" data-i18n="latestBlog.viewAll">All Posts</a>
             </div>
@@ -224,7 +247,7 @@ lang-switcher: true
             <div class="mb-6 flex items-end justify-between gap-4">
               <div>
                 <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="digest.kicker">AI Digest</p>
-                <h2 class="font-serif text-3xl font-bold text-foreground" data-i18n="digest.title">Latest AI Digest</h2>
+                <h2 class="font-serif text-3xl font-bold text-foreground" data-scroll-reveal data-i18n="digest.title">Latest AI Digest</h2>
               </div>
               <a href="{{ site.baseurl }}/forum/" class="text-sm font-medium text-primary hover:text-primary/80" data-i18n="digest.viewAll">Open Digest</a>
             </div>
@@ -245,8 +268,8 @@ lang-switcher: true
       </div>
     </section>
 
-    <section id="about" class="py-24 lg:py-32 bg-secondary">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <section id="about" class="theme-works py-24 lg:py-32" data-home-section data-section-key="about" data-nav-tone="light">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8" data-reveal>
         <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start mb-24">
           <div class="relative">
           <div class="relative aspect-[3/4] rounded-2xl overflow-hidden">
@@ -261,7 +284,7 @@ lang-switcher: true
           <div class="space-y-8 lg:pt-8">
             <div class="space-y-4">
             <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="about.title">关于 BEhop</p>
-              <h2 class="font-serif text-4xl md:text-5xl font-bold text-foreground text-balance leading-tight" data-i18n="about.subtitle">景观设计师 / AI工具开发者 / 计算化设计实践者</h2>
+              <h2 class="font-serif text-4xl md:text-5xl font-bold text-foreground text-balance leading-tight" data-scroll-reveal data-i18n="about.subtitle">景观设计师 / AI工具开发者 / 计算化设计实践者</h2>
             </div>
 
             <p class="text-muted-foreground leading-relaxed text-lg text-pretty" data-i18n="about.description">我关注 AI、计算化工具与视觉表达如何改变景观设计工作流，尤其是从草图、图像到可编辑空间模型的转化过程。</p>
@@ -334,11 +357,11 @@ lang-switcher: true
       </div>
     </section>
 
-    <section id="contact" class="py-24 lg:py-32 bg-secondary">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <section id="contact" class="theme-works py-24 lg:py-32" data-home-section data-section-key="contact" data-nav-tone="light">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8" data-reveal>
         <div class="text-center max-w-3xl mx-auto mb-16">
           <p class="text-primary font-medium tracking-wide uppercase text-sm mb-4" data-zh="{{ home.contact.kicker_zh }}" data-en="{{ home.contact.kicker_en }}">{{ home.contact.kicker_en }}</p>
-          <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance mb-6" data-zh="{{ home.contact.title_zh }}" data-en="{{ home.contact.title_en }}">{{ home.contact.title_en }}</h2>
+          <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance mb-6" data-scroll-reveal data-zh="{{ home.contact.title_zh }}" data-en="{{ home.contact.title_en }}">{{ home.contact.title_en }}</h2>
           <p class="text-muted-foreground text-lg" data-zh="{{ home.contact.description_zh }}" data-en="{{ home.contact.description_en }}">{{ home.contact.description_en }}</p>
         </div>
 
@@ -494,5 +517,6 @@ lang-switcher: true
 
   <script src="{{ site.baseurl }}/js/site-nav.js"></script>
   <script src="{{ site.baseurl }}/js/portfolio.js"></script>
+  <script src="{{ site.baseurl }}/js/showcase-system.js"></script>
 </body>
 </html>

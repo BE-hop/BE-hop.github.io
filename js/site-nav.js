@@ -4,6 +4,32 @@
 
   const toggle = nav.querySelector("[data-site-nav-toggle]")
   const mobile = nav.querySelector("[data-site-nav-mobile]")
+  const brand = nav.querySelector("[data-depth-brand]")
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
+
+  if (brand) {
+    const syncDepthText = () => brand.setAttribute("data-depth-text", brand.textContent.trim())
+    syncDepthText()
+    new MutationObserver(syncDepthText).observe(brand, { childList: true, characterData: true, subtree: true })
+
+    if (!reduceMotion.matches && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      brand.parentElement.addEventListener("pointermove", (event) => {
+        const bounds = brand.getBoundingClientRect()
+        const x = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1))
+        const y = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / bounds.height * 2 - 1))
+        brand.style.setProperty("--brand-rotate-x", `${(-y * 5).toFixed(2)}deg`)
+        brand.style.setProperty("--brand-rotate-y", `${(x * 7).toFixed(2)}deg`)
+        brand.style.setProperty("--brand-depth-x", `${(2.2 + x * 1.2).toFixed(2)}px`)
+        brand.style.setProperty("--brand-depth-y", `${(2.2 + y * 1.2).toFixed(2)}px`)
+      })
+      brand.parentElement.addEventListener("pointerleave", () => {
+        brand.style.removeProperty("--brand-rotate-x")
+        brand.style.removeProperty("--brand-rotate-y")
+        brand.style.removeProperty("--brand-depth-x")
+        brand.style.removeProperty("--brand-depth-y")
+      })
+    }
+  }
 
   const updateNav = () => {
     nav.classList.toggle("is-scrolled", window.scrollY > 40)

@@ -1,6 +1,6 @@
 # Verified Workflows
 
-Last verified: 2026-07-10
+Last verified: 2026-08-06
 Invalidation: package scripts, Ruby environment, deployment branch, or editor ports change.
 
 ## Local preview
@@ -30,5 +30,8 @@ This checks generated CSS, editor behavior, Jekyll output, content/schema consis
 ## Deployment
 
 - `origin/master` triggers the GitHub Pages workflow.
+- `archive/visual-v1` preserves the pre-V2 visual snapshot and is not a deployment source.
+- `codex/visual-v2` carries the maintained V2 design; publish only by bringing a validated V2 commit onto `master`.
 - The forum bot may advance `master` by updating the three approved forum JSON snapshots.
 - Fetch and compare before pushing; never force-push over forum synchronization commits.
+- To restore V1 without discarding later content or forum data, branch from current `master`, restore only the intended visual paths from `archive/visual-v1`, validate, and commit the restoration. Do not expect merging the older archive branch to revert descendants.

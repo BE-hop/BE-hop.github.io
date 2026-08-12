@@ -201,6 +201,8 @@ Blog publishing rules are documented in `README_AI_BLOG_PUBLISH.md`. For bilingu
 - Keep date/topic/section order aligned.
 - Include `layout`, `title`, `subtitle`, `date`, `author: liu.ruyuan`, `lang`, and `tags`.
 - Add cross-links near the top of each article.
+- For AI-assisted design practice reviews, distinguish verified work already used in projects from experimental or planned Agent capabilities. Organize evidence around inputs, transformations, outputs, evaluation criteria, and known limits rather than presenting generated images as self-validating results.
+- The Q1 2026 AI design review uses `_includes/ai-q1-evidence.html` for its English evidence groups; keep its group order, numeric assets, and responsive image presentation aligned with the Chinese article when revising the post.
 
 ## Career Trend Sources And Strategy Memory
 

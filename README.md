@@ -101,6 +101,10 @@
 - 文章与页面使用 Markdown 撰写，存放在 [`_posts/`](./_posts) 与根目录中的 HTML 文件中。
 - PWA 设置位于 [`pwa/manifest.json`](./pwa/manifest.json) 与 [`sw.js`](./sw.js)。
 
+### 双语博客内容
+
+中英文博客以 `_posts/YYYY-MM-DD-slug.md` 与 `_posts/YYYY-MM-DD-slug-en.md` 成对维护，具体发布检查见 [`README_AI_BLOG_PUBLISH.md`](./README_AI_BLOG_PUBLISH.md)。设计实践类文章应保留真实过程证据，并明确区分已投入工作的流程、试验性方法和后续计划；过程图片统一放在 `img/posts/<slug>/`，发布前转换为适合网页加载的尺寸与格式。多图过程证据按输入、过程、输出成组展示：普通图片使用对齐容器，横向长图可跨栏并按原比例放大，移动端统一单列显示。
+
 ## 作品展示视觉系统
 
 首页、AI Tools、Works 列表页及两类详情页继续使用 Jekyll、原生 CSS 与 JavaScript。共享设计变量和动效组件位于 [`css/showcase-system.css`](./css/showcase-system.css) 与 [`js/showcase-system.js`](./js/showcase-system.js)；页面原有样式和双语、筛选逻辑保持分层维护。

@@ -1,0 +1,15 @@
+{% assign evidence_ids = include.ids | split: ',' %}
+{% assign evidence_labels = include.labels | split: '||' %}
+{% assign evidence_wide_ids = include.wide_ids | default: '' | split: ',' %}
+<section class="ai-evidence{% if include.layout == 'flow' %} ai-evidence--flow{% endif %}" style="--cols:{{ include.cols | default: 2 }}">
+  <p class="ai-evidence__title">{{ include.title }}</p>
+  <div class="ai-evidence__grid">
+    {% for evidence_id in evidence_ids %}
+      {% assign evidence_label = evidence_labels[forloop.index0] %}
+      <figure{% if evidence_wide_ids contains evidence_id %} class="ai-evidence__wide"{% endif %}>
+        <div class="ai-evidence__image"><img src="/img/posts/ai-design-q1-2026/{{ evidence_id }}.webp" alt="{{ evidence_label }}" loading="lazy"></div>
+        <figcaption><span class="ai-step">{{ evidence_label }}</span></figcaption>
+      </figure>
+    {% endfor %}
+  </div>
+</section>

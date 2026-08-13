@@ -262,7 +262,7 @@ layout: null
         {% if body_content != "" %}
         <section class="detail-section rounded-2xl border border-border bg-card p-6 md:p-8" data-scroll-reveal>
           <p class="text-xs font-semibold uppercase tracking-widest text-accent" data-en="Additional Notes" data-zh="补充说明">补充说明</p>
-          <div class="mt-5 space-y-6 text-muted-foreground leading-relaxed">
+          <div class="mt-5 space-y-6 text-muted-foreground leading-relaxed" {% unless jekyll.environment == "production" %}data-behop-markdown{% endunless %}>
             {{ content }}
           </div>
         </section>
@@ -297,5 +297,6 @@ layout: null
     })();
   </script>
   {% endif %}
+  {% include editor-bridge.html %}
 </body>
 </html>

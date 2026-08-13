@@ -45,7 +45,7 @@ layout: null
     </section>
 
     <section class="px-6 pb-20 lg:px-8">
-      <div class="mx-auto max-w-4xl space-y-6 text-muted-foreground leading-relaxed">
+      <div class="mx-auto max-w-4xl space-y-6 text-muted-foreground leading-relaxed" {% unless jekyll.environment == "production" %}data-behop-markdown{% endunless %}>
         {{ content }}
       </div>
     </section>
@@ -53,5 +53,6 @@ layout: null
 
   <script src="{{ site.baseurl }}/js/site-nav.js"></script>
   <script src="{{ site.baseurl }}/js/behop-ai.js"></script>
+  {% include editor-bridge.html %}
 </body>
 </html>

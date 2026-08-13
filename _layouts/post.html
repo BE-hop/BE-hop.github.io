@@ -21,7 +21,7 @@ layout: default
                     {% include multilingual-sel.html %}
                 {% endif %}
 
-				{{ content }}
+				<div {% unless jekyll.environment == "production" %}data-behop-markdown{% endunless %}>{{ content }}</div>
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">

@@ -58,7 +58,7 @@ reflection_en: 'This large-scale project pushed my practice from isolated visual
 cover: "/img/portfolio/real-works/shilih/cover.jpg"
 image: "/img/portfolio/real-works/shilih/cover.jpg"
 drawings:
-- image: "/img/portfolio/real-works/shilih/process-flow.jpg"
+- image: "/img/portfolio/real-works/shilih-lake/drawings-0-image-clipboard-20260813-140853-ceaf.png"
   caption_zh: 项目推进流程：背景、策略、分区深化、水乐园专项、汇报协同与现场反馈。
   caption_en: 'Project workflow: context, strategy, precinct development, water park
     scope, presentation coordination, and feedback.'
@@ -66,14 +66,14 @@ renderings:
 - image: "/img/portfolio/real-works/shilih/cover.jpg"
   caption_zh: 湖区总体鸟瞰效果图，展示项目整体空间愿景。
   caption_en: Aerial rendering showing the overall lakefront spatial vision.
-- image: "/img/portfolio/real-works/shilih/aerial-board.jpg"
-  caption_zh: 总体空间结构与湖区活力场景。
-  caption_en: Overall spatial structure and lakefront vitality scenario.
-- image: "/img/portfolio/real-works/shilih/zone-board.jpg"
+- image: "/img/portfolio/real-works/shilih-lake/renderings-1-image-clipboard-20260813-135115-1eac.png"
+  caption_zh: 儿童水乐园中心区模型搭建与渲染表达。
+  caption_en: ''
+- image: "/img/portfolio/real-works/shilih-lake/renderings-2-image-clipboard-20260813-135124-cc52.png"
   caption_zh: 户外健康活力分区与滨水场景表达。
   caption_en: Outdoor vitality precinct and waterfront scenario.
-- image: "/img/portfolio/real-works/shilih/detail-board.jpg"
-  caption_zh: 保留 1 张专项深化说明，用于展示设计如何进入落地讨论。
+- image: "/img/portfolio/real-works/shilih-lake/renderings-3-image-clipboard-20260813-141053-41ac.png"
+  caption_zh: 保留专项深化说明，用于展示设计如何进入落地讨论。
   caption_en: One retained development board showing how the design entered implementation
     discussion.
 related_posts:

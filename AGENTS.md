@@ -169,6 +169,9 @@ Preserve the site's professional, portfolio-oriented identity.
 The site owner prefers agent-managed design/code changes and owner-friendly content maintenance. Preserve the local editing workflow:
 
 - The local content editor is started with `ruby scripts/content-editor.rb` and opens at `http://127.0.0.1:4567/`.
+- The editor is visual-first: the rendered Jekyll page is the primary editing surface. In Edit mode, text is edited in place, images can be selected or pasted from the clipboard, and Markdown opens in a focused dialog. Preview mode must restore normal site navigation and interactions.
+- The local preview bridge is loaded only when `jekyll.environment != production`, served from the editor at `127.0.0.1:4567`, and must never appear in a production build.
+- Visual edits remain drafts until the owner selects Save All. Multi-record saves must validate first and roll back all content and finalized images if any record fails.
 - The editor is local-only and must not be positioned as an online admin panel or deployed backend.
 - The editor covers Site Settings, Homepage, Works, AI Tools, AI Gallery, Archive, About, and bilingual Blog pairs.
 - The editor intentionally does not cover AI Digest moderation or approved-data synchronization.
@@ -202,7 +205,7 @@ Blog publishing rules are documented in `README_AI_BLOG_PUBLISH.md`. For bilingu
 - Include `layout`, `title`, `subtitle`, `date`, `author: liu.ruyuan`, `lang`, and `tags`.
 - Add cross-links near the top of each article.
 - For AI-assisted design practice reviews, distinguish verified work already used in projects from experimental or planned Agent capabilities. Organize evidence around inputs, transformations, outputs, evaluation criteria, and known limits rather than presenting generated images as self-validating results.
-- The Q1 2026 AI design review uses `_includes/ai-q1-evidence.html` for its English evidence groups; keep its group order, numeric assets, and responsive image presentation aligned with the Chinese article when revising the post.
+- The Q1 2026 AI design review uses `_includes/ai-q1-evidence.html` for its English evidence groups; keep its group order, numeric assets, responsive `contain` presentation, and aligned Chinese article presentation when revising the post.
 
 ## Career Trend Sources And Strategy Memory
 

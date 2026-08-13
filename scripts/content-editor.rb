@@ -25,6 +25,7 @@ STATIC_ROOT = File.expand_path(ENV.fetch("CONTENT_EDITOR_STATIC_ROOT", File.join
 SCHEMA_FILE = File.expand_path(ENV.fetch("CONTENT_EDITOR_SCHEMA", File.join(STATIC_ROOT, "schema.yml")))
 STATE_ROOT = File.join(ROOT, ".content-editor")
 MAX_JSON_BYTES = 2 * 1024 * 1024
+MAX_BATCH_JSON_BYTES = 12 * 1024 * 1024
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 CSRF_TOKEN = SecureRandom.hex(32)
 
@@ -149,9 +150,9 @@ def json_response(response, status, payload)
   response.body = JSON.pretty_generate(json_safe(payload))
 end
 
-def read_json_body(request)
+def read_json_body(request, max_bytes: MAX_JSON_BYTES)
   length = request.body.to_s.bytesize
-  raise "Request body is too large" if length > MAX_JSON_BYTES
+  raise "Request body is too large" if length > max_bytes
 
   parsed = JSON.parse(request.body.to_s)
   raise "JSON body must be an object" unless parsed.is_a?(Hash)
@@ -379,6 +380,18 @@ def validate_content!(type, data)
   true
 end
 
+def validate_content_payload!(type, payload)
+  data = json_safe(payload["data"] || {})
+  validate_content!(type, data)
+  if type == "blog"
+    body = payload["body"].is_a?(Hash) ? payload["body"] : {}
+    zh_count = body["zh"].to_s.lines.count { |line| line.match?(/^##\s+/) }
+    en_count = body["en"].to_s.lines.count { |line| line.match?(/^##\s+/) }
+    raise "Bilingual blog section counts do not match: #{zh_count} / #{en_count}" unless zh_count == en_count
+  end
+  data
+end
+
 def preview_path(type, id, data = {})
   case type
   when "site-settings", "homepage"
@@ -535,9 +548,8 @@ def ensure_blog_cross_link(body, id, lang)
   "#{link}\n\n#{body}".strip + "\n"
 end
 
-def save_content(type, id, payload)
-  data = json_safe(payload["data"] || {})
-  validate_content!(type, data)
+def save_content(type, id, payload, discard_uploads: true)
+  data = validate_content_payload!(type, payload)
   pending = pending_uploads_referenced_by(type, id, payload)
   finalize_pending_uploads!(pending, type, id)
 
@@ -577,10 +589,76 @@ def save_content(type, id, payload)
     raise "Unknown content type: #{type}"
   end
 
-  discard_pending_uploads(type, id)
+  discard_pending_uploads(type, id) if discard_uploads
   result
 rescue StandardError
   rollback_finalized_uploads!(pending || [])
+  raise
+end
+
+def save_batch(payload)
+  records = Array(payload["records"])
+  raise "No content changes supplied" if records.empty?
+  raise "Too many content changes" if records.length > 100
+
+  normalized = records.map do |record|
+    raise "Batch record must be an object" unless record.is_a?(Hash)
+    type = record["type"].to_s
+    id = sanitize_id(record["id"])
+    raise "Unknown content type: #{type}" unless TYPE_SCHEMAS.key?(type)
+    raise "Missing content id" if id.empty?
+    load_content(type, id)
+    validate_content_payload!(type, record["content"] || {})
+    { "type" => type, "id" => id, "content" => record["content"] || {} }
+  end
+
+  touched_paths = normalized.flat_map do |record|
+    type = record["type"]
+    id = record["id"]
+    if SINGLETON_FILES.key?(type)
+      [SINGLETON_FILES[type]]
+    elsif COLLECTION_DIRS.key?(type)
+      [collection_file(type, id)]
+    elsif type == "archive"
+      [ARCHIVE_FILE]
+    elsif type == "blog"
+      %w[zh en].map { |lang| blog_file(id, lang) }
+    else
+      []
+    end
+  end
+  pending = normalized.flat_map do |record|
+    pending_uploads_referenced_by(record["type"], record["id"], record["content"])
+  end.uniq
+  touched_paths.concat(pending.map { |record| record["target"] })
+  touched_paths.uniq!
+  touched_paths.each { |path| ensure_session_writable!(path) }
+
+  backups = touched_paths.to_h do |path|
+    [path, File.file?(path) ? File.binread(path) : nil]
+  end
+  previous_changed = SESSION_CHANGED.dup
+  previous_hashes = SESSION_LAST_HASH.dup
+
+  results = normalized.map do |record|
+    save_content(record["type"], record["id"], record["content"], discard_uploads: false)
+  end
+  normalized.each { |record| discard_pending_uploads(record["type"], record["id"]) }
+  { "ok" => true, "records" => results, "paths" => (SESSION_CHANGED - previous_changed).to_a.sort }
+rescue StandardError
+  if defined?(backups) && backups
+    backups.each do |path, bytes|
+      if bytes.nil?
+        FileUtils.rm_f(path)
+      else
+        FileUtils.mkdir_p(File.dirname(path))
+        File.binwrite(path, bytes)
+      end
+    end
+    SESSION_CHANGED.replace(previous_changed) if defined?(previous_changed) && previous_changed
+    SESSION_LAST_HASH.replace(previous_hashes) if defined?(previous_hashes) && previous_hashes
+    pending&.each { |record| record.delete("finalized") }
+  end
   raise
 end
 
@@ -982,7 +1060,9 @@ class ContentEditorServlet < WEBrick::HTTPServlet::AbstractServlet
 
     if path.start_with?("/assets/")
       require_method!(method, "GET")
-      local = File.expand_path(File.join(STATIC_ROOT, path.delete_prefix("/assets/")))
+      asset_name = path.delete_prefix("/assets/")
+      asset_name = "preview-bridge.js" if asset_name == "preview-bridge.js"
+      local = File.expand_path(File.join(STATIC_ROOT, asset_name))
       unless local.start_with?("#{STATIC_ROOT}/") && File.file?(local)
         json_response(response, 404, "error" => "Asset not found")
         return
@@ -1072,6 +1152,10 @@ class ContentEditorServlet < WEBrick::HTTPServlet::AbstractServlet
       validate_mutation_request!(request, "application/json")
       body = read_json_body(request)
       json_response(response, 200, publish_confirm(body["token"], body["commit_message"]))
+    when "/api/save-batch"
+      require_method!(method, "POST")
+      validate_mutation_request!(request, "application/json")
+      json_response(response, 200, save_batch(read_json_body(request, max_bytes: MAX_BATCH_JSON_BYTES)))
     else
       json_response(response, 404, "error" => "Not found")
     end

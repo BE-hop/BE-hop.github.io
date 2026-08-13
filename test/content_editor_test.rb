@@ -156,6 +156,57 @@ class ContentEditorTest < Minitest::Test
     assert_includes error.message, "Invalid number field"
   end
 
+  def test_57_batch_save_updates_multiple_records
+    homepage = load_content("homepage", "homepage")
+    project = load_content("projects", "sample-project")
+    homepage["data"]["hero"]["title_lines_en"] = ["Visual editor"]
+    project["data"]["title_en"] = "Batch Project"
+
+    result = save_batch(
+      "records" => [
+        { "type" => "homepage", "id" => "homepage", "content" => homepage },
+        { "type" => "projects", "id" => "sample-project", "content" => project }
+      ]
+    )
+
+    assert result["ok"]
+    assert_equal ["Visual editor"], load_content("homepage", "homepage").dig("data", "hero", "title_lines_en")
+    assert_equal "Batch Project", load_content("projects", "sample-project").dig("data", "title_en")
+  end
+
+  def test_58_batch_save_rolls_back_when_a_later_write_fails
+    homepage = load_content("homepage", "homepage")
+    project = load_content("projects", "sample-project")
+    original_title = homepage.dig("data", "hero", "title_lines_en")
+    homepage["data"]["hero"]["title_lines_en"] = ["Must roll back"]
+    project["data"]["order"] = "invalid"
+
+    assert_raises(RuntimeError) do
+      save_batch(
+        "records" => [
+          { "type" => "homepage", "id" => "homepage", "content" => homepage },
+          { "type" => "projects", "id" => "sample-project", "content" => project }
+        ]
+      )
+    end
+    assert_equal original_title, load_content("homepage", "homepage").dig("data", "hero", "title_lines_en")
+  end
+
+  def test_59_bilingual_blog_sections_must_match
+    content = load_content("blog", Dir.glob(File.join(TEST_ROOT, "_posts", "*.md")).map { |path| File.basename(path, ".md") }.reject { |id| id.end_with?("-en") }.first)
+    content["body"] = { "zh" => "## 一\n\n## 二\n", "en" => "## One\n" }
+    error = assert_raises(RuntimeError) { validate_content_payload!("blog", content) }
+    assert_includes error.message, "section counts do not match"
+  end
+
+  def test_60_visual_bridge_defers_ime_updates_until_composition_ends
+    bridge = File.read(File.join(REPO_ROOT, "content-editor", "preview-bridge.js"))
+    assert_includes bridge, 'document.addEventListener("compositionstart"'
+    assert_includes bridge, 'document.addEventListener("compositionend"'
+    assert_includes bridge, 'document.addEventListener("blur"'
+    assert_includes bridge, "!composing.has(node) && !event.isComposing"
+  end
+
   def test_60_security_headers_are_enforced
     request_class = Struct.new(:headers) do
       def [](key)

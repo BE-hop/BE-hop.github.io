@@ -1,6 +1,6 @@
 # Verified Workflows
 
-Last verified: 2026-08-06
+Last verified: 2026-08-14
 Invalidation: package scripts, Ruby environment, deployment branch, or editor ports change.
 
 ## Local preview
@@ -26,6 +26,13 @@ npm run check
 ```
 
 This checks generated CSS, editor behavior, Jekyll output, content/schema consistency, and local links/assets.
+
+## Works PDF portfolio pages
+
+- Render the selected PDF pages to web images and place them under the relevant `img/portfolio/real-works/<project>/` directory.
+- Name complete landscape boards `portfolio-page-*.jpg`; the project layout recognizes this convention and displays them full-width with their original aspect ratio.
+- Compare each board with the existing project gallery. Remove YAML references to standalone images already contained in the new board, while preserving the source media files.
+- Verify with `npm run check`, then inspect both project pages at desktop and 390px mobile widths for full-page rendering, zero duplicate references, and zero horizontal overflow.
 
 ## Deployment
 

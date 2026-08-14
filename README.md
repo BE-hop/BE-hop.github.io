@@ -138,6 +138,7 @@ npm run editor
 - 桌面左侧章节导航会随深浅板块切换对比色并标记当前章节；在 Hero 或长章节边界继续滚动时，页面会快速对齐下一/上一章节，章节内部仍保持普通滚动。移动端、触屏和减少动态模式不启用滚轮接管。
 - `_data/homepage.yml` 的 `hero.background_image` 继续作为可维护的 Hero 深度底图，当前为 `img/portfolio/system/behop-hero-ai-workbench-v2.webp`，但仅以极低透明度辅助网格层。原植物景观图 `img/portfolio/hero-landscape.jpg` 保留为 Works Hero。
 - 新增 AI 工具仍创建 `_ai_products/*.md`，新增案例仍创建 `_projects/*.md`。模板继续读取既有 `cover`、`order`、`featured`、`status_zh/en` 等字段，不需要复制页面结构或增加编辑器字段。
+- PDF 作品集整页导入 Works 时，图片统一使用 `portfolio-page-*.jpg` 命名并在详情页跨栏完整显示；若整页已包含原有单张效果图，应从项目图组中移除重复引用，源媒体文件仍保留。
 - 首页保留 AI Tools、Works、Contact 与 Scroll 四个入口；移动端按钮必须完整换行，不得产生横向裁切。
 - 交互是渐进增强：键盘和触屏保持可用，筛选同步 `aria-pressed` 与实时状态；`prefers-reduced-motion` 下关闭揭示、扫描、聚光、扫光和堆叠动画。
 

@@ -40,18 +40,15 @@ drawings:
     caption_zh: "脱敏总平面与功能组织片段。"
     caption_en: "Anonymized master plan and functional organization."
 renderings:
+  - image: "/img/portfolio/real-works/didi/portfolio-page-04.jpg"
+    caption_zh: "滴滴园区作品集页：庭院、草坪与林下活动场景的个人工作范围。"
+    caption_en: "Didi campus portfolio page: personal scope across courtyards, lawns, and shaded activity spaces."
   - image: "/img/portfolio/real-works/didi/entry-rendering.jpg"
     caption_zh: "入口迎宾与界面空间效果图片段。"
     caption_en: "Entrance and arrival interface rendering."
   - image: "/img/portfolio/real-works/didi/courtyard-rendering.jpg"
     caption_zh: "园区核心活动空间效果图片段。"
     caption_en: "Core campus activity space rendering."
-  - image: "/img/portfolio/real-works/didi/forest-rendering.jpg"
-    caption_zh: "森林乐活与慢行体验效果图片段。"
-    caption_en: "Forest wellness and slow-mobility experience rendering."
-  - image: "/img/portfolio/real-works/didi/corridor-rendering.jpg"
-    caption_zh: "共享生活廊与通勤场景效果图片段。"
-    caption_en: "Shared life corridor and workplace circulation rendering."
 order: 2
 featured: true
 archive_ref: "didi-campus"

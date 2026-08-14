@@ -178,6 +178,7 @@ The site owner prefers agent-managed design/code changes and owner-friendly cont
 - Homepage owner-editable text and images live in `_data/homepage.yml`.
 - Global owner-editable settings live in `_data/site_settings.yml`; About content lives in `_data/about.yml`.
 - Works content lives in `_projects/*.md`.
+- Works 中由 PDF 导出的完整作品集页面统一命名为 `portfolio-page-*.jpg`；`_layouts/project.html` 会将这类图面按完整比例跨栏展示。加入整页图面时，应移除图组中已被该页面包含的重复单图引用，但不擅自删除源媒体。
 - AI Tools content lives in `_ai_products/*.md`.
 - AI Gallery content lives in `_ai_gallery/*.md`; bilingual Blog content lives in paired `_posts/*.md` files.
 - Archive content lives in `_data/worksarchive.yml`.

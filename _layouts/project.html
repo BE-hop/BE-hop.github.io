@@ -139,14 +139,18 @@ layout: null
           <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="Drawings / Visual Materials" data-zh="图纸 / 视觉材料">图纸 / 视觉材料</p>
           <div class="mt-5 grid gap-4 md:grid-cols-2">
             {% for item in page.drawings %}
-            <figure class="overflow-hidden rounded-xl bg-secondary">
-              {% if item.image %}<img src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Drawing' }}" class="h-72 w-full object-cover" />{% endif %}
+            {% assign is_portfolio_page = false %}
+            {% if item.image contains '/portfolio-page-' %}{% assign is_portfolio_page = true %}{% endif %}
+            <figure class="overflow-hidden rounded-xl bg-secondary{% if is_portfolio_page %} md:col-span-2{% endif %}">
+              {% if item.image %}<img src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Drawing' }}" class="w-full{% if is_portfolio_page %} h-auto object-contain{% else %} h-72 object-cover{% endif %}" />{% endif %}
               {% if item.caption_zh or item.caption_en %}<figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ item.caption_en }}" data-zh="{{ item.caption_zh }}">{{ item.caption_zh | default: item.caption_en }}</figcaption>{% endif %}
             </figure>
             {% endfor %}
             {% for item in page.renderings %}
-            <figure class="overflow-hidden rounded-xl bg-secondary">
-              {% if item.image %}<img src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Rendering' }}" class="h-72 w-full object-cover" />{% endif %}
+            {% assign is_portfolio_page = false %}
+            {% if item.image contains '/portfolio-page-' %}{% assign is_portfolio_page = true %}{% endif %}
+            <figure class="overflow-hidden rounded-xl bg-secondary{% if is_portfolio_page %} md:col-span-2{% endif %}">
+              {% if item.image %}<img src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Rendering' }}" class="w-full{% if is_portfolio_page %} h-auto object-contain{% else %} h-72 object-cover{% endif %}" />{% endif %}
               {% if item.caption_zh or item.caption_en %}<figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ item.caption_en }}" data-zh="{{ item.caption_zh }}">{{ item.caption_zh | default: item.caption_en }}</figcaption>{% endif %}
             </figure>
             {% endfor %}

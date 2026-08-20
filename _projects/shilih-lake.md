@@ -58,15 +58,51 @@ reflection_en: 'This large-scale project pushed my practice from isolated visual
 cover: "/img/portfolio/real-works/shilih/cover.jpg"
 image: "/img/portfolio/real-works/shilih/cover.jpg"
 drawings:
-- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-01.jpg"
-  caption_zh: 十里湖作品集第 1 页：银河水乐园主题与核心场景。
-  caption_en: 'Portfolio page 1: Galaxy Water Park theme and key scene.'
-- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-02.jpg"
-  caption_zh: 十里湖作品集第 2 页：水乐园设计逻辑、叙事框架与节点表达。
-  caption_en: 'Portfolio page 2: water park design logic, narrative framework, and key nodes.'
-- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-03.jpg"
-  caption_zh: 十里湖作品集第 3 页：核心游乐与生态体验场景。
-  caption_en: 'Portfolio page 3: key recreation and ecological experience scenes.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-waterpark-01-clean.png"
+  caption_zh: 水乐园核心场景与空间体验。
+  caption_en: 'Water-park core scene and spatial experience.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-waterpark-02-03-combined.png"
+  caption_zh: 水乐园分区、重点场景与生态体验。
+  caption_en: 'Water-park zones, key scenes, and ecological experience.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-gh-rhino-workflow.png"
+  caption_zh: Rhino 与 Grasshopper 工作过程：参数定义、建成参考与方案模型的协同推敲。
+  caption_en: 'Rhino and Grasshopper workflow: coordinated iteration across parametric definitions, built reference, and the design model.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-masterplan-01.jpg"
+  caption_zh: 十里湖总体概念规划展板：城市背景、生态基底、产业策略与总体鸟瞰。
+  caption_en: 'Shilih Lake masterplan board: urban context, ecological base, development strategy, and overall aerial view.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-masterplan-02.jpg"
+  caption_zh: 十里湖概念与修建性规划展板：分区设计、滨水节点与空间体验。
+  caption_en: 'Concept and detailed planning board: precinct design, waterfront nodes, and spatial experience.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-board-01.jpg"
+  caption_zh: 项目总览：大美湖境与十里未来的总体愿景。
+  caption_en: 'Project overview: the overall vision for Shilih Lake.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-board-02.jpg"
+  caption_zh: 城市文脉、项目区位与现状问题分析。
+  caption_en: 'Urban context, project location, and existing-condition analysis.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-board-03.jpg"
+  caption_zh: 夜景总体鸟瞰与文旅融合空间愿景。
+  caption_en: 'Night aerial view and cultural-tourism spatial vision.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-board-04.jpg"
+  caption_zh: 生态湖景策略与湖区绿色岸线组织。
+  caption_en: 'Ecological lake-view strategy and green waterfront organization.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-board-05.jpg"
+  caption_zh: 生态景观分区、特色场景与体验节点。
+  caption_en: 'Ecological landscape precincts, signature scenes, and experience nodes.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-board-06.jpg"
+  caption_zh: 产业布局与空间功能组织。
+  caption_en: 'Industry layout and spatial program organization.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-board-07.jpg"
+  caption_zh: 产业发展策略与运营导向的空间框架。
+  caption_en: 'Development strategy and operation-oriented spatial framework.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-board-08.jpg"
+  caption_zh: 滨水休闲与文旅体验组团。
+  caption_en: 'Waterfront leisure and cultural-tourism experience clusters.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-board-09.jpg"
+  caption_zh: 湿地休闲、鸟类文化与生态游憩场景。
+  caption_en: 'Wetland leisure, bird-culture, and ecological recreation scenes.'
+- image: "/img/portfolio/real-works/shilih-lake/portfolio-page-shilih-board-10.jpg"
+  caption_zh: 创意文旅、公共服务与重点节点空间表达。
+  caption_en: 'Creative cultural tourism, public service, and key-node spatial expression.'
 - image: "/img/portfolio/real-works/shilih-lake/drawings-0-image-clipboard-20260813-140853-ceaf.png"
   caption_zh: 项目推进流程：背景、策略、分区深化、水乐园专项、汇报协同与现场反馈。
   caption_en: 'Project workflow: context, strategy, precinct development, water park

@@ -51,7 +51,7 @@
         entry.target.classList.add("is-reveal-visible")
         currentObserver.unobserve(entry.target)
       })
-    }, { threshold: 0.14, rootMargin: "0px 0px -8%" })
+    }, { threshold: 0, rootMargin: "0px 0px -8%" })
 
     revealNodes.forEach((node) => {
       node.classList.add("is-reveal-pending")

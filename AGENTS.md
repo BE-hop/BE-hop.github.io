@@ -129,6 +129,7 @@ npm run check
 - 首页 Masked Heading 除首次揭示外，还使用字形内的白色—冰青流动纹理；动画必须直接作用于保留 `data-zh` / `data-en` 的 `.hero-title-line`，不得用图片文字替代，以保证语言切换和可访问性。
 - AI 工具继续通过现有集合字段和 `order` / `featured` 自动决定 Bento 权重；Works 页最多优先展示前三个 `featured: true` 项目，其余项目进入标准网格。不新增内容 schema。
 - 所有聚光、扫光、扫描、揭示和堆叠效果必须保留触屏、键盘及 `prefers-reduced-motion` 静态降级；移动端 Scroll Stack 必须恢复普通纵向流。
+- Scroll Reveal 不能依赖大型内容区的固定可见比例阈值；完整展板等超长图组只要进入观察范围即必须显示，避免图片区保持隐藏。
 - 首页 Hero 使用内联 SVG 的外框、多层矩形深度框、内框和四组对应边纵深线形成连续 Grid Scan 隧道，并由 CSS 提供 `#06b6d4` 扫描框与局部光源；不得改回多个独立 CSS 平面相互旋转，也不得引入 React、WebGL 或持续高强度动画。指针监听必须绑定整个 Hero，经过标题和 CTA 时不得中断。`hero.background_image` 仅作为低透明度空间深度层，原 `img/portfolio/hero-landscape.jpg` 保留为 Works Hero。
 - 首页深色 AI Tools 与暖白 Works 之间必须使用深石墨、深绿、雾灰绿到暖白的连续过渡，并让低透明绿色网格延续进 Works；避免直接黑白切割或只插入一条短渐变带。
 - 桌面左侧章节导航必须根据当前 `data-nav-tone` 切换深浅对比并同步 `aria-current`。精确指针桌面端可在 Hero 和长章节边界使用滚轮吸附到下一/上一 `data-home-section`；长章节内部、移动端、触屏和 `prefers-reduced-motion` 必须保留原生滚动。
@@ -179,6 +180,8 @@ The site owner prefers agent-managed design/code changes and owner-friendly cont
 - Global owner-editable settings live in `_data/site_settings.yml`; About content lives in `_data/about.yml`.
 - Works content lives in `_projects/*.md`.
 - Works 中由 PDF 导出的完整作品集页面统一命名为 `portfolio-page-*.jpg`；`_layouts/project.html` 会将这类图面按完整比例跨栏展示。加入整页图面时，应移除图组中已被该页面包含的重复单图引用，但不擅自删除源媒体。
+- 手工提供的 JPG 展板也沿用 `portfolio-page-*.jpg` 约定；横版和竖版均按原始比例单列展示，不裁切成卡片缩略图。
+- Rhino、Grasshopper 等技术过程截图可作为 `portfolio-page-*` 图面加入项目；说明应明确其为方案/深化工作证据，并避免将软件界面误表述为最终设计成果。
 - AI Tools content lives in `_ai_products/*.md`.
 - AI Gallery content lives in `_ai_gallery/*.md`; bilingual Blog content lives in paired `_posts/*.md` files.
 - Archive content lives in `_data/worksarchive.yml`.

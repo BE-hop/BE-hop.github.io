@@ -134,11 +134,14 @@ npm run editor
 - `theme-works` 使用暖白编辑背景与原站森林绿主色；`theme-ai` 使用深石墨主题与冰青强调，两类内容在统一中性色基础上保留明确辨识度。
 - 首页 Hero 使用首次 Masked Heading，并通过内联 SVG 的外框、多层矩形深度框、内框和四组纵深线建立接近 ReactBits Grid Scan 的连续隧道；CSS 使用 `#06b6d4` 扫描框和局部光源，指针在整个 Hero 内连续跟随。章节标题使用 Scroll Reveal；AI 区域使用 Grid Scan、Bento 和指针 Spotlight；Works 卡片使用绿色 Glare，`featured: true` 项目在桌面形成 Scroll Stack。
 - 首页主标题的每一行使用字形内白色—冰青流动纹理模拟 Masked Heading 的动态媒体效果；中英文继续由原 `data-zh` / `data-en` 文本控制，减少动态模式下保留静态纹理。
+- Scroll Reveal 对超长展板图组以进入观察范围为触发条件，不能因固定可见比例阈值而隐藏内容；减少动态模式仍直接显示。
 - 首页 AI Tools 到 Works 使用深石墨、深绿、雾灰绿和暖白的长距离连续过渡，并在 Works 顶部保留逐渐消失的绿色网格，避免黑白主题直接切换。
 - 桌面左侧章节导航会随深浅板块切换对比色并标记当前章节；在 Hero 或长章节边界继续滚动时，页面会快速对齐下一/上一章节，章节内部仍保持普通滚动。移动端、触屏和减少动态模式不启用滚轮接管。
 - `_data/homepage.yml` 的 `hero.background_image` 继续作为可维护的 Hero 深度底图，当前为 `img/portfolio/system/behop-hero-ai-workbench-v2.webp`，但仅以极低透明度辅助网格层。原植物景观图 `img/portfolio/hero-landscape.jpg` 保留为 Works Hero。
 - 新增 AI 工具仍创建 `_ai_products/*.md`，新增案例仍创建 `_projects/*.md`。模板继续读取既有 `cover`、`order`、`featured`、`status_zh/en` 等字段，不需要复制页面结构或增加编辑器字段。
 - PDF 作品集整页导入 Works 时，图片统一使用 `portfolio-page-*.jpg` 命名并在详情页跨栏完整显示；若整页已包含原有单张效果图，应从项目图组中移除重复引用，源媒体文件仍保留。
+- 手工提供的 JPG 展板同样使用 `portfolio-page-*.jpg`：横版和竖版都按原始比例单列呈现，避免裁切成卡片。
+- Rhino、Grasshopper 等技术过程截图也可按 `portfolio-page-*` 纳入项目；双语说明需将其定位为方案或深化的工作过程，而非最终效果图。
 - 首页保留 AI Tools、Works、Contact 与 Scroll 四个入口；移动端按钮必须完整换行，不得产生横向裁切。
 - 交互是渐进增强：键盘和触屏保持可用，筛选同步 `aria-pressed` 与实时状态；`prefers-reduced-motion` 下关闭揭示、扫描、聚光、扫光和堆叠动画。
 

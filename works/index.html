@@ -48,6 +48,14 @@ lang-switcher: true
         </div>
         <p class="project-filter-status" id="project-filter-status" role="status" aria-live="polite"></p>
 
+        <a href="{{ site.baseurl }}/works/portfolio/" class="mb-12 flex items-center justify-between gap-6 rounded-2xl border border-border bg-card p-6 no-underline transition-colors hover:bg-secondary" aria-label="Open consolidated portfolio collection">
+          <span>
+            <span class="showcase-kicker block text-xs font-semibold uppercase tracking-widest text-primary" data-en="Portfolio collection" data-zh="作品集总览">Portfolio collection</span>
+            <span class="mt-2 block text-lg font-semibold text-foreground" data-en="Browse work by Planning, Landscape, Interior, and Architecture." data-zh="按规划、景观、室内与建筑四个方向浏览作品。">Browse work by Planning, Landscape, Interior, and Architecture.</span>
+          </span>
+          <span class="shrink-0 text-sm font-semibold text-primary" data-en="Open ↗" data-zh="打开 ↗">Open ↗</span>
+        </a>
+
         {%- assign project_list = site.projects | sort: "order" -%}
         <div id="works-results">
           <section class="mb-20" aria-labelledby="featured-works-heading" data-project-group>

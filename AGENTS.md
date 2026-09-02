@@ -182,6 +182,7 @@ The site owner prefers agent-managed design/code changes and owner-friendly cont
 - Works 中由 PDF 导出的完整作品集页面统一命名为 `portfolio-page-*.jpg`；`_layouts/project.html` 会将这类图面按完整比例跨栏展示。加入整页图面时，应移除图组中已被该页面包含的重复单图引用，但不擅自删除源媒体。
 - 手工提供的 JPG 展板也沿用 `portfolio-page-*.jpg` 约定；横版和竖版均按原始比例单列展示，不裁切成卡片缩略图。
 - Rhino、Grasshopper 等技术过程截图可作为 `portfolio-page-*` 图面加入项目；说明应明确其为方案/深化工作证据，并避免将软件界面误表述为最终设计成果。
+- 作品集总览位于 `works/portfolio/`，以规划、景观、空间与建筑三本双语阅读器组织；首屏将克制标题与三本书合并在森林绿 Hero 中。三本封面使用统一硬壳结构与可见书脊、纸页前口、白色图面内框，同时以规划暖陶棕、景观苔绿、空间与建筑蓝灰区分方向；主标题中英文使用明确两行节点，避免孤字或孤词。桌面放大镜保持小尺度并使用双层金属框、玻璃高光、连接铆钉和短手柄，移动端隐藏。阅读器固定 2:1 跨页，图面不裁切、不重新配对；窄于 2:1 的图面使用独立 `-wide.jpg` 衍生图，原图完整居中并左右补纯白画布，源文件保留。
 - AI Tools content lives in `_ai_products/*.md`.
 - AI Gallery content lives in `_ai_gallery/*.md`; bilingual Blog content lives in paired `_posts/*.md` files.
 - Archive content lives in `_data/worksarchive.yml`.

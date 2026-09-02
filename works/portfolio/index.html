@@ -1,7 +1,7 @@
 ---
 layout: null
 title: "Portfolio Collection / 作品集"
-description: "A curated web portfolio across planning, landscape, interior, and architecture."
+description: "A complete portfolio reader across planning, landscape, interior, and architecture."
 permalink: /works/portfolio/
 lang-switcher: true
 ---
@@ -18,126 +18,84 @@ lang-switcher: true
   <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
   <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css">
   <link rel="stylesheet" href="{{ site.baseurl }}/css/showcase-system.css">
-  <style>
-    .portfolio-collection { background: #f5f3ed; color: #19372e; }
-    .portfolio-collection__hero { padding: 8.5rem 1.5rem 4rem; background: linear-gradient(135deg, #163c32 0%, #275f50 58%, #93a98d 100%); color: #fff; }
-    .portfolio-collection__wrap { max-width: 76rem; margin: 0 auto; }
-    .portfolio-collection__eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #c8e2c5; }
-    .portfolio-collection h1, .portfolio-collection h2 { font-family: "Playfair Display", serif; }
-    .portfolio-collection h1 { max-width: 48rem; margin: 1rem 0 1.25rem; font-size: clamp(3rem, 8vw, 6.2rem); line-height: .96; letter-spacing: -.05em; }
-    .portfolio-collection__lede { max-width: 40rem; font-size: 1.1rem; line-height: 1.8; color: rgba(255,255,255,.82); }
-    .portfolio-collection__index { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin-top: 3rem; }
-    .portfolio-collection__index a { display: block; padding: 1rem; border: 1px solid rgba(255,255,255,.24); color: #fff; font-size: .85rem; text-decoration: none; transition: background .2s ease, transform .2s ease; }
-    .portfolio-collection__index a:hover, .portfolio-collection__index a:focus-visible { background: rgba(255,255,255,.13); transform: translateY(-2px); outline: none; }
-    .portfolio-collection__content { padding: 2.25rem 1.5rem 7rem; }
-    .portfolio-collection__note { display: grid; grid-template-columns: 1fr auto; gap: 2rem; margin: 0 0 4.5rem; padding: 1.25rem 0; border-top: 1px solid #bfd0c0; border-bottom: 1px solid #bfd0c0; color: #486258; font-size: .88rem; line-height: 1.65; }
-    .portfolio-section { scroll-margin-top: 5.5rem; padding: 4.5rem 0; border-top: 1px solid #b9c8ba; }
-    .portfolio-section__heading { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 2rem; align-items: end; margin-bottom: 2rem; }
-    .portfolio-section__number { font-size: .75rem; font-weight: 700; letter-spacing: .16em; color: #527c69; }
-    .portfolio-section h2 { margin: .35rem 0 0; font-size: clamp(2.4rem, 5vw, 4.6rem); line-height: .98; letter-spacing: -.045em; }
-    .portfolio-section__summary { max-width: 35rem; margin: 0; color: #557065; line-height: 1.75; }
-    .portfolio-boards { display: flex; flex-direction: column; gap: 2rem; max-width: 64rem; margin: 0 auto; }
-    .portfolio-board, .portfolio-board--wide { width: 100%; margin: 0; overflow: hidden; background: #e6e9df; }
-    .portfolio-board img { display: block; width: 100%; height: auto; min-height: 0; object-fit: contain; transition: transform .45s ease; }
-    .portfolio-board:hover img { transform: scale(1.018); }
-    .portfolio-board figcaption { padding: .8rem 1rem .9rem; color: #557065; font-size: .75rem; line-height: 1.5; }
-    .portfolio-collection__footer { margin-top: 2.5rem; padding: 2rem; background: #163c32; color: #fff; }
-    .portfolio-collection__footer p { max-width: 42rem; margin: .5rem 0 0; color: rgba(255,255,255,.75); line-height: 1.7; }
-    @media (max-width: 700px) {
-      .portfolio-collection__hero { padding-top: 7rem; }
-      .portfolio-collection__index { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .portfolio-collection__note, .portfolio-section__heading { grid-template-columns: 1fr; gap: 1rem; }
-      .portfolio-section { padding: 3.25rem 0; }
-      .portfolio-board img { min-height: 0; height: auto; }
-    }
-    @media (prefers-reduced-motion: reduce) { .portfolio-collection * { scroll-behavior: auto !important; transition: none !important; } }
-  </style>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio-books.css">
 </head>
 <body class="portfolio-collection showcase-page theme-works">
   {% include nav.html %}
   <main>
     {% assign planning_boards = "undergraduate-03,undergraduate-04,undergraduate-05,undergraduate-06,undergraduate-09,undergraduate-10,undergraduate-11,consolidated-06" | split: "," %}
-    {% assign landscape_boards = "undergraduate-07,undergraduate-08,graduate-02,graduate-03,graduate-04,graduate-05,graduate-06,consolidated-07" | split: "," %}
-    {% assign interior_boards = "undergraduate-14,undergraduate-15,undergraduate-16,graduate-07,consolidated-09" | split: "," %}
-    {% assign architecture_boards = "undergraduate-17,undergraduate-18,undergraduate-19,undergraduate-20,graduate-08,graduate-09" | split: "," %}
-    <header class="portfolio-collection__hero" data-nav-tone="dark">
-      <div class="portfolio-collection__wrap">
-        <p class="portfolio-collection__eyebrow" data-en="Complete portfolio boards 2019 - 2024" data-zh="完整作品图面 2019 - 2024">Complete portfolio boards 2019 - 2024</p>
-        <h1 data-en="Designing across scales." data-zh="跨尺度的设计实践。">Designing across scales.</h1>
-        <p class="portfolio-collection__lede" data-en="A complete, page-level deduplicated collection from undergraduate, graduate, and 2024 portfolio editions. Every project board is retained and arranged by its primary design scale: planning, landscape, interior, and architecture." data-zh="从本科、研究生及 2024 年作品集完整整理而来。除完全重复页外，所有项目图面均被保留，并按规划、景观、室内与建筑四个主要设计尺度归纳。">A complete, page-level deduplicated collection from undergraduate, graduate, and 2024 portfolio editions. Every project board is retained and arranged by its primary design scale: planning, landscape, interior, and architecture.</p>
-        <nav class="portfolio-collection__index" aria-label="Portfolio disciplines">
-          <a href="#planning" data-en="01 Planning" data-zh="01 规划">01 Planning</a>
-          <a href="#landscape" data-en="02 Landscape" data-zh="02 景观">02 Landscape</a>
-          <a href="#interior" data-en="03 Interior" data-zh="03 室内">03 Interior</a>
-          <a href="#architecture" data-en="04 Architecture" data-zh="04 建筑">04 Architecture</a>
-        </nav>
-      </div>
-    </header>
+    {% assign landscape_boards = "undergraduate-07,undergraduate-08,graduate-02-wide,graduate-03-wide,graduate-04-wide,graduate-05-wide,graduate-06-wide,consolidated-07" | split: "," %}
+    {% assign interior_boards = "undergraduate-14,undergraduate-15,undergraduate-16,graduate-07-wide,consolidated-09" | split: "," %}
+    {% assign architecture_boards = "undergraduate-17,undergraduate-18,undergraduate-19,undergraduate-20,graduate-08-wide,graduate-09-wide" | split: "," %}
 
-    <div class="portfolio-collection__content" data-nav-tone="light">
-      <div class="portfolio-collection__wrap">
-        <div class="portfolio-collection__note">
-          <span data-en="Archive note: this is a complete project-board library, not a short selection. Cover and CV pages are excluded; only clearly identical PDF pages are removed. Full-page images preserve their original aspect ratio." data-zh="归档说明：这是完整的项目图面库，不是精选摘要。封面与简历页未列入；仅移除明确完全相同的 PDF 页面。所有整页图面均按原始比例显示。">Archive note: this is a complete project-board library, not a short selection. Cover and CV pages are excluded; only clearly identical PDF pages are removed. Full-page images preserve their original aspect ratio.</span>
-          <span data-en="Source: personal portfolio PDFs" data-zh="来源：个人作品集 PDF">Source: personal portfolio PDFs</span>
+    <section class="portfolio-books" id="portfolio-books" aria-labelledby="portfolio-books-title">
+      <header class="portfolio-books__hero" data-nav-tone="dark">
+        <div class="portfolio-collection__wrap">
+          <div class="portfolio-books__intro">
+            <div>
+              <p class="portfolio-books__number" data-portfolio-en="Portfolio collection / 03 volumes / 2019 - 2024" data-portfolio-zh="完整作品集 / 03 册 / 2019 - 2024">Portfolio collection / 03 volumes / 2019 - 2024</p>
+              <h1 id="portfolio-books-title"><span class="portfolio-books__title-line" data-portfolio-en="Designing across" data-portfolio-zh="跨尺度的设计">Designing across</span><span class="portfolio-books__title-line" data-portfolio-en="scales." data-portfolio-zh="实践。">scales.</span></h1>
+            </div>
+            <p class="portfolio-collection__lede" data-portfolio-en="Choose Planning, Landscape, or Spatial + Architecture. Every retained board opens below as one complete, uncropped spread." data-portfolio-zh="选择规划、景观或空间与建筑作品集。每张保留图面都将在下方以完整、不裁切的跨页形式打开。">Choose Planning, Landscape, or Spatial + Architecture. Every retained board opens below as one complete, uncropped spread.</p>
+          </div>
+
+        <div class="portfolio-books__shelf" role="tablist" aria-label="Portfolio volumes">
+          <button class="portfolio-book-cover portfolio-book-cover--planning is-selected" type="button" role="tab" aria-selected="true" aria-controls="portfolio-reader" data-book-select="planning">
+            <span class="portfolio-book-cover__grain" aria-hidden="true"></span><span class="portfolio-book-cover__spine" aria-hidden="true"></span><span class="portfolio-book-cover__image" aria-hidden="true"></span>
+            <span class="portfolio-book-cover__copy"><span class="portfolio-book-cover__label">01</span><span class="portfolio-book-cover__title" data-book-title="planning">Planning</span><span class="portfolio-book-cover__meta" data-book-count="planning">9 spreads</span></span>
+          </button>
+          <button class="portfolio-book-cover portfolio-book-cover--landscape" type="button" role="tab" aria-selected="false" aria-controls="portfolio-reader" data-book-select="landscape">
+            <span class="portfolio-book-cover__grain" aria-hidden="true"></span><span class="portfolio-book-cover__spine" aria-hidden="true"></span><span class="portfolio-book-cover__image" aria-hidden="true"></span>
+            <span class="portfolio-book-cover__copy"><span class="portfolio-book-cover__label">02</span><span class="portfolio-book-cover__title" data-book-title="landscape">Landscape</span><span class="portfolio-book-cover__meta" data-book-count="landscape">8 spreads</span></span>
+          </button>
+          <button class="portfolio-book-cover portfolio-book-cover--spatial" type="button" role="tab" aria-selected="false" aria-controls="portfolio-reader" data-book-select="spatial">
+            <span class="portfolio-book-cover__grain" aria-hidden="true"></span><span class="portfolio-book-cover__spine" aria-hidden="true"></span><span class="portfolio-book-cover__image" aria-hidden="true"></span>
+            <span class="portfolio-book-cover__copy"><span class="portfolio-book-cover__label">03</span><span class="portfolio-book-cover__title" data-book-title="spatial">Spatial + Architecture</span><span class="portfolio-book-cover__meta" data-book-count="spatial">11 spreads</span></span>
+          </button>
+        </div>
+        </div>
+      </header>
+
+      <div class="portfolio-books__reader-section" data-nav-tone="light">
+        <div class="portfolio-collection__wrap">
+        <div class="portfolio-reader" id="portfolio-reader" role="tabpanel" tabindex="0" aria-live="polite" aria-describedby="portfolio-reader-hint">
+          <div class="portfolio-reader__topline"><div><p class="portfolio-reader__kicker" data-reader-kicker>01 / Planning</p><h3 data-reader-title>Planning</h3></div><p class="portfolio-reader__counter" data-reader-counter>01 / 09</p></div>
+          <div class="portfolio-reader__stage" data-reader-stage>
+            <div class="portfolio-reader__tilt" data-reader-tilt>
+              <div class="portfolio-reader__shadow" aria-hidden="true"></div>
+              <div class="portfolio-reader__canvas" data-reader-canvas aria-label="Portfolio board reader. Use left and right arrows, buttons, clicks, or horizontal drag to turn pages.">
+                <img class="portfolio-reader__spread portfolio-reader__spread--incoming" data-reader-incoming alt="" aria-hidden="true">
+                <img class="portfolio-reader__spread portfolio-reader__spread--current" data-reader-current alt="" decoding="async">
+                <div class="portfolio-reader__gutter" aria-hidden="true"></div><div class="portfolio-reader__turn" data-reader-turn aria-hidden="true"></div>
+                <div class="portfolio-reader__edge portfolio-reader__edge--left" aria-hidden="true"></div><div class="portfolio-reader__edge portfolio-reader__edge--right" aria-hidden="true"></div><div class="portfolio-reader__loading" data-reader-loading aria-hidden="true"></div>
+              </div>
+            </div>
+            <div class="portfolio-reader__loupe" data-reader-loupe aria-hidden="true"><div class="portfolio-reader__loupe-lens" data-reader-loupe-lens></div><div class="portfolio-reader__loupe-handle"></div></div>
+          </div>
+          <div class="portfolio-reader__controls">
+            <button class="portfolio-reader__button" type="button" data-reader-prev><span aria-hidden="true">←</span><span data-portfolio-en="Previous" data-portfolio-zh="上一页">Previous</span></button>
+            <p class="portfolio-reader__page-status" data-reader-status>Spread 1 of 9</p>
+            <button class="portfolio-reader__button" type="button" data-reader-next><span data-portfolio-en="Next" data-portfolio-zh="下一页">Next</span><span aria-hidden="true">→</span></button>
+            <button class="portfolio-reader__loupe-toggle" type="button" data-reader-loupe-toggle aria-pressed="true"><span aria-hidden="true">⌕</span><span data-portfolio-en="Loupe" data-portfolio-zh="放大镜">Loupe</span></button>
+          </div>
+          <p class="portfolio-reader__hint" id="portfolio-reader-hint" data-portfolio-en="Click a book side or drag horizontally to turn a spread. Arrow keys work while this reader is focused; drag the loupe to inspect details." data-portfolio-zh="点击书页左右区域，或水平拖拽即可翻页。阅读器聚焦时可用方向键；拖动放大镜查看图面细节。">Click a book side or drag horizontally to turn a spread. Arrow keys work while this reader is focused; drag the loupe to inspect details.</p>
+          <p class="portfolio-reader__fallback" data-reader-fallback hidden></p>
         </div>
 
-        <section class="portfolio-section" id="planning" aria-labelledby="planning-title">
-          <div class="portfolio-section__heading">
-            <div><p class="portfolio-section__number">01 / 04</p><h2 id="planning-title" data-en="Planning" data-zh="规划">Planning</h2></div>
-            <p class="portfolio-section__summary" data-en="Public-space renewal is approached through everyday movement, living-circle accessibility, and a linked open-space network. The visual sequence moves from diagnosis to an actionable spatial system." data-zh="以日常行为、生活圈可达性和开放空间网络为线索，回应公共空间更新；图面从问题诊断延展至可落地的空间系统。">Public-space renewal is approached through everyday movement, living-circle accessibility, and a linked open-space network. The visual sequence moves from diagnosis to an actionable spatial system.</p>
-          </div>
-          <div class="portfolio-boards">
-            {% for board in planning_boards %}{% assign remainder = forloop.index0 | modulo: 3 %}
-            <figure class="portfolio-board{% if remainder == 0 %} portfolio-board--wide{% endif %}"><img src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" alt="Planning portfolio board {{ forloop.index }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" decoding="async"><figcaption data-en="Planning board {{ forloop.index }} of {{ planning_boards.size }}." data-zh="规划图面 {{ forloop.index }} / {{ planning_boards.size }}。">Planning board {{ forloop.index }} of {{ planning_boards.size }}.</figcaption></figure>
-            {% endfor %}
-          </div>
-        </section>
-
-        <section class="portfolio-section" id="landscape" aria-labelledby="landscape-title">
-          <div class="portfolio-section__heading">
-            <div><p class="portfolio-section__number">02 / 04</p><h2 id="landscape-title" data-en="Landscape" data-zh="景观">Landscape</h2></div>
-            <p class="portfolio-section__summary" data-en="Landscape work connects campus routines, ecological texture, and collective activity. It tests how routes, planting, surfaces, and programmable edges can make open space more restorative and social." data-zh="景观项目连接校园日常、生态肌理与集体活动，探索路径、植物、场地与可编程边界如何让开放空间更具修复性与社交性。">Landscape work connects campus routines, ecological texture, and collective activity. It tests how routes, planting, surfaces, and programmable edges can make open space more restorative and social.</p>
-          </div>
-          <div class="portfolio-boards">
-            {% for board in landscape_boards %}{% assign remainder = forloop.index0 | modulo: 3 %}
-            <figure class="portfolio-board{% if remainder == 0 %} portfolio-board--wide{% endif %}"><img src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" alt="Landscape portfolio board {{ forloop.index }}" loading="lazy" decoding="async"><figcaption data-en="Landscape board {{ forloop.index }} of {{ landscape_boards.size }}." data-zh="景观图面 {{ forloop.index }} / {{ landscape_boards.size }}。">Landscape board {{ forloop.index }} of {{ landscape_boards.size }}.</figcaption></figure>
-            {% endfor %}
-          </div>
-        </section>
-
-        <section class="portfolio-section" id="interior" aria-labelledby="interior-title">
-          <div class="portfolio-section__heading">
-            <div><p class="portfolio-section__number">03 / 04</p><h2 id="interior-title" data-en="Interior" data-zh="室内">Interior</h2></div>
-            <p class="portfolio-section__summary" data-en="Interior studies focus on atmosphere, material rhythm, and how shared programs are framed. Drawings and perspectives are used together to connect human scale with construction logic." data-zh="室内研究关注氛围、材料节奏与共享功能的组织方式；图纸与透视共同呈现人的尺度和建造逻辑之间的联系。">Interior studies focus on atmosphere, material rhythm, and how shared programs are framed. Drawings and perspectives are used together to connect human scale with construction logic.</p>
-          </div>
-          <div class="portfolio-boards">
-            {% for board in interior_boards %}{% assign remainder = forloop.index0 | modulo: 3 %}
-            <figure class="portfolio-board{% if remainder == 0 %} portfolio-board--wide{% endif %}"><img src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" alt="Interior portfolio board {{ forloop.index }}" loading="lazy" decoding="async"><figcaption data-en="Interior board {{ forloop.index }} of {{ interior_boards.size }}." data-zh="室内图面 {{ forloop.index }} / {{ interior_boards.size }}。">Interior board {{ forloop.index }} of {{ interior_boards.size }}.</figcaption></figure>
-            {% endfor %}
-          </div>
-        </section>
-
-        <section class="portfolio-section" id="architecture" aria-labelledby="architecture-title">
-          <div class="portfolio-section__heading">
-            <div><p class="portfolio-section__number">04 / 04</p><h2 id="architecture-title" data-en="Architecture" data-zh="建筑">Architecture</h2></div>
-            <p class="portfolio-section__summary" data-en="Architecture is presented as a coordination of section, envelope, shared rooms, and landscape. The selected boards move between whole-building organization and the experiential quality of thresholds and interiors." data-zh="建筑被视为剖面、围护、共享房间与景观之间的协调；精选图面在整体组织与门槛空间、室内体验之间切换。">Architecture is presented as a coordination of section, envelope, shared rooms, and landscape. The selected boards move between whole-building organization and the experiential quality of thresholds and interiors.</p>
-          </div>
-          <div class="portfolio-boards">
-            {% for board in architecture_boards %}{% assign remainder = forloop.index0 | modulo: 3 %}
-            <figure class="portfolio-board{% if remainder == 0 %} portfolio-board--wide{% endif %}"><img src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" alt="Architecture portfolio board {{ forloop.index }}" loading="lazy" decoding="async"><figcaption data-en="Architecture board {{ forloop.index }} of {{ architecture_boards.size }}." data-zh="建筑图面 {{ forloop.index }} / {{ architecture_boards.size }}。">Architecture board {{ forloop.index }} of {{ architecture_boards.size }}.</figcaption></figure>
-            {% endfor %}
-          </div>
-        </section>
-
-        <footer class="portfolio-collection__footer">
-          <p class="portfolio-collection__eyebrow" data-en="Portfolio note" data-zh="作品集说明">Portfolio note</p>
-          <p data-en="All retained project boards from the three source portfolios are available above. Detailed case studies can continue to document project context, role, process, and reflections separately in the Works area." data-zh="三份源作品集中的所有保留项目图面均已收纳于上方。更完整的项目背景、角色、过程与复盘仍可在“项目案例”的独立详情页中持续完善。">All retained project boards from the three source portfolios are available above. Detailed case studies can continue to document project context, role, process, and reflections separately in the Works area.</p>
-        </footer>
+        <div class="portfolio-books__data" hidden aria-hidden="true">
+          <span data-book-spread data-book="planning" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-spread.jpg' | relative_url }}" data-alt-en="Shili Lake planning presentation assembled as one aligned spread" data-alt-zh="十里湖规划图纸工整合成为一张完整跨页"></span>
+          {% for board in planning_boards %}<span data-book-spread data-book="planning" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Planning portfolio board {{ forloop.index }}" data-alt-zh="规划作品集图面 {{ forloop.index }}"></span>{% endfor %}
+          {% for board in landscape_boards %}<span data-book-spread data-book="landscape" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Landscape portfolio board {{ forloop.index }}" data-alt-zh="景观作品集图面 {{ forloop.index }}"></span>{% endfor %}
+          {% for board in interior_boards %}<span data-book-spread data-book="spatial" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Interior portfolio board {{ forloop.index }}" data-alt-zh="室内作品集图面 {{ forloop.index }}"></span>{% endfor %}
+          {% for board in architecture_boards %}<span data-book-spread data-book="spatial" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Architecture portfolio board {{ forloop.index }}" data-alt-zh="建筑作品集图面 {{ forloop.index }}"></span>{% endfor %}
+        </div>
       </div>
-    </div>
+      </div>
+    </section>
   </main>
   <script src="{{ site.baseurl }}/js/site-nav.js"></script>
   <script src="{{ site.baseurl }}/js/showcase-system.js"></script>
+  <script src="{{ site.baseurl }}/js/portfolio-books.js"></script>
   {% include editor-bridge.html %}
 </body>
 </html>

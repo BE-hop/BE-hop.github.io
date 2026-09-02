@@ -1,6 +1,6 @@
 # Verified Workflows
 
-Last verified: 2026-08-14
+Last verified: 2026-09-03
 Invalidation: package scripts, Ruby environment, deployment branch, or editor ports change.
 
 ## Local preview
@@ -26,6 +26,15 @@ npm run check
 ```
 
 This checks generated CSS, editor behavior, Jekyll output, content/schema consistency, and local links/assets.
+
+## Cross-surface thinking article
+
+- Publish the complete argument as aligned Chinese and English posts under `_posts/`; these are the canonical editions.
+- Keep the article image set under `img/posts/<slug>/` and use web-sized PNG/WebP assets.
+- Add a condensed bilingual topic to `js/forum-data.js` and link it to both full posts. Do not hand-edit the bot-managed approved forum JSON snapshots.
+- Verify that long forum titles remain fully visible below the fixed navigation at 390px; the topic Hero may need to expand vertically on mobile.
+- Distill only durable author positioning into `_data/about.yml` and `_includes/about/{zh,en}.md`; do not copy the full article into About.
+- Run `npm run check`, inspect the rendered blog, forum topic, and About pages at desktop and mobile widths, then fetch `origin` immediately before a scoped commit and push.
 
 ## Works PDF portfolio pages
 

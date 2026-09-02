@@ -212,6 +212,15 @@ Blog publishing rules are documented in `README_AI_BLOG_PUBLISH.md`. For bilingu
 - For AI-assisted design practice reviews, distinguish verified work already used in projects from experimental or planned Agent capabilities. Organize evidence around inputs, transformations, outputs, evaluation criteria, and known limits rather than presenting generated images as self-validating results.
 - The Q1 2026 AI design review uses `_includes/ai-q1-evidence.html` for its English evidence groups; keep its group order, numeric assets, responsive `contain` presentation, and aligned Chinese article presentation when revising the post.
 
+For one essay published across multiple site surfaces:
+
+- Treat the paired bilingual `_posts/` files as the canonical full article and keep their structure aligned.
+- Store article-specific media under `img/posts/<slug>/` with stable, web-sized filenames.
+- Use a static topic in `js/forum-data.js` as a concise discussion entry, and link it to both canonical blog editions instead of duplicating every figure and paragraph.
+- Keep long bilingual forum titles fully visible below the fixed navigation; validate the expandable mobile topic Hero at 390px.
+- Keep About copy in `_data/about.yml` and `_includes/about/*.md` limited to durable professional positioning distilled from the article.
+- Do not manually edit `assets/data/forum-topics-approved.json`; approved forum snapshots remain bot-managed generated data.
+
 ## Career Trend Sources And Strategy Memory
 
 Before changing homepage positioning, `Works / 项目案例`, AI product pages, gallery content, blog strategy, or professional/career-facing copy, read:

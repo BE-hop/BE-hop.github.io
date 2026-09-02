@@ -1,6 +1,158 @@
 (() => {
   const topics = [
   {
+    "slug": "when-ai-gets-a-body-maslow",
+    "category": "ai",
+    "tags": [
+      "featured",
+      "design-cognition",
+      "design-rules"
+    ],
+    "author": {
+      "name": "BEhop",
+      "initials": "BH",
+      "role": {
+        "en": "Design Research",
+        "zh": "设计研究"
+      }
+    },
+    "stats": {
+      "replies": 0,
+      "views": 0
+    },
+    "date": "2026-09-03T09:00:00Z",
+    "readTime": {
+      "en": "9 min",
+      "zh": "9 分钟"
+    },
+    "title": {
+      "en": "When AI Gets a Body: Software, Robots, and the Two Ends of Human Need",
+      "zh": "当 AI 获得身体：软件智能、机器人与需求金字塔的两端"
+    },
+    "excerpt": {
+      "en": "The internet virtualized the information-heavy half of human life. Software AI is moving upward into cognition, while robots move downward into physical execution. Their convergence may define the next interface.",
+      "zh": "互联网虚拟化了人类生活中信息密集的部分；软件 AI 向认知上层推进，机器人向物理底层推进。两者汇合之处，可能就是下一代交互界面。"
+    },
+    "content": [
+      {
+        "type": "p-rich",
+        "zh": "互联网并没有替代人的需求，它替代的是<strong>满足需求的现实方式</strong>。这个区分决定了我们该如何理解从 PC 互联网、生成式 AI 到机器人的连续变化。",
+        "en": "The internet did not replace human needs. It replaced <strong>the ways those needs were met</strong>. This distinction helps connect the PC internet, generative AI, and robotics within one continuous model."
+      },
+      {
+        "type": "h2",
+        "zh": "一、互联网替代的是媒介，不是需求",
+        "en": "1. The Internet Replaced Media, Not Needs"
+      },
+      {
+        "type": "p",
+        "zh": "电子邮件替代部分书信，搜索引擎替代部分查阅，社交平台替代部分聚会与公共讨论，云存储替代部分纸质档案。被改变的是路径、成本和速度；归属、认可、学习与创造仍然存在。",
+        "en": "Email replaced part of letter writing, search replaced part of reference work, social platforms replaced part of gathering and public discussion, and cloud storage replaced part of paper archives. The path, cost, and speed changed; belonging, recognition, learning, and creation remained."
+      },
+      {
+        "type": "p-rich",
+        "zh": "规律很清楚：<strong>需求越依赖信息处理，越容易被软件虚拟化；越依赖物质、身体和作用力，越难被屏幕替代。</strong>",
+        "en": "The pattern is clear: <strong>the more a need depends on information processing, the easier it is to virtualize; the more it depends on matter, bodies, and force, the harder it is to replace with a screen.</strong>"
+      },
+      {
+        "type": "h2",
+        "zh": "二、软件 AI 与机器人位于需求金字塔的两端",
+        "en": "2. Software AI and Robots Occupy Opposite Ends"
+      },
+      {
+        "type": "p",
+        "zh": "软件 AI 擅长语言、符号、知识、判断辅助和内容生成，因此首先影响学习、创作、研究、表达与协作。机器人擅长感知、移动、搬运、操作和持续执行，因此更接近食物、住房、交通、制造、照护与基础设施。",
+        "en": "Software AI works through language, symbols, knowledge, decision support, and content generation, so it first affects learning, creation, research, expression, and collaboration. Robots work through perception, movement, manipulation, and sustained execution, placing them closer to food, housing, transport, manufacturing, care, and infrastructure."
+      },
+      {
+        "type": "quote",
+        "lines": {
+          "zh": [
+            "软件 AI 越接近需求金字塔上层，直接影响越强。",
+            "机器人越接近需求金字塔底层，直接影响越强。"
+          ],
+          "en": [
+            "Software AI becomes more direct toward the top of the needs hierarchy.",
+            "Robotics becomes more direct toward the physical base."
+          ]
+        }
+      },
+      {
+        "type": "h2",
+        "zh": "三、两条曲线并不完全对称",
+        "en": "3. The Two Curves Are Not Perfectly Symmetrical"
+      },
+      {
+        "type": "p",
+        "zh": "软件可以向下渗透，成为工厂、车辆、医院和机器人的控制系统；但软件本身不能搬动一把椅子。机器人若要从专用设备变成通用工具，又必须依赖软件智能。更准确的关系不是竞争，而是大脑与身体。",
+        "en": "Software can move downward as the control system for factories, vehicles, hospitals, and robots, but software alone cannot move a chair. Robots, meanwhile, need software intelligence to become general rather than task-specific. The more accurate relationship is not rivalry but brain and body."
+      },
+      {
+        "type": "p-rich",
+        "zh": "<strong>软件 AI 是可迁移的认知层，机器人是进入物理世界的执行层。</strong>",
+        "en": "<strong>Software AI is the transferable cognitive layer; robotics is the execution layer that enters the physical world.</strong>"
+      },
+      {
+        "type": "h2",
+        "zh": "四、真正的新产业出现在虚实接口",
+        "en": "4. New Industries Emerge at the Virtual-Physical Interface"
+      },
+      {
+        "type": "p",
+        "zh": "自动驾驶、医疗机器人、智能制造、家庭照护、空间计算、可穿戴设备与 AI 眼镜，都位于信息世界和物理世界的交界。它们的市场可能更大，却也受到制造、安全、法规、能源和责任归属的约束。",
+        "en": "Autonomous driving, medical robots, intelligent manufacturing, home care, spatial computing, wearables, and AI glasses all sit at the boundary between information and physical reality. Their markets may be larger, but they are constrained by manufacturing, safety, regulation, energy, and accountability."
+      },
+      {
+        "type": "h2",
+        "zh": "五、第五层需求会诞生新的交互",
+        "en": "5. Self-Actualization Will Produce New Interfaces"
+      },
+      {
+        "type": "p",
+        "zh": "当空间、虚拟空间、AI、机器人、计算机与交互被放进同一个系统，学习、创造、研究和思考就不再只发生在屏幕里。环境可以感知意图，工具可以理解上下文，机器人可以把想法转化为物理行动，人也能在虚实之间连续工作。",
+        "en": "When physical space, virtual space, AI, robotics, computing, and interaction become one system, learning, creating, researching, and thinking no longer happen only on screens. Environments can sense intent, tools can understand context, robots can turn ideas into physical actions, and people can work continuously across virtual and physical space."
+      },
+      {
+        "type": "p",
+        "zh": "正如 Apple 通过 iPhone 把触控、计算、网络与服务整合为一种新的日常界面，下一次重要变化也可能不是某项能力单独增强，而是人与信息、空间和工具的关系被重新组织。",
+        "en": "Just as Apple combined touch, computing, networks, and services through the iPhone to create a new everyday interface, the next major shift may not come from one isolated capability. It may come from reorganizing the relationship between people, information, space, and tools."
+      },
+      {
+        "type": "h2",
+        "zh": "六、边界：替代不等于满足",
+        "en": "6. Boundary: Substitution Is Not Satisfaction"
+      },
+      {
+        "type": "ul",
+        "zh": [
+          "模拟陪伴不必然产生真实归属。",
+          "生成内容不必然构成自我实现。",
+          "自动执行不等于人应当放弃目标、判断与责任。",
+          "技术降低门槛，也可能制造依赖、权力集中与新的数字鸿沟。"
+        ],
+        "en": [
+          "Simulated companionship does not necessarily create genuine belonging.",
+          "Generated content does not automatically become self-actualization.",
+          "Automated execution does not mean people should surrender goals, judgment, or responsibility.",
+          "Technology can lower barriers while creating dependence, concentrated power, and new digital divides."
+        ]
+      },
+      {
+        "type": "p-rich",
+        "zh": "因此，未来的核心问题不是“AI 能否替代人”，而是：<strong>谁定义目标，谁拥有工具，谁承担后果，以及技术是否真正扩大了人的行动能力。</strong>",
+        "en": "The central question is therefore not whether AI can replace people, but <strong>who defines the goal, who owns the tool, who bears the consequences, and whether the technology genuinely expands human agency.</strong>"
+      },
+      {
+        "type": "hr"
+      },
+      {
+        "type": "p-rich",
+        "zh": "阅读包含概念图与完整论证的<a href=\"/2026/09/03/when-ai-gets-a-body-maslow/\">中文长文</a>，或切换到<a href=\"/2026/09/03/when-ai-gets-a-body-maslow-en/\">英文版</a>。",
+        "en": "Read the illustrated <a href=\"/2026/09/03/when-ai-gets-a-body-maslow-en/\">full English essay</a>, or switch to the <a href=\"/2026/09/03/when-ai-gets-a-body-maslow/\">Chinese edition</a>."
+      }
+    ]
+  },
+  {
     "slug": "geometry-algorithm-to-design-rules",
     "category": "ai",
     "tags": [

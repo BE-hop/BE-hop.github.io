@@ -673,6 +673,10 @@ input {
 }
 
 @media (max-width: 640px) {
+  .forum-topic-page .forum-topic-hero {
+    height: 24rem;
+  }
+
   .forum-detail-layout {
     margin-bottom: 1.2rem;
   }

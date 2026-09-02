@@ -125,6 +125,10 @@ npm run editor
 
 中英文博客以 `_posts/YYYY-MM-DD-slug.md` 与 `_posts/YYYY-MM-DD-slug-en.md` 成对维护，具体发布检查见 [`README_AI_BLOG_PUBLISH.md`](./README_AI_BLOG_PUBLISH.md)。设计实践类文章应保留真实过程证据，并明确区分已投入工作的流程、试验性方法和后续计划；过程图片统一放在 `img/posts/<slug>/`，发布前转换为适合网页加载的尺寸与格式。多图过程证据按输入、过程、输出成组展示：普通图片使用对齐容器，横向长图可跨栏并按原比例放大；需要统一画面时使用 `object-fit: contain`，移动端统一单列显示。
 
+### 跨页面思考文章
+
+同一篇思考文章需要同时进入博客、论坛与 About 时，双语 `_posts/` 是完整正文的唯一来源，配图放在 `img/posts/<slug>/`；`js/forum-data.js` 只保留适合讨论的双语精简版，并链接到完整中英文文章；论坛长标题需在 390px 视口完整显示，移动端详情 Hero 可随内容扩展；About 仅提炼可长期使用的职业定位，分别维护在 `_data/about.yml` 与 `_includes/about/zh.md`、`_includes/about/en.md`。`assets/data/forum-topics-approved.json` 是论坛机器人生成的快照，不应手工修改。
+
 ## 作品展示视觉系统
 
 首页、AI Tools、Works 列表页及两类详情页继续使用 Jekyll、原生 CSS 与 JavaScript。共享设计变量和动效组件位于 [`css/showcase-system.css`](./css/showcase-system.css) 与 [`js/showcase-system.js`](./js/showcase-system.js)；页面原有样式和双语、筛选逻辑保持分层维护。

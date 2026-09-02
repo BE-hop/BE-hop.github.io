@@ -25,6 +25,12 @@ I explore how AI, computation, and visual representation can reshape the workflo
 
 I am using tools such as RU-LineArt to explore workflows from line art and images to Rhino-editable curves and spatial models, while documenting how AI can support concept representation, scheme comparison, modeling handoff, and design decision-making.
 
+## Self-Actualization and New Interfaces
+
+I am interested not only in a single piece of software or hardware, but in how physical space, virtual space, AI, robotics, computing, and interaction can work together to support self-actualization: learning, creating, researching, and thinking. These combinations can produce new forms of interaction and new software-hardware products.
+
+Just as Apple combined touch, computing, networks, and services through the iPhone to create a new everyday interface, meaningful product innovation often does more than add a feature; it reorganizes the relationship between people, information, space, and tools. I want to explore products that expand access to higher-level human needs while keeping human goals, judgment, and responsibility explicit.
+
 ## Contact
 
 - Email: liuruyuan73@gmail.com

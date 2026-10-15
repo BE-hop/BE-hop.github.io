@@ -598,3 +598,29 @@ textarea:focus-visible {
     justify-content: center;
   }
 }
+
+/* Portfolio reader entry on Works. The whole card remains one keyboard-accessible link. */
+.portfolio-entry { position: relative; isolation: isolate; display: grid; grid-template-columns: 1.15fr 1fr auto; align-items: center; gap: 2rem; margin-bottom: 3rem; padding: 2.1rem 2.3rem; overflow: hidden; border: 1px solid #d5d9cb; border-radius: 1.2rem; background: #f7f7ef; color: #17382f; text-decoration: none !important; transition: border-color .25s, box-shadow .25s; }
+.portfolio-entry__copy { position: relative; z-index: 2; display: grid; gap: .65rem; }
+.portfolio-entry__copy .showcase-kicker { font-size: .7rem; letter-spacing: .16em; }
+.portfolio-entry__title { font-size: clamp(1.25rem, 2.1vw, 1.8rem); line-height: 1.35; font-weight: 600; }
+.portfolio-entry__description { font-size: .78rem; color: #647668; line-height: 1.6; }
+.portfolio-entry__previews { display: flex; align-items: center; min-width: 0; opacity: .48; transition: opacity .3s; }
+.portfolio-entry__previews img { width: 46%; flex: 0 0 46%; aspect-ratio: 1.5; object-fit: contain; padding: .3rem; background: white; border: 1px solid #d5d9cb; box-shadow: 0 .5rem 1rem #17382f16; transform: rotate(-7deg); }
+.portfolio-entry__previews img + img { margin-left: -20%; transform: translateY(.15rem) rotate(2deg); }
+.portfolio-entry__previews img:last-child { transform: translateY(.4rem) rotate(9deg); }
+.portfolio-entry__action { position: relative; z-index: 2; display: inline-flex; align-items: center; justify-content: center; gap: .9rem; padding: .8rem 1rem; border-radius: 3rem; background: #234d3e; color: #fff; font-size: .8rem; font-weight: 600; white-space: nowrap; }
+.portfolio-entry__arrow { font-size: 1.25rem; line-height: 1; transition: transform .25s; }
+.portfolio-entry:hover { border-color: #8ca58b; box-shadow: 0 .7rem 2rem #17382f0d; }
+.portfolio-entry:hover .portfolio-entry__previews { opacity: .72; }
+.portfolio-entry:hover .portfolio-entry__arrow { transform: translate(2px,-2px); }
+.portfolio-entry:focus-visible { outline: 3px solid #52765c; outline-offset: 5px; }
+@media (max-width: 760px) {
+  .portfolio-entry { grid-template-columns: 1fr auto; gap: 1.5rem 1rem; padding: 1.5rem; }
+  .portfolio-entry__copy { grid-column: 1 / -1; }
+  .portfolio-entry__previews { max-width: 17rem; }
+  .portfolio-entry__action { font-size: .72rem; padding: .75rem .9rem; gap: .5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-entry, .portfolio-entry * { transition: none !important; }
+}

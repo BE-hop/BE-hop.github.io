@@ -23,10 +23,9 @@ lang-switcher: true
 <body class="portfolio-collection showcase-page theme-works">
   {% include nav.html %}
   <main>
-    {% assign planning_boards = "undergraduate-03,undergraduate-04,undergraduate-05,undergraduate-06,undergraduate-09,undergraduate-10,undergraduate-11,consolidated-06" | split: "," %}
-    {% assign landscape_boards = "undergraduate-07,undergraduate-08,graduate-02-wide,graduate-03-wide,graduate-04-wide,graduate-05-wide,graduate-06-wide,consolidated-07" | split: "," %}
-    {% assign interior_boards = "undergraduate-14,undergraduate-15,undergraduate-16,graduate-07-wide,consolidated-09" | split: "," %}
-    {% assign architecture_boards = "undergraduate-17,undergraduate-18,undergraduate-19,undergraduate-20,graduate-08-wide,graduate-09-wide" | split: "," %}
+    {% assign planning_boards = "shili-lake-01,shili-lake-02,shili-lake-03,shili-lake-04,shili-lake-05,undergraduate-09,undergraduate-10,undergraduate-11,consolidated-06" | split: "," %}
+    {% assign landscape_boards = "didi-campus-01,didi-campus-02,didi-campus-03,didi-campus-04,didi-campus-05,undergraduate-03,undergraduate-04,undergraduate-05,undergraduate-06,undergraduate-07,undergraduate-08,graduate-02-wide,graduate-03-wide,graduate-04-wide,graduate-05-wide,graduate-06-wide,consolidated-07" | split: "," %}
+    {% assign spatial_boards = "undergraduate-17,undergraduate-18,graduate-08-wide,undergraduate-14,undergraduate-15,undergraduate-16,graduate-07-wide,consolidated-09,undergraduate-19,graduate-09-wide,undergraduate-20" | split: "," %}
 
     <section class="portfolio-books" id="portfolio-books" aria-labelledby="portfolio-books-title">
       <header class="portfolio-books__hero" data-nav-tone="dark">
@@ -34,9 +33,9 @@ lang-switcher: true
           <div class="portfolio-books__intro">
             <div>
               <p class="portfolio-books__number" data-portfolio-en="Portfolio collection / 03 volumes / 2019 - 2024" data-portfolio-zh="完整作品集 / 03 册 / 2019 - 2024">Portfolio collection / 03 volumes / 2019 - 2024</p>
-              <h1 id="portfolio-books-title"><span class="portfolio-books__title-line" data-portfolio-en="Designing across" data-portfolio-zh="跨尺度的设计">Designing across</span><span class="portfolio-books__title-line" data-portfolio-en="scales." data-portfolio-zh="实践。">scales.</span></h1>
+              <h1 id="portfolio-books-title"><span class="portfolio-books__title-line" data-portfolio-en="Places, spaces," data-portfolio-zh="从城市到空间">Places, spaces,</span><span class="portfolio-books__title-line" data-portfolio-en="possibilities." data-portfolio-zh="设计的多种尺度">possibilities.</span></h1>
             </div>
-            <p class="portfolio-collection__lede" data-portfolio-en="Choose Planning, Landscape, or Spatial + Architecture. Every retained board opens below as one complete, uncropped spread." data-portfolio-zh="选择规划、景观或空间与建筑作品集。每张保留图面都将在下方以完整、不裁切的跨页形式打开。">Choose Planning, Landscape, or Spatial + Architecture. Every retained board opens below as one complete, uncropped spread.</p>
+            <p class="portfolio-collection__lede" data-portfolio-en="Three volumes of design exploration, from the urban landscape to the spaces we inhabit. Choose a volume below to begin." data-portfolio-zh="三册作品，串联规划、景观与空间的设计探索。选择下方任一封面，开始翻阅。">Three volumes of design exploration, from the urban landscape to the spaces we inhabit. Choose a volume below to begin.</p>
           </div>
 
         <div class="portfolio-books__shelf" role="tablist" aria-label="Portfolio volumes">
@@ -46,7 +45,7 @@ lang-switcher: true
           </button>
           <button class="portfolio-book-cover portfolio-book-cover--landscape" type="button" role="tab" aria-selected="false" aria-controls="portfolio-reader" data-book-select="landscape">
             <span class="portfolio-book-cover__grain" aria-hidden="true"></span><span class="portfolio-book-cover__spine" aria-hidden="true"></span><span class="portfolio-book-cover__image" aria-hidden="true"></span>
-            <span class="portfolio-book-cover__copy"><span class="portfolio-book-cover__label">02</span><span class="portfolio-book-cover__title" data-book-title="landscape">Landscape</span><span class="portfolio-book-cover__meta" data-book-count="landscape">8 spreads</span></span>
+            <span class="portfolio-book-cover__copy"><span class="portfolio-book-cover__label">02</span><span class="portfolio-book-cover__title" data-book-title="landscape">Landscape</span><span class="portfolio-book-cover__meta" data-book-count="landscape">17 spreads</span></span>
           </button>
           <button class="portfolio-book-cover portfolio-book-cover--spatial" type="button" role="tab" aria-selected="false" aria-controls="portfolio-reader" data-book-select="spatial">
             <span class="portfolio-book-cover__grain" aria-hidden="true"></span><span class="portfolio-book-cover__spine" aria-hidden="true"></span><span class="portfolio-book-cover__image" aria-hidden="true"></span>
@@ -83,11 +82,9 @@ lang-switcher: true
         </div>
 
         <div class="portfolio-books__data" hidden aria-hidden="true">
-          <span data-book-spread data-book="planning" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-spread.jpg' | relative_url }}" data-alt-en="Shili Lake planning presentation assembled as one aligned spread" data-alt-zh="十里湖规划图纸工整合成为一张完整跨页"></span>
           {% for board in planning_boards %}<span data-book-spread data-book="planning" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Planning portfolio board {{ forloop.index }}" data-alt-zh="规划作品集图面 {{ forloop.index }}"></span>{% endfor %}
           {% for board in landscape_boards %}<span data-book-spread data-book="landscape" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Landscape portfolio board {{ forloop.index }}" data-alt-zh="景观作品集图面 {{ forloop.index }}"></span>{% endfor %}
-          {% for board in interior_boards %}<span data-book-spread data-book="spatial" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Interior portfolio board {{ forloop.index }}" data-alt-zh="室内作品集图面 {{ forloop.index }}"></span>{% endfor %}
-          {% for board in architecture_boards %}<span data-book-spread data-book="spatial" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Architecture portfolio board {{ forloop.index }}" data-alt-zh="建筑作品集图面 {{ forloop.index }}"></span>{% endfor %}
+          {% for board in spatial_boards %}<span data-book-spread data-book="spatial" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Spatial and architecture portfolio board {{ forloop.index }}" data-alt-zh="空间与建筑作品集图面 {{ forloop.index }}"></span>{% endfor %}
         </div>
       </div>
       </div>

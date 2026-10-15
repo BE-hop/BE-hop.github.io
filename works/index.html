@@ -16,8 +16,9 @@ lang-switcher: true
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   {% include tailwind-head.html %}
   <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css?v=portfolio-entry-2">
   <link rel="stylesheet" href="{{ site.baseurl }}/css/showcase-system.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/works-intro.css">
 </head>
 <body class="works-page showcase-page theme-works bg-background text-foreground">
   {% include nav.html %}
@@ -28,17 +29,37 @@ lang-switcher: true
         <img src="{{ '/img/portfolio/hero-landscape.jpg' | relative_url }}" alt="" fetchpriority="high" decoding="async">
       </div>
       <div class="works-hero__veil"></div>
-      <div class="works-hero__content w-full px-6 py-28 lg:px-8">
-        <div class="works-hero__intro">
-          <p class="showcase-kicker text-sm font-medium uppercase tracking-wide text-white/75" data-en="Works" data-zh="项目案例">Works</p>
-          <h1 class="works-heading mt-6 text-5xl font-semibold tracking-tight text-balance md:text-6xl lg:text-7xl" data-scroll-reveal data-en="Works / Design Projects" data-zh="Works / 项目案例">Works / Design Projects</h1>
-          <p class="works-hero__description text-lg leading-relaxed text-white/75" data-en="Selected professional work, graduate portfolio projects, spatial studies, and AI-assisted workflow experiments. The focus is design judgment, workflow thinking, and transferable methods." data-zh="精选真实工作成果、研究生作品、空间研究与 AI 辅助工作流实验；重点展示设计判断、流程思维与可迁移方法。">Selected professional work, graduate portfolio projects, spatial studies, and AI-assisted workflow experiments. The focus is design judgment, workflow thinking, and transferable methods.</p>
+      <div class="works-hero__content">
+        <div class="works-hero__masthead"><span data-en="BEhooop / Selected works" data-zh="BEhooop / 设计作品选集">BEhooop / Selected works</span><span>LANDSCAPE &amp; SPATIAL DESIGN</span></div>
+        <div class="works-hero__editorial">
+          <div class="works-hero__heading-group">
+            <p class="showcase-kicker" data-en="Ideas shaped into places" data-zh="让想法成为场所">Ideas shaped into places</p>
+            <h1 class="works-hero__title"><span data-en="Design in" data-zh="于自然之间">Design in</span><span data-en="practice." data-zh="构筑日常。">practice.</span></h1>
+          </div>
+          <div class="works-hero__aside"><span class="works-hero__index" aria-hidden="true">01 — 03</span><p class="works-hero__description" data-en="Planning, landscape, and spatial design. A selection of projects tracing ideas from context and strategy to the details of everyday life." data-zh="从规划、景观到空间设计，以场地为起点，将策略、体验与日常生活串联为完整的设计实践。">Planning, landscape, and spatial design. A selection of projects tracing ideas from context and strategy to the details of everyday life.</p></div>
         </div>
+        <div class="works-hero__footer"><span data-en="Context / Strategy / Experience" data-zh="场地 / 策略 / 体验">Context / Strategy / Experience</span><a href="#portfolio-entry" class="works-hero__explore"><span data-en="Explore the collection" data-zh="向下，翻开作品">Explore the collection</span><span aria-hidden="true">↓</span></a></div>
       </div>
     </section>
 
-    <section class="px-6 py-16 lg:px-8 lg:py-24" data-nav-tone="light">
+    <section class="works-content px-6 py-16 lg:px-8 lg:py-24" data-nav-tone="light">
       <div class="mx-auto max-w-7xl">
+
+
+        <a href="{{ site.baseurl }}/works/portfolio/" class="portfolio-entry" id="portfolio-entry" aria-label="Open portfolio collection / 点击查看作品集">
+          <span class="portfolio-entry__copy">
+            <span class="showcase-kicker" data-en="The portfolio collection" data-zh="作品集总览">The portfolio collection</span>
+            <span class="portfolio-entry__title" data-en="A closer look at the work." data-zh="翻开作品，看见设计。">A closer look at the work.</span>
+            <span class="portfolio-entry__description" data-en="Planning · Landscape · Spatial + Architecture" data-zh="规划 · 景观 · 空间与建筑">Planning · Landscape · Spatial + Architecture</span>
+          </span>
+          <span class="portfolio-entry__previews" aria-hidden="true">
+            <img src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-01.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
+            <img src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-didi-campus-01.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
+            <img src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-undergraduate-17.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
+          </span>
+          <span class="portfolio-entry__action"><span data-en="Click to explore" data-zh="点击查看作品集">Click to explore</span><span class="portfolio-entry__arrow" aria-hidden="true">↗</span></span>
+        </a>
+
         <div class="mb-12 flex flex-wrap gap-2" role="group" aria-label="Project filters">
           <button type="button" class="filter-button is-active rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all" data-filter="all" data-en="All" data-zh="全部" aria-pressed="true" aria-controls="works-results">All</button>
           <button type="button" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all" data-filter="professional" data-en="Professional" data-zh="真实工作" aria-pressed="false" aria-controls="works-results">Professional</button>
@@ -47,14 +68,6 @@ lang-switcher: true
           <button type="button" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all" data-filter="interior" data-en="Spatial Concept" data-zh="空间概念" aria-pressed="false" aria-controls="works-results">Spatial Concept</button>
         </div>
         <p class="project-filter-status" id="project-filter-status" role="status" aria-live="polite"></p>
-
-        <a href="{{ site.baseurl }}/works/portfolio/" class="mb-12 flex items-center justify-between gap-6 rounded-2xl border border-border bg-card p-6 no-underline transition-colors hover:bg-secondary" aria-label="Open consolidated portfolio collection">
-          <span>
-            <span class="showcase-kicker block text-xs font-semibold uppercase tracking-widest text-primary" data-en="Portfolio collection" data-zh="作品集总览">Portfolio collection</span>
-            <span class="mt-2 block text-lg font-semibold text-foreground" data-en="Browse work by Planning, Landscape, Interior, and Architecture." data-zh="按规划、景观、室内与建筑四个方向浏览作品。">Browse work by Planning, Landscape, Interior, and Architecture.</span>
-          </span>
-          <span class="shrink-0 text-sm font-semibold text-primary" data-en="Open ↗" data-zh="打开 ↗">Open ↗</span>
-        </a>
 
         {%- assign project_list = site.projects | sort: "order" -%}
         <div id="works-results">
@@ -137,6 +150,7 @@ lang-switcher: true
   <script src="{{ site.baseurl }}/js/site-nav.js"></script>
   <script src="{{ site.baseurl }}/js/portfolio.js"></script>
   <script src="{{ site.baseurl }}/js/showcase-system.js"></script>
+  <script src="{{ site.baseurl }}/js/works-intro.js"></script>
   {% include editor-bridge.html %}
 </body>
 </html>

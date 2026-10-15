@@ -25,9 +25,9 @@
 .portfolio-book-cover { --cover-image: none; --cover-color: #244f43; --cover-light: #3d6859; --cover-deep: #18382f; --cover-accent: #b8cdbd; --cover-edge: rgba(27,59,47,.3); --cover-shadow: rgba(8,27,21,.34); position: relative; z-index: 0; display: grid; aspect-ratio: 1.52 / 1; min-width: 0; grid-template-rows: minmax(0, 1fr) auto; gap: .62rem; padding: .78rem .8rem .82rem 1.6rem; overflow: visible; border: 1px solid rgba(255,255,255,.18); border-radius: .18rem .5rem .5rem .18rem; appearance: none; background: radial-gradient(circle at 82% 3%, rgba(255,255,255,.18), transparent 31%), linear-gradient(135deg, var(--cover-light), var(--cover-color) 53%, var(--cover-deep)); box-shadow: .65rem .9rem 1.4rem var(--cover-shadow), -.08rem 0 .18rem rgba(255,255,255,.26) inset; color: #fff; font: inherit; text-align: left; cursor: pointer; isolation: isolate; transform: rotateX(2deg) rotateY(-2.5deg); transform-origin: center bottom; transition: transform .34s ease, box-shadow .34s ease, filter .34s ease; }
 .portfolio-book-cover::before { position: absolute; z-index: 2; right: -.42rem; bottom: -.42rem; left: .48rem; height: .42rem; border: 1px solid var(--cover-edge); border-radius: 0 0 .42rem .12rem; background: repeating-linear-gradient(180deg, #fffdf8 0 2px, #e8e4da 2px 3px); box-shadow: .18rem .25rem .45rem var(--cover-shadow); content: ""; pointer-events: none; }
 .portfolio-book-cover::after { position: absolute; z-index: 3; inset: 0; border-radius: inherit; box-shadow: 0 0 0 1px rgba(255,255,255,.1) inset, .15rem 0 .35rem rgba(255,255,255,.18) inset, 0 .12rem 0 rgba(255,255,255,.13) inset, 0 -.16rem 0 rgba(8,20,16,.22) inset; content: ""; pointer-events: none; }
-.portfolio-book-cover--planning { --cover-image: url("../img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-spread.jpg"); --cover-color: #704a3b; --cover-light: #8a5d49; --cover-deep: #432d28; --cover-accent: #d6ac82; --cover-edge: rgba(74,42,31,.34); --cover-shadow: rgba(52,27,20,.36); }
-.portfolio-book-cover--landscape { --cover-image: url("../img/portfolio/real-works/portfolio-selection/portfolio-page-undergraduate-07.jpg"); --cover-color: #3d654f; --cover-light: #5c7d61; --cover-deep: #203d32; --cover-accent: #bed09d; --cover-edge: rgba(31,68,48,.34); --cover-shadow: rgba(19,47,34,.36); }
-.portfolio-book-cover--spatial { --cover-image: url("../img/portfolio/real-works/portfolio-selection/portfolio-page-undergraduate-14.jpg"); --cover-color: #405968; --cover-light: #607989; --cover-deep: #263946; --cover-accent: #b6cad2; --cover-edge: rgba(39,61,72,.36); --cover-shadow: rgba(24,40,50,.38); }
+.portfolio-book-cover--planning { --cover-image: url("../img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-01.jpg"); --cover-color: #704a3b; --cover-light: #8a5d49; --cover-deep: #432d28; --cover-accent: #d6ac82; --cover-edge: rgba(74,42,31,.34); --cover-shadow: rgba(52,27,20,.36); }
+.portfolio-book-cover--landscape { --cover-image: url("../img/portfolio/real-works/portfolio-selection/portfolio-page-didi-campus-01.jpg"); --cover-color: #3d654f; --cover-light: #5c7d61; --cover-deep: #203d32; --cover-accent: #bed09d; --cover-edge: rgba(31,68,48,.34); --cover-shadow: rgba(19,47,34,.36); }
+.portfolio-book-cover--spatial { --cover-image: url("../img/portfolio/real-works/portfolio-selection/portfolio-page-undergraduate-17.jpg"); --cover-color: #405968; --cover-light: #607989; --cover-deep: #263946; --cover-accent: #b6cad2; --cover-edge: rgba(39,61,72,.36); --cover-shadow: rgba(24,40,50,.38); }
 .portfolio-book-cover:hover, .portfolio-book-cover:focus-visible, .portfolio-book-cover.is-selected { transform: translateY(-.35rem) rotateX(0deg) rotateY(0deg); box-shadow: .8rem 1.1rem 1.8rem var(--cover-shadow), -.08rem 0 .18rem rgba(255,255,255,.26) inset; filter: saturate(1.06); outline: none; }
 .portfolio-book-cover:focus-visible { outline: 3px solid #c8e2c5; outline-offset: 4px; }
 .portfolio-book-cover.is-selected { box-shadow: .8rem 1.1rem 1.8rem var(--cover-shadow), 0 0 0 2px var(--cover-accent), -.08rem 0 .18rem rgba(255,255,255,.26) inset; }
@@ -159,4 +159,17 @@
   .portfolio-collection *, .portfolio-collection *::before, .portfolio-collection *::after { scroll-behavior: auto !important; animation: none !important; transition-duration: .01ms !important; }
   .portfolio-reader__turn { display: none !important; }
   .portfolio-reader__tilt { transform: none !important; }
+}
+
+/* Editorial introduction: two deliberate lines, with a quieter second line. */
+.portfolio-books__intro { align-items: center; padding-bottom: clamp(1.5rem, 3vw, 2.5rem); border-bottom: 1px solid rgba(220,235,214,.24); }
+.portfolio-books h1 { margin-top: 1.15rem; font-size: clamp(2.5rem, 4.6vw, 4rem); line-height: 1.15; letter-spacing: -.035em; font-weight: 500; }
+.portfolio-books__title-line + .portfolio-books__title-line { margin-top: .16em; color: #c8d9bc; font-style: italic; }
+html[lang="zh"] .portfolio-books h1 { font-family: "Songti SC", "Noto Serif CJK SC", serif; letter-spacing: .035em; }
+html[lang="zh"] .portfolio-books__title-line + .portfolio-books__title-line { font-size: .72em; font-style: normal; letter-spacing: .09em; }
+.portfolio-collection__lede { padding-left: 1.25rem; border-left: 1px solid rgba(220,235,214,.35); max-width: 28rem; }
+@media (max-width: 760px) {
+  .portfolio-books h1 { font-size: clamp(2rem, 7.7vw, 3.4rem); }
+  .portfolio-books__intro { gap: 1.5rem; }
+  .portfolio-collection__lede { padding-left: .9rem; max-width: 30rem; }
 }

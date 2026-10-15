@@ -108,7 +108,7 @@ class ContentEditorTest < Minitest::Test
       "cover" => "/img/portfolio/homepage/hero.jpg",
       "order" => 2
     )
-    saved = save_content("projects", "sample-project", "data" => data, "body" => "Project body\n")
+    saved = save_content("projects", "sample-project", { "data" => data, "body" => "Project body\n" })
     assert_equal "Test Project", saved.dig("data", "title_en")
     refute_empty history_records("projects", "sample-project")
   end

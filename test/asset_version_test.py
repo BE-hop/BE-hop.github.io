@@ -1,4 +1,4 @@
-import unittest,tempfile,subprocess,re
+import unittest,tempfile,subprocess,re,importlib.util
 from pathlib import Path
 SCRIPT=Path(__file__).resolve().parents[1]/'scripts/prepare-site.py'
 class AssetVersions(unittest.TestCase):
@@ -14,4 +14,15 @@ class AssetVersions(unittest.TestCase):
    first=build('old forum');second=build('updated forum')
    self.assertEqual(first[0],second[0]);self.assertNotEqual(first[1],second[1])
    (root/'css/example.css').write_text('body{color:blue}');third=build('updated forum');self.assertNotEqual(second[0],third[0])
+ def test_critical_pages_keep_small_html_with_ordered_external_bundles(self):
+  spec=importlib.util.spec_from_file_location('bundle',SCRIPT.with_name('bundle-page-assets.py'));mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d);(root/'js').mkdir();(root/'css').mkdir();(root/'works').mkdir()
+   (root/'js/a.js').write_text('window.first=1');(root/'js/b.js').write_text('window.second=2')
+   (root/'css/a.css').write_text('body{color:green}')
+   html='<head><link rel="stylesheet" href="/css/a.css"></head><body><script src="/js/a.js"></script><script src="/js/b.js"></script><script defer src="/js/sw-registration.js?v=123"></script></body>'
+   output=mod.bundle_page(root,root/'works/index.html',html)
+   self.assertNotIn('window.first',output);self.assertIn('defer src="/js/sw-registration.js',output)
+   scripts=list((root/'assets/bundles').glob('*.js'));self.assertEqual(len(scripts),1)
+   code=scripts[0].read_text();self.assertLess(code.index('window.first'),code.index('window.second'));self.assertIn('\n;\n',code)
 if __name__=='__main__':unittest.main()

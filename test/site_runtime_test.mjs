@@ -49,3 +49,14 @@ test('a 200 header with a stalled document body falls back instead of forwarding
  const cache=await r.caches.open('behop-shell-__BUILD_VERSION__');await cache.put('/offline.html',new Response('retry page'));r.setBodyStalled(true);
  assert.equal(await (await r.dispatch(req)).text(),'retry page');
 });
+
+test('one-time navigation recovery never reloads readable pages or forms', async () => {
+ const bootstrap=fs.readFileSync(new URL('../js/navigation-repair.js',import.meta.url),'utf8');
+ for(const [readyState,form,expected] of [['loading',false,1],['complete',false,0],['loading',true,0]]) {
+  const values=new Map();const listeners={};let reloads=0;let registrations=0;
+  const registration={waiting:{postMessage(){}},addEventListener(){},async update(){}};
+  const context={navigator:{serviceWorker:{controller:{},async register(){registrations++;return registration;},addEventListener(type,fn){listeners[type]=fn;}}},location:{hostname:'example.test',reload(){reloads++;}},document:{readyState,querySelector(){return form?{}:null;}},localStorage:{getItem:k=>values.get(k),setItem:(k,v)=>values.set(k,v)}};
+  vm.runInNewContext(bootstrap,context);await new Promise(resolve=>setImmediate(resolve));listeners.controllerchange();assert.equal(reloads,expected);
+  vm.runInNewContext(bootstrap,context);assert.equal(registrations,1);
+ }
+});

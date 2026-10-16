@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Build-only responsive images and release versioning. No source/editor fields change."""
-import argparse, hashlib, json, re, subprocess
+import argparse, hashlib, json, re, subprocess, importlib.util
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 from PIL import Image, ImageOps
+spec=importlib.util.spec_from_file_location("page_assets",Path(__file__).with_name("bundle-page-assets.py"));page_assets=importlib.util.module_from_spec(spec);spec.loader.exec_module(page_assets)
 parser=argparse.ArgumentParser();parser.add_argument('--site',default='_site');args=parser.parse_args()
 root=Path(__file__).resolve().parent.parent;site=Path(args.site).resolve();media=site/'media/optimized';media.mkdir(parents=True,exist_ok=True)
 variants={};before=after=0
@@ -99,6 +100,7 @@ for p in site.rglob('*.html'):
  text=text.replace('</body>',f'<script defer src="/js/sw-registration.js?v={version}"></script></body>')
  # Stable release query makes old and new assets distinct in browser and SW caches.
  text=re.sub(r'((?:src|href)=[\"\'])(/[^\"\'?#]+\.(?:css|js))(?:\?[^\"\']*)?([\"\'])',lambda m:m[1]+m[2]+'?v='+hashlib.sha256((site/m[2].lstrip('/')).read_bytes()).hexdigest()[:16]+m[3] if (site/m[2].lstrip('/')).is_file() else m[0],text)
+ text=page_assets.bundle_page(site,p,text)
  p.write_text(text)
 (site/'sw.js').write_text((site/'sw.js').read_text().replace('__BUILD_VERSION__',version))
 release={'version':version,'commit':commit,'image_count':len(variants)}

@@ -437,3 +437,7 @@ html[lang="en"] .site-heading h1 {
     transition: none;
   }
 }
+
+.site-release-controls { margin: 2rem auto; padding: .8rem 1rem; max-width: 76rem; font: 12px/1.6 system-ui, sans-serif; color: #66756d; background: #f5f6f2; border-radius: 8px; }
+.site-release-controls summary { cursor: pointer; }
+.site-release-controls button { padding: .45rem .65rem; margin-top: .5rem; border: 1px solid #cbd5cd; border-radius: 5px; color: #234d3e; background: white; cursor: pointer; }

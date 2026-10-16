@@ -888,3 +888,10 @@
     position: static;
   }
 }
+
+/* Expensive effects stop when the Hero is offscreen or the document is hidden. */
+.is-motion-paused *, .is-motion-paused *::before, .is-motion-paused *::after { animation-play-state: paused !important; }
+@media (max-width: 760px), (pointer: coarse) {
+  .site-nav, .showcase-page .site-nav { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .hero-grid-stage__scan, .ai-grid-scan::before { animation: none !important; }
+}

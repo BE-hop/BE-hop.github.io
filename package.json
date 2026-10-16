@@ -26,11 +26,12 @@
         "css:check": "node scripts/check-generated-css.mjs",
         "site:audit": "node scripts/site-audit.mjs",
         "editor:test": "ruby test/content_editor_test.rb",
-        "check": "npm run css:check && npm run editor:test && npm run build && npm run site:audit",
+        "check": "npm run runtime:test && npm run css:check && npm run editor:test && npm run build && npm run site:audit && node scripts/check-release.mjs",
         "forum:sync-comments": "node scripts/forum-sync-approved-comments.mjs",
         "forum:sync-topics": "node scripts/forum-sync-approved-topics.mjs",
         "forum:metrics": "node scripts/forum-build-metrics.mjs",
         "boil": "git push boilerplate boilerplate:master",
-        "push": "git push origin master --tag"
+        "push": "git push origin master --tag",
+        "runtime:test": "node --test test/site_runtime_test.mjs && python3 test/image_pipeline_test.py"
     }
 }

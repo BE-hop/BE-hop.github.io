@@ -1,291 +1,106 @@
-/* ===========================================================
- * sw.js
- * ===========================================================
- * Maintained by liu.ruyuan
- * Licensed under Apache 2.0
- * service worker scripting
- * ========================================================== */
-
-// CACHE_NAMESPACE
-// CacheStorage is shared between all sites under same domain.
-// A namespace can prevent potential name conflicts and mis-deletion.
-const CACHE_NAMESPACE = 'main-'
-
-const CACHE = CACHE_NAMESPACE + 'precache-then-runtime';
-const PRECACHE_LIST = [
-  "./",
-  "./offline.html",
-  "./js/jquery.min.js",
-  "./js/bootstrap.min.js",
-  "./js/hux-blog.min.js",
-  "./js/snackbar.js",
-  "./img/IMG_5050.JPG",
-  "./img/home-bg.jpg",
-  "./img/404-bg.jpg",
-  "./css/hux-blog.min.css",
-  "./css/bootstrap.min.css"
-  // "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css",
-  // "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/fonts/fontawesome-webfont.woff2?v=4.6.3",
-  // "//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"
-]
-const HOSTNAME_WHITELIST = [
-  self.location.hostname,
-  "be-hop.github.io",
-  "cdnjs.cloudflare.com"
-]
-const DEPRECATED_CACHES = ['precache-v1', 'runtime', 'main-precache-v1', 'main-runtime']
-
-const isForumRequest = (req) => {
-  if (req.method !== "GET") return false
-  const pathname = new URL(req.url).pathname
-  return (
-    pathname.startsWith("/forum") ||
-    pathname.includes("/js/forum") ||
-    pathname.includes("/css/forum.css") ||
-    pathname.includes("/assets/data/forum-")
-  )
-}
-
-
-// The Util Function to hack URLs of intercepted requests
-const getCacheBustingUrl = (req) => {
-  var now = Date.now();
-  url = new URL(req.url)
-
-  // 1. fixed http URL
-  // Just keep syncing with location.protocol
-  // fetch(httpURL) belongs to active mixed content.
-  // And fetch(httpRequest) is not supported yet.
-  url.protocol = self.location.protocol
-
-  // 2. add query for caching-busting.
-  // Github Pages served with Cache-Control: max-age=600
-  // max-age on mutable content is error-prone, with SW life of bugs can even extend.
-  // Until cache mode of Fetch API landed, we have to workaround cache-busting with query string.
-  // Cache-Control-Bug: https://bugs.chromium.org/p/chromium/issues/detail?id=453190
-  url.search += (url.search ? '&' : '?') + 'cache-bust=' + now;
-  return url.href
-}
-
-// The Util Function to detect and polyfill req.mode="navigate"
-// request.mode of 'navigate' is unfortunately not supported in Chrome
-// versions older than 49, so we need to include a less precise fallback,
-// which checks for a GET request with an Accept: text/html header.
-const isNavigationReq = (req) => (req.mode === 'navigate' || (req.method === 'GET' && req.headers.get('accept').includes('text/html')))
-
-// The Util Function to detect if a req is end with extension
-// Accordin to Fetch API spec <https://fetch.spec.whatwg.org/#concept-request-destination>
-// Any HTML's navigation has consistently mode="navigate" type="" and destination="document"
-// including requesting an img (or any static resources) from URL Bar directly.
-// So It ends up with that regExp is still the king of URL routing ;)
-// P.S. An url.pathname has no '.' can not indicate it ends with extension (e.g. /api/version/1.2/)
-const endWithExtension = (req) => Boolean(new URL(req.url).pathname.match(/\.\w+$/))
-
-// Redirect in SW manually fixed github pages arbitray 404s on things?blah
-// what we want:
-//    repo?blah -> !(gh 404) -> sw 302 -> repo/?blah
-//    .ext?blah -> !(sw 302 -> .ext/?blah -> gh 404) -> .ext?blah
-// If It's a navigation req and it's url.pathname isn't end with '/' or '.ext'
-// it should be a dir/repo request and need to be fixed (a.k.a be redirected)
-// Reference: https://github.com/whatwg/fetch/issues/505
-const shouldRedirect = (req) => (isNavigationReq(req) && new URL(req.url).pathname.substr(-1) !== "/" && !endWithExtension(req))
-
-// The Util Function to get redirect URL
-// `${url}/` would mis-add "/" in the end of query, so we use URL object.
-// P.P.S. Always trust url.pathname instead of the whole url string.
-const getRedirectUrl = (req) => {
-  url = new URL(req.url)
-  url.pathname += "/"
-  return url.href
-}
-
-
-/**
- *  @Lifecycle Install
- *  Precache anything static to this version of your app.
- *  e.g. App Shell, 404, JS/CSS dependencies...
- *
- *  waitUntil() : installing ====> installed
- *  skipWaiting() : waiting(installed) ====> activating
- */
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(cache => {
-      return cache.addAll(PRECACHE_LIST)
-        .then(self.skipWaiting())
-        .catch(err => console.log(err))
-    })
-  )
-});
-
-
-/**
- *  @Lifecycle Activate
- *  New one activated when old isnt being used.
- *
- *  waitUntil(): activating ====> activated
- */
-self.addEventListener('activate', event => {
-  // delete old deprecated caches.
-  caches.keys().then(cacheNames => Promise.all(
-    cacheNames
-      .filter(cacheName => DEPRECATED_CACHES.includes(cacheName))
-      .map(cacheName => caches.delete(cacheName))
-  ))
-  console.log('service worker activated.')
-  event.waitUntil(self.clients.claim());
-});
-
-
-var fetchHelper = {
-
-  fetchThenCache: function(request){
-    // Requests with mode "no-cors" can result in Opaque Response,
-    // Requests to Allow-Control-Cross-Origin: * can't include credentials.
-    const init = { mode: "cors", credentials: "omit" } 
-
-    const fetched = fetch(request, init)
-    const fetchedCopy = fetched.then(resp => resp.clone());
-
-    // NOTE: Opaque Responses have no hedaders so [[ok]] make no sense to them
-    //       so Opaque Resp will not be cached in this case.
-    Promise.all([fetchedCopy, caches.open(CACHE)])
-      .then(([response, cache]) => response.ok && cache.put(request, response))
-      .catch(_ => {/* eat any errors */})
-    
-    return fetched;
-  },
-
-  cacheFirst: function(url){
-    return caches.match(url) 
-      .then(resp => resp || this.fetchThenCache(url))
-      .catch(_ => {/* eat any errors */})
-  }
-}
-
-
-/**
- *  @Functional Fetch
- *  All network requests are being intercepted here.
- *
- *  void respondWith(Promise<Response> r);
- */
-self.addEventListener('fetch', event => {
-  // logs for debugging
-  //console.log(`fetch ${event.request.url}`)
-  //console.log(` - type: ${event.request.type}; destination: ${event.request.destination}`)
-  //console.log(` - mode: ${event.request.mode}, accept: ${event.request.headers.get('accept')}`)
-
-  // Skip some of cross-origin requests, like those for Google Analytics.
-  if (HOSTNAME_WHITELIST.indexOf(new URL(event.request.url).hostname) > -1) {
-
-    // Redirect in SW manually fixed github pages 404s on repo?blah
-    if (shouldRedirect(event.request)) {
-      event.respondWith(Response.redirect(getRedirectUrl(event.request)))
-      return;
-    }
-
-    // Forum pages and forum data/scripts should be network-first to avoid stale first render.
-    if (isForumRequest(event.request)) {
-      const networkFirst = fetch(getCacheBustingUrl(event.request), { cache: "no-store" })
-        .then(resp => {
-          if (resp && resp.ok) {
-            const respCopy = resp.clone()
-            event.waitUntil(
-              caches.open(CACHE)
-                .then(cache => cache.put(event.request, respCopy))
-                .catch(_ => {/* eat any errors */})
-            )
-          }
-          return resp
-        })
-        .catch(_ => caches.match(event.request).then(resp => resp || caches.match('offline.html')))
-
-      event.respondWith(networkFirst)
-      return
-    }
-
-    // Stale-while-revalidate for possiblily dynamic content
-    // similar to HTTP's stale-while-revalidate: https://www.mnot.net/blog/2007/12/12/stale
-    // Upgrade from Jake's to Surma's: https://gist.github.com/surma/eb441223daaedf880801ad80006389f1
-    const cached = caches.match(event.request);
-    const fetched = fetch(getCacheBustingUrl(event.request), { cache: "no-store" });
-    const fetchedCopy = fetched.then(resp => resp.clone());
-    
-    // Call respondWith() with whatever we get first.
-    // Promise.race() resolves with first one settled (even rejected)
-    // If the fetch fails (e.g disconnected), wait for the cache.
-    // If there’s nothing in cache, wait for the fetch.
-    // If neither yields a response, return offline pages.
-    event.respondWith(
-      Promise.race([fetched.catch(_ => cached), cached])
-        .then(resp => resp || fetched)
-        .catch(_ => caches.match('offline.html'))
-    );
-
-    // Update the cache with the version we fetched (only for ok status)
-    event.waitUntil(
-      Promise.all([fetchedCopy, caches.open(CACHE)])
-        .then(([response, cache]) => response.ok && cache.put(event.request, response))
-        .catch(_ => {/* eat any errors */ })
-    );
-
-    // If one request is a HTML naviagtion, checking update!
-    if (isNavigationReq(event.request)) {
-      // you need "preserve logs" to see this log
-      // cuz it happened before navigating
-      console.log(`fetch ${event.request.url}`)
-      event.waitUntil(revalidateContent(cached, fetchedCopy))
-    }
-  }
-});
-
-
-/**
- * Broadcasting all clients with MessageChannel API
- */
-function sendMessageToAllClients(msg) {
-  self.clients.matchAll().then(clients => {
-    clients.forEach(client => {
-      console.log(client);
-      client.postMessage(msg)
-    })
-  })
-}
-
-/**
- * Broadcasting all clients async
- */
-function sendMessageToClientsAsync(msg) {
-  // waiting for new client alive with "async" setTimeout hacking
-  // https://web.dev/service-worker-communication/
-  // https://jakearchibald.com/2016/service-worker-meeting-notes/#fetch-event-clients
-  setTimeout(() => {
-    sendMessageToAllClients(msg)
-  }, 1000)
-}
-
-/**
- * if content modified, we can notify clients to refresh
- * TODO: Gh-pages rebuild everything in each release. should find a workaround (e.g. ETag with cloudflare)
- * 
- * @param  {Promise<response>} cachedResp  [description]
- * @param  {Promise<response>} fetchedResp [description]
- * @return {Promise}
- */
-function revalidateContent(cachedResp, fetchedResp) {
-  // revalidate when both promise resolved
-  return Promise.all([cachedResp, fetchedResp])
-    .then(([cached, fetched]) => {
-      const cachedVer = cached.headers.get('last-modified')
-      const fetchedVer = fetched.headers.get('last-modified')
-      console.log(`"${cachedVer}" vs. "${fetchedVer}"`);
-      if (cachedVer !== fetchedVer) {
-        sendMessageToClientsAsync({
-          'command': 'UPDATE_FOUND',
-          'url': fetched.url
-        })
+/* Versioned offline cache. Old releases never mask successful online navigation. */
+const VERSION = '__BUILD_VERSION__';
+const SHELL = `behop-shell-${VERSION}`;
+const MEDIA = `behop-media-${VERSION}`;
+const LEGACY = ['main-precache-then-runtime', 'precache-v1', 'runtime', 'main-precache-v1', 'main-runtime'];
+const MAX_MEDIA_BYTES = 60 * 1024 * 1024;
+let mediaQueue = Promise.resolve();
+const isLocal = url => url.origin === self.location.origin;
+const isMedia = request => request.destination === 'image' || /\.(webp|png|jpe?g|gif)$/i.test(new URL(request.url).pathname);
+async function store(request, response) {
+  if (!response || !response.ok || response.type === 'opaque') return response;
+  const media = isMedia(request);
+  const copy = response.clone();
+  if (media) {
+    // Serialize eviction so simultaneous image loads cannot race the byte limit.
+    mediaQueue = mediaQueue.catch(() => {}).then(async () => {
+      const cache = await caches.open(MEDIA);
+      await cache.delete(request);
+      await cache.put(request, copy);
+      const names = (await caches.keys()).filter(name => name.startsWith('behop-media-') && name !== MEDIA).concat(MEDIA);
+      const entries = [];
+      for (const name of names) {
+        const bucket = await caches.open(name);
+        for (const key of await bucket.keys()) entries.push({ bucket, key });
       }
-    })
-    .catch(err => console.log(err))
+      let bytes = 0;
+      for (let i = entries.length - 1; i >= 0; i--) {
+        const { bucket, key } = entries[i];
+        const value = await bucket.match(key);
+        bytes += Number(value.headers.get('content-length')) || (await value.blob()).size;
+        if (bytes > MAX_MEDIA_BYTES || entries.length - i > 100) await bucket.delete(key);
+      }
+    });
+    await mediaQueue;
+  } else {
+    const cache = await caches.open(SHELL);
+    await cache.put(request, copy);
+    // Bound previously visited pages/resources as well.
+    const keys = await cache.keys();
+    for (const key of keys.slice(0, Math.max(0, keys.length - 120))) await cache.delete(key);
+  }
+  return response;
 }
+self.addEventListener('install', event => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(SHELL);
+    await cache.addAll(['/offline.html', '/release.json']);
+    // A failed install leaves the old worker intact. Upgrades wait for explicit consent.
+  })());
+});
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    const names = await caches.keys();
+    const previous = [...new Set(names.filter(name => name.startsWith('behop-shell-')).map(name => name.slice('behop-shell-'.length)).filter(v => v !== VERSION))].pop();
+    const keep = [SHELL, MEDIA, `behop-shell-${previous}`, `behop-media-${previous}`];
+    await Promise.all(names.filter(name => LEGACY.includes(name) || (name.startsWith('behop-') && !keep.includes(name))).map(name => caches.delete(name)));
+    await self.clients.claim();
+  })());
+});
+self.addEventListener('message', event => {
+  if (event.data?.type === 'ACTIVATE_RELEASE') event.waitUntil(self.skipWaiting());
+  if (event.data?.type === 'WARM_URLS') {
+    const urls = [...new Set(event.data.urls || [])].filter(raw => {
+      try { const u = new URL(raw, self.location.origin); return isLocal(u) && !u.pathname.startsWith('/api/') && !u.pathname.includes('content-editor'); } catch { return false; }
+    }).slice(0, 40);
+    event.waitUntil((async () => {
+      for (const url of urls) {
+        const req = new Request(url);
+        if (await caches.match(req)) continue;
+        try { await store(req, await fetch(req)); } catch { /* Offline; keep available resources. */ }
+      }
+    })());
+  }
+});
+self.addEventListener('fetch', event => {
+  const request = event.request;
+  const url = new URL(request.url);
+  if (request.method !== 'GET' || !isLocal(url) || url.pathname === '/sw.js' || url.pathname === '/release.json' || url.pathname.startsWith('/api/')) return;
+  if (request.mode === 'navigate') {
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(request, { cache: 'no-cache' });
+        if (response.ok) { event.waitUntil(store(request, response)); return response; }
+        // Online 404s remain 404s; do not silently show unrelated cached pages.
+        return response;
+      } catch {
+        return (await caches.match(request)) || (await caches.match('/offline.html')) || new Response('Offline', { status: 503 });
+      }
+    })());
+    return;
+  }
+  const liveData = url.pathname.startsWith('/assets/data/forum-');
+  event.respondWith((async () => {
+    if (!liveData) {
+      const cached = await caches.match(request);
+      if (cached) return cached;
+    }
+    try {
+      const response = await fetch(request, liveData ? { cache: 'no-cache' } : {});
+      if (response.ok) event.waitUntil(store(request, response));
+      return response;
+    } catch {
+      return (await caches.match(request)) || new Response('', { status: 503, statusText: 'Not available offline' });
+    }
+  })());
+});

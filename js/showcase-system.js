@@ -1,5 +1,16 @@
 (() => {
   const root = document.documentElement
+  const animatedHeroes = document.querySelectorAll('.showcase-home-hero, .ai-page-hero')
+  const pause = () => animatedHeroes.forEach(node => node.classList.toggle('is-motion-paused', document.hidden || node.dataset.offscreen === 'true'))
+  if ('IntersectionObserver' in window) {
+    const motionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => { entry.target.dataset.offscreen = String(!entry.isIntersecting) })
+      pause()
+    })
+    animatedHeroes.forEach(node => motionObserver.observe(node))
+  }
+  document.addEventListener('visibilitychange', pause)
+  pause()
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
   root.classList.add("showcase-js")
 

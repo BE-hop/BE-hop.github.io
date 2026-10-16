@@ -29,3 +29,5 @@ GitHub Pages Source设为GitHub Actions。仅`Deploy Jekyll site to Pages`负责
 ## 内容可见性
 
 原有隐藏AI工具/图库状态不变。列表隐藏不代表私密访问；本轮不自动公开或删除它们。编辑器草稿及手工AI情报导入功能不随性能修复发布。
+
+旧缓存迁移不在安装时强制skipWaiting；新页面检测到waiting worker后提示用户切换，避免旧页面填写中突然刷新。首访离线预热在页面资源加载完成后的空闲时进行。

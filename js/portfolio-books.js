@@ -12,7 +12,7 @@
   const spreads = { planning: [], landscape: [], spatial: [] }
   root.querySelectorAll("[data-book-spread]").forEach((node) => {
     const book = node.dataset.book
-    if (spreads[book]) spreads[book].push({ src: node.dataset.src, en: node.dataset.altEn, zh: node.dataset.altZh })
+    if (spreads[book]) spreads[book].push({ src: node.dataset.src, full: node.dataset.fullSrc || node.dataset.src, en: node.dataset.altEn, zh: node.dataset.altZh })
   })
 
   const reader = root.querySelector("#portfolio-reader")
@@ -118,7 +118,11 @@
   }
   const preloadAround = () => {
     const pages = spreads[state.book]
-    ;[pageIndex() - 1, pageIndex() + 1].forEach((index) => { if (pages[index]) loadSpread(pages[index]) })
+    const connection = navigator.connection
+    if (connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType || '')) return
+    const preload = () => { const index = pageIndex() + 1; if (pages[index]) loadSpread(pages[index]) }
+    if ('requestIdleCallback' in window) requestIdleCallback(preload, { timeout: 5000 })
+    else setTimeout(preload, 1500)
   }
   const render = (freshImage) => {
     const spread = currentSpread()
@@ -150,7 +154,7 @@
     const canvasY = y * rect.height
     loupe.style.setProperty("--loupe-left", `${rect.left - stageRect.left + canvasX}px`)
     loupe.style.setProperty("--loupe-top", `${rect.top - stageRect.top + canvasY}px`)
-    loupeLens.style.backgroundImage = `url("${spread.src}")`
+    loupeLens.style.backgroundImage = `url("${state.loupeDetail ? spread.full : spread.src}")`
     loupeLens.style.backgroundSize = `${fit.width * MAGNIFICATION}px ${fit.height * MAGNIFICATION}px`
     loupeLens.style.backgroundPosition = `${lensRect.width / 2 - (canvasX - fit.x) * MAGNIFICATION}px ${lensRect.height / 2 - (canvasY - fit.y) * MAGNIFICATION}px`
     loupe.setAttribute("aria-hidden", "false")
@@ -375,6 +379,7 @@
     }
   })
   canvas.addEventListener("pointermove", (event) => {
+    state.loupeDetail = true
     if (!state.pointer || event.pointerId !== state.pointer.id) {
       if (state.turning) return
       const rect = stage.getBoundingClientRect()

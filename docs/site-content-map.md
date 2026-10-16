@@ -447,3 +447,11 @@ http://127.0.0.1:4001/behop-ai-product/
 ```
 
 如果页面看起来没有更新，先硬刷新浏览器；如果仍旧没更新，清理 `127.0.0.1:4001` 的 service worker / site data。
+
+### 轻量图片、离线缓存与发布版本
+
+网页源图通过 `scripts/optimize-images.py --backup <仓库外目录>` 压缩并保留原图及SHA256清单。`scripts/jekyll-with-assets.rb` 显式注册 Jekyll post_write 钩子并统一运行 `scripts/prepare-site.py`，在构建目录生成按内容哈希命名的480/768/1280px（展板放大保留最大2400px） WebP与响应式引用，源内容字段不变；编辑器预览、上传后的构建及发布使用同一路径，不向编辑器扩大可写范围。Python需安装 `requirements-site.txt`。原图备份不得进入仓库或站点。
+
+构建产物 `release.json` 与页面meta记录版本和提交；`sw.js`使用发布版本隔离缓存，在线页面优先网络、断网回退已访问页面，静态资源按版本缓存，图片缓存最多60MB/100项。旧main-*缓存一次迁移，新版本由用户点击提示切换；页尾支持检查更新和仅清理本站缓存。语言设置保留，未访问的图片不承诺离线可用。本地默认不注册SW，`?offline-test=1`仅供离线验收。
+
+正式发布统一走Actions构建、审计与部署；论坛快照同步完成后触发同一工作流。站点时区固定Asia/Shanghai，已发布博客路径使用显式permalink，旧路径保留跳转。隐藏条目仅从列表隐藏，不视为访问控制。

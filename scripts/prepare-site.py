@@ -78,7 +78,12 @@ for p in site.rglob('*.css'):
  text=p.read_text()
  def css(m):
   v=resolve(m.group(2),p)
-  return f'url("{v["cover"]}")' if v else m.group()
+  if v:return f'url("{v["cover"]}")'
+  raw=urlsplit(m.group(2)).path
+  font=(site/raw.lstrip('/')) if raw.startswith('/') else (p.parent/raw).resolve()
+  if font.is_file() and font.suffix in ['.woff2','.woff','.ttf']:
+   return 'url("/'+font.relative_to(site).as_posix()+'?v='+hashlib.sha256(font.read_bytes()).hexdigest()[:12]+'")'
+  return m.group()
  text=re.sub(r'url\(([\"\']?)([^)\"\']+)\1\)',css,text);p.write_text(text)
 
 commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()

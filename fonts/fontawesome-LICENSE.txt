@@ -1,0 +1,4 @@
+Font Awesome 4.6.3 by Dave Gandy. Original project: https://github.com/FortAwesome/Font-Awesome/tree/v4.6.3
+Font licensed under SIL OFL 1.1: https://scripts.sil.org/OFL
+CSS licensed under MIT: https://opensource.org/licenses/MIT
+Original license notice is retained in css/font-awesome.min.css.

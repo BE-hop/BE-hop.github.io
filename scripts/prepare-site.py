@@ -79,6 +79,7 @@ for p in site.rglob('*.css'):
  def css(m):
   v=resolve(m.group(2),p)
   if v:return f'url("{v["cover"]}")'
+  if m.group(2).startswith(('data:','http:','https:','//','#')):return m.group()
   raw=urlsplit(m.group(2)).path
   font=(site/raw.lstrip('/')) if raw.startswith('/') else (p.parent/raw).resolve()
   if font.is_file() and font.suffix in ['.woff2','.woff','.ttf']:

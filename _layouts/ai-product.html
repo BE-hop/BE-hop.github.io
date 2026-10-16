@@ -12,6 +12,7 @@ layout: null
   <link rel="stylesheet" href="{{ site.baseurl }}/css/behop-ai.css">
   <link rel="stylesheet" href="{{ site.baseurl }}/css/showcase-system.css">
 <link rel="stylesheet" href="/css/local-fonts.css">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
 </head>
 <body class="ai-detail-page showcase-page theme-ai bg-background text-foreground">
   {% include nav.html %}
@@ -269,9 +270,9 @@ layout: null
     </section>
   </main>
 
-  <script src="{{ site.baseurl }}/js/site-nav.js"></script>
-  <script src="{{ site.baseurl }}/js/behop-ai.js"></script>
-  <script src="{{ site.baseurl }}/js/showcase-system.js"></script>
+  <script defer src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script defer src="{{ site.baseurl }}/js/behop-ai.js"></script>
+  <script defer src="{{ site.baseurl }}/js/showcase-system.js"></script>
   {% if page.version_json_url %}
   <script>
     (function () {

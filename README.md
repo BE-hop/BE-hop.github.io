@@ -4,7 +4,7 @@
 
 # BEhop Experience
 
-个人博客与知识库，基于 [Jekyll](https://jekyllrb.com/) 自行定制，由 [liu.ruyuan](https://github.com/BE-hop) 维护。站点内容聚焦于 AI、设计、景观以及日常创作，托管在 GitHub Pages：<https://be-hop.github.io>。
+个人博客与知识库，基于 [Jekyll](https://jekyllrb.com/) 自行定制，由 [liu.ruyuan](https://github.com/BE-hop) 维护。站点内容聚焦于 AI、设计、景观以及日常创作，托管在 GitHub Pages，正式访问地址：<https://www.behop.cn>。
 
 ## 快速开始
 
@@ -220,10 +220,20 @@ CI 使用 Ruby 3.1；调用同时接收位置哈希与关键字参数的方法�
 
 ### 关键入口在资源请求失败时的降级
 
-按2026-10-16凌晨的Jekyll结构保留轻量HTML、独立CSS/JS与原有双语作品数据；不在整页内联CSS、JS或Base64展板。CSS/JS查询版本按文件内容哈希生成，论坛同步不再让未变化资源全部失效。导航优先尝试网络，1秒未完成且有缓存时立即显示缓存，后台继续更新；8秒内未收到完整HTML则回退到已访问页面或轻量重试页。判断完整响应包括正文下载，不能仅依据200响应头。图片仍保留压缩、响应式尺寸、12秒失败提示及重试；首次离线预热仅请求当前HTML。
+按2026-10-16凌晨的Jekyll结构保留轻量HTML、独立CSS/JS与原有双语作品数据；不在整页内联CSS、JS或Base64展板。CSS/JS查询版本按文件内容哈希生成，论坛同步不再让未变化资源全部失效。受控导航优先尝试网络；1秒内尚未收到响应头且有缓存时显示缓存。收到响应头即交付响应流，8秒正文中断时提供手动重试；完整正文下载成功后才写入缓存，不能仅依据200响应头。图片仍保留压缩、响应式尺寸、12秒失败提示及重试；首次离线预热仅请求当前HTML。
 
 关键页面的独立样式与有序同步脚本由 `scripts/bundle-page-assets.py` 各合并为一个内容哈希文件，以减少并发冷请求，应用代码不回填HTML。`js/navigation-repair.js` 是一次性头部恢复引导：旧worker等待时可激活修复，只有文档仍未完成且无表单时才重载一次；已阅读页面、表单及后续正常升级保持手动切换。不得因论坛快照变化重置静态资源版本。
 
 作品集默认翻阅统一使用768px轻量图，桌面高分辨率图仅在放大镜交互时请求；不得让未成功加载的1280px增强图阻塞翻页。此项由真实Chrome中的高清请求失败而轻量图已解码的对比验证触发。
 
 导航缓存查找必须先查当前发布桶，再回退上一发布桶；显式刷新必须尝试完整新HTML，不能再次被1秒旧缓存竞争抢先。网络失败仍保留缓存兜底。
+
+### 首次加载、流式导航与性能排查
+
+正式入口统一为 `https://www.behop.cn`；canonical、sitemap 和 robots 跟随站点配置。首页、Works、作品集、AI Tools 与论坛按页合并主 CSS 和有序 defer JS，缓存注册使用头部独立 async runtime。流式 HTML 必须在完整下载后才入缓存；开始交付的流不可再替换旧页面，中断由独立 runtime 提供手动重试，禁止自动循环重载。8秒冷 CSS/JS 超时不能冒充对首次未受 worker 控制请求的保护。保留默认可见正文、语言偏好、离线容量和用户主动更新规则。博客保留既有内联脚本依赖顺序，非必要广告/外部 iframe 在页面完成后接近视口再加载。
+
+CDN、HTTPS、发布后 HTML 清理与多地区验收按 `docs/loading-performance.md` 执行；仓库构建不能证明 Cloudflare 后台已配置。使用 `python3 scripts/performance-probe.py --network-label <实际链路> --samples 5` 检查完整下载，浏览器另测 LCP/CLS，禁止把代理测试称为大陆直连或海外节点。实质修改后运行 `npm run check`。
+
+### Cloudflare 缓存实际配置与证书维护边界
+
+2026-10-16已在后台启用Always Use HTTPS与三条规则：公开HTML尊重源站TTL（当前10分钟，Browser bypass）、更新文件/论坛数据/Webhook绕过、内容哈希目录一年缓存且>=400不存储。免费UI自定义Edge TTL最低2小时，不得把当前策略误写为已实现5分钟。发布后清理受影响HTML，保持查询串cache key；新增其他年份文章时更新当前HTML规则范围。保留www/wechat* Worker。当前Full(strict)的源站证书前提未满足，DNS-only会影响CDN防护和Webhook，须另行明确授权并安排维护时段，不擅自切换。以 `docs/loading-performance.md` 中已应用配置覆盖此前待配置目标；多地区与浏览器性能指标仍须独立验收。

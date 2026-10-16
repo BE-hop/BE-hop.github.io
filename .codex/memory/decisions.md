@@ -60,3 +60,17 @@
 - Evidence: `.github/workflows/jekyll.yml` deploys only pushes to `master`; both version branches were created from the latest remote production baseline before V2 was published.
 - Invalidation: the Pages workflow changes its source, preview deployments are introduced, or the owner replaces branch-based visual versioning with a runtime theme switch.
 - Consequence: publish a validated version by moving its commit onto `master`; restore an archived visual by creating a new commit from current `master`, not by merging an ancestor branch or force-pushing history.
+
+## 2026-10-16 - 首屏交付与缓存分离
+
+- 决策：首页、Works、作品集、AI Tools、论坛在构建时合并独立主 CSS 与有序 defer JS；头部 async `sw-registration.js` 独立注册 worker 并处理加载中断。正文默认可见，不依赖动效初始化。
+- 受控导航流立即交付，完整读完后才入缓存；已交付的流无法替换成旧 HTML，中断提供手动重试。1秒缓存回退适用于等待网络响应头，显式刷新不参与旧缓存竞速；冷 CSS/JS 和论坛数据对完整正文设8秒上限。
+- 证据：`npm run check`、`test/site_runtime_test.mjs`、`test/asset_version_test.py` 与 Chrome 本地故障预览（主交互包503时正文和四个入口仍存在）。
+- 失效条件：导航/发布架构、缓存策略或响应流机制改变时重新核验；本地通过不证明公网 CDN 或地区访问达标。
+
+## 2026-10-16 - CDN缓存与证书修复边界
+
+- 决策：Cloudflare公开HTML按源站TTL缓存，当前10分钟；浏览器重新验证；更新文件、论坛快照、API及微信回调绕过。哈希目录一年缓存并对>=400设No store。
+- 证据：后台三条Active规则、HTTP→HTTPS 301、首页CF-Cache-Status HIT、缺失哈希资源404/BYPASS。免费UI自定义TTL最低2小时，不使用其缓存HTML。
+- 约束：www/wechat*有现存Worker；DNS-only会绕过CDN防护并影响回调，证书修复需单独授权与维护窗口。未切换DNS，未开启Full(strict)。
+- 失效条件：计划等级、源站头、路由、域名或Worker改变时重查；HIT不证明访问端完整下载或多地区性能达标。

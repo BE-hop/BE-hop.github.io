@@ -1,0 +1,69 @@
+# 加载性能与 CDN 运维
+
+## 实现与边界
+
+2026-10-16：保留 Jekyll 静态输出；首页、Works、作品集、AI Tools、论坛分别输出单个主 CSS/有序 defer JS 包。独立头部 async runtime 注册缓存、提供慢加载重试提示，正文与导航不依赖交互脚本。博客继续保留现有 jQuery 顺序和内联调用，避免直接 defer 破坏依赖；广告与 GitHub iframe 在 window.load 后、接近视口时才请求。高亮使用 Jekyll/Rouge，无在线 highlighter 依赖。
+
+受控导航立即交付响应流；后台完整读完后才入缓存。网络尚未返回响应头时，已有页面可在 1 秒后回退缓存；显式刷新优先网络。响应流一旦交付就不能替换成旧 HTML，8 秒中断时通过 worker 消息和独立 runtime 提示用户手动重试，不自动重载。冷 CSS/JS 及论坛数据请求同样以完整正文计算 8 秒超时。首次未被 worker 控制的请求不受此超时保护。
+
+## 后台配置清单（须读取实际设置后应用）
+
+正式入口：`https://www.behop.cn`。仓库配置、canonical、sitemap 与 robots 对齐此域名；修改仓库不能开启后台 HTTPS 或创建 CDN 缓存规则。
+
+1. 确认 www DNS 指向 GitHub Pages，核查裸域 DNS 与跳转；DNS 查询不可从本机代理 fake-IP 推断真实解析。
+2. 确认 GitHub Pages 自定义域名证书有效，Cloudflare 回源验证成功，再设置 Full (strict) 与 GitHub Enforce HTTPS。随后开启边缘 HTTP→HTTPS 和裸域→www 的单次正式跳转，保留路径与查询串。禁止以 Flexible 修复循环。
+3. Cloudflare 规则按优先级配置：`/sw.js`、`/release.json`、`/assets/data/forum-*` 绕过边缘缓存；不得让后续规则覆盖该排除。
+4. 正式域名公开 HTML（尾斜杠或 `.html`，GET/HEAD，无 Authorization）的 Edge TTL 为 300 秒，Browser TTL 尊重源站。使用响应头规则将此类 HTML 的 `Cache-Control` 设为 `public, max-age=0, must-revalidate`；边缘 TTL 必须显式覆盖，否则该头会阻止边缘缓存。
+5. `/assets/bundles/` 和 `/media/optimized/` 的内容哈希文件可用一年 Edge/Browser TTL；旧文件必须保留足够更新窗口。带 `?v=<hash>` 的 CSS/JS 先维持默认缓存，若单独加长期规则必须保持完整查询串进入 cache key。sw/release/论坛快照不得命中长期规则。
+6. 每次 Actions 部署成功后，用 Cloudflare Custom Purge 清理本次改动 HTML 的绝对 URL（列表页、双语文章、受影响详情及 sitemap/robots），不清理内容哈希资源。尚未配置自动清理时 HTML 最长允许 5 分钟边缘陈旧，不能声称发布立即生效。自动化须使用限定 zone 的 Cache Purge token，经单独配置后再接入 CI；不要把 token 写入仓库。
+7. 验证 HTTP、HTTPS、裸域、GitHub 默认入口的完整跳转链；同一 HTML 第二次请求检查 `CF-Cache-Status`、`Age`，sw/release 检查未缓存。
+
+2026-10-16 实际核查：GitHub CLI 未登录，但浏览器已登录。GitHub Pages 设置页显示正式链接仍为 HTTP，Enforce HTTPS 为禁用状态，提示域名未正确配置为支持 HTTPS，DNS 检查进行中。Cloudflare 后台停在登录页，无法核查其 DNS/SSL/缓存规则。上述后台修改及发布清理未执行，不能用仓库改动冒充后台已配置。
+
+## 可复用验证
+
+```bash
+npm run check
+python3 scripts/performance-probe.py --network-label current-route --samples 5
+python3 scripts/performance-probe.py --base-url http://127.0.0.1:4001 --network-label local --samples 5
+PORT=4001 ./scripts/local-preview.sh static
+```
+
+每种网络独立运行，明确标记大陆直连、代理、海外实际节点；脚本不关闭代理、不改变系统网络，标签不代表已验证地理位置。检查完整下载、重定向、TLS、首字节和失败率，不能仅看 HTTP 200。开发者工具另测禁用缓存冷访问、回访、FCP/LCP/CLS、Long Tasks 和请求瀑布；有限实验数据不等于访客 p75。目标 LCP ≤2.5 秒、CLS ≤0.1，已缓存页面约1秒可读。
+
+浏览器覆盖 390/768px 与桌面：四个 Hero 按钮、双语、筛选、阅读器翻页、表单和编辑器。故障覆盖脚本挂起、正文中断、图片失败、离线、跨版本缓存与显式刷新。HTTP 缓存与 Service Worker 均须区分；首次进入没有浏览器离线缓存。
+
+资料：[GitHub HTTPS](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https)、[Cloudflare 缓存](https://developers.cloudflare.com/cache/get-started/)。
+
+## 2026-10-16 验收记录
+
+- `npm run check` 全部通过：12 项运行时用例、图片与版本管线测试、生成 CSS 校验、16 项编辑器用例（64 assertions）、生产构建、站点审计与 release 检查；审计 0 警告。
+- Chrome 本地：首页、Works、作品集、AI Tools、博客、论坛及两类详情页可打开；首页双语切换可用，390px 四个 Hero 按钮完整显示，390/768px 无横向溢出，检查时无控制台错误。作品集从第1跨页实际翻到第2跨页，768px轻量图已解码；模拟主交互包等待12秒后503，标题、正文和四个入口仍存在。表单提交、完整编辑器 UI 和 LCP/CLS 定量验收仍须单列补测，不能以自动化检查替代。
+- 六个 HTML 入口各 5 次：本地 30/30 完整成功，下载中位数约 0.001 秒；当前线上链路 16/30 完整成功，14 次 curl 超时，成功样本中位数约 4.313 秒。部分失败已有 200 响应头，证明仅检查状态码会漏报。线上尚未部署本次改动，本地对照不能当作优化提速倍率。
+- 当前链路存在代理因素，尚无独立大陆直连与海外节点；这些数字不代表地区统计或真实访客 p75。域名/CDN 后台配置和线上性能目标仍未验收。
+
+## Cloudflare 已应用配置（2026-10-16）
+
+浏览器核查确认：根域和 www 的 CNAME 均指向 be-hop.github.io，开启代理；现有 www/wechat* Worker 必须保留。边缘 Universal SSL 有效，当前回源模式 Full，Always Use HTTPS 原关闭，现已启用并实测 HTTP 301 到同路径 HTTPS。
+
+已启用三条互不重叠的缓存规则：
+
+| 规则 | 实际范围与行为 |
+| --- | --- |
+| Public HTML - short edge cache | www 域名、GET/HEAD、无查询串与 Authorization；仅列出的公开列表页及 works/projects/AI/forum/2026 静态页面路径。Eligible for cache；Edge 尊重源站缓存头，无头绕过；Browser bypass。源站当前 max-age=600，即10分钟。 |
+| Bypass updates, data and webhook | 两域名下 sw.js、release.json、assets/data/forum-*、wechat*、api/* 绕过缓存。 |
+| Content-hash assets - one year | www 下 assets/bundles/、media/optimized/，GET/HEAD，Edge/Browser 一年；HTTP >=400 设置 No store，防止失败文件被长期存储。保留默认完整查询串cache key。 |
+
+免费计划 UI 的自定义 Edge TTL 最低2小时，因此未硬设300秒，也未把HTML改成2小时。上述源站10分钟策略替代前文5分钟目标；发布后应清理受影响HTML，否则最长仍有10分钟边缘陈旧。若要精确5分钟，须另行验证可在缓存查找前设置CDN源响应头的方案，不能声称当前已实现。
+
+实测首页已由MISS进入HIT，响应的Cache-Control包含no-store（Browser bypass），并不代表没有边缘缓存。sw/论坛快照仍为DYNAMIC；构造不存在的哈希资源路径返回404和BYPASS。即使命中HIT，当前客户端到LAX边缘的正文下载仍有停滞。六次协议小样本中，两次HTTP/2 gzip分别约2.99/12.78秒完整成功，两次HTTP/2 identity正文超时，两次HTTP/1.1 TLS超时；样本不足以断言协议或压缩是根因，不据此禁用某协议。
+
+指定GitHub Pages源IP且保留www/根域SNI时，证书域名校验失败；GitHub HTTPS开关不可用的问题尚未修复。未切换DNS-only，也未开启Full(strict)。DNS-only会暂时绕过Cloudflare缓存及防护，可能中断wechat Worker，且在GitHub证书签发前出现HTTPS错误；恢复受DNS缓存影响。已向用户说明，需要另行明确授权和维护时段，未获授权前不操作。前端代码仍保留本地，未发布。
+
+## Cloudflare 页面数据解读（2026-10-16 读取）
+
+账户分析 Last 7 days：23.24k请求、947.14MB带宽、652访问量；加密请求28.91%、缓存请求2.22%、缓存带宽15.09%、4xx率54.25%、5xx率0.08%。这些是滚动窗口历史数据，变化箭头不是本次优化效果；请求和访问量不能等同真人数。当前域名列表仅一个域名，仍区分账户与域名口径。
+
+域名 Requests Last 24 hours：约5.97k请求；2xx约2.44k、3xx215、4xx约3.31k、5xx2；具体404约3.25k，522两次。404下钻的路径排行主要探测.npmrc、.env、db.php、phpinfo.php等；匿名主来源及Curl客户端各约2.96k次，支持自动扫描解释。排行使用20%抽样并由后台估算，不能当全量精确日志；不保存具体IP，不按国家判断真实访客身份。
+
+4xx高比例和低总缓存率均被大量无效路径请求影响，不意味着一半正常访客遇错，也不能据此证明扫描拖慢站点。低5xx率同样不证明正文完整下载或LCP达标。后续重点应是有效页面/资源命中、实际下载完成率与真实浏览器LCP/CLS；独立地区验收仍未完成。

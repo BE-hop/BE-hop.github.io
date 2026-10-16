@@ -77,19 +77,18 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (request.method !== 'GET' || !isLocal(url) || url.pathname === '/sw.js' || url.pathname === '/release.json' || url.pathname.startsWith('/api/')) return;
   if (request.mode === 'navigate') {
-    // Match the earlier cache/network race, but bound stalled response bodies too.
+    // Deliver headers/body immediately; only complete documents enter the cache.
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
-    const fresh = (async () => {
-      try {
-        const response = await fetch(request, { signal: controller.signal });
-        // A 200 header alone does not mean the document finished downloading.
-        await response.clone().arrayBuffer();
-        return response;
-      } finally { clearTimeout(timeout); }
-    })();
-    // Register immediately, before asynchronous work; cache failure cannot reject navigation.
-    event.waitUntil(fresh.then(response => response.ok ? store(request, response) : null).catch(() => {}));
+    const fresh = fetch(request, { signal: controller.signal });
+    const completed = fresh.then(async response => {
+      await response.clone().arrayBuffer();
+      if (response.ok) await store(request, response);
+    });
+    event.waitUntil(completed.catch(async () => {
+      const client = await self.clients.get?.(event.resultingClientId || event.clientId);
+      client?.postMessage({ type: 'NAVIGATION_INTERRUPTED' });
+    }).finally(() => clearTimeout(timeout)));
     event.respondWith((async () => {
       const currentCache = await caches.open(SHELL);
       const cached = (await currentCache.match(request)) || (await caches.match(request));
@@ -106,17 +105,31 @@ self.addEventListener('fetch', event => {
     return;
   }
   const liveData = url.pathname.startsWith('/assets/data/forum-');
+  const bounded = /\.(css|js)$/i.test(url.pathname) || liveData;
+  let finishCache;
+  const cacheWork = new Promise(resolve => { finishCache = resolve; });
+  // Extend lifetime synchronously, even if cache lookup or fetch takes time.
+  event.waitUntil(cacheWork);
   event.respondWith((async () => {
-    if (!liveData) {
-      const cached = await caches.match(request);
-      if (cached) return cached;
-    }
+    let timer;
     try {
-      const response = await fetch(request, liveData ? { cache: 'no-cache' } : {});
-      if (response.ok) event.waitUntil(store(request, response));
+      const bucket = await caches.open(SHELL);
+      const cached = (await bucket.match(request)) || (await caches.match(request));
+      if (!liveData && cached) return cached;
+      const controller = new AbortController();
+      if (bounded) timer = setTimeout(() => controller.abort(), 8000);
+      const response = await fetch(request, { ...(liveData ? { cache: 'no-cache' } : {}), signal: controller.signal });
+      // A hung CSS/JS body is just as blocking as hung response headers.
+      if (bounded) await response.clone().arrayBuffer();
+      if (response.ok) {
+        finishCache(store(request, response).catch(() => {}));
+      }
       return response;
     } catch {
       return (await caches.match(request)) || new Response('', { status: 503, statusText: 'Not available offline' });
+    } finally {
+      clearTimeout(timer);
+      finishCache();
     }
   })());
 });

@@ -17,6 +17,7 @@ lang-switcher: true
   <link rel="stylesheet" href="{{ site.baseurl }}/css/showcase-system.css">
   <link rel="stylesheet" href="{{ site.baseurl }}/css/works-intro.css">
 <link rel="stylesheet" href="/css/local-fonts.css">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
 </head>
 <body class="works-page showcase-page theme-works bg-background text-foreground">
   {% include nav.html %}
@@ -145,10 +146,10 @@ lang-switcher: true
     </section>
   </main>
 
-  <script src="{{ site.baseurl }}/js/site-nav.js"></script>
-  <script src="{{ site.baseurl }}/js/portfolio.js"></script>
-  <script src="{{ site.baseurl }}/js/showcase-system.js"></script>
-  <script src="{{ site.baseurl }}/js/works-intro.js"></script>
+  <script defer src="{{ site.baseurl }}/js/site-nav.js"></script>
+  <script defer src="{{ site.baseurl }}/js/portfolio.js"></script>
+  <script defer src="{{ site.baseurl }}/js/showcase-system.js"></script>
+  <script defer src="{{ site.baseurl }}/js/works-intro.js"></script>
   {% include editor-bridge.html %}
 </body>
 </html>

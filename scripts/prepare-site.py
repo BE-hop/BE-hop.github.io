@@ -94,10 +94,15 @@ hash_input=commit.encode()
 for p in sorted(site.rglob('*')):
  if p.is_file() and p.suffix in ['.css','.js','.html']:hash_input+=hashlib.sha256(p.read_bytes()).digest()
 version=hashlib.sha256(hash_input).hexdigest()[:16]
+site_url=re.search(r'^url:\s*"([^"]+)"', (root/'_config.yml').read_text(), re.M)[1].rstrip('/')
 for p in site.rglob('*.html'):
  text=p.read_text();text=re.sub(r'<script\b[^>]*src=[\"\'][^\"\']*sw-registration\.js[^\"\']*[\"\'][^>]*>\s*</script>','',text)
+ if not re.search(r'<link\b[^>]*rel=[\"\']canonical',text) and not re.search(r'http-equiv=[\"\']refresh',text,re.I):
+  route='/'+p.relative_to(site).as_posix()
+  if route.endswith('/index.html'):route=route[:-10]
+  text=text.replace('</head>',f'<link rel="canonical" href="{site_url}{route}"></head>')
  text=text.replace('</head>',f'<meta name="behop-release" content="{version}"><meta name="behop-commit" content="{commit}"></head>')
- text=text.replace('</body>',f'<script defer src="/js/sw-registration.js?v={version}"></script></body>')
+ text=text.replace('</head>',f'<script async src="/js/sw-registration.js?v={version}"></script></head>')
  # Stable release query makes old and new assets distinct in browser and SW caches.
  text=re.sub(r'((?:src|href)=[\"\'])(/[^\"\'?#]+\.(?:css|js))(?:\?[^\"\']*)?([\"\'])',lambda m:m[1]+m[2]+'?v='+hashlib.sha256((site/m[2].lstrip('/')).read_bytes()).hexdigest()[:16]+m[3] if (site/m[2].lstrip('/')).is_file() else m[0],text)
  text=page_assets.bundle_page(site,p,text)

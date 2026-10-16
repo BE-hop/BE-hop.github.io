@@ -17,7 +17,7 @@ function runtime() {
   };
   const self = { location: { origin:'https://example.test' }, clients:{async claim(){}}, async skipWaiting(){skip++;}, addEventListener(type,fn){handlers[type]=fn;} };
   vm.runInNewContext(code,{self,caches,Request,Response,URL,Promise,AbortController,setTimeout:(fn,ms)=>setTimeout(fn,ms/100),clearTimeout,fetch:async(_request,options={})=>{if(offline)throw new Error('offline');if(stalled)return new Promise((_,reject)=>options.signal.addEventListener('abort',()=>reject(Error('timeout'))));if(bodyStalled)return new Response(new ReadableStream({start(c){options.signal.addEventListener('abort',()=>c.error(Error('body timeout')));}}));return new Response(networkBody);}});
-  async function dispatch(request) {const pending=[];let response;handlers.fetch({request,waitUntil(p){pending.push(p);},respondWith(p){response=p;}});const result=await response;await Promise.all(pending);return result;}
+  async function dispatch(request, settle = true) {const pending=[];let response;handlers.fetch({request,waitUntil(p){pending.push(p);},respondWith(p){response=p;}});const result=await response;if (settle) await Promise.all(pending);return result;}
   return {caches,handlers,dispatch,setOffline:v=>offline=v,setBody:v=>networkBody=v,setStalled:v=>stalled=v,setBodyStalled:v=>bodyStalled=v,get skip(){return skip;}};
 }
 test('online navigation replaces old HTML and offline navigation returns visited content',async()=>{
@@ -44,10 +44,20 @@ test('stalled online headers fall back to visited HTML within the grace period',
  const cache=await r.caches.open('behop-shell-__BUILD_VERSION__');await cache.put(req,new Response('usable cached page'));r.setStalled(true);
  assert.equal(await (await r.dispatch(req)).text(),'usable cached page');
 });
-test('a 200 header with a stalled document body falls back instead of forwarding partial HTML',async()=>{
+test('streamed HTML is returned before its body completes; failed bodies never enter cache',async()=>{
  const r=runtime();const req=new Request('https://example.test/forum/');Object.defineProperty(req,'mode',{value:'navigate'});
- const cache=await r.caches.open('behop-shell-__BUILD_VERSION__');await cache.put('/offline.html',new Response('retry page'));r.setBodyStalled(true);
- assert.equal(await (await r.dispatch(req)).text(),'retry page');
+ const cache=await r.caches.open('behop-shell-__BUILD_VERSION__');r.setBodyStalled(true);
+ const response=await r.dispatch(req,false);
+ assert.equal(response.status,200);
+ await assert.rejects(response.text(),/body timeout/);
+ assert.equal(await cache.match(req),undefined);
+});
+test('stalled CSS headers and JS bodies terminate with explicit failures',async()=>{
+ for (const body of [false,true]) {
+  const r=runtime();if(body)r.setBodyStalled(true);else r.setStalled(true);
+  const response=await r.dispatch(new Request('https://example.test/js/app.js?v=one'));
+  assert.equal(response.status,503);
+ }
 });
 
 test('one-time navigation recovery never reloads readable pages or forms', async () => {
@@ -71,4 +81,17 @@ test('explicit reload retrieves fresh HTML instead of winning the old-cache race
  const r=runtime();const req=new Request('https://example.test/works/',{cache:'reload'});Object.defineProperty(req,'mode',{value:'navigate'});
  await (await r.caches.open('behop-shell-__BUILD_VERSION__')).put(req,new Response('cached'));
  assert.equal(await (await r.dispatch(req)).text(),'fresh');
+});
+
+test('head runtime registers independently before the body or application is ready',async()=>{
+ const source=fs.readFileSync(new URL('../js/sw-registration.js',import.meta.url),'utf8');
+ const listeners={};let registrations=0;
+ vm.runInNewContext(source,{
+  navigator:{serviceWorker:{register(){registrations++;return Promise.resolve(null);},addEventListener(){}}},
+  location:{hostname:'example.test',search:''},URLSearchParams,Promise,
+  document:{readyState:'loading',body:null,addEventListener(type,fn){listeners[type]=fn;}},
+  setTimeout(){return 1;},clearTimeout(){}
+ });
+ assert.equal(registrations,1);
+ assert.equal(typeof listeners.DOMContentLoaded,'function');
 });

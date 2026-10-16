@@ -10,7 +10,7 @@ class AssetVersions(unittest.TestCase):
     (root/'index.html').write_text('<head><link rel="stylesheet" href="/css/example.css"></head><body>'+text+'<script src="/js/sw-registration.js"></script></body>')
     (root/'sw.js').write_text('const VERSION="__BUILD_VERSION__";')
     subprocess.run(['python3',str(SCRIPT),'--site',str(root)],check=True,stdout=subprocess.DEVNULL)
-    output=(root/'index.html').read_text();return re.search(r'href="([^"]+)"',output)[1],re.search(r'name="behop-release" content="([^"]+)"',output)[1]
+    output=(root/'index.html').read_text();self.assertRegex(output, r'<head>[\s\S]*<script async src="/js/sw-registration[\s\S]*</head>');return re.search(r'href="([^"]+)"',output)[1],re.search(r'name="behop-release" content="([^"]+)"',output)[1]
    first=build('old forum');second=build('updated forum')
    self.assertEqual(first[0],second[0]);self.assertNotEqual(first[1],second[1])
    (root/'css/example.css').write_text('body{color:blue}');third=build('updated forum');self.assertNotEqual(second[0],third[0])
@@ -22,7 +22,11 @@ class AssetVersions(unittest.TestCase):
    (root/'css/a.css').write_text('body{color:green}')
    html='<head><link rel="stylesheet" href="/css/a.css"></head><body><script src="/js/a.js"></script><script src="/js/b.js"></script><script defer src="/js/sw-registration.js?v=123"></script></body>'
    output=mod.bundle_page(root,root/'works/index.html',html)
-   self.assertNotIn('window.first',output);self.assertIn('defer src="/js/sw-registration.js',output)
+   for page in ['index.html','behop-ai-product/index.html']:
+    entry=mod.bundle_page(root,root/page,html)
+    self.assertIn('<script defer src="/assets/bundles/',entry)
+    self.assertEqual(entry.count('rel="stylesheet"'),1)
+   self.assertIn('<script defer src="/assets/bundles/',output);self.assertNotIn('window.first',output);self.assertIn('defer src="/js/sw-registration.js',output)
    scripts=list((root/'assets/bundles').glob('*.js'));self.assertEqual(len(scripts),1)
    code=scripts[0].read_text();self.assertLess(code.index('window.first'),code.index('window.second'));self.assertIn('\n;\n',code)
 if __name__=='__main__':unittest.main()

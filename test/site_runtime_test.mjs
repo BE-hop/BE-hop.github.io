@@ -60,3 +60,15 @@ test('one-time navigation recovery never reloads readable pages or forms', async
   vm.runInNewContext(bootstrap,context);assert.equal(registrations,1);
  }
 });
+
+test('slow navigation prefers the current cache over an older release',async()=>{
+ const r=runtime();const req=new Request('https://example.test/works/');Object.defineProperty(req,'mode',{value:'navigate'});
+ await (await r.caches.open('behop-shell-old')).put(req,new Response('obsolete'));
+ await (await r.caches.open('behop-shell-__BUILD_VERSION__')).put(req,new Response('current'));
+ r.setStalled(true);assert.equal(await (await r.dispatch(req)).text(),'current');
+});
+test('explicit reload retrieves fresh HTML instead of winning the old-cache race',async()=>{
+ const r=runtime();const req=new Request('https://example.test/works/',{cache:'reload'});Object.defineProperty(req,'mode',{value:'navigate'});
+ await (await r.caches.open('behop-shell-__BUILD_VERSION__')).put(req,new Response('cached'));
+ assert.equal(await (await r.dispatch(req)).text(),'fresh');
+});

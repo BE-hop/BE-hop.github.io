@@ -91,8 +91,9 @@ self.addEventListener('fetch', event => {
     // Register immediately, before asynchronous work; cache failure cannot reject navigation.
     event.waitUntil(fresh.then(response => response.ok ? store(request, response) : null).catch(() => {}));
     event.respondWith((async () => {
-      const cached = await caches.match(request);
-      if (cached) {
+      const currentCache = await caches.open(SHELL);
+      const cached = (await currentCache.match(request)) || (await caches.match(request));
+      if (cached && request.cache !== 'reload') {
         let timer;
         const grace = new Promise(resolve => { timer = setTimeout(() => resolve(cached), 1000); });
         const response = await Promise.race([fresh.catch(() => cached), grace]);
@@ -100,7 +101,7 @@ self.addEventListener('fetch', event => {
         return response;
       }
       try { return await fresh; }
-      catch { return (await caches.match('/offline.html')) || new Response('Connection timed out. Please retry.', { status: 503 }); }
+      catch { return cached || (await caches.match('/offline.html')) || new Response('Connection timed out. Please retry.', { status: 503 }); }
     })());
     return;
   }

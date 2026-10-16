@@ -66,7 +66,8 @@ for p in site.rglob('*.html'):
  def spread(m):
   tag=m.group();v=resolve(attr(tag,'data-src'),p)
   if not v:return tag
-  return put(put(tag,'data-src',v['default']),'data-full-src',v['full'])
+  small=next((u for w,u in v['items'] if w>=768),v['items'][-1][1])
+  return put(put(put(tag,'data-src',v['default']),'data-src-small',small),'data-full-src',v['full'])
  text=re.sub(r'<span\b[^>]*data-book-spread[^>]*>',spread,text)
  # Lightweight social image: never download a 3MB hidden photo.
  text=re.sub(r'<img\b[^>]*width="0"[^>]*>', '', text)

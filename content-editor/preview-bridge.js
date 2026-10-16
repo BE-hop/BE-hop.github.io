@@ -11,7 +11,7 @@
   }
 
   function clean(value) { return String(value == null ? "" : value).replace(/\s+/g, " ").trim() }
-  function imagePath(node) { try { return new URL(node.currentSrc || node.src, location.href).pathname } catch (_) { return "" } }
+  function imagePath(node) { try { return new URL(node.dataset.originalSrc || node.currentSrc || node.src, location.href).pathname } catch (_) { return "" } }
 
   function candidates(binding) {
     if (binding.kind === "markdown") return [...document.querySelectorAll("[data-behop-markdown]")]
@@ -69,7 +69,12 @@
   function applyValue(binding) {
     decorated.forEach((item, node) => {
       if (item.key !== binding.key) return
-      if (binding.kind === "image") node.src = binding.previewValue || binding.value
+      if (binding.kind === "image") {
+        node.removeAttribute("srcset")
+        node.removeAttribute("sizes")
+        node.dataset.originalSrc = binding.value
+        node.src = binding.previewValue || binding.value
+      }
       else {
         const value = binding.localized ? binding.values[state.lang] : binding.value
         // The focused node already contains the user's current input. Replacing

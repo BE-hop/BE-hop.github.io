@@ -39,10 +39,10 @@ def resolve(value,base):
  except ValueError:return None
 
 def attr(tag,name):
- m=re.search(r'\b'+re.escape(name)+r'=[\"\']([^\"\']*)[\"\']',tag);return m.group(1) if m else None
+ m=re.search(r'(?<![\w-])'+re.escape(name)+r'=[\"\']([^\"\']*)[\"\']',tag);return m.group(1) if m else None
 
 def put(tag,name,value):
- pattern=r'\b'+re.escape(name)+r'=[\"\'][^\"\']*[\"\']'
+ pattern=r'(?<![\w-])'+re.escape(name)+r'=[\"\'][^\"\']*[\"\']'
  if re.search(pattern,tag):return re.sub(pattern,lambda m:f'{name}="{value}"',tag,count=1)
  return tag[:-1].rstrip('/ ')+f' {name}="{value}">'
 
@@ -51,7 +51,7 @@ for p in site.rglob('*.html'):
  def image(m):
   tag=m.group();src=attr(tag,'src');v=resolve(src,p)
   if not v:return tag
-  tag=put(tag,'src',v['default']);tag=put(tag,'srcset',', '.join(f'{u} {w}w' for w,u in v['items']))
+  tag=put(tag,'data-original-src',src);tag=put(tag,'src',v['default']);tag=put(tag,'srcset',', '.join(f'{u} {w}w' for w,u in v['items']))
   sizes='(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 90vw, 900px'
   context=text[max(0,m.start()-900):m.start()]
   if 'portfolio-entry__previews' in context:sizes='(max-width: 760px) 120px, 240px'

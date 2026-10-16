@@ -19,6 +19,7 @@ class Images(unittest.TestCase):
    for x in range(100,2900,50):draw.line((x,100,x,1400),fill='black',width=3)
    im.save(source);before=source.read_bytes()
    (root/'css/test.css').write_text('body{background:url("/img/portfolio-page-test.png")}')
+   (root/'css/portfolio-books.css').write_text('.cover{background:url("/img/portfolio-page-test.png")}')
    (root/'index.html').write_text('<head></head><body><img src="/img/portfolio-page-test.png" fetchpriority="high"><span data-book-spread data-src="/img/portfolio-page-test.png"></span></body>')
    (root/'sw.js').write_text('const VERSION="__BUILD_VERSION__";')
    subprocess.run(['python3',str(SCRIPT.with_name('prepare-site.py')),'--site',str(root)],check=True,stdout=subprocess.DEVNULL)
@@ -26,4 +27,5 @@ class Images(unittest.TestCase):
    html=(root/'index.html').read_text();self.assertIn('sizes="100vw"',html);self.assertIn('data-srcset=',html);self.assertIn('-2560.webp',html)
    with Image.open(next((root/'media/optimized').glob('*-2560.webp'))) as variant:self.assertEqual(variant.size,(2560,1280))
    css=(root/'css/test.css').read_text();self.assertIn('image-set(',css);self.assertNotIn('-480.webp',css)
+   covers=(root/'css/portfolio-books.css').read_text();self.assertIn('-768.webp") 2.000x',covers);self.assertNotIn('-2560.webp',covers)
 if __name__=='__main__':unittest.main()

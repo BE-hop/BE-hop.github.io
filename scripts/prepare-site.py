@@ -78,7 +78,11 @@ for p in site.rglob('*.css'):
  text=p.read_text()
  def css(m):
   v=resolve(m.group(2),p)
-  if v:return 'image-set('+', '.join(f'url("{u}") {w / min(v["width"], 1280):.3f}x' for w,u in v['items'] if w>=min(v['width'],1280))+')'
+  if v:
+   # Book covers are small thumbnails, unlike full-width CSS backgrounds.
+   base=384 if p.name=='portfolio-books.css' else 1280
+   choices=[(w,u) for w,u in v['items'] if w>=min(v['width'],base) and (base!=384 or w<=1280)]
+   return 'image-set('+', '.join(f'url("{u}") {w / min(v["width"],base):.3f}x' for w,u in choices)+')'
   if m.group(2).startswith(('data:','http:','https:','//','#')):return m.group()
   raw=urlsplit(m.group(2)).path
   font=(site/raw.lstrip('/')) if raw.startswith('/') else (p.parent/raw).resolve()

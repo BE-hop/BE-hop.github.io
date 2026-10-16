@@ -5,6 +5,22 @@ const MEDIA = `behop-media-${VERSION}`;
 const LEGACY = ['main-precache-then-runtime', 'precache-v1', 'runtime', 'main-precache-v1', 'main-runtime'];
 const MAX_MEDIA_BYTES = 60 * 1024 * 1024;
 let mediaQueue = Promise.resolve();
+let mediaIndex;
+// Recover sizes once per worker lifetime, then update only the changed entry.
+async function getMediaIndex() {
+  if (mediaIndex) return mediaIndex;
+  mediaIndex = new Map();
+  const names = (await caches.keys()).filter(name => name.startsWith('behop-media-') && name !== MEDIA).concat(MEDIA);
+  for (const name of names) {
+    const bucket = await caches.open(name);
+    for (const key of await bucket.keys()) {
+      const response = await bucket.match(key);
+      const size = Number(response.headers.get('content-length')) || (await response.blob()).size;
+      mediaIndex.set(name + key.url, { bucket, key, size });
+    }
+  }
+  return mediaIndex;
+}
 const isLocal = url => url.origin === self.location.origin;
 const isMedia = request => request.destination === 'image' || /\.(webp|png|jpe?g|gif)$/i.test(new URL(request.url).pathname);
 async function store(request, response) {
@@ -14,21 +30,19 @@ async function store(request, response) {
   if (media) {
     // Serialize eviction so simultaneous image loads cannot race the byte limit.
     mediaQueue = mediaQueue.catch(() => {}).then(async () => {
+      const index = await getMediaIndex();
       const cache = await caches.open(MEDIA);
-      await cache.delete(request);
+      const size = Number(copy.headers.get('content-length')) || (await copy.clone().blob()).size;
       await cache.put(request, copy);
-      const names = (await caches.keys()).filter(name => name.startsWith('behop-media-') && name !== MEDIA).concat(MEDIA);
-      const entries = [];
-      for (const name of names) {
-        const bucket = await caches.open(name);
-        for (const key of await bucket.keys()) entries.push({ bucket, key });
-      }
-      let bytes = 0;
-      for (let i = entries.length - 1; i >= 0; i--) {
-        const { bucket, key } = entries[i];
-        const value = await bucket.match(key);
-        bytes += Number(value.headers.get('content-length')) || (await value.blob()).size;
-        if (bytes > MAX_MEDIA_BYTES || entries.length - i > 100) await bucket.delete(key);
+      const id = MEDIA + request.url;
+      index.delete(id);
+      index.set(id, { bucket: cache, key: request, size });
+      let bytes = [...index.values()].reduce((sum, entry) => sum + entry.size, 0);
+      for (const [entryId, entry] of index) {
+        if (bytes <= MAX_MEDIA_BYTES && index.size <= 100) break;
+        await entry.bucket.delete(entry.key);
+        bytes -= entry.size;
+        index.delete(entryId);
       }
     });
     await mediaQueue;
@@ -80,7 +94,7 @@ self.addEventListener('fetch', event => {
     // Deliver headers/body immediately; only complete documents enter the cache.
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
-    const fresh = fetch(request, { signal: controller.signal });
+    const fresh = fetch(request, { signal: controller.signal }).finally(() => clearTimeout(timeout));
     const completed = fresh.then(async response => {
       await response.clone().arrayBuffer();
       if (response.ok) await store(request, response);
@@ -88,7 +102,7 @@ self.addEventListener('fetch', event => {
     event.waitUntil(completed.catch(async () => {
       const client = await self.clients.get?.(event.resultingClientId || event.clientId);
       client?.postMessage({ type: 'NAVIGATION_INTERRUPTED' });
-    }).finally(() => clearTimeout(timeout)));
+    }));
     event.respondWith((async () => {
       const currentCache = await caches.open(SHELL);
       const cached = (await currentCache.match(request)) || (await caches.match(request));
@@ -108,28 +122,25 @@ self.addEventListener('fetch', event => {
   const bounded = /\.(css|js)$/i.test(url.pathname) || liveData;
   let finishCache;
   const cacheWork = new Promise(resolve => { finishCache = resolve; });
-  // Extend lifetime synchronously, even if cache lookup or fetch takes time.
   event.waitUntil(cacheWork);
   event.respondWith((async () => {
     let timer;
     try {
       const bucket = await caches.open(SHELL);
       const cached = (await bucket.match(request)) || (await caches.match(request));
-      if (!liveData && cached) return cached;
+      if (!liveData && cached) { finishCache(); return cached; }
       const controller = new AbortController();
       if (bounded) timer = setTimeout(() => controller.abort(), 8000);
       const response = await fetch(request, { ...(liveData ? { cache: 'no-cache' } : {}), signal: controller.signal });
-      // A hung CSS/JS body is just as blocking as hung response headers.
-      if (bounded) await response.clone().arrayBuffer();
-      if (response.ok) {
-        finishCache(store(request, response).catch(() => {}));
-      }
+      // Headers have arrived. Slow bodies must remain readable, not be aborted.
+      clearTimeout(timer);
+      finishCache(response.ok ? store(request, response).catch(() => {}) : undefined);
       return response;
     } catch {
+      finishCache();
       return (await caches.match(request)) || new Response('', { status: 503, statusText: 'Not available offline' });
     } finally {
       clearTimeout(timer);
-      finishCache();
     }
   })());
 });

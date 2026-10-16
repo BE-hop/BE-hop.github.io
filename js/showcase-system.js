@@ -117,54 +117,5 @@
     updateNavTone()
   }
 
-  const homeSections = [...document.querySelectorAll("[data-home-section]")]
-  const canSnapSections = window.matchMedia("(min-width: 1024px) and (hover: hover) and (pointer: fine)")
-  if (homeSections.length > 1 && canSnapSections.matches && !reduceMotion.matches) {
-    let wheelIntent = 0
-    let lastWheelAt = 0
-    let snapLocked = false
-
-    const sectionIndexAtViewport = () => {
-      const probe = window.scrollY + 96
-      let activeIndex = 0
-      homeSections.forEach((section, index) => {
-        if (section.offsetTop <= probe) activeIndex = index
-      })
-      return activeIndex
-    }
-
-    const snapToSection = (index) => {
-      const target = homeSections[index]
-      if (!target) return
-      snapLocked = true
-      window.scrollTo({ top: target.offsetTop, behavior: "smooth" })
-      window.setTimeout(() => {
-        snapLocked = false
-        wheelIntent = 0
-      }, 720)
-    }
-
-    window.addEventListener("wheel", (event) => {
-      if (snapLocked || event.ctrlKey || event.shiftKey || Math.abs(event.deltaY) < 2) return
-      if (event.target instanceof Element && event.target.closest("input, select, textarea, [contenteditable='true'], [data-native-scroll]")) return
-
-      const now = performance.now()
-      if (now - lastWheelAt > 180 || Math.sign(wheelIntent) !== Math.sign(event.deltaY)) wheelIntent = 0
-      lastWheelAt = now
-      wheelIntent += event.deltaY
-      if (Math.abs(wheelIntent) < 28) return
-
-      const direction = Math.sign(wheelIntent)
-      const currentIndex = sectionIndexAtViewport()
-      const currentBounds = homeSections[currentIndex].getBoundingClientRect()
-      const atSectionTop = Math.abs(currentBounds.top) <= 42
-      const atSectionBottom = currentBounds.bottom <= window.innerHeight + 56
-      const shouldSnapNext = direction > 0 && currentIndex < homeSections.length - 1 && (currentIndex === 0 || atSectionBottom)
-      const shouldSnapPrevious = direction < 0 && currentIndex > 0 && atSectionTop
-
-      if (!shouldSnapNext && !shouldSnapPrevious) return
-      event.preventDefault()
-      snapToSection(currentIndex + direction)
-    }, { passive: false })
-  }
+  // Native scrolling keeps trackpads, wheel input and touch responsive.
 })()

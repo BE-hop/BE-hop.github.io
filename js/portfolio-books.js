@@ -12,7 +12,7 @@
   const spreads = { planning: [], landscape: [], spatial: [] }
   root.querySelectorAll("[data-book-spread]").forEach((node) => {
     const book = node.dataset.book
-    if (spreads[book]) spreads[book].push({ src: node.dataset.srcSmall || node.dataset.src, preview: node.dataset.srcPreview, small: node.dataset.srcSmall || node.dataset.src, full: node.dataset.fullSrc || node.dataset.src, en: node.dataset.altEn, zh: node.dataset.altZh })
+    if (spreads[book]) spreads[book].push({ src: node.dataset.srcSmall || node.dataset.src, preview: node.dataset.srcPreview, small: node.dataset.srcSmall || node.dataset.src, full: node.dataset.fullSrc || node.dataset.src, srcset: node.dataset.srcset, en: node.dataset.altEn, zh: node.dataset.altZh })
   })
 
   const reader = root.querySelector("#portfolio-reader")
@@ -35,7 +35,7 @@
   const coverButtons = Array.from(root.querySelectorAll("[data-book-select]"))
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)")
-  const STRIP_COUNT = 18
+  const STRIP_COUNT = 8
   const PAGE_SPAN = .5
   const CURL_PEAK = .6
   const MAGNIFICATION = 2.3
@@ -59,55 +59,63 @@
   const pageIndex = () => state.pages[state.book]
   const currentSpread = () => spreads[state.book][pageIndex()]
 
-  const loadSpread = (spread) => new Promise((resolve) => {
-    if (!spread) { resolve(false); return }
-    if (spread.width && spread.height) { resolve(true); return }
-    const image = new Image()
-    const timeout = setTimeout(() => { image.src = ""; resolve(false) }, 12000)
-    image.onload = () => {
-      clearTimeout(timeout)
-      spread.width = image.naturalWidth
-      spread.height = image.naturalHeight
-      resolve(true)
-    }
-    image.onerror = () => { clearTimeout(timeout); resolve(false) }
-    image.src = spread.src
-  })
+  const downloads = new Map()
+  const download = (src) => {
+    if (downloads.has(src)) return downloads.get(src)
+    const task = new Promise((resolve) => {
+      const image = new Image()
+      const timer = setTimeout(() => { image.src = ""; resolve(null) }, 20000)
+      image.onload = () => { clearTimeout(timer); resolve(image) }
+      image.onerror = () => { clearTimeout(timer); resolve(null) }
+      image.src = src
+    }).then((image) => { if (!image) downloads.delete(src);
+      // Do not retain decoded full-size boards for an entire volume.
+      while (downloads.size > 6) downloads.delete(downloads.keys().next().value);
+      return image })
+    downloads.set(src, task)
+    return task
+  }
+  const loadSpread = async (spread) => {
+    if (!spread) return false
+    const image = await download(spread.small)
+    if (image) { spread.width = image.naturalWidth; spread.height = image.naturalHeight }
+    return !!image
+  }
+  const readingSource = (spread) => {
+    const width = canvas.getBoundingClientRect().width * Math.min(window.devicePixelRatio || 1, 2.5)
+    const candidates = (spread.srcset || "").split(",").map((entry) => entry.trim().split(/\s+/)).filter((entry) => entry.length === 2)
+    return (candidates.find((entry) => parseInt(entry[1], 10) >= width) || candidates[candidates.length - 1] || [spread.full])[0]
+  }
+  let imageSequence = 0
   const setImage = (image, spread, visible) => {
     if (!spread) return
-    const expected = spread.src
-    image.dataset.requestedSrc = expected
+    const sequence = String(++imageSequence)
+    image.dataset.requestedSrc = spread.src
+    image.dataset.sequence = sequence
     image.alt = visible ? (language() === "zh" ? spread.zh : spread.en) : ""
-    // Do not replace a decoded preview with a broken network image.
-    image.src = spread.preview || spread.small
-    const pending = new Image()
-    let finished = false
-    const failed = () => {
-      if (finished || image.dataset.requestedSrc !== expected) return
-      finished = true
-      clearTimeout(timeout)
-      pending.src = ""
-      if (!visible) return
-      fallback.hidden = false
-      fallback.textContent = t("Image download stalled. Preview retained. ", "图像下载未完成，暂时保留预览。")
-      const retry = document.createElement("button")
-      retry.type = "button"
-      retry.textContent = t("Retry image", "重新加载图面")
-      retry.onclick = () => { fallback.hidden = true; setImage(image, spread, visible) }
-      fallback.append(retry)
+    if (image.src !== new URL(spread.small, location.href).href) image.src = spread.small
+    const expected = visible ? readingSource(spread) : spread.small
+    download(expected).then((loaded) => {
+      if (image.dataset.sequence !== sequence) return
+      if (loaded) {
+        spread.width = loaded.naturalWidth
+        spread.height = loaded.naturalHeight
+        image.src = expected
+        if (visible) { fallback.hidden = true; updateLoupe() }
+      } else if (visible) {
+        fallback.hidden = false
+        fallback.textContent = t("Image download stalled. You can keep turning pages. ", "图面下载较慢，仍可继续翻页。")
+        const retry = document.createElement("button")
+        retry.type = "button"
+        retry.textContent = t("Retry image", "重新加载图面")
+        retry.onclick = () => { fallback.hidden = true; setImage(image, spread, visible) }
+        fallback.append(retry)
+      }
+    })
+    if (visible) {
+      const link = root.querySelector("[data-reader-full]")
+      if (link) { link.href = spread.full; link.textContent = t("Open detailed image", "打开清晰大图") }
     }
-    const timeout = setTimeout(failed, 12000)
-    pending.onerror = failed
-    pending.onload = () => {
-      if (finished || image.dataset.requestedSrc !== expected) return
-      finished = true
-      clearTimeout(timeout)
-      spread.width = pending.naturalWidth
-      spread.height = pending.naturalHeight
-      image.src = expected
-      if (visible) { fallback.hidden = true; updateLoupe() }
-    }
-    pending.src = expected
   }
   const fittedImage = (spread, rect) => {
     const sourceWidth = spread.width || rect.width
@@ -329,15 +337,9 @@
     root.classList.add("is-turning")
     reader.classList.add("is-loading")
     easeLoupeAside(direction)
-    const ready = await loadSpread(target)
+    // Preview and detail downloads never lock navigation.
+    loadSpread(target)
     reader.classList.remove("is-loading")
-    if (!ready) {
-      state.turning = false
-      root.classList.remove("is-turning")
-      fallback.hidden = false
-      fallback.textContent = t("This board could not be loaded. Please try again.", "这张图面无法加载，请重试。")
-      return null
-    }
     if (reducedMotion.matches) {
       state.pages[state.book] += direction
       state.turning = false
@@ -466,7 +468,12 @@
   const endLoupeDrag = (event) => { if (state.loupeDrag && event.pointerId === state.loupeDrag.id) state.loupeDrag = null }
   loupe.addEventListener("pointerup", endLoupeDrag)
   loupe.addEventListener("pointercancel", endLoupeDrag)
-  window.addEventListener("resize", updateLoupe)
+  let resizeTimer
+  window.addEventListener("resize", () => {
+    updateLoupe()
+    clearTimeout(resizeTimer)
+    resizeTimer = setTimeout(() => setImage(currentImage, currentSpread(), true), 200)
+  })
   finePointer.addEventListener("change", updateLoupeState)
   window.addEventListener("storage", (event) => { if (["portfolioLang", "blogLang", "behopAiLang"].includes(event.key)) applyLanguage() })
   document.querySelectorAll("[data-lang]").forEach((button) => button.addEventListener("click", () => {

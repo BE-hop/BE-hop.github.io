@@ -14,23 +14,18 @@ for parent in ['img','assets']:
   with Image.open(p) as original:
    if getattr(original,'n_frames',1)>1:continue
    im=ImageOps.exif_transpose(original).convert('RGBA' if 'A' in original.getbands() or 'transparency' in original.info else 'RGB')
-   key='/'+p.relative_to(site).as_posix();digest=hashlib.sha256(p.read_bytes()).hexdigest()[:14];items=[]
-   for width in sorted(set([min(im.width,w) for w in [480,768,1280]])):
+   key='/'+p.relative_to(site).as_posix()
+   detailed='portfolio-page-' in p.name or p.suffix.lower()=='.png'
+   quality=90 if detailed else 82
+   # Conversion policy belongs in the cache key as well as the source bytes.
+   digest=hashlib.sha256(p.read_bytes()+f'webp-v2-q{quality}-480,768,1280,1920,2560'.encode()).hexdigest()[:14];items=[]
+   for width in sorted(set([min(im.width,w) for w in [480,768,1280,1920,2560]])):
     dest=media/f'{digest}-{width}.webp'
     if not dest.exists():
-     out=im.copy();out.thumbnail((width,10000));out.save(dest,quality=42 if width<=768 else 52,method=5)
+     out=im.copy();out.thumbnail((width,10000));out.save(dest,quality=quality,method=5)
     items.append((width,'/'+dest.relative_to(site).as_posix()))
-   variants[key]={'items':items,'default':next((u for w,u in items if w>=1280),items[-1][1]),'thumb':next((u for w,u in items if w>=480),items[-1][1]),'cover':items[0][1],'width':im.width,'height':im.height,'full':key}
+   variants[key]={'items':items,'default':next((u for w,u in items if w>=1280),items[-1][1]),'thumb':next((u for w,u in items if w>=480),items[-1][1]),'cover':items[-1][1],'width':im.width,'height':im.height,'full':items[-1][1]}
    before+=p.stat().st_size
-   # New editor uploads receive the same publication-size fallback without editing source fields.
-   if im.width > 2400 or p.stat().st_size > 1000000:
-    fallback=im.copy();fallback.thumbnail((2400,2400))
-    temp=p.with_name(p.stem+'.web-fallback'+p.suffix)
-    if p.suffix.lower() in ['.jpg','.jpeg']:fallback.convert('RGB').save(temp,quality=55,optimize=True,progressive=True)
-    elif p.suffix.lower()=='.png':fallback.quantize(colors=96,method=Image.Quantize.FASTOCTREE).save(temp,optimize=True)
-    else:fallback.save(temp,quality=55,method=5)
-    if temp.stat().st_size < p.stat().st_size:temp.replace(p)
-    else:temp.unlink()
 
 def resolve(value,base):
  if not value or value.startswith(('http:','https:','data:','//','#')):return None
@@ -56,7 +51,9 @@ for p in site.rglob('*.html'):
   sizes='(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 90vw, 900px'
   context=text[max(0,m.start()-900):m.start()]
   if 'portfolio-entry__previews' in context:sizes='(max-width: 760px) 120px, 240px'
-  elif p.relative_to(site).as_posix() in ['index.html','works/index.html','behop-ai-product/index.html']:sizes='(max-width: 760px) 90vw, 45vw'
+  elif attr(tag,'fetchpriority')=='high' or 'data-hero-media' in tag:sizes='100vw'
+  elif p.relative_to(site).as_posix() in ['index.html','works/index.html','behop-ai-product/index.html']:sizes='(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 90vw, 760px'
+  elif 'portfolio-page-' in (src or ''):sizes='(max-width: 760px) calc(100vw - 32px), (max-width: 1400px) 90vw, 1280px'
   tag=put(tag,'sizes',sizes)
   if not attr(tag,'width'):tag=put(tag,'width',str(v['width']))
   if not attr(tag,'height'):tag=put(tag,'height',str(v['height']))
@@ -69,18 +66,19 @@ for p in site.rglob('*.html'):
   if not v:return tag
   small=next((u for w,u in v['items'] if w>=768),v['items'][-1][1])
   tag=put(put(put(tag,'data-src',v['default']),'data-src-small',small),'data-full-src',v['full'])
+  tag=put(tag,'data-srcset',', '.join(f'{u} {w}w' for w,u in v['items']))
   return tag
  text=re.sub(r'<span\b[^>]*data-book-spread[^>]*>',spread,text)
  # Lightweight social image: never download a 3MB hidden photo.
  text=re.sub(r'<img\b[^>]*width="0"[^>]*>', '', text)
  p.write_text(text)
 
-# CSS covers use small variants; keep source fallbacks for dynamic paths and original links.
+# CSS backgrounds retain enough pixels for full-width and high-density displays.
 for p in site.rglob('*.css'):
  text=p.read_text()
  def css(m):
   v=resolve(m.group(2),p)
-  if v:return f'url("{v["cover"]}")'
+  if v:return 'image-set('+', '.join(f'url("{u}") {w / min(v["width"], 1280):.3f}x' for w,u in v['items'] if w>=min(v['width'],1280))+')'
   if m.group(2).startswith(('data:','http:','https:','//','#')):return m.group()
   raw=urlsplit(m.group(2)).path
   font=(site/raw.lstrip('/')) if raw.startswith('/') else (p.parent/raw).resolve()

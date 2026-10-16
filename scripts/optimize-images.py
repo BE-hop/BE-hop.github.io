@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compress source media once, keeping immutable originals outside Git."""
+"""Back up source media without lossy rewriting; prepare-site.py creates web variants."""
 from pathlib import Path
 from PIL import Image, ImageOps
 import argparse, hashlib, json, shutil
@@ -17,18 +17,7 @@ for parent in ['img','assets']:
   dest=backup/original_rel;dest.parent.mkdir(parents=True,exist_ok=True)
   if not dest.exists():shutil.copy2(p,dest)
   raw=dest.read_bytes();entry={'path':str(rel),'original_path':original_rel,'original_sha256':hashlib.sha256(raw).hexdigest(),'original_bytes':len(raw)}
-  if p.suffix.lower() not in ['.svg','.gif']:
-   with Image.open(dest) as original:
-    if getattr(original,'n_frames',1)==1:
-     im=ImageOps.exif_transpose(original);board='portfolio-page-' in p.name or im.width>3000
-     im.thumbnail((2400 if board else 1280,2400 if board else 1280))
-     temp=p.with_name(p.stem+'.compressed'+p.suffix)
-     if p.suffix.lower() in ['.jpg','.jpeg']:im.convert('RGB').save(temp,quality=55 if board else 52,optimize=True,progressive=True)
-     elif p.suffix.lower()=='.png':im.quantize(colors=96,method=Image.Quantize.FASTOCTREE).save(temp,optimize=True)
-     else:im.save(temp,quality=55,method=6)
-     # Never expand an already efficient source.
-     if temp.stat().st_size<len(raw):temp.replace(p)
-     else:temp.unlink();shutil.copy2(dest,p)
+  # Source media is the quality master. Web variants are generated at build time.
   entry.update(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest());manifest.append(entry)
 (backup/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
 a=sum(x['original_bytes'] for x in manifest);b=sum(x['bytes'] for x in manifest)

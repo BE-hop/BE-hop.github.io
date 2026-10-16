@@ -40,7 +40,7 @@
 - Invalidation: the owner explicitly selects another homepage identity system or the site adopts a maintained visual runtime.
 - Consequence: preserve the neutral graphite base, one ice-cyan AI accent, whole-Hero pointer tracking, static reduced-motion fallback, and the deep-green bridge into Works; do not reintroduce independently rotated grid planes or make a generated bitmap dominant.
 
-## 2026-08-06 - Homepage wheel snapping is boundary-aware
+## 2026-08-06 - Homepage wheel snapping is boundary-aware (superseded 2026-10-17)
 
 - Decision: desktop fine-pointer wheel input snaps from the Hero and from the end/top boundary of long homepage sections to the adjacent `data-home-section`; it does not intercept normal scrolling inside long sections. The left chapter rail follows `data-nav-tone` and synchronizes `aria-current` through the same scroll-state calculation.
 - Evidence: live browser checks snapped Hero `0 → 800`, preserved native scrolling inside AI Tools, and snapped the AI boundary to Works at `2182`; the rail changed from light-on-dark to dark-on-light at the Works boundary.
@@ -64,7 +64,7 @@
 ## 2026-10-16 - 首屏交付与缓存分离
 
 - 决策：首页、Works、作品集、AI Tools、论坛在构建时合并独立主 CSS 与有序 defer JS；头部 async `sw-registration.js` 独立注册 worker 并处理加载中断。正文默认可见，不依赖动效初始化。
-- 受控导航流立即交付，完整读完后才入缓存；已交付的流无法替换成旧 HTML，中断提供手动重试。1秒缓存回退适用于等待网络响应头，显式刷新不参与旧缓存竞速；冷 CSS/JS 和论坛数据对完整正文设8秒上限。
+- 受控导航流立即交付，完整读完后才入缓存；已交付的流无法替换成旧 HTML，中断提供手动重试。1秒缓存回退适用于等待网络响应头，显式刷新不参与旧缓存竞速；冷 CSS/JS 和论坛数据只对等待响应头设8秒上限，正文不主动截断。
 - 证据：`npm run check`、`test/site_runtime_test.mjs`、`test/asset_version_test.py` 与 Chrome 本地故障预览（主交互包503时正文和四个入口仍存在）。
 - 失效条件：导航/发布架构、缓存策略或响应流机制改变时重新核验；本地通过不证明公网 CDN 或地区访问达标。
 
@@ -74,3 +74,9 @@
 - 证据：后台三条Active规则、HTTP→HTTPS 301、首页CF-Cache-Status HIT、缺失哈希资源404/BYPASS。免费UI自定义TTL最低2小时，不使用其缓存HTML。
 - 约束：www/wechat*有现存Worker；DNS-only会绕过CDN防护并影响回调，证书修复需单独授权与维护窗口。未切换DNS，未开启Full(strict)。
 - 失效条件：计划等级、源站头、路由、域名或Worker改变时重查；HIT不证明访问端完整下载或多地区性能达标。
+
+## 2026-10-17 - 清晰母版与非阻塞阅读
+
+- 决策：源图只备份不有损改写；构建按照片82/展板90生成最多2560px WebP，质量与尺寸政策参与指纹。阅读器按画布与DPR加载清晰图，翻页不等待增强图；首页恢复原生滚动。
+- 证据：校验188项原始备份；线上阅读器768px图显示1056px；当前链路首页HTML曾耗时16.62秒，与旧8秒正文中断规则冲突。回归测试验证慢于响应头期限的正文仍完整交付。
+- 失效条件：替换图片管线、阅读器或缓存体系时重验；网络链路耗时不代表所有地区。

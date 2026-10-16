@@ -132,7 +132,7 @@ npm run check
 - Scroll Reveal 不能依赖大型内容区的固定可见比例阈值；完整展板等超长图组只要进入观察范围即必须显示，避免图片区保持隐藏。
 - 首页 Hero 使用内联 SVG 的外框、多层矩形深度框、内框和四组对应边纵深线形成连续 Grid Scan 隧道，并由 CSS 提供 `#06b6d4` 扫描框与局部光源；不得改回多个独立 CSS 平面相互旋转，也不得引入 React、WebGL 或持续高强度动画。指针监听必须绑定整个 Hero，经过标题和 CTA 时不得中断。`hero.background_image` 仅作为低透明度空间深度层，原 `img/portfolio/hero-landscape.jpg` 保留为 Works Hero。
 - 首页深色 AI Tools 与暖白 Works 之间必须使用深石墨、深绿、雾灰绿到暖白的连续过渡，并让低透明绿色网格延续进 Works；避免直接黑白切割或只插入一条短渐变带。
-- 桌面左侧章节导航必须根据当前 `data-nav-tone` 切换深浅对比并同步 `aria-current`。精确指针桌面端可在 Hero 和长章节边界使用滚轮吸附到下一/上一 `data-home-section`；长章节内部、移动端、触屏和 `prefers-reduced-motion` 必须保留原生滚动。
+- 桌面左侧章节导航必须根据当前 `data-nav-tone` 切换深浅对比并同步 `aria-current`。全端使用原生滚动，不再注册阻塞滚轮事件或自动章节吸附；章节导航仍可点击跳转。
 
 If a narrowly scoped change does not require every check, run the relevant subset and state exactly what was skipped. A successful Jekyll build alone is not sufficient for editor, schema, generated-CSS, or publishing changes.
 
@@ -293,7 +293,7 @@ CI 使用 Ruby 3.1；调用同时接收位置哈希与关键字参数的方法�
 
 ### 轻量图片、离线缓存与发布版本
 
-网页源图通过 `scripts/optimize-images.py --backup <仓库外目录>` 压缩并保留原图及SHA256清单。`scripts/jekyll-with-assets.rb` 显式注册 Jekyll post_write 钩子并统一运行 `scripts/prepare-site.py`，在构建目录生成按内容哈希命名的480/768/1280px（展板放大保留最大2400px） WebP与响应式引用，源内容字段不变；编辑器预览、上传后的构建及发布使用同一路径，不向编辑器扩大可写范围。Python需安装 `requirements-site.txt`。原图备份不得进入仓库或站点。
+网页源图作为清晰母版保留；`scripts/optimize-images.py --backup <仓库外目录>` 仅备份原图及SHA256清单，不再有损改写源图。`scripts/jekyll-with-assets.rb` 显式注册 Jekyll post_write 钩子并统一运行 `scripts/prepare-site.py`，在构建目录生成按内容哈希命名的480/768/1280/1920/2560px WebP（不放大源图，照片质量82、展板及PNG质量90）与响应式引用，源内容字段不变；编辑器预览、上传后的构建及发布使用同一路径，不向编辑器扩大可写范围。Python需安装 `requirements-site.txt`。原图备份不得进入仓库或站点。
 
 构建产物 `release.json` 与页面meta记录版本和提交；`sw.js`使用发布版本隔离缓存，在线页面尝试新内容、慢网1秒回退已访问页面，静态资源按文件内容版本缓存，图片缓存最多60MB/100项。旧main-*缓存一次迁移，新版本由用户点击提示切换；页尾支持检查更新和仅清理本站缓存。语言设置保留，未访问的图片不承诺离线可用。本地默认不注册SW，`?offline-test=1`仅供离线验收。
 
@@ -303,11 +303,11 @@ CI 使用 Ruby 3.1；调用同时接收位置哈希与关键字参数的方法�
 
 ### 关键入口在资源请求失败时的降级
 
-按2026-10-16凌晨的Jekyll结构保留轻量HTML、独立CSS/JS与原有双语作品数据；不在整页内联CSS、JS或Base64展板。CSS/JS查询版本按文件内容哈希生成，论坛同步不再让未变化资源全部失效。受控导航优先尝试网络；1秒内尚未收到响应头且有缓存时显示缓存。收到响应头即交付响应流，8秒正文中断时提供手动重试；完整正文下载成功后才写入缓存，不能仅依据200响应头。图片仍保留压缩、响应式尺寸、12秒失败提示及重试；首次离线预热仅请求当前HTML。
+按2026-10-16凌晨的Jekyll结构保留轻量HTML、独立CSS/JS与原有双语作品数据；不在整页内联CSS、JS或Base64展板。CSS/JS查询版本按文件内容哈希生成，论坛同步不再让未变化资源全部失效。受控导航优先尝试网络；1秒内尚未收到响应头且有缓存时显示缓存。收到响应头即交付响应流，正文失败时提供手动重试；8秒仅限制等待响应头，不主动截断慢速正文；完整正文下载成功后才写入缓存，不能仅依据200响应头。图片保留响应式尺寸和失败提示及重试；首次离线预热仅请求当前HTML。
 
 关键页面的独立样式与有序同步脚本由 `scripts/bundle-page-assets.py` 各合并为一个内容哈希文件，以减少并发冷请求，应用代码不回填HTML。`js/navigation-repair.js` 是一次性头部恢复引导：旧worker等待时可激活修复，只有文档仍未完成且无表单时才重载一次；已阅读页面、表单及后续正常升级保持手动切换。不得因论坛快照变化重置静态资源版本。
 
-作品集默认翻阅统一使用768px轻量图，桌面高分辨率图仅在放大镜交互时请求；不得让未成功加载的1280px增强图阻塞翻页。此项由真实Chrome中的高清请求失败而轻量图已解码的对比验证触发。
+作品集使用768px轻量预览，并按实际画布宽度与屏幕像素密度加载最高2560px清晰图；预览、清晰图及失败重试均不得锁住翻页。只预取下一页轻量图；大图入口始终可用，过时下载不得覆盖新页。
 
 导航缓存查找必须先查当前发布桶，再回退上一发布桶；显式刷新必须尝试完整新HTML，不能再次被1秒旧缓存竞争抢先。网络失败仍保留缓存兜底。
 
@@ -320,3 +320,7 @@ CDN、HTTPS、发布后 HTML 清理与多地区验收按 `docs/loading-performan
 ### Cloudflare 缓存实际配置与证书维护边界
 
 2026-10-16已在后台启用Always Use HTTPS与三条规则：公开HTML尊重源站TTL（当前10分钟，Browser bypass）、更新文件/论坛数据/Webhook绕过、内容哈希目录一年缓存且>=400不存储。免费UI自定义Edge TTL最低2小时，不得把当前策略误写为已实现5分钟。发布后清理受影响HTML，保持查询串cache key；新增其他年份文章时更新当前HTML规则范围。保留www/wechat* Worker。当前Full(strict)的源站证书前提未满足，DNS-only会影响CDN防护和Webhook，须另行明确授权并安排维护时段，不擅自切换。以 `docs/loading-performance.md` 中已应用配置覆盖此前待配置目标；多地区与浏览器性能指标仍须独立验收。
+
+### 图片清晰度与慢网修复（2026-10-17）
+
+母版不重复压缩，构建参数与源内容共同参与图片指纹；修改质量、尺寸后必须生成新URL。全宽首屏使用100vw，展板按正文宽度、卡片按实际布局选图；CSS背景使用高质量image-set而非统一480px。阅读器清晰图异步增强，翻页使用八段轻量动画且不等待下载。HTML/CSS/JS收到响应头即交付，8秒只限制响应头等待；完整正文成功后才入缓存。图片容量索引每个worker初始化一次后增量维护，保留60MB/100项限制及用户主动升级规则。

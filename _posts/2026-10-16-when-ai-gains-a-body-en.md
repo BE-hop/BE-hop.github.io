@@ -1,5 +1,6 @@
 ---
 layout: post
+permalink: /2026/10/16/when-ai-gains-a-body-en/
 title: "When AI Gains a Body"
 subtitle: "Software intelligence, robotics, and the two ends of human needs"
 date: 2026-10-16 00:30:00 +0800

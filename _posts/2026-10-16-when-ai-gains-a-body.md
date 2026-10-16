@@ -1,5 +1,6 @@
 ---
 layout: post
+permalink: /2026/10/16/when-ai-gains-a-body/
 title: "当 AI 获得身体"
 subtitle: "软件智能与机器人如何从马斯洛金字塔两端重塑未来"
 date: 2026-10-16 00:30:00 +0800

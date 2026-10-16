@@ -7,7 +7,7 @@ const walk = dir => readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirecto
 for (const file of walk(site).filter(f=>f.endsWith('.html'))) {
  const text=readFileSync(file,'utf8');
  if (!text.includes(`name="behop-release" content="${release.version}"`)) throw Error(`Missing version: ${file}`);
- if (!text.includes('/js/sw-registration.js?v='+release.version) && !text.includes('data-critical-source="/js/sw-registration.js"')) throw Error(`Missing upgrade control: ${file}`);
+ if (!/src="\/js\/sw-registration\.js\?v=[a-f0-9]{16}"/.test(text)) throw Error(`Missing upgrade control: ${file}`);
  if (/href="https:\/\/fonts.googleapis.com/.test(text)) throw Error(`External fonts: ${file}`);
 }
 for(const suffix of ['', '-en']) for(const day of ['15','16']) if(!existsSync(path.join(site,`2026/10/${day}/when-ai-gains-a-body${suffix}/index.html`))) throw Error('Missing article or redirect');

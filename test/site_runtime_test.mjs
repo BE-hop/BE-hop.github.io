@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import fs from 'node:fs';
 const code = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 function runtime() {
-  const stores = new Map();const handlers = {};let offline = false;let networkBody = 'fresh';let skip = 0;
+  const stores = new Map();const handlers = {};let offline = false;let networkBody = 'fresh';let skip = 0;let stalled = false;let bodyStalled = false;
   const key = request => typeof request === 'string' ? new URL(request, 'https://example.test').href : request.url;
   const caches = {
     async keys() { return [...stores.keys()]; },
@@ -16,9 +16,9 @@ function runtime() {
     async match(r) { for(const values of stores.values()) if(values.has(key(r))) return values.get(key(r)).clone(); }
   };
   const self = { location: { origin:'https://example.test' }, clients:{async claim(){}}, async skipWaiting(){skip++;}, addEventListener(type,fn){handlers[type]=fn;} };
-  vm.runInNewContext(code,{self,caches,Request,Response,URL,Promise,fetch:async()=>{if(offline)throw new Error('offline');return new Response(networkBody);}});
+  vm.runInNewContext(code,{self,caches,Request,Response,URL,Promise,AbortController,setTimeout:(fn,ms)=>setTimeout(fn,ms/100),clearTimeout,fetch:async(_request,options={})=>{if(offline)throw new Error('offline');if(stalled)return new Promise((_,reject)=>options.signal.addEventListener('abort',()=>reject(Error('timeout'))));if(bodyStalled)return new Response(new ReadableStream({start(c){options.signal.addEventListener('abort',()=>c.error(Error('body timeout')));}}));return new Response(networkBody);}});
   async function dispatch(request) {const pending=[];let response;handlers.fetch({request,waitUntil(p){pending.push(p);},respondWith(p){response=p;}});const result=await response;await Promise.all(pending);return result;}
-  return {caches,handlers,dispatch,setOffline:v=>offline=v,setBody:v=>networkBody=v,get skip(){return skip;}};
+  return {caches,handlers,dispatch,setOffline:v=>offline=v,setBody:v=>networkBody=v,setStalled:v=>stalled=v,setBodyStalled:v=>bodyStalled=v,get skip(){return skip;}};
 }
 test('online navigation replaces old HTML and offline navigation returns visited content',async()=>{
  const r=runtime();const request=new Request('https://example.test/works/');Object.defineProperty(request,'mode',{value:'navigate'});
@@ -37,4 +37,15 @@ test('missing offline image gets explicit failure rather than an HTML page',asyn
 });
 test('failed release install does not activate or delete existing offline content',async()=>{
  const r=runtime();await r.caches.open('main-precache-then-runtime');const open=r.caches.open.bind(r.caches);r.caches.open=async name=>{const cache=await open(name);if(name.startsWith('behop-shell-'))cache.addAll=async()=>{throw Error('network failed');};return cache;};let pending;r.handlers.install({waitUntil(p){pending=p;}});await assert.rejects(pending,/network failed/);assert.equal(r.skip,0);assert.ok((await r.caches.keys()).includes('main-precache-then-runtime'));
+});
+
+test('stalled online headers fall back to visited HTML within the grace period',async()=>{
+ const r=runtime();const req=new Request('https://example.test/works/');Object.defineProperty(req,'mode',{value:'navigate'});
+ const cache=await r.caches.open('behop-shell-__BUILD_VERSION__');await cache.put(req,new Response('usable cached page'));r.setStalled(true);
+ assert.equal(await (await r.dispatch(req)).text(),'usable cached page');
+});
+test('a 200 header with a stalled document body falls back instead of forwarding partial HTML',async()=>{
+ const r=runtime();const req=new Request('https://example.test/forum/');Object.defineProperty(req,'mode',{value:'navigate'});
+ const cache=await r.caches.open('behop-shell-__BUILD_VERSION__');await cache.put('/offline.html',new Response('retry page'));r.setBodyStalled(true);
+ assert.equal(await (await r.dispatch(req)).text(),'retry page');
 });

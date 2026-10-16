@@ -77,15 +77,30 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (request.method !== 'GET' || !isLocal(url) || url.pathname === '/sw.js' || url.pathname === '/release.json' || url.pathname.startsWith('/api/')) return;
   if (request.mode === 'navigate') {
-    event.respondWith((async () => {
+    // Match the earlier cache/network race, but bound stalled response bodies too.
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    const fresh = (async () => {
       try {
-        const response = await fetch(request, { cache: 'no-cache' });
-        if (response.ok) { event.waitUntil(store(request, response)); return response; }
-        // Online 404s remain 404s; do not silently show unrelated cached pages.
+        const response = await fetch(request, { signal: controller.signal });
+        // A 200 header alone does not mean the document finished downloading.
+        await response.clone().arrayBuffer();
         return response;
-      } catch {
-        return (await caches.match(request)) || (await caches.match('/offline.html')) || new Response('Offline', { status: 503 });
+      } finally { clearTimeout(timeout); }
+    })();
+    // Register immediately, before asynchronous work; cache failure cannot reject navigation.
+    event.waitUntil(fresh.then(response => response.ok ? store(request, response) : null).catch(() => {}));
+    event.respondWith((async () => {
+      const cached = await caches.match(request);
+      if (cached) {
+        let timer;
+        const grace = new Promise(resolve => { timer = setTimeout(() => resolve(cached), 1000); });
+        const response = await Promise.race([fresh.catch(() => cached), grace]);
+        clearTimeout(timer);
+        return response;
       }
+      try { return await fresh; }
+      catch { return (await caches.match('/offline.html')) || new Response('Connection timed out. Please retry.', { status: 503 }); }
     })());
     return;
   }

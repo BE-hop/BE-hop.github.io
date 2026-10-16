@@ -12,7 +12,7 @@
   const spreads = { planning: [], landscape: [], spatial: [] }
   root.querySelectorAll("[data-book-spread]").forEach((node) => {
     const book = node.dataset.book
-    if (spreads[book]) spreads[book].push({ src: window.matchMedia("(max-width: 760px)").matches ? (node.dataset.srcSmall || node.dataset.src) : node.dataset.src, preview: node.dataset.srcPreview, small: node.dataset.srcSmall || node.dataset.src, full: node.dataset.fullSrc || node.dataset.src, en: node.dataset.altEn, zh: node.dataset.altZh })
+    if (spreads[book]) spreads[book].push({ src: node.dataset.srcSmall || node.dataset.src, preview: node.dataset.srcPreview, small: node.dataset.srcSmall || node.dataset.src, full: node.dataset.fullSrc || node.dataset.src, en: node.dataset.altEn, zh: node.dataset.altZh })
   })
 
   const reader = root.querySelector("#portfolio-reader")

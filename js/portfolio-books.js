@@ -190,7 +190,7 @@
     const canvasY = y * rect.height
     loupe.style.setProperty("--loupe-left", `${rect.left - stageRect.left + canvasX}px`)
     loupe.style.setProperty("--loupe-top", `${rect.top - stageRect.top + canvasY}px`)
-    loupeLens.style.backgroundImage = `url("${state.loupeDetail ? spread.full : spread.src}")`
+    loupeLens.style.backgroundImage = `url("${state.loupeDetail ? spread.full : (currentImage.src || spread.src)}")`
     loupeLens.style.backgroundSize = `${fit.width * MAGNIFICATION}px ${fit.height * MAGNIFICATION}px`
     loupeLens.style.backgroundPosition = `${lensRect.width / 2 - (canvasX - fit.x) * MAGNIFICATION}px ${lensRect.height / 2 - (canvasY - fit.y) * MAGNIFICATION}px`
     loupe.setAttribute("aria-hidden", "false")

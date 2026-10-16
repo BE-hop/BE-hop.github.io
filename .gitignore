@@ -17,3 +17,6 @@ vendor/
 career-trend-file/**/sources/
 -tmp-behop-*.json
 .content-editor/
+
+__pycache__/
+*.pyc

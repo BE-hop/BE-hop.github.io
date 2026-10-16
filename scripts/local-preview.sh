@@ -140,10 +140,10 @@ install_dependencies_if_needed
 
 if [[ "$MODE" == "build" ]]; then
   echo "[info] Building static site into $JEKYLL_DESTINATION"
-  bundle exec jekyll build --destination "$JEKYLL_DESTINATION"
+  JEKYLL_ENV="${JEKYLL_ENV:-production}" TZ=Asia/Shanghai bundle exec ruby scripts/jekyll-with-assets.rb build --destination "$JEKYLL_DESTINATION"
   echo "[ok] Build complete."
   exit 0
 fi
 
 echo "[info] Starting Jekyll preview at http://$HOST:$PORT"
-bundle exec jekyll serve --host "$HOST" --port "$PORT"
+bundle exec ruby scripts/jekyll-with-assets.rb serve --host "$HOST" --port "$PORT"

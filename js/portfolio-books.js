@@ -12,7 +12,7 @@
   const spreads = { planning: [], landscape: [], spatial: [] }
   root.querySelectorAll("[data-book-spread]").forEach((node) => {
     const book = node.dataset.book
-    if (spreads[book]) spreads[book].push({ src: window.matchMedia("(max-width: 760px)").matches ? (node.dataset.srcSmall || node.dataset.src) : node.dataset.src, full: node.dataset.fullSrc || node.dataset.src, en: node.dataset.altEn, zh: node.dataset.altZh })
+    if (spreads[book]) spreads[book].push({ src: window.matchMedia("(max-width: 760px)").matches ? (node.dataset.srcSmall || node.dataset.src) : node.dataset.src, preview: node.dataset.srcPreview, small: node.dataset.srcSmall || node.dataset.src, full: node.dataset.fullSrc || node.dataset.src, en: node.dataset.altEn, zh: node.dataset.altZh })
   })
 
   const reader = root.querySelector("#portfolio-reader")
@@ -63,23 +63,51 @@
     if (!spread) { resolve(false); return }
     if (spread.width && spread.height) { resolve(true); return }
     const image = new Image()
+    const timeout = setTimeout(() => { image.src = ""; resolve(false) }, 12000)
     image.onload = () => {
+      clearTimeout(timeout)
       spread.width = image.naturalWidth
       spread.height = image.naturalHeight
       resolve(true)
     }
-    image.onerror = () => resolve(false)
+    image.onerror = () => { clearTimeout(timeout); resolve(false) }
     image.src = spread.src
   })
   const setImage = (image, spread, visible) => {
     if (!spread) return
-    image.onload = () => {
-      spread.width = image.naturalWidth
-      spread.height = image.naturalHeight
-      if (visible) updateLoupe()
-    }
-    image.src = spread.src
+    const expected = spread.src
+    image.dataset.requestedSrc = expected
     image.alt = visible ? (language() === "zh" ? spread.zh : spread.en) : ""
+    // Do not replace a decoded preview with a broken network image.
+    image.src = spread.preview || spread.small
+    const pending = new Image()
+    let finished = false
+    const failed = () => {
+      if (finished || image.dataset.requestedSrc !== expected) return
+      finished = true
+      clearTimeout(timeout)
+      pending.src = ""
+      if (!visible) return
+      fallback.hidden = false
+      fallback.textContent = t("Image download stalled. Preview retained. ", "图像下载未完成，暂时保留预览。")
+      const retry = document.createElement("button")
+      retry.type = "button"
+      retry.textContent = t("Retry image", "重新加载图面")
+      retry.onclick = () => { fallback.hidden = true; setImage(image, spread, visible) }
+      fallback.append(retry)
+    }
+    const timeout = setTimeout(failed, 12000)
+    pending.onerror = failed
+    pending.onload = () => {
+      if (finished || image.dataset.requestedSrc !== expected) return
+      finished = true
+      clearTimeout(timeout)
+      spread.width = pending.naturalWidth
+      spread.height = pending.naturalHeight
+      image.src = expected
+      if (visible) { fallback.hidden = true; updateLoupe() }
+    }
+    pending.src = expected
   }
   const fittedImage = (spread, rect) => {
     const sourceWidth = spread.width || rect.width
@@ -127,7 +155,7 @@
   const render = (freshImage) => {
     const spread = currentSpread()
     if (!spread) return
-    if (freshImage || currentImage.getAttribute("src") !== spread.src) setImage(currentImage, spread, true)
+    if (freshImage || currentImage.dataset.requestedSrc !== spread.src) setImage(currentImage, spread, true)
     else currentImage.alt = language() === "zh" ? spread.zh : spread.en
     updateReaderText()
     coverButtons.forEach((button) => {

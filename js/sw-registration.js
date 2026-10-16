@@ -63,7 +63,7 @@
     });
     await check();
     const ready = await navigator.serviceWorker.ready;
-    const warm = () => ready.active?.postMessage({ type: 'WARM_URLS', urls: [location.href, ...performance.getEntriesByType('resource').map(item => item.name).filter(url => new URL(url).origin === location.origin)] });
+    const warm = () => ready.active?.postMessage({ type: 'WARM_URLS', urls: [location.href] });
     if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 5000 }); else setTimeout(warm, 3000);
   }).catch(() => status('Offline support is unavailable / 离线支持暂不可用'));
   window.addEventListener('online', () => check(true));

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Build-only responsive images and release versioning. No source/editor fields change."""
-import argparse, hashlib, json, re, subprocess
+import argparse, hashlib, json, re, subprocess, importlib.util
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 from PIL import Image, ImageOps
+spec=importlib.util.spec_from_file_location("resilient_pages",Path(__file__).with_name("resilient-pages.py"));resilient=importlib.util.module_from_spec(spec);spec.loader.exec_module(resilient)
 parser=argparse.ArgumentParser();parser.add_argument('--site',default='_site');args=parser.parse_args()
 root=Path(__file__).resolve().parent.parent;site=Path(args.site).resolve();media=site/'media/optimized';media.mkdir(parents=True,exist_ok=True)
 variants={};before=after=0
@@ -63,11 +64,16 @@ for p in site.rglob('*.html'):
   return put(tag,'decoding','async')
  text=re.sub(r'<img\b[^>]*>',image,text,flags=re.I)
  text=re.sub(r'<iframe\b[^>]*>',lambda m:put(m.group(),'loading','lazy'),text,flags=re.I)
+ seen_books=set()
  def spread(m):
   tag=m.group();v=resolve(attr(tag,'data-src'),p)
   if not v:return tag
   small=next((u for w,u in v['items'] if w>=768),v['items'][-1][1])
-  return put(put(put(tag,'data-src',v['default']),'data-src-small',small),'data-full-src',v['full'])
+  tag=put(put(put(tag,'data-src',v['default']),'data-src-small',small),'data-full-src',v['full'])
+  book=attr(tag,'data-book')
+  if book not in seen_books:
+   seen_books.add(book);tag=put(tag,'data-src-preview',resilient.embedded_image(site,v['cover']))
+  return tag
  text=re.sub(r'<span\b[^>]*data-book-spread[^>]*>',spread,text)
  # Lightweight social image: never download a 3MB hidden photo.
  text=re.sub(r'<img\b[^>]*width="0"[^>]*>', '', text)
@@ -98,6 +104,7 @@ for p in site.rglob('*.html'):
  text=text.replace('</body>',f'<script defer src="/js/sw-registration.js?v={version}"></script></body>')
  # Stable release query makes old and new assets distinct in browser and SW caches.
  text=re.sub(r'((?:src|href)=[\"\'])(/[^\"\'?#]+\.(?:css|js))(?:\?[^\"\']*)?([\"\'])',lambda m:m[1]+m[2]+'?v='+version+m[3],text)
+ text=resilient.prepare_critical_page(site,p,text)
  p.write_text(text)
 (site/'sw.js').write_text((site/'sw.js').read_text().replace('__BUILD_VERSION__',version))
 release={'version':version,'commit':commit,'image_count':len(variants)}

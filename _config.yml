@@ -86,6 +86,9 @@ exclude:
   - scripts/
   - _plugins/
   - performance-report.json
+  - playwright.config.mjs
+  - test-results/
+  - playwright-report/
   - requirements-site.txt
   - Gruntfile.js
   - Rakefile
@@ -161,7 +164,7 @@ featured-condition-size: 1 # A tag will be featured if the size of it is more th
 
 # Progressive Web Apps
 chrome-tab-theme-color: "#000000"
-service-worker: true
+service-worker: false # Legacy registrations retire via the build-injected compatibility script.
 
 # MathJax rendering for layout:page (e.g. post preview)
 page-mathjax: false

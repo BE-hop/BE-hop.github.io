@@ -53,7 +53,7 @@ layout: null
         <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:items-start">
           {% if cover_image %}
           <div class="detail-cover overflow-hidden rounded-2xl border border-border bg-card">
-            <img src="{{ cover_image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" fetchpriority="high" decoding="async" />
+            <img data-media-role="hero" sizes="(max-width: 1023px) calc(100vw - 48px), 560px" src="{{ cover_image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" fetchpriority="high" decoding="async" />
           </div>
           {% endif %}
 
@@ -171,7 +171,7 @@ layout: null
           <div class="mt-5 grid gap-4 md:grid-cols-3">
             {% for item in page.result_gallery %}
             <figure class="overflow-hidden rounded-xl bg-secondary">
-              {% if item.image %}<img src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Result' }}" class="h-64 w-full object-cover" />{% endif %}
+              {% if item.image %}<img data-media-role="content" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1400px) 90vw, 1280px" src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Result' }}" class="h-64 w-full object-cover" />{% endif %}
               {% if item.caption_zh or item.caption_en %}<figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ item.caption_en }}" data-zh="{{ item.caption_zh }}">{{ item.caption_zh | default: item.caption_en }}</figcaption>{% endif %}
             </figure>
             {% endfor %}
@@ -186,13 +186,13 @@ layout: null
           <div class="mt-5 grid gap-4 md:grid-cols-2">
             {% if page.before_image %}
             <figure class="overflow-hidden rounded-xl bg-secondary">
-              <img src="{{ page.before_image | relative_url }}" alt="{{ page.before_label_en | default: 'Before' }}" class="h-80 w-full object-contain" />
+              <img data-media-role="content" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1400px) 90vw, 1280px" src="{{ page.before_image | relative_url }}" alt="{{ page.before_label_en | default: 'Before' }}" class="h-80 w-full object-contain" />
               <figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ page.before_label_en | default: 'Before' }}" data-zh="{{ page.before_label_zh | default: '输入 / Before' }}">{{ page.before_label_zh | default: '输入 / Before' }}</figcaption>
             </figure>
             {% endif %}
             {% if page.after_image %}
             <figure class="overflow-hidden rounded-xl bg-secondary">
-              <img src="{{ page.after_image | relative_url }}" alt="{{ page.after_label_en | default: 'After' }}" class="h-80 w-full object-contain" />
+              <img data-media-role="content" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1400px) 90vw, 1280px" src="{{ page.after_image | relative_url }}" alt="{{ page.after_label_en | default: 'After' }}" class="h-80 w-full object-contain" />
               <figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ page.after_label_en | default: 'After' }}" data-zh="{{ page.after_label_zh | default: '输出 / After' }}">{{ page.after_label_zh | default: '输出 / After' }}</figcaption>
             </figure>
             {% endif %}

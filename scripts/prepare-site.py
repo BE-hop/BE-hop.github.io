@@ -8,117 +8,38 @@ spec=importlib.util.spec_from_file_location("page_assets",Path(__file__).with_na
 parser=argparse.ArgumentParser();parser.add_argument('--site',default='_site');args=parser.parse_args()
 root=Path(__file__).resolve().parent.parent;site=Path(args.site).resolve();media=site/'media/optimized';media.mkdir(parents=True,exist_ok=True)
 cache=Path(os.environ.get('BEHOP_ASSET_CACHE', str(root/'.asset-cache'))).resolve();cache.mkdir(parents=True,exist_ok=True)
-variants={};before=after=0
-for parent in ['img','assets']:
- for p in sorted((site/parent).rglob('*')):
-  if not p.is_file() or p.suffix.lower() not in ['.jpg','.jpeg','.png','.webp']:continue
-  with Image.open(p) as original:
-   if getattr(original,'n_frames',1)>1:continue
-   im=ImageOps.exif_transpose(original).convert('RGBA' if 'A' in original.getbands() or 'transparency' in original.info else 'RGB')
-   key='/'+p.relative_to(site).as_posix()
-   detailed='portfolio-page-' in p.name or p.suffix.lower()=='.png'
-   quality=90 if detailed else 82
-   # Conversion policy belongs in the cache key as well as the source bytes.
-   digest=hashlib.sha256(p.read_bytes()+f'webp-v2-q{quality}-480,768,1280,1920,2560'.encode()).hexdigest()[:14];items=[]
-   for width in sorted(set([min(im.width,w) for w in [480,768,1280,1920,2560]])):
-    dest=media/f'{digest}-{width}.webp'
-    cached=cache/'media/optimized'/dest.name
-    if not dest.exists():
-     if cached.is_file():shutil.copy2(cached,dest)
-     else:
-      out=im.copy();out.thumbnail((width,10000));out.save(dest,quality=quality,method=5)
-    cached.parent.mkdir(parents=True,exist_ok=True)
-    if not cached.exists():shutil.copy2(dest,cached)
-    items.append((width,'/'+dest.relative_to(site).as_posix()))
-   variants[key]={'items':items,'default':next((u for w,u in items if w>=1280),items[-1][1]),'thumb':next((u for w,u in items if w>=480),items[-1][1]),'cover':items[-1][1],'width':im.width,'height':im.height,'full':items[-1][1]}
-   before+=p.stat().st_size
-
-def resolve(value,base):
- if not value or value.startswith(('http:','https:','data:','//','#')):return None
- path=unquote(urlsplit(value).path)
- target=(site/path.lstrip('/')) if path.startswith('/') else (base.parent/path).resolve()
- try:return variants.get('/'+target.relative_to(site).as_posix())
- except ValueError:return None
-
-def attr(tag,name):
- m=re.search(r'(?<![\w-])'+re.escape(name)+r'=[\"\']([^\"\']*)[\"\']',tag);return m.group(1) if m else None
-
-def put(tag,name,value):
- pattern=r'(?<![\w-])'+re.escape(name)+r'=[\"\'][^\"\']*[\"\']'
- if re.search(pattern,tag):return re.sub(pattern,lambda m:f'{name}="{value}"',tag,count=1)
- return tag[:-1].rstrip('/ ')+f' {name}="{value}">'
-
+media_spec=importlib.util.spec_from_file_location("site_media",Path(__file__).with_name("media-variants.py"))
+site_media=importlib.util.module_from_spec(media_spec);media_spec.loader.exec_module(site_media)
+variants,before=site_media.build_variants(site,cache)
 for p in site.rglob('*.html'):
- text=p.read_text()
- def image(m):
-  tag=m.group();src=attr(tag,'src');v=resolve(src,p)
-  if not v:return tag
-  tag=put(tag,'data-original-src',src);tag=put(tag,'src',v['default']);tag=put(tag,'srcset',', '.join(f'{u} {w}w' for w,u in v['items']))
-  sizes='(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 90vw, 900px'
-  context=text[max(0,m.start()-900):m.start()]
-  if 'portfolio-entry__previews' in context:sizes='(max-width: 760px) 120px, 240px'
-  elif 'data-hero-media' in tag:sizes='100vw'
-  elif 'detail-cover' in context:sizes='(max-width: 1023px) calc(100vw - 48px), 560px'
-  elif attr(tag,'fetchpriority')=='high':sizes='100vw'
-  elif p.relative_to(site).as_posix() in ['index.html','works/index.html','behop-ai-product/index.html']:sizes='(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 90vw, 760px'
-  elif 'portfolio-page-' in (src or ''):sizes='(max-width: 760px) calc(100vw - 32px), (max-width: 1400px) 90vw, 1280px'
-  tag=put(tag,'sizes',sizes)
-  if not attr(tag,'width'):tag=put(tag,'width',str(v['width']))
-  if not attr(tag,'height'):tag=put(tag,'height',str(v['height']))
-  if attr(tag,'fetchpriority')!='high' and not attr(tag,'loading'):tag=put(tag,'loading','lazy')
-  return put(tag,'decoding','async')
- text=re.sub(r'<img\b[^>]*>',image,text,flags=re.I)
- # Inline blog header backgrounds must use the same derived images as CSS.
- def background(m):
-  tag=m.group()
-  def replace_url(u):
-   v=resolve(u.group(2),p)
-   if not v:return u.group()
-   choices=[(w,path) for w,path in v['items'] if w>=min(v['width'],1280)]
-   return 'image-set('+', '.join(f"url('{path}') {w/min(v['width'],1280):.3f}x" for w,path in choices)+')'
-  return re.sub(r'url\(([\"\']?)([^)\"\']+)\1\)',replace_url,tag)
- text=re.sub(r'<[^>]+\sstyle="[^"]*"[^>]*>',background,text)
- text=re.sub(r'<iframe\b[^>]*>',lambda m:put(m.group(),'loading','lazy'),text,flags=re.I)
- def spread(m):
-  tag=m.group();v=resolve(attr(tag,'data-src'),p)
-  if not v:return tag
-  small=next((u for w,u in v['items'] if w>=768),v['items'][-1][1])
-  tag=put(put(put(tag,'data-src',v['default']),'data-src-small',small),'data-full-src',v['full'])
-  tag=put(tag,'data-srcset',', '.join(f'{u} {w}w' for w,u in v['items']))
-  return tag
- text=re.sub(r'<span\b[^>]*data-book-spread[^>]*>',spread,text)
- # Lightweight social image: never download a 3MB hidden photo.
+ text=site_media.transform_html(p.read_text(),p,site,variants)
+ text=re.sub(r'<iframe\b[^>]*>',lambda m:site_media.put(m.group(),'loading','lazy'),text,flags=re.I)
  text=re.sub(r'<img\b[^>]*width="0"[^>]*>', '', text)
- # Default bilingual output must match the default English language before JS.
  if 'data-en=' in text or 'data-i18n-en=' in text:
   text=re.sub(r'<html lang="[^"]+"', '<html lang="en"', text, count=1)
   def english(m):
-   value=attr(m[1], 'data-en') or attr(m[1], 'data-i18n-en')
-   return m[1]+html.escape(html.unescape(value))+m[3] if value else m[0]
+   value=site_media.attr(m[1], 'data-en') or site_media.attr(m[1], 'data-i18n-en')
+   return m[1]+html.escape(value)+m[3] if value else m[0]
   text=re.sub(r'(<[\w-]+\b[^>]*(?:data-en|data-i18n-en)="[^"]*"[^>]*>)([^<]*)(</[\w-]+>)',english,text)
-  text=text.replace('</head>','<script async src="/js/language-init.js"></script></head>') if (site/'js/language-init.js').is_file() else text
+  if (site/'js/language-init.js').is_file():text=text.replace('</head>','<script async src="/js/language-init.js"></script></head>')
  if (site/'js/image-loading.js').is_file():
   text=text.replace('</head>','<link rel="stylesheet" href="/css/image-loading.css"></head>')
   text=text.replace('</body>','<script defer src="/js/image-loading.js"></script></body>')
+ if (site/'js/media-controls.js').is_file():
+  text=text.replace('</head>','<link rel="stylesheet" href="/css/media-viewer.css"></head>')
+  text=text.replace('</body>','<script defer src="/js/media-controls.js"></script></body>')
  p.write_text(text)
-
-# CSS backgrounds retain enough pixels for full-width and high-density displays.
 for p in site.rglob('*.css'):
- text=p.read_text()
- def css(m):
-  v=resolve(m.group(2),p)
-  if v:
-   # Book covers are small thumbnails, unlike full-width CSS backgrounds.
-   base=384 if p.name=='portfolio-books.css' else 1280
-   choices=[(w,u) for w,u in v['items'] if w>=min(v['width'],base) and (base!=384 or w<=1280)]
-   return 'image-set('+', '.join(f'url("{u}") {w / min(v["width"],base):.3f}x' for w,u in choices)+')'
-  if m.group(2).startswith(('data:','http:','https:','//','#')):return m.group()
-  raw=urlsplit(m.group(2)).path
-  font=(site/raw.lstrip('/')) if raw.startswith('/') else (p.parent/raw).resolve()
-  if font.is_file() and font.suffix in ['.woff2','.woff','.ttf']:
-   return 'url("/'+font.relative_to(site).as_posix()+'?v='+hashlib.sha256(font.read_bytes()).hexdigest()[:12]+'")'
-  return m.group()
- text=re.sub(r'url\(([\"\']?)([^)\"\']+)\1\)',css,text);p.write_text(text)
+ p.write_text(site_media.transform_css(p.read_text(),p,site,variants))
+viewer=site/'js/media-viewer.js'
+controls=site/'js/media-controls.js'
+if viewer.is_file() and controls.is_file():
+ digest=hashlib.sha256(viewer.read_bytes()).hexdigest()[:16]
+ target=site/'assets/bundles'/f'{digest}.js'
+ target.parent.mkdir(parents=True,exist_ok=True)
+ target.write_bytes(viewer.read_bytes())
+ controls.write_text(controls.read_text().replace('/js/media-viewer.js', '/assets/bundles/'+target.name))
+
 
 commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
 hash_input=commit.encode()
@@ -145,25 +66,33 @@ release={'version':version,'commit':commit,'image_count':len(variants)}
 (site/'image-optimization.json').write_text(json.dumps({'images':len(variants),'source_bytes':before,'responsive_bytes':sum(p.stat().st_size for p in media.glob('*'))}))
 print('Prepared release',version,'images',len(variants),'responsive MB',round(sum(p.stat().st_size for p in media.glob('*'))/1048576,2))
 
-# Keep only current + previous release assets. This cache survives Jekyll clean.
+# Preserve at least four releases and every release from the last 30 days.
+# Existing manifests without timestamps are retained conservatively on first migration.
+import time
 manifest=cache/'releases.json'
 try:history=json.loads(manifest.read_text())
 except (OSError,ValueError):history=[]
+now=int(time.time())
+history=[{**entry,'created_at':entry.get('created_at',now)} for entry in history]
 current=sorted('/'+p.relative_to(site).as_posix() for folder in ['media/optimized','assets/bundles'] for p in (site/folder).glob('*') if p.is_file())
-(site/'asset-manifest.json').write_text(json.dumps({'version':version,'files':current}))
-# A repeated build of the same release must not evict its previous release.
-previous=next((entry for entry in history if entry['version']!=version),None)
 for relative in current:
  source=site/relative.lstrip('/');target=cache/relative.lstrip('/')
  target.parent.mkdir(parents=True,exist_ok=True)
  if not target.exists():shutil.copy2(source,target)
-for relative in (previous or {}).get('files',[]):
- source=cache/relative.lstrip('/');target=site/relative.lstrip('/')
- if source.is_file() and not target.exists():
-  target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target)
-entries=[{'version':version,'files':current}]+([previous] if previous else [])
+old=[entry for entry in history if entry['version']!=version]
+retained=[entry for index,entry in enumerate(old) if index<3 or entry.get('created_at',now)>=now-30*86400]
+created=next((entry['created_at'] for entry in history if entry['version']==version),now)
+entries=[{'version':version,'created_at':created,'files':current}]+retained
+for entry in retained:
+ for relative in entry.get('files',[]):
+  if not re.fullmatch(r'/(?:media/optimized/[a-f0-9]{14}-\d+\.webp|assets/bundles/[a-f0-9]{16}\.(?:css|js))',relative):continue
+  source=cache/relative.lstrip('/');target=site/relative.lstrip('/')
+  if source.is_file() and not target.exists():
+   target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target)
 manifest.write_text(json.dumps(entries))
+# Public recovery includes compatibility assets, not only the newest page's assets.
 keep={relative for entry in entries for relative in entry['files']}
+(site/'asset-manifest.json').write_text(json.dumps({'version':version,'files':current,'releases':entries}))
 for folder in ['media/optimized','assets/bundles']:
  for p in (cache/folder).glob('*'):
   if '/'+p.relative_to(cache).as_posix() not in keep:p.unlink()

@@ -63,7 +63,7 @@ lang-switcher: true
               <div class="portfolio-reader__shadow" aria-hidden="true"></div>
               <div class="portfolio-reader__canvas" data-reader-canvas aria-label="Portfolio board reader. Use left and right arrows, buttons, clicks, or horizontal drag to turn pages.">
                 <img class="portfolio-reader__spread portfolio-reader__spread--incoming" data-reader-incoming alt="" aria-hidden="true">
-                <img class="portfolio-reader__spread portfolio-reader__spread--current" data-reader-current alt="" decoding="async">
+                <img class="portfolio-reader__spread portfolio-reader__spread--current" data-reader-current data-media-role="reader" src="/img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-01.jpg" loading="lazy" alt="Planning portfolio board 1" decoding="async">
                 <div class="portfolio-reader__gutter" aria-hidden="true"></div><div class="portfolio-reader__turn" data-reader-turn aria-hidden="true"></div>
                 <div class="portfolio-reader__edge portfolio-reader__edge--left" aria-hidden="true"></div><div class="portfolio-reader__edge portfolio-reader__edge--right" aria-hidden="true"></div><div class="portfolio-reader__loading" data-reader-loading aria-hidden="true"></div>
               </div>
@@ -74,13 +74,14 @@ lang-switcher: true
             <button class="portfolio-reader__button" type="button" data-reader-prev><span aria-hidden="true">←</span><span data-portfolio-en="Previous" data-portfolio-zh="上一页">Previous</span></button>
             <p class="portfolio-reader__page-status" data-reader-status>Spread 1 of 9</p>
             <button class="portfolio-reader__button" type="button" data-reader-next><span data-portfolio-en="Next" data-portfolio-zh="下一页">Next</span><span aria-hidden="true">→</span></button>
-            <button class="portfolio-reader__loupe-toggle" type="button" data-reader-loupe-toggle aria-pressed="true"><span aria-hidden="true">⌕</span><span data-portfolio-en="Loupe" data-portfolio-zh="放大镜">Loupe</span></button>
+            <button class="portfolio-reader__loupe-toggle" type="button" data-reader-loupe-toggle aria-pressed="false"><span aria-hidden="true">⌕</span><span data-portfolio-en="Loupe" data-portfolio-zh="放大镜">Loupe</span></button>
           </div>
-          <p class="portfolio-reader__hint" id="portfolio-reader-hint" data-portfolio-en="Click a book side or drag horizontally to turn a spread. Arrow keys work while this reader is focused; drag the loupe to inspect details." data-portfolio-zh="点击书页左右区域，或水平拖拽即可翻页。阅读器聚焦时可用方向键；拖动放大镜查看图面细节。">Click a book side or drag horizontally to turn a spread. Arrow keys work while this reader is focused; drag the loupe to inspect details.</p>
+          <p class="portfolio-reader__hint" id="portfolio-reader-hint" data-portfolio-en="Click a book side or drag horizontally to turn a spread. Arrow keys work while this reader is focused; choose Loupe to load and inspect high resolution." data-portfolio-zh="点击书页左右区域，或水平拖拽即可翻页。阅读器聚焦时可用方向键；点击放大镜后加载高清细节。">Click a book side or drag horizontally to turn a spread. Arrow keys work while this reader is focused; choose Loupe to load and inspect high resolution.</p>
           <p class="portfolio-reader__fallback" data-reader-fallback hidden></p>
-          <a data-reader-full href="#" target="_blank" rel="noopener">Open detailed image / 打开清晰大图</a>
+          <a data-reader-full data-media-view href="/img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-01.jpg" target="_blank" rel="noopener">Open detailed image / 打开清晰大图</a>
         </div>
 
+        <noscript><p><a href="/img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-01.jpg">Planning / 规划</a> · <a href="/img/portfolio/real-works/portfolio-selection/portfolio-page-didi-campus-01.jpg">Landscape / 景观</a> · <a href="/img/portfolio/real-works/portfolio-selection/portfolio-page-undergraduate-17.jpg">Spatial + Architecture / 空间与建筑</a></p></noscript>
         <div class="portfolio-books__data" hidden aria-hidden="true">
           {% for board in planning_boards %}<span data-book-spread data-book="planning" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Planning portfolio board {{ forloop.index }}" data-alt-zh="规划作品集图面 {{ forloop.index }}"></span>{% endfor %}
           {% for board in landscape_boards %}<span data-book-spread data-book="landscape" data-src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-' | append: board | append: '.jpg' | relative_url }}" data-alt-en="Landscape portfolio board {{ forloop.index }}" data-alt-zh="景观作品集图面 {{ forloop.index }}"></span>{% endfor %}

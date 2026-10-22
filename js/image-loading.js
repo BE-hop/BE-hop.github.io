@@ -67,11 +67,36 @@
   const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      watch(entry.target);
+      const image = entry.target;
+      if (image.dataset.lazySrc) {
+        const src = image.dataset.lazySrc;
+        const srcset = image.dataset.lazySrcset;
+        delete image.dataset.lazySrc;
+        delete image.dataset.lazySrcset;
+        if (srcset) image.setAttribute('srcset', srcset);
+        image.setAttribute('src', src);
+      }
+      watch(image);
       observer.unobserve(entry.target);
     });
   }, { rootMargin: '100px' }) : null;
-  const add = image => observer ? observer.observe(image) : watch(image);
+  const add = image => {
+    // A user replacement in the local editor supersedes a deferred preview.
+    if (image.dataset.lazySrc && !image.getAttribute('src')?.startsWith('data:')) {
+      delete image.dataset.lazySrc;
+      delete image.dataset.lazySrcset;
+    }
+    if (observer) observer.observe(image);
+    else {
+      if (image.dataset.lazySrc) {
+        if (image.dataset.lazySrcset) image.srcset = image.dataset.lazySrcset;
+        image.src = image.dataset.lazySrc;
+        delete image.dataset.lazySrc;
+        delete image.dataset.lazySrcset;
+      }
+      watch(image);
+    }
+  };
   document.querySelectorAll('img').forEach(add);
   new MutationObserver(records => records.forEach(record => {
     if (record.type === 'attributes') { add(record.target); return; }

@@ -45,7 +45,7 @@ layout: null
         <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:items-start">
           {% if cover_image %}
           <div class="detail-cover overflow-hidden rounded-2xl border border-border bg-card">
-            <img src="{{ cover_image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" fetchpriority="high" decoding="async" />
+            <img data-media-role="hero" sizes="(max-width: 1023px) calc(100vw - 48px), 560px" src="{{ cover_image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" fetchpriority="high" decoding="async" />
           </div>
           {% endif %}
 
@@ -141,7 +141,7 @@ layout: null
             {% assign is_portfolio_page = false %}
             {% if item.image contains '/portfolio-page-' %}{% assign is_portfolio_page = true %}{% endif %}
             <figure class="overflow-hidden rounded-xl bg-secondary{% if is_portfolio_page %} md:col-span-2{% endif %}">
-              {% if item.image %}<img src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Drawing' }}" class="w-full{% if is_portfolio_page %} h-auto object-contain{% else %} h-72 object-cover{% endif %}" />{% endif %}
+              {% if item.image %}<img data-media-role="content" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1400px) 90vw, 1280px" src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Drawing' }}" class="w-full{% if is_portfolio_page %} h-auto object-contain{% else %} h-72 object-cover{% endif %}" />{% endif %}
               {% if item.caption_zh or item.caption_en %}<figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ item.caption_en }}" data-zh="{{ item.caption_zh }}">{{ item.caption_zh | default: item.caption_en }}</figcaption>{% endif %}
             </figure>
             {% endfor %}
@@ -149,7 +149,7 @@ layout: null
             {% assign is_portfolio_page = false %}
             {% if item.image contains '/portfolio-page-' %}{% assign is_portfolio_page = true %}{% endif %}
             <figure class="overflow-hidden rounded-xl bg-secondary{% if is_portfolio_page %} md:col-span-2{% endif %}">
-              {% if item.image %}<img src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Rendering' }}" class="w-full{% if is_portfolio_page %} h-auto object-contain{% else %} h-72 object-cover{% endif %}" />{% endif %}
+              {% if item.image %}<img data-media-role="content" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1400px) 90vw, 1280px" src="{{ item.image | relative_url }}" alt="{{ item.caption_en | default: item.caption_zh | default: 'Rendering' }}" class="w-full{% if is_portfolio_page %} h-auto object-contain{% else %} h-72 object-cover{% endif %}" />{% endif %}
               {% if item.caption_zh or item.caption_en %}<figcaption class="px-4 py-3 text-sm text-muted-foreground" data-en="{{ item.caption_en }}" data-zh="{{ item.caption_zh }}">{{ item.caption_zh | default: item.caption_en }}</figcaption>{% endif %}
             </figure>
             {% endfor %}

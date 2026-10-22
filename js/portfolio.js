@@ -606,19 +606,6 @@
     homePage.classList.add("has-motion")
     window.requestAnimationFrame(() => homePage.classList.add("is-ready"))
 
-    if (heroMedia) {
-      let parallaxFrame = null
-      const updateHeroParallax = () => {
-        parallaxFrame = null
-        const offset = Math.min(window.scrollY * -0.07, 42)
-        heroMedia.style.setProperty("--hero-media-shift", `${offset}px`)
-      }
-      window.addEventListener("scroll", () => {
-        if (parallaxFrame === null) parallaxFrame = window.requestAnimationFrame(updateHeroParallax)
-      }, { passive: true })
-      updateHeroParallax()
-    }
-
     const revealNodes = document.querySelectorAll("[data-reveal]")
     if ("IntersectionObserver" in window) {
       const revealObserver = new IntersectionObserver((entries, observer) => {

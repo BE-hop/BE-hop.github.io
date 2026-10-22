@@ -107,7 +107,13 @@ jobs:
           JEKYLL_ENV: production
           TZ: Asia/Shanghai
       - name: Audit generated site
-        run: npm run site:audit && node scripts/check-release.mjs
+        run: npm run site:audit && node scripts/check-release.mjs && npm run performance:check
+      - name: Install isolated browser test runtime
+        run: npx playwright install --with-deps chromium
+      - name: Verify browser behavior and mobile performance
+        run: npm run browser:test
+      - name: Check live HTTP caching before worker retirement
+        run: python scripts/check-http-cache.py
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3

@@ -25,10 +25,10 @@ class Images(unittest.TestCase):
    (root/'sw.js').write_text('const VERSION="__BUILD_VERSION__";')
    subprocess.run(['python3',str(SCRIPT.with_name('prepare-site.py')),'--site',str(root)],check=True,stdout=subprocess.DEVNULL,env={**os.environ,'BEHOP_ASSET_CACHE':str(root/'.asset-cache')})
    self.assertEqual(source.read_bytes(),before)
-   html=(root/'index.html').read_text();self.assertIn('sizes="100vw"',html);self.assertIn('data-srcset=',html);self.assertIn('-2560.webp',html)
+   html=(root/'index.html').read_text();self.assertIn('data-media-role="content"',html);self.assertIn('data-srcset=',html);self.assertIn('-2560.webp',html)
    with Image.open(next((root/'media/optimized').glob('*-2560.webp'))) as variant:self.assertEqual(variant.size,(2560,1280))
-   css=(root/'css/test.css').read_text();self.assertIn('image-set(',css);self.assertNotIn('-480.webp',css)
-   covers=(root/'css/portfolio-books.css').read_text();self.assertIn('-768.webp") 2.000x',covers);self.assertNotIn('-2560.webp',covers)
+   css=(root/'css/test.css').read_text();self.assertIn('image-set(',css);self.assertNotIn('-2560.webp',css)
+   covers=(root/'css/portfolio-books.css').read_text();self.assertIn('-480.webp") 2.000x',covers);self.assertNotIn('-2560.webp',covers)
  def test_inline_background_and_previous_asset_retention(self):
   import shutil,re
   with tempfile.TemporaryDirectory() as d:
@@ -51,4 +51,13 @@ class Images(unittest.TestCase):
    self.assertEqual(variant.stat().st_mtime_ns,modified)
    third=build('blue');self.assertEqual(second,third)
    self.assertTrue((root/first.lstrip('/')).is_file())
+   for color in ['red','orange','purple','black']:build(color)
+   history=json.loads((cache/'releases.json').read_text())
+   self.assertGreaterEqual(len(history),6)
+   self.assertTrue((root/first.lstrip('/')).is_file())
+   for entry in history:
+    if first in entry['files']:entry['created_at']=1
+   (cache/'releases.json').write_text(json.dumps(history))
+   build('gray')
+   self.assertFalse((root/first.lstrip('/')).is_file())
 if __name__=='__main__':unittest.main()

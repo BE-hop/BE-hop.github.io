@@ -25,7 +25,7 @@ lang-switcher: true
   <main>
     <section class="works-hero" data-nav-tone="dark">
       <div class="works-hero__media" aria-hidden="true">
-        <img src="{{ '/img/portfolio/hero-landscape.jpg' | relative_url }}" alt="" fetchpriority="high" decoding="async">
+        <img data-media-role="hero" sizes="100vw" src="{{ '/img/portfolio/hero-landscape.jpg' | relative_url }}" alt="" fetchpriority="high" decoding="async">
       </div>
       <div class="works-hero__veil"></div>
       <div class="works-hero__content">
@@ -52,9 +52,9 @@ lang-switcher: true
             <span class="portfolio-entry__description" data-en="Planning · Landscape · Spatial + Architecture" data-zh="规划 · 景观 · 空间与建筑">Planning · Landscape · Spatial + Architecture</span>
           </span>
           <span class="portfolio-entry__previews" aria-hidden="true">
-            <img src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-01.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
-            <img src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-didi-campus-01.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
-            <img src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-undergraduate-17.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
+            <img data-media-role="thumbnail" sizes="(max-width: 760px) 96px, 180px" src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-01.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
+            <img data-media-role="thumbnail" sizes="(max-width: 760px) 96px, 180px" src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-didi-campus-01.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
+            <img data-media-role="thumbnail" sizes="(max-width: 760px) 96px, 180px" src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-undergraduate-17.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
           </span>
           <span class="portfolio-entry__action"><span data-en="Click to explore" data-zh="点击查看作品集">Click to explore</span><span class="portfolio-entry__arrow" aria-hidden="true">↗</span></span>
         </a>
@@ -88,7 +88,7 @@ lang-switcher: true
               <article class="works-stack-card" data-project data-category="{{ project.category }}" data-scroll-stack-card>
                 <a href="{{ project.url | prepend: site.baseurl }}" class="grid h-full no-underline lg:grid-cols-[1.18fr_0.82fr]">
                   <div class="works-card-media min-h-[260px] overflow-hidden bg-secondary lg:min-h-[34rem]">
-                    {% if cover_image %}<img src="{{ cover_image | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover" loading="lazy" decoding="async">{% endif %}
+                    {% if cover_image %}<img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ cover_image | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover" loading="lazy" decoding="async">{% endif %}
                   </div>
                   <div class="flex flex-col justify-between p-7 md:p-10">
                     <div>
@@ -123,7 +123,7 @@ lang-switcher: true
               {%- assign summary_en = project.summary_en | default: project.summary | default: project.detail_en -%}
               <article class="works-card" data-project data-category="{{ project.category }}" data-glare-card>
                 <a href="{{ project.url | prepend: site.baseurl }}" class="block no-underline">
-                  {% if cover_image %}<div class="works-card-media aspect-[4/3] overflow-hidden bg-secondary"><img src="{{ cover_image | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover" loading="lazy" decoding="async"></div>{% endif %}
+                  {% if cover_image %}<div class="works-card-media aspect-[4/3] overflow-hidden bg-secondary"><img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ cover_image | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover" loading="lazy" decoding="async"></div>{% endif %}
                   <div class="p-6">
                     <div class="mb-4 flex flex-wrap gap-2 text-xs uppercase tracking-wider text-muted-foreground">
                       <span data-en="{{ project_type_en }}" data-zh="{{ project_type_zh }}">{{ project_type_en | default: project_type_zh }}</span>{% if project.year %}<span>· {{ project.year }}</span>{% endif %}

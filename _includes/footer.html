@@ -23,14 +23,8 @@
 <script defer src="{{ "/js/third-party-lazy.js" | prepend: site.baseurl }}"></script>
 
 <!-- Reading, navigation, and search use native browser APIs. -->
-<script src="{{ '/js/blog-reading.js' | prepend: site.baseurl }}"></script>
-<script src="{{ '/js/site-nav.js' | prepend: site.baseurl }}"></script>
-
-<!-- Service Worker -->
-{% if site.service-worker %}
-<script src="{{ "/js/snackbar.js" | prepend: site.baseurl }}"></script>
-<script src="{{ "/js/sw-registration.js" | prepend: site.baseurl }}"></script>
-{% endif %}
+<script defer src="{{ '/js/blog-reading.js' | prepend: site.baseurl }}"></script>
+<script defer src="{{ '/js/site-nav.js' | prepend: site.baseurl }}"></script>
 
 <!-- async load function -->
 <script>

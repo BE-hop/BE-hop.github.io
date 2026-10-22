@@ -903,3 +903,10 @@
 @media (hover: none), (prefers-reduced-motion: reduce) {
   .hero-grid-stage__scan-frame, .ai-grid-scan::before { animation: none; }
 }
+
+/* Display-first defaults: retain the visual identity without scroll/pointer effects. */
+.hero-grid-stage__scan-frame, .ai-grid-scan::before,
+.portfolio-home .hero-title[data-masked-heading] .hero-title-line { animation: none; }
+.showcase-js [data-masked-heading] .hero-title-line,
+[data-scroll-reveal], [data-reveal] { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+.works-stack-card { position: static; transform: none !important; }

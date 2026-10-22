@@ -30,7 +30,7 @@ lang-switcher: true
   <main id="top">
     <section class="showcase-home-hero relative min-h-screen flex items-center justify-center overflow-hidden" data-home-section data-section-key="top" data-nav-tone="dark">
       <div class="hero-grid-stage absolute inset-0" aria-hidden="true" data-hero-grid-scan>
-        <img src="{{ home.hero.background_image | relative_url }}" alt="" class="hero-grid-stage__depth w-full h-full object-cover" data-hero-media fetchpriority="low" loading="lazy" decoding="async" />
+        <img data-media-role="hero" sizes="100vw" src="{{ home.hero.background_image | relative_url }}" alt="" class="hero-grid-stage__depth w-full h-full object-cover" data-hero-media hidden fetchpriority="low" loading="lazy" decoding="async" />
         <svg class="hero-grid-stage__tunnel" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="presentation">
           <g class="hero-grid-stage__faces">
             <path d="M0 0H1600L1000 330H600Z" />
@@ -120,7 +120,7 @@ lang-switcher: true
           <a href="{{ tool.url | prepend: site.baseurl }}" class="group ai-bento-card{% if tool.order == 0 or tool.featured == true %} ai-bento-card--featured{% endif %} block overflow-hidden rounded-xl bg-card border border-border no-underline" data-spotlight-card>
             {% if tool_cover %}
             <div class="ai-bento-media aspect-[4/3] overflow-hidden bg-secondary">
-              <img src="{{ tool_cover | relative_url }}" alt="{{ tool.title_en | default: tool.title_zh }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+              <img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ tool_cover | relative_url }}" alt="{{ tool.title_en | default: tool.title_zh }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
             </div>
             {% endif %}
             <div class="p-5">
@@ -167,7 +167,7 @@ lang-switcher: true
           <a href="{{ project.url | prepend: site.baseurl }}" class="group project-card works-card project-card--feature grid overflow-hidden rounded-xl border border-border bg-card no-underline transition-all md:grid-cols-[0.95fr_1.05fr]" data-project data-category="{{ project.category }}" data-glare-card data-i18n-aria="projects.viewProject" aria-label="查看项目">
             <div class="works-card-media aspect-[16/10] overflow-hidden bg-secondary md:aspect-auto">
               {% if project_cover %}
-              <img src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+              <img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
               {% endif %}
             </div>
             <div class="flex min-h-[260px] flex-col justify-between p-6">
@@ -195,7 +195,7 @@ lang-switcher: true
           <a href="{{ project.url | prepend: site.baseurl }}" class="group project-card works-card overflow-hidden rounded-xl border border-border bg-card no-underline transition-all" data-project data-category="{{ project.category }}" data-glare-card data-i18n-aria="projects.viewProject" aria-label="查看项目">
             <div class="works-card-media aspect-[4/3] overflow-hidden bg-secondary">
               {% if project_cover %}
-              <img src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+              <img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
               {% endif %}
             </div>
             <div class="p-5">
@@ -272,7 +272,7 @@ lang-switcher: true
         <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start mb-24">
           <div class="relative">
           <div class="relative aspect-[3/4] rounded-2xl overflow-hidden">
-              <img src="{{ site.baseurl }}/img/portfolio/behop-letters.svg" alt="BEhop Design" class="w-full h-full object-cover" />
+              <img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ site.baseurl }}/img/portfolio/behop-letters.svg" alt="BEhop Design" class="w-full h-full object-cover" />
             </div>
             <div class="absolute -bottom-8 -right-4 lg:-right-8 bg-card p-6 rounded-xl shadow-xl max-w-xs border border-border">
               <blockquote class="text-foreground font-serif text-lg italic leading-relaxed" data-i18n="about.quote">“AI 不是替代创作，而是放大认知与表达的工具。”</blockquote>

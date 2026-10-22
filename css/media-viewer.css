@@ -1,0 +1,9 @@
+.media-detail-link { display: block; cursor: zoom-in; }
+.media-detail-link:focus-visible { outline: 3px solid #267461; outline-offset: 4px; }
+.media-viewer { width: min(96vw, 1600px); max-width: 96vw; max-height: 94vh; padding: 1rem; border: 1px solid #758a80; border-radius: .5rem; background: #f6f6f1; color: #173b30; }
+.media-viewer::backdrop { background: rgb(8 18 15 / .86); }
+.media-viewer__bar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.media-viewer button, .media-viewer__bar a { padding: .45rem .7rem; border: 1px solid #91a49a; border-radius: .25rem; background: #fff; color: inherit; font: inherit; cursor: pointer; }
+.media-viewer [role="status"] { margin: .65rem 0; min-height: 1.5em; font: 14px/1.5 system-ui, sans-serif; }
+.media-viewer__canvas { overflow: auto; max-height: 77vh; overscroll-behavior: contain; }
+.media-viewer__canvas img { display: block; max-width: none; height: auto; margin: auto; }

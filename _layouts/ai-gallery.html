@@ -22,7 +22,7 @@ layout: null
 
         <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:items-start">
           <div class="overflow-hidden rounded-2xl border border-border bg-card">
-            <img src="{{ page.image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" />
+            <img data-media-role="content" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1400px) 90vw, 1280px" src="{{ page.image | relative_url }}" alt="{{ page.title_en | default: page.title_zh }}" class="h-full w-full object-cover" />
           </div>
 
           <div class="space-y-6">

@@ -24,3 +24,6 @@ __pycache__/
 .asset-cache/
 !Gemfile.lock
 !package-lock.json
+
+/test-results/
+/playwright-report/

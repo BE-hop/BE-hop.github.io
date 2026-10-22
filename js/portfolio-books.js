@@ -1,544 +1,202 @@
-(function () {
-  "use strict"
-
-  const root = document.querySelector(".portfolio-books")
-  if (!root) return
-
-  const books = {
-    planning: { number: "01", en: "Planning", zh: "规划" },
-    landscape: { number: "02", en: "Landscape", zh: "景观" },
-    spatial: { number: "03", en: "Spatial + Architecture", zh: "空间与建筑" },
-  }
-  const spreads = { planning: [], landscape: [], spatial: [] }
-  root.querySelectorAll("[data-book-spread]").forEach((node) => {
-    const book = node.dataset.book
-    if (spreads[book]) spreads[book].push({ src: node.dataset.srcSmall || node.dataset.src, preview: node.dataset.srcPreview, small: node.dataset.srcSmall || node.dataset.src, full: node.dataset.fullSrc || node.dataset.src, srcset: node.dataset.srcset, en: node.dataset.altEn, zh: node.dataset.altZh })
-  })
-
-  const reader = root.querySelector("#portfolio-reader")
-  const stage = root.querySelector("[data-reader-stage]")
-  const canvas = root.querySelector("[data-reader-canvas]")
-  const tilt = root.querySelector("[data-reader-tilt]")
-  const currentImage = root.querySelector("[data-reader-current]")
-  const incomingImage = root.querySelector("[data-reader-incoming]")
-  const turnLayer = root.querySelector("[data-reader-turn]")
-  const title = root.querySelector("[data-reader-title]")
-  const kicker = root.querySelector("[data-reader-kicker]")
-  const counter = root.querySelector("[data-reader-counter]")
-  const status = root.querySelector("[data-reader-status]")
-  const fallback = root.querySelector("[data-reader-fallback]")
-  const previous = root.querySelector("[data-reader-prev]")
-  const next = root.querySelector("[data-reader-next]")
-  const loupe = root.querySelector("[data-reader-loupe]")
-  const loupeLens = root.querySelector("[data-reader-loupe-lens]")
-  const loupeToggle = root.querySelector("[data-reader-loupe-toggle]")
-  const coverButtons = Array.from(root.querySelectorAll("[data-book-select]"))
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
-  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)")
-  const STRIP_COUNT = 8
-  const PAGE_SPAN = .5
-  const CURL_PEAK = .6
-  const MAGNIFICATION = 2.3
-  const state = {
-    book: "planning",
-    pages: { planning: 0, landscape: 0, spatial: 0 },
-    turning: false,
-    pointer: null,
-    animation: null,
-    loupeOn: true,
-    loupeX: .82,
-    loupeY: .78,
-    loupeTarget: null,
-  }
-
-  const clamp = (value, min, max) => Math.max(min, Math.min(max, value))
+/* Immediate navigation; only an explicit detail/loupe action requests high resolution. */
+(() => {
+  const root = document.querySelector('.portfolio-books');
+  if (!root) return;
+  const names = {planning:['Planning','规划'], landscape:['Landscape','景观'], spatial:['Spatial + Architecture','空间与建筑']};
+  const spreads = {planning:[], landscape:[], spatial:[]};
+  root.querySelectorAll('[data-book-spread]').forEach(node => {
+    spreads[node.dataset.book]?.push({small:node.dataset.srcSmall || node.dataset.src, reading:node.dataset.srcset || '', full:node.dataset.fullSrc || node.dataset.src, original:node.dataset.originalSrc, en:node.dataset.altEn, zh:node.dataset.altZh});
+  });
+  const reader = root.querySelector('#portfolio-reader');
+  const canvas = root.querySelector('[data-reader-canvas]');
+  const image = root.querySelector('[data-reader-current]');
+  const previous = root.querySelector('[data-reader-prev]');
+  const next = root.querySelector('[data-reader-next]');
+  const fallback = root.querySelector('[data-reader-fallback]');
+  const fullLink = root.querySelector('[data-reader-full]');
+  const loupe = root.querySelector('[data-reader-loupe]');
+  const lens = root.querySelector('[data-reader-loupe-lens]');
+  const toggle = root.querySelector('[data-reader-loupe-toggle]');
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+  const state = {book:'planning', pages:{planning:0, landscape:0, spatial:0}, detail:false};
+  let visible = !('IntersectionObserver' in window);
+  let sequence = 0;
+  let slowTimer;
+  let prefetchTimer;
+  const downloads = new Map();
   const language = () => {
-    try { return localStorage.getItem("portfolioLang") === "zh" ? "zh" : "en" } catch (error) { return document.documentElement.lang === "zh" ? "zh" : "en" }
+    try { return localStorage.getItem('portfolioLang') || document.documentElement.lang; }
+    catch { return document.documentElement.lang; }
+  };
+  const t = (en, zh) => language().startsWith('zh') ? zh : en;
+  const current = () => spreads[state.book][state.pages[state.book]];
+  // Keep a small decoded-preview working set; no speculative detail requests.
+  function download(src) {
+    if (downloads.has(src)) return downloads.get(src);
+    const task = new Promise(resolve => {
+      const candidate = new Image();
+      candidate.onload = () => resolve(candidate);
+      candidate.onerror = () => { downloads.delete(src); resolve(null); };
+      candidate.src = src;
+    });
+    downloads.set(src, task);
+    if (downloads.size > 4) downloads.delete(downloads.keys().next().value);
+    return task;
   }
-  const t = (en, zh) => language() === "zh" ? zh : en
-  const pageIndex = () => state.pages[state.book]
-  const currentSpread = () => spreads[state.book][pageIndex()]
-
-  const downloads = new Map()
-  let activeSource = ""
-  const download = (src) => {
-    if (downloads.has(src)) {
-      const cached = downloads.get(src)
-      downloads.delete(src)
-      downloads.set(src, cached)
-      return cached
-    }
-    let cancel
-    const task = new Promise((resolve) => {
-      const image = new Image()
-      image.fetchPriority = src === activeSource ? "high" : "low"
-      let settled = false
-      image.onload = () => { settled = true; resolve(image) }
-      image.onerror = () => { settled = true; resolve(null) }
-      cancel = () => {
-        if (settled) return
-        settled = true
-        image.src = ""
-        resolve(null)
+  function readingSource(spread) {
+    const width = canvas.clientWidth * Math.min(window.devicePixelRatio || 1, 1.5);
+    const candidates = spread.reading.split(',').map(entry => entry.trim().split(/\s+/)).filter(entry => entry.length === 2 && parseInt(entry[1],10) >= 768 && parseInt(entry[1],10) <= 1280);
+    return (candidates.find(entry => parseInt(entry[1],10) >= width) || candidates.at(-1) || [spread.small])[0];
+  }
+  function showImage() {
+    const spread = current();
+    if (!spread || !visible) return;
+    const request = ++sequence;
+    clearTimeout(slowTimer);
+    fallback.hidden = true;
+    image.removeAttribute('srcset');
+    // A new page must never display the previous board while waiting for the network.
+    image.src = spread.small;
+    image.alt = t(spread.en, spread.zh);
+    fullLink.href = spread.full;
+    fullLink.dataset.mediaOriginal = spread.original || spread.full;
+    fullLink.dataset.mediaPreview = spread.small;
+    fullLink.dataset.mediaCaption = image.alt;
+    fullLink.textContent = t('View high resolution', '查看高清图');
+    const source = state.detail ? spread.full : readingSource(spread);
+    slowTimer = setTimeout(() => {
+      if (request !== sequence) return;
+      fallback.hidden = false;
+      fallback.textContent = t('Image is loading. You can keep turning pages.', '图面正在加载，可继续翻页。');
+    }, 12000);
+    download(source).then(loaded => {
+      if (request !== sequence) return;
+      clearTimeout(slowTimer);
+      if (loaded) { image.src = source; fallback.hidden = true; updateLoupe(); }
+      else {
+        fallback.hidden = false;
+        fallback.textContent = t('Image could not load. ', '图面暂未加载成功。');
+        const retry = document.createElement('button');
+        retry.textContent = t('Retry', '重试');
+        retry.onclick = () => { downloads.delete(source); showImage(); };
+        fallback.append(retry);
       }
-      image.src = src
-    }).then((image) => {
-      if (!image && downloads.get(src) === task) downloads.delete(src)
-      return image
-    })
-    task.cancel = cancel
-    downloads.set(src, task)
-    // Bound pending requests as well as decoded boards. Never cancel the current detail.
-    while (downloads.size > 6) {
-      const oldest = [...downloads.keys()].find(key => key !== activeSource)
-      downloads.get(oldest)?.cancel()
-      downloads.delete(oldest)
-    }
-    return task
-  }
-  const loadSpread = async (spread) => {
-    if (!spread) return false
-    const image = await download(spread.small)
-    if (image) { spread.width = image.naturalWidth; spread.height = image.naturalHeight }
-    return !!image
-  }
-  const readingSource = (spread) => {
-    const width = canvas.getBoundingClientRect().width * Math.min(window.devicePixelRatio || 1, 2.5)
-    const candidates = (spread.srcset || "").split(",").map((entry) => entry.trim().split(/\s+/)).filter((entry) => entry.length === 2)
-    return (candidates.find((entry) => parseInt(entry[1], 10) >= width) || candidates[candidates.length - 1] || [spread.full])[0]
-  }
-  let readerVisible = !("IntersectionObserver" in window)
-  if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver((entries) => {
-      if (!entries.some((entry) => entry.isIntersecting)) return
-      readerVisible = true
-      observer.disconnect()
-      setImage(currentImage, currentSpread(), true)
-    }, { rootMargin: "100px" })
-    observer.observe(reader)
-  }
-  let imageSequence = 0
-  let slowImageTimer
-  const setImage = (image, spread, visible) => {
-    if (!spread) return
-    const sequence = String(++imageSequence)
-    if (visible) clearTimeout(slowImageTimer)
-    image.dataset.requestedSrc = spread.src
-    image.dataset.sequence = sequence
-    image.fetchPriority = visible ? "high" : "low"
-    image.alt = visible ? (language() === "zh" ? spread.zh : spread.en) : ""
-    if (image.src !== new URL(spread.small, location.href).href) image.src = spread.small
-    const expected = visible && readerVisible ? readingSource(spread) : spread.small
-    if (visible) activeSource = expected
-    if (visible && expected !== spread.small) {
-      slowImageTimer = setTimeout(() => {
-        if (image.dataset.sequence !== sequence) return
-        fallback.hidden = false
-        fallback.textContent = t("Loading detail slowly. You can read the preview and keep turning pages.", "清晰图正在慢速加载，可查看预览并继续翻页。")
-      }, 12000)
-    }
-    download(expected).then((loaded) => {
-      if (image.dataset.sequence !== sequence) return
-      if (visible) clearTimeout(slowImageTimer)
-      if (loaded) {
-        spread.width = loaded.naturalWidth
-        spread.height = loaded.naturalHeight
-        image.src = expected
-        if (visible) { fallback.hidden = true; updateLoupe() }
-      } else if (visible) {
-        fallback.hidden = false
-        fallback.textContent = t("The detailed image could not load. The preview and page controls remain available. ", "清晰图暂未加载成功，可继续查看预览和翻页。")
-        const retry = document.createElement("button")
-        retry.type = "button"
-        retry.textContent = t("Retry image", "重新加载图面")
-        retry.onclick = () => { fallback.hidden = true; setImage(image, spread, visible) }
-        fallback.append(retry)
-      }
-    })
-    if (visible) {
-      const link = root.querySelector("[data-reader-full]")
-      if (link) { link.href = spread.full; link.textContent = t("Open detailed image", "打开清晰大图") }
+    });
+    clearTimeout(prefetchTimer);
+    const connection = navigator.connection;
+    if (!connection?.saveData && !/(^|-)2g$/.test(connection?.effectiveType || '')) {
+      const book = state.book;
+      const page = state.pages[book] + 1;
+      prefetchTimer = setTimeout(() => {
+        if (book === state.book && spreads[book][page]) download(spreads[book][page].small);
+      }, 600);
     }
   }
-  const fittedImage = (spread, rect) => {
-    const sourceWidth = spread.width || rect.width
-    const sourceHeight = spread.height || rect.height
-    const scale = Math.min(rect.width / sourceWidth, rect.height / sourceHeight)
-    const width = sourceWidth * scale
-    const height = sourceHeight * scale
-    return { width, height, x: (rect.width - width) / 2, y: (rect.height - height) / 2 }
+  function updateLoupe(x = .78, y = .7) {
+    const enabled = state.detail && finePointer.matches;
+    loupe.setAttribute('aria-hidden', String(!enabled));
+    toggle.hidden = !finePointer.matches;
+    toggle.setAttribute('aria-pressed', String(enabled));
+    if (!enabled) { lens.style.backgroundImage = 'none'; return; }
+    const rect = canvas.getBoundingClientRect();
+    const stageRect = root.querySelector('[data-reader-stage]').getBoundingClientRect();
+    loupe.style.setProperty('--loupe-left', `${rect.left - stageRect.left + x * rect.width}px`);
+    loupe.style.setProperty('--loupe-top', `${rect.top - stageRect.top + y * rect.height}px`);
+    lens.style.backgroundImage = `url("${image.src}")`;
+    lens.style.backgroundSize = `${rect.width * 2.3}px ${rect.height * 2.3}px`;
+    lens.style.backgroundPosition = `${lens.clientWidth / 2 - x * rect.width * 2.3}px ${lens.clientHeight / 2 - y * rect.height * 2.3}px`;
   }
-
-  const applyLanguage = () => {
-    document.documentElement.lang = language()
-    document.querySelectorAll("[data-portfolio-en][data-portfolio-zh]").forEach((node) => {
-      node.textContent = t(node.dataset.portfolioEn, node.dataset.portfolioZh)
-    })
-    Object.keys(books).forEach((key) => {
-      const book = books[key]
-      const count = spreads[key].length
-      root.querySelectorAll(`[data-book-title="${key}"]`).forEach((node) => { node.textContent = t(book.en, book.zh) })
-      root.querySelectorAll(`[data-book-count="${key}"]`).forEach((node) => { node.textContent = t(`${count} spreads`, `${count} 张图面`) })
-    })
-    render(false)
+  function render(load = true) {
+    const page = state.pages[state.book];
+    const count = spreads[state.book].length;
+    root.querySelector('[data-reader-title]').textContent = t(...names[state.book]);
+    root.querySelector('[data-reader-kicker]').textContent = `${Object.keys(names).indexOf(state.book)+1} / ${t(...names[state.book])}`;
+    root.querySelector('[data-reader-counter]').textContent = `${String(page+1).padStart(2,'0')} / ${String(count).padStart(2,'0')}`;
+    root.querySelector('[data-reader-status]').textContent = t(`Spread ${page+1} of ${count}`, `图面 ${page+1} / ${count}`);
+    previous.disabled = page === 0;
+    next.disabled = page === count - 1;
+    root.querySelectorAll('[data-book-select]').forEach(button => {
+      const selected = button.dataset.bookSelect === state.book;
+      button.classList.toggle('is-selected', selected);
+      button.setAttribute('aria-selected', String(selected));
+    });
+    updateLoupe();
+    if (load) showImage();
   }
-  const updateReaderText = () => {
-    const book = books[state.book]
-    const index = pageIndex() + 1
-    const count = spreads[state.book].length
-    title.textContent = t(book.en, book.zh)
-    kicker.textContent = `${book.number} / ${t(book.en, book.zh)}`
-    counter.textContent = `${String(index).padStart(2, "0")} / ${String(count).padStart(2, "0")}`
-    status.textContent = t(`Spread ${index} of ${count}`, `图面 ${index} / ${count}`)
-    previous.disabled = index === 1
-    next.disabled = index === count
-    previous.setAttribute("aria-label", t("Previous spread", "上一张图面"))
-    next.setAttribute("aria-label", t("Next spread", "下一张图面"))
+  function step(direction) {
+    const target = state.pages[state.book] + direction;
+    if (target < 0 || target >= spreads[state.book].length) return;
+    state.pages[state.book] = target;
+    state.detail = false;
+    render();
   }
-  const preloadAround = () => {
-    if (!readerVisible) return
-    const pages = spreads[state.book]
-    const connection = navigator.connection
-    if (connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType || '')) return
-    const preload = () => { const index = pageIndex() + 1; if (pages[index]) loadSpread(pages[index]) }
-    if ('requestIdleCallback' in window) requestIdleCallback(preload, { timeout: 5000 })
-    else setTimeout(preload, 1500)
+  function selectBook(book, focus = false) {
+    if (!spreads[book]?.length) return;
+    state.book = book;
+    state.detail = false;
+    visible = true;
+    render();
+    if (focus) { reader.scrollIntoView({block:'start', behavior:'auto'}); reader.focus({preventScroll:true}); }
   }
-  const render = (freshImage) => {
-    const spread = currentSpread()
-    if (!spread) return
-    if (freshImage || currentImage.dataset.requestedSrc !== spread.src) { fallback.hidden = true; setImage(currentImage, spread, true) }
-    else currentImage.alt = language() === "zh" ? spread.zh : spread.en
-    updateReaderText()
-    coverButtons.forEach((button) => {
-      const selected = button.dataset.bookSelect === state.book
-      button.classList.toggle("is-selected", selected)
-      button.setAttribute("aria-selected", String(selected))
-    })
-    if (!fallback.hidden) {
-      const retry = fallback.querySelector("button")
-      if (retry) {
-        fallback.firstChild.textContent = t("The detailed image could not load. The preview and page controls remain available. ", "清晰图暂未加载成功，可继续查看预览和翻页。")
-        retry.textContent = t("Retry image", "重新加载图面")
-      } else fallback.textContent = t("Loading detail slowly. You can read the preview and keep turning pages.", "清晰图正在慢速加载，可查看预览并继续翻页。")
-    }
-    updateLoupeState()
-    preloadAround()
+  previous.onclick = () => step(-1);
+  next.onclick = () => step(1);
+  root.querySelectorAll('[data-book-select]').forEach(button => button.addEventListener('click', () => selectBook(button.dataset.bookSelect, true)));
+  document.querySelectorAll('[data-book-jump]').forEach(link => link.addEventListener('click', () => selectBook(link.dataset.bookJump)));
+  reader.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); step(event.key === 'ArrowLeft' ? -1 : 1); }
+  });
+  let pointer;
+  canvas.addEventListener('pointerdown', event => {
+    if (event.button !== 0) return;
+    pointer = {id:event.pointerId, x:event.clientX, y:event.clientY};
+    canvas.setPointerCapture(event.pointerId);
+  });
+  canvas.addEventListener('pointerup', event => {
+    if (!pointer || pointer.id !== event.pointerId) return;
+    const dx = event.clientX - pointer.x;
+    const dy = event.clientY - pointer.y;
+    pointer = null;
+    if (Math.abs(dy) > Math.max(12, Math.abs(dx))) return;
+    const rect = canvas.getBoundingClientRect();
+    if (Math.abs(dx) > 30) step(dx < 0 ? 1 : -1);
+    else if (Math.abs(dx) < 8) step(event.clientX > rect.left + rect.width/2 ? 1 : -1);
+  });
+  canvas.addEventListener('pointercancel', () => { pointer = null; });
+  canvas.addEventListener('dragstart', event => event.preventDefault());
+  toggle.onclick = () => { state.detail = !state.detail; showImage(); updateLoupe(); };
+  let loupePointer;
+  loupe.addEventListener('pointerdown', event => { loupePointer = event.pointerId; loupe.setPointerCapture(event.pointerId); });
+  loupe.addEventListener('pointermove', event => {
+    if (loupePointer !== event.pointerId) return;
+    const rect = canvas.getBoundingClientRect();
+    updateLoupe(Math.max(0,Math.min(1,(event.clientX-rect.left)/rect.width)),Math.max(0,Math.min(1,(event.clientY-rect.top)/rect.height)));
+  });
+  loupe.addEventListener('pointerup', () => { loupePointer = null; });
+  loupe.addEventListener('pointercancel', () => { loupePointer = null; });
+  finePointer.addEventListener('change', updateLoupe);
+  function applyLanguage() {
+    root.querySelectorAll('[data-portfolio-en][data-portfolio-zh]').forEach(node => { node.textContent = t(node.dataset.portfolioEn,node.dataset.portfolioZh); });
+    Object.keys(names).forEach(book => {
+      root.querySelectorAll(`[data-book-title="${book}"]`).forEach(node => { node.textContent = t(...names[book]); });
+      root.querySelectorAll(`[data-book-count="${book}"]`).forEach(node => { node.textContent = t(`${spreads[book].length} spreads`,`${spreads[book].length} 张图面`); });
+    });
+    render();
   }
-
-  const updateLoupe = () => {
-    const spread = currentSpread()
-    if (!finePointer.matches || !state.loupeOn || !spread) return
-    const stageRect = stage.getBoundingClientRect()
-    const rect = canvas.getBoundingClientRect()
-    const lensRect = loupeLens.getBoundingClientRect()
-    if (!rect.width || !rect.height || !lensRect.width) return
-    const x = clamp(state.loupeX, -.04, 1.04)
-    const y = clamp(state.loupeY, -.08, 1.08)
-    const fit = fittedImage(spread, rect)
-    const canvasX = x * rect.width
-    const canvasY = y * rect.height
-    loupe.style.setProperty("--loupe-left", `${rect.left - stageRect.left + canvasX}px`)
-    loupe.style.setProperty("--loupe-top", `${rect.top - stageRect.top + canvasY}px`)
-    loupeLens.style.backgroundImage = `url("${state.loupeDetail ? spread.full : (currentImage.src || spread.src)}")`
-    loupeLens.style.backgroundSize = `${fit.width * MAGNIFICATION}px ${fit.height * MAGNIFICATION}px`
-    loupeLens.style.backgroundPosition = `${lensRect.width / 2 - (canvasX - fit.x) * MAGNIFICATION}px ${lensRect.height / 2 - (canvasY - fit.y) * MAGNIFICATION}px`
-    loupe.setAttribute("aria-hidden", "false")
+  document.querySelectorAll('[data-lang]').forEach(button => button.addEventListener('click', () => {
+    const lang = button.dataset.lang === 'zh' ? 'zh' : 'en';
+    try { ['portfolioLang','blogLang','behopAiLang'].forEach(key => localStorage.setItem(key,lang)); } catch { /* This visit still works. */ }
+    document.documentElement.lang = lang;
+    applyLanguage();
+  }));
+  window.addEventListener('storage', applyLanguage);
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      visible = true;
+      observer.disconnect();
+      showImage();
+    }, {rootMargin:'100px'});
+    observer.observe(reader);
   }
-  const updateLoupeState = () => {
-    const enabled = finePointer.matches && state.loupeOn
-    loupe.setAttribute("aria-hidden", enabled ? "false" : "true")
-    loupeToggle.hidden = !finePointer.matches
-    loupeToggle.setAttribute("aria-pressed", String(state.loupeOn))
-    loupeToggle.setAttribute("aria-label", t(state.loupeOn ? "Hide loupe" : "Show loupe", state.loupeOn ? "隐藏放大镜" : "显示放大镜"))
-    if (enabled) updateLoupe()
-  }
-  const easeLoupeAside = (direction) => {
-    if (!state.loupeOn || !finePointer.matches || state.loupeDrag) return
-    state.loupeTarget = { x: direction === 1 ? .1 : .9, y: .82 }
-    const move = () => {
-      if (!state.loupeTarget || state.loupeDrag) return
-      const dx = state.loupeTarget.x - state.loupeX
-      const dy = state.loupeTarget.y - state.loupeY
-      state.loupeX += dx * .17
-      state.loupeY += dy * .17
-      updateLoupe()
-      if (Math.abs(dx) < .002 && Math.abs(dy) < .002) { state.loupeTarget = null; return }
-      requestAnimationFrame(move)
-    }
-    requestAnimationFrame(move)
-  }
-
-  const clearTurn = () => {
-    if (state.animation) cancelAnimationFrame(state.animation)
-    state.animation = null
-    turnLayer.replaceChildren()
-    turnLayer.classList.remove("is-active")
-    incomingImage.style.opacity = "0"
-    incomingImage.removeAttribute("src")
-    currentImage.style.clipPath = "none"
-  }
-  const styleFace = (face, spread, canvasX, rect) => {
-    const fit = fittedImage(spread, rect)
-    face.style.backgroundImage = `url("${spread.src}")`
-    face.style.backgroundSize = `${fit.width}px ${fit.height}px`
-    face.style.backgroundPosition = `${fit.x - canvasX}px ${fit.y}px`
-  }
-  const makeFace = (side) => {
-    const face = document.createElement("span")
-    face.className = `portfolio-reader__strip-face portfolio-reader__strip-face--${side}`
-    const shade = document.createElement("span")
-    shade.className = "portfolio-reader__strip-shade"
-    const glow = document.createElement("span")
-    glow.className = "portfolio-reader__strip-glow"
-    face.append(shade, glow)
-    return face
-  }
-  const buildTurn = (direction, target) => {
-    const outgoing = currentSpread()
-    const rect = canvas.getBoundingClientRect()
-    const stripWidth = rect.width * PAGE_SPAN / STRIP_COUNT
-    clearTurn()
-    setImage(incomingImage, target, false)
-    incomingImage.style.opacity = "1"
-    currentImage.style.clipPath = direction === 1 ? "inset(0 50% 0 0)" : "inset(0 0 0 50%)"
-    turnLayer.classList.add("is-active")
-    turnLayer.style.setProperty("--book-width", `${rect.width}px`)
-    turnLayer.style.setProperty("--page-span", String(PAGE_SPAN))
-    turnLayer.style.setProperty("--strip-count", String(STRIP_COUNT))
-    const curl = document.createElement("div")
-    curl.className = `portfolio-reader__curl portfolio-reader__curl--${direction === 1 ? "next" : "previous"}`
-    let host = curl
-    const strips = []
-    for (let index = 0; index < STRIP_COUNT; index += 1) {
-      const strip = document.createElement("span")
-      strip.className = "portfolio-reader__strip"
-      if (index === STRIP_COUNT - 1) strip.classList.add("is-edge")
-      const front = makeFace("front")
-      const back = makeFace("back")
-      const outgoingX = direction === 1 ? rect.width / 2 + index * stripWidth : rect.width / 2 - (index + 1) * stripWidth
-      const incomingX = direction === 1 ? rect.width / 2 - (index + 1) * stripWidth : rect.width / 2 + index * stripWidth
-      styleFace(front, outgoing, outgoingX, rect)
-      styleFace(back, target, incomingX, rect)
-      strip.append(front, back)
-      host.append(strip)
-      host = strip
-      strips.push(strip)
-    }
-    turnLayer.append(curl)
-    return { direction, target, outgoing, curl, strips, progress: 0, velocity: 0 }
-  }
-  const paintTurn = (turn, progress) => {
-    turn.progress = progress
-    const visibleProgress = clamp(progress, -.035, 1.035)
-    const theta = Math.PI * visibleProgress
-    const curve = CURL_PEAK * Math.sin(Math.PI * visibleProgress)
-    const headAngle = theta + curve
-    const segmentAngle = 2 * curve / STRIP_COUNT
-    const degrees = 180 / Math.PI
-    turn.curl.style.transform = `rotateY(${(turn.direction === 1 ? -1 : 1) * headAngle * degrees}deg)`
-    turn.curl.style.setProperty("--segment-angle", `${segmentAngle * degrees}deg`)
-    turn.curl.style.setProperty("--turn-shade", String(Math.abs(Math.sin(Math.PI * visibleProgress))))
-    turn.strips.forEach((strip, index) => {
-      const nearLight = Math.abs(Math.cos(headAngle - index * segmentAngle))
-      const farLight = Math.abs(Math.cos(headAngle - (index + 1) * segmentAngle))
-      strip.style.setProperty("--strip-light", nearLight.toFixed(3))
-      strip.style.setProperty("--shade-near", ((1 - nearLight) * .58).toFixed(3))
-      strip.style.setProperty("--shade-far", ((1 - farLight) * .58).toFixed(3))
-    })
-  }
-  const finishTurn = (turn, committed) => {
-    if (committed) state.pages[state.book] += turn.direction
-    state.turning = false
-    state.pointer = null
-    setImage(currentImage, currentSpread(), true)
-    clearTurn()
-    root.classList.remove("is-turning")
-    render(false)
-  }
-  const springTo = (turn, target, initialVelocity) => {
-    if (reducedMotion.matches) { finishTurn(turn, target === 1); return }
-    let velocity = initialVelocity || 0
-    let last = performance.now()
-    const stiffness = target === 1 ? 170 : 150
-    const damping = target === 1 ? 26 : 24
-    const frame = (now) => {
-      const dt = Math.min(.032, Math.max(.001, (now - last) / 1000))
-      last = now
-      const displacement = turn.progress - target
-      velocity += (-stiffness * displacement - damping * velocity) * dt
-      turn.progress += velocity * dt
-      paintTurn(turn, turn.progress)
-      if (Math.abs(turn.progress - target) < .002 && Math.abs(velocity) < .02) {
-        turn.progress = target
-        paintTurn(turn, target)
-        state.animation = null
-        finishTurn(turn, target === 1)
-      } else {
-        state.animation = requestAnimationFrame(frame)
-      }
-    }
-    state.animation = requestAnimationFrame(frame)
-  }
-  const startTurn = async (direction) => {
-    const target = spreads[state.book][pageIndex() + direction]
-    if (state.turning || !target) return null
-    state.turning = true
-    root.classList.add("is-turning")
-    reader.classList.add("is-loading")
-    easeLoupeAside(direction)
-    // Preview and detail downloads never lock navigation.
-    loadSpread(target)
-    reader.classList.remove("is-loading")
-    if (reducedMotion.matches) {
-      state.pages[state.book] += direction
-      state.turning = false
-      root.classList.remove("is-turning")
-      render(true)
-      return null
-    }
-    const turn = buildTurn(direction, target)
-    paintTurn(turn, 0)
-    return turn
-  }
-  const step = async (direction) => {
-    const turn = await startTurn(direction)
-    if (turn) springTo(turn, 1, 0)
-  }
-  const selectBook = (book, focusReader) => {
-    if (!books[book] || state.turning) return
-    state.book = book
-    clearTurn()
-    setImage(currentImage, currentSpread(), true)
-    render(false)
-    if (focusReader) {
-      reader.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth", block: "start" })
-      window.setTimeout(() => reader.focus({ preventScroll: true }), reducedMotion.matches ? 0 : 420)
-    }
-  }
-
-  coverButtons.forEach((button) => button.addEventListener("click", () => selectBook(button.dataset.bookSelect, true)))
-  document.querySelectorAll("[data-book-jump]").forEach((link) => link.addEventListener("click", () => selectBook(link.dataset.bookJump, false)))
-  previous.addEventListener("click", () => step(-1))
-  next.addEventListener("click", () => step(1))
-  reader.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowLeft") { event.preventDefault(); step(-1) }
-    if (event.key === "ArrowRight") { event.preventDefault(); step(1) }
-  })
-
-  canvas.addEventListener("pointerdown", async (event) => {
-    if (event.button !== 0 || state.turning) return
-    event.preventDefault()
-    const rect = canvas.getBoundingClientRect()
-    const direction = event.clientX > rect.left + rect.width / 2 ? 1 : -1
-    const pointer = {
-      id: event.pointerId,
-      x0: event.clientX,
-      lastX: event.clientX,
-      direction,
-      width: rect.width,
-      moved: 0,
-      velocity: 0,
-      previousProgress: 0,
-      previousTime: performance.now(),
-      turn: null,
-      released: false,
-    }
-    state.pointer = pointer
-    canvas.setPointerCapture(event.pointerId)
-    const turn = await startTurn(direction)
-    if (!turn || state.pointer !== pointer) { if (state.pointer === pointer) state.pointer = null; return }
-    pointer.turn = turn
-    const delta = pointer.lastX - pointer.x0
-    const progress = clamp((direction === 1 ? -delta : delta) / (pointer.width * .62), 0, 1)
-    paintTurn(turn, progress)
-    if (pointer.released) {
-      state.pointer = null
-      const commit = pointer.moved < 6 || progress > .42 || pointer.velocity > 1.1
-      springTo(turn, commit ? 1 : 0, pointer.velocity)
-    }
-  })
-  canvas.addEventListener("pointermove", (event) => {
-    state.loupeDetail = true
-    if (!state.pointer || event.pointerId !== state.pointer.id) {
-      if (state.turning) return
-      const rect = stage.getBoundingClientRect()
-      const x = (event.clientX - rect.left) / rect.width - .5
-      const y = (event.clientY - rect.top) / rect.height - .5
-      tilt.style.setProperty("--tilt-x", `${clamp(-y * 2.2, -1.4, 1.4)}deg`)
-      tilt.style.setProperty("--tilt-y", `${clamp(x * 2.6, -1.7, 1.7)}deg`)
-      return
-    }
-    const pointer = state.pointer
-    pointer.lastX = event.clientX
-    const delta = event.clientX - pointer.x0
-    pointer.moved = Math.max(pointer.moved, Math.abs(delta))
-    const progress = clamp((pointer.direction === 1 ? -delta : delta) / (pointer.width * .62), 0, 1)
-    const now = performance.now()
-    pointer.velocity = (progress - pointer.previousProgress) / Math.max(.001, (now - pointer.previousTime) / 1000)
-    pointer.previousProgress = progress
-    pointer.previousTime = now
-    if (pointer.turn) paintTurn(pointer.turn, progress)
-  })
-  const endPointerTurn = (event) => {
-    if (!state.pointer || event.pointerId !== state.pointer.id) return
-    const pointer = state.pointer
-    if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId)
-    if (!pointer.turn) { pointer.released = true; return }
-    state.pointer = null
-    const commit = pointer.moved < 6 || pointer.turn.progress > .42 || pointer.velocity > 1.1
-    springTo(pointer.turn, commit ? 1 : 0, pointer.velocity)
-  }
-  canvas.addEventListener("pointerup", endPointerTurn)
-  canvas.addEventListener("pointercancel", endPointerTurn)
-  canvas.addEventListener("dragstart", (event) => event.preventDefault())
-  stage.addEventListener("pointerleave", () => {
-    if (!state.pointer && !state.turning) {
-      tilt.style.setProperty("--tilt-x", "0deg")
-      tilt.style.setProperty("--tilt-y", "0deg")
-    }
-  })
-
-  loupeToggle.addEventListener("click", () => { state.loupeOn = !state.loupeOn; updateLoupeState() })
-  loupe.addEventListener("pointerdown", (event) => {
-    if (!finePointer.matches || event.button !== 0) return
-    event.preventDefault()
-    event.stopPropagation()
-    state.loupeTarget = null
-    loupe.setPointerCapture(event.pointerId)
-    state.loupeDrag = { id: event.pointerId, clientX: event.clientX, clientY: event.clientY, x: state.loupeX, y: state.loupeY }
-  })
-  loupe.addEventListener("pointermove", (event) => {
-    if (!state.loupeDrag || event.pointerId !== state.loupeDrag.id) return
-    const rect = canvas.getBoundingClientRect()
-    state.loupeX = clamp(state.loupeDrag.x + (event.clientX - state.loupeDrag.clientX) / rect.width, -.04, 1.04)
-    state.loupeY = clamp(state.loupeDrag.y + (event.clientY - state.loupeDrag.clientY) / rect.height, -.08, 1.08)
-    updateLoupe()
-  })
-  const endLoupeDrag = (event) => { if (state.loupeDrag && event.pointerId === state.loupeDrag.id) state.loupeDrag = null }
-  loupe.addEventListener("pointerup", endLoupeDrag)
-  loupe.addEventListener("pointercancel", endLoupeDrag)
-  let resizeTimer
-  window.addEventListener("resize", () => {
-    updateLoupe()
-    clearTimeout(resizeTimer)
-    resizeTimer = setTimeout(() => setImage(currentImage, currentSpread(), true), 200)
-  })
-  finePointer.addEventListener("change", updateLoupeState)
-  window.addEventListener("storage", (event) => { if (["portfolioLang", "blogLang", "behopAiLang"].includes(event.key)) applyLanguage() })
-  document.querySelectorAll("[data-lang]").forEach((button) => button.addEventListener("click", () => {
-    const lang = button.dataset.lang === "zh" ? "zh" : "en"
-    try {
-      localStorage.setItem("portfolioLang", lang)
-      localStorage.setItem("blogLang", lang)
-      localStorage.setItem("behopAiLang", lang)
-    } catch (error) {
-      // The reader can still switch for this visit when storage is unavailable.
-    }
-    document.querySelectorAll("[data-lang]").forEach((item) => item.classList.toggle("is-active", item.dataset.lang === lang))
-    applyLanguage()
-  }))
-
-  setImage(currentImage, currentSpread(), true)
-  applyLanguage()
-})()
+  applyLanguage();
+})();

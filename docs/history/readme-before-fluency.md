@@ -1,0 +1,271 @@
+# 历史证据：非现行规范
+
+2026-10-23整理前的原文。当前规范以根文档地图为准；本文中的缓存、动效与质量参数不再作为实施指令。
+
+# LIFE Project Entry
+
+本项目属于 LIFE 的 `express` 分类。智能体先阅读同级 `AGENTS.md` 与本文件，再按任务使用下方文档地图。
+
+# BEhop Experience
+
+个人博客与知识库，基于 [Jekyll](https://jekyllrb.com/) 自行定制，由 [liu.ruyuan](https://github.com/BE-hop) 维护。站点内容聚焦于 AI、设计、景观以及日常创作，托管在 GitHub Pages，正式访问地址：<https://www.behop.cn>。
+
+## 快速开始
+
+统一构建需要 Node.js 20+、Python 3.12（`python3 -m pip install -r requirements-site.txt`）及 Ruby/Bundler；前端检查依赖用 `npm ci` 安装。
+
+1. 安装 Ruby 及 Bundler：
+   ```bash
+   gem install bundler
+   ```
+2. 使用仓库内置脚本启动本地预览（推荐）：
+   ```bash
+   ./scripts/local-preview.sh
+   ```
+   启动成功后访问：
+   - <http://127.0.0.1:4000/>
+   - <http://127.0.0.1:4000/blog/>
+   - <http://127.0.0.1:4000/forum/>
+3. 如果端口 `4000` 被占用，可切换端口：
+   ```bash
+   PORT=4001 ./scripts/local-preview.sh
+   ```
+4. 如只需要构建静态文件到 `_site/`：
+   ```bash
+   ./scripts/local-preview.sh build
+   ```
+   然后可用静态模式预览：
+   ```bash
+   ./scripts/local-preview.sh static
+   ```
+5. 前端资源若需重新编译，可在安装 Node.js 后执行：
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+## 所见即所得内容编辑器
+
+先在一个终端启动 Jekyll 预览，再在另一个终端启动本地编辑器：
+
+```bash
+PORT=4001 ./scripts/local-preview.sh
+npm run editor
+```
+
+打开 <http://127.0.0.1:4567/> 后，实际网页就是主要编辑界面：
+
+- “编辑”模式下将鼠标移到文字或图片上，点击即可原位修改或替换；复制图片后可直接粘贴。
+- 原位编辑兼容中文输入法：拼音候选词确认前不会触发保存或重绘；输入过程只更新草稿，离开当前文字后才同步页面其他同字段位置，因此编辑焦点不会被替换。
+- “预览”模式恢复真实链接、导航、滚动和动效。
+- 中文 / EN 开关决定当前编辑的语言字段；修改中文不会自动改写英文，需要切到 EN 单独编辑。Markdown 正文在专用弹层中修改。
+- 排序、可见性、标签、数组和其他页面属性位于右侧可收起设置面板。
+- 所有改动先保留为草稿，点击“保存全部”后才整体校验并写入内容文件；“检查并发布”仍是独立的二次确认流程。
+
+编辑桥接只存在于本地 development 预览，GitHub Pages 的 production 构建不会包含桥接脚本或编辑标记。
+
+## 本地预览命令说明
+
+- `./scripts/local-preview.sh`：自动检查并安装缺失 gem，然后运行 `jekyll serve`。
+- `./scripts/local-preview.sh build`：仅构建，不启动服务。
+- `./scripts/local-preview.sh static`：直接预览 `_site/`（不依赖 Bundler/Jekyll）。
+- 该脚本默认把 gem 安装到 `/tmp/behop-bundle`，避免系统 Ruby 环境下 `sudo bundle install` 的权限问题。
+- 请不要直接运行 `bundle exec jekyll serve`，否则可能回到系统 gem 路径并触发 `Could not find commonmarker...`。
+- 若提示端口占用，可先执行：
+  ```bash
+  lsof -nP -iTCP:4000 -sTCP:LISTEN
+  ```
+  然后停止对应进程，或改用其他端口（例如 `PORT=4001`）。
+
+## 预览常见报错
+
+- 报错 `Could not find commonmarker-0.23.12`：请改用 `./scripts/local-preview.sh`，不要直接执行 `bundle exec jekyll serve`。
+- 输出 `Ignoring ... because its extensions are not built` 后失败：清理后重装再试：
+  ```bash
+  rm -rf /tmp/behop-bundle /tmp/bundle-home
+  ./scripts/local-preview.sh
+  ```
+- 报错 `Could not reach host index.rubygems.org`：先配置 RubyGems 镜像，再重试：
+  ```bash
+  bundle config set --local mirror.https://rubygems.org https://gems.ruby-china.com
+  ./scripts/local-preview.sh
+  ```
+  若要恢复默认源：
+  ```bash
+  bundle config unset --local mirror.https://rubygems.org
+  ```
+- 页面“没有正常渲染”时先检查服务类型：
+  ```bash
+  curl -sS http://127.0.0.1:4000/ | head -n 3
+  ```
+  正常应以 `<!DOCTYPE html>` 开头；若看到 `---` 或 `{{ site.baseurl }}`，说明你打开的是未经过 Jekyll 渲染的源文件服务。
+- 如果你之前在仓库根目录跑过 `python3 -m http.server`，浏览器可能缓存了未渲染页面：
+  - 先执行一次强制刷新（macOS: `Cmd + Shift + R`）。
+  - 仍异常时，在浏览器开发者工具里清理 `127.0.0.1:4000` 的 Service Worker 和站点缓存后再刷新。
+- Tailwind 已在构建前生成本地 CSS，不依赖运行时 CDN。样式异常时先检查本地构建、资源请求与本站缓存。
+- 只有当终端出现 `Server address: http://127.0.0.1:4000/`（或脚本打印 `Starting Jekyll preview...` 后持续运行）时，页面才可正常访问。
+
+## 静态预览（可选）
+
+如你想只看 `_site` 构建结果，推荐直接使用：
+
+```bash
+./scripts/local-preview.sh build
+./scripts/local-preview.sh static
+```
+
+如果你手动使用 `python3 -m http.server`，请确保服务目录是 `_site/`，否则会显示源文件内容而非 Jekyll 渲染结果。
+
+## 自定义内容
+
+- 站点基础配置位于 [`_config.yml`](./_config.yml)，包含标题、描述、头像、导航、评论与统计开关等。
+- 页面结构使用 Liquid 模板，核心位于 [`_layouts/`](./_layouts) 与 [`_includes/`](./_includes)。
+- 文章与页面使用 Markdown 撰写，存放在 [`_posts/`](./_posts) 与根目录中的 HTML 文件中。
+- PWA 设置位于 [`pwa/manifest.json`](./pwa/manifest.json) 与 [`sw.js`](./sw.js)。
+
+### 双语博客内容
+
+中英文博客以 `_posts/YYYY-MM-DD-slug.md` 与 `_posts/YYYY-MM-DD-slug-en.md` 成对维护，具体发布检查见 [`README_AI_BLOG_PUBLISH.md`](./README_AI_BLOG_PUBLISH.md)。设计实践类文章应保留真实过程证据，并明确区分已投入工作的流程、试验性方法和后续计划；过程图片统一放在 `img/posts/<slug>/`，发布前转换为适合网页加载的尺寸与格式。多图过程证据按输入、过程、输出成组展示：普通图片使用对齐容器，横向长图可跨栏并按原比例放大；需要统一画面时使用 `object-fit: contain`，移动端统一单列显示。
+
+### 跨页面思考文章
+
+同一篇思考文章需要同时进入博客、论坛与 About 时，双语 `_posts/` 是完整正文的唯一来源，配图放在 `img/posts/<slug>/`；`js/forum-data.js` 只保留适合讨论的双语精简版，并链接到完整中英文文章；论坛长标题需在 390px 视口完整显示，移动端详情 Hero 可随内容扩展；About 仅提炼可长期使用的职业定位，分别维护在 `_data/about.yml` 与 `_includes/about/zh.md`、`_includes/about/en.md`。`assets/data/forum-topics-approved.json` 是论坛机器人生成的快照，不应手工修改。
+
+## 作品展示视觉系统
+
+首页、AI Tools、Works 列表页及两类详情页继续使用 Jekyll、原生 CSS 与 JavaScript。共享设计变量和动效组件位于 [`css/showcase-system.css`](./css/showcase-system.css) 与 [`js/showcase-system.js`](./js/showcase-system.js)；页面原有样式和双语、筛选逻辑保持分层维护。
+
+- Manrope 用于导航和正文，Playfair Display 用于 Works 标题，Space Grotesk 用于 AI 标题。
+- 全站共享导航品牌使用克制的 Depth Text：正面文字保持真实 DOM，彩色深度层由 CSS 伪元素生成，桌面指针只提供小幅倾斜；语言变化由 `js/site-nav.js` 自动同步深度文字。
+- `theme-works` 使用暖白编辑背景与原站森林绿主色；`theme-ai` 使用深石墨主题与冰青强调，两类内容在统一中性色基础上保留明确辨识度。
+- 首页 Hero 使用首次 Masked Heading，并通过内联 SVG 的外框、多层矩形深度框、内框和四组纵深线建立接近 ReactBits Grid Scan 的连续隧道；CSS 使用 `#06b6d4` 扫描框和局部光源，指针在整个 Hero 内连续跟随。章节标题使用 Scroll Reveal；AI 区域使用 Grid Scan、Bento 和指针 Spotlight；Works 卡片使用绿色 Glare，`featured: true` 项目在桌面形成 Scroll Stack。
+- 首页主标题的每一行使用字形内白色—冰青流动纹理模拟 Masked Heading 的动态媒体效果；中英文继续由原 `data-zh` / `data-en` 文本控制，减少动态模式下保留静态纹理。
+- Scroll Reveal 对超长展板图组以进入观察范围为触发条件，不能因固定可见比例阈值而隐藏内容；减少动态模式仍直接显示。
+- 首页 AI Tools 到 Works 使用深石墨、深绿、雾灰绿和暖白的长距离连续过渡，并在 Works 顶部保留逐渐消失的绿色网格，避免黑白主题直接切换。
+- 桌面左侧章节导航随深浅板块切换对比色并标记当前章节；全端保持原生滚动，避免滚轮接管造成停顿。
+- `_data/homepage.yml` 的 `hero.background_image` 继续作为可维护的 Hero 深度底图，当前为 `img/portfolio/system/behop-hero-ai-workbench-v2.webp`，但仅以极低透明度辅助网格层。原植物景观图 `img/portfolio/hero-landscape.jpg` 保留为 Works Hero。
+- 新增 AI 工具仍创建 `_ai_products/*.md`，新增案例仍创建 `_projects/*.md`。模板继续读取既有 `cover`、`order`、`featured`、`status_zh/en` 等字段，不需要复制页面结构或增加编辑器字段。
+- PDF 作品集整页导入 Works 时，图片统一使用 `portfolio-page-*.jpg` 命名并在详情页跨栏完整显示；若整页已包含原有单张效果图，应从项目图组中移除重复引用，源媒体文件仍保留。
+- 手工提供的 JPG 展板同样使用 `portfolio-page-*.jpg`：横版和竖版都按原始比例单列呈现，避免裁切成卡片。
+- Rhino、Grasshopper 等技术过程截图也可按 `portfolio-page-*` 纳入项目；双语说明需将其定位为方案或深化的工作过程，而非最终效果图。
+- 跨项目完整作品集总览位于 `works/portfolio/`，以规划、景观、空间与建筑三本双语阅读器组织；首屏将克制标题与三本书合并在森林绿 Hero 中。封面统一使用硬壳、书脊、纸页前口、白色图面内框和轻微反光，同时以规划暖陶棕、景观苔绿、空间与建筑蓝灰建立方向区分。桌面放大镜使用小尺度双层金属框、玻璃高光、连接铆钉和带纹理短手柄，移动端隐藏；中英文标题使用明确两行节点，避免孤字或孤词。阅读器固定为 2:1 跨页，图面不裁切、不重新配对；窄图面用 `-wide.jpg` 独立衍生图左右补纯白画布，原图保留。
+- 首页保留 AI Tools、Works、Contact 与 Scroll 四个入口；移动端按钮必须完整换行，不得产生横向裁切。
+- 交互是渐进增强：键盘和触屏保持可用，筛选同步 `aria-pressed` 与实时状态；`prefers-reduced-motion` 下关闭揭示、扫描、聚光、扫光和堆叠动画。
+
+视觉改动后运行：
+
+```bash
+npm run check
+PORT=4001 ./scripts/local-preview.sh
+```
+
+浏览器至少检查首页、`/behop-ai-product/`、`/works/` 和两类详情页，并覆盖桌面、768px 与 390px 视口。确认无横向溢出、Hero 裁切正确、Featured 排序正常，且控制台无错误。
+
+## 发布
+
+当前 GitHub Pages 工作流只监听 `master`，因此 `master` 始终代表线上正在展示的版本。视觉版本使用以下分支约定：
+
+- `archive/visual-v1`：新版发布前的原版视觉快照，只用于查阅和恢复，不继续日常开发。
+- `codex/visual-v2`：新版视觉的独立开发分支，可以继续深化；确认稳定后再合并到 `master` 发布。
+- `master`：唯一线上发布入口。推送后触发 `.github/workflows/jekyll.yml`，同一 GitHub Pages 域名同一时间只展示这个分支构建出的版本。
+
+恢复旧视觉时，不要把较旧的归档分支直接合并到 `master`，因为它是 `master` 的历史祖先，Git 不会自动生成“回退”改动。应从最新 `master` 建立恢复分支，再用 `git restore --source archive/visual-v1 -- <visual-files>` 取回所需视觉文件，完成检查后提交并合并。这样可以保留后续新增的内容和论坛数据。若要同时公开访问两套网站，需要另外配置独立 Pages 仓库、域名或预览部署，而不是只建立两个普通分支。
+
+如果使用自定义域名，请在仓库设置中配置并同步修改 DNS 记录。
+
+## AI 开发合规约束（必须遵守）
+
+以下规则用于约束 AI 在本仓库中的改动，避免网站变成普通接单网站，同时允许它服务留学申请、招聘评估和潜在个人客户了解设计能力：
+
+1. `Works / 项目案例` 页面定位必须是：展示真实设计项目、概念研究、计算化设计实验，以及相关的过程、角色、工具和复盘。
+2. 网站可以合理展示真实项目、服务能力、技能矩阵和联系方式，但不应强化报价、促销、批量获客或强销售转化。
+3. 避免新增明显营销型模块或文案，例如：
+   - 价格套餐、限时优惠、强接单话术
+   - 夸大承诺或无法验证的商业宣传
+   - 与个人作品集、申请、招聘评估无关的服务销售漏斗
+4. 若需要新增页面内容，优先使用以下方向：
+   - 项目背景、设计问题、策略、角色和结果
+   - AI 工具开发流程、工具链与参数配置
+   - 作品前后对比、图纸、效果图和落地反馈
+   - 结果评估、限制、下一步计划和复盘
+5. 当需求与本约束冲突时，应优先保持网站专业、克制、可验证，并在提交说明中明确处理方式。
+
+## 许可证
+
+代码遵循 [Apache License 2.0](./LICENSE)。欢迎基于该仓库创作并注明来源。
+
+### 外部图文长文导入博客
+
+外部内容包以作者正文及其插图位置为准，转为同日期的中英文文章，配图复制到 `img/posts/<slug>/` 并压缩为网页格式。概念图保留“定性模型、非统计结果”的图注，生成式封面和插画明确其性质；英文版复用中文原图时须在图注说明，并以英文正文解释图意。文章样式限定在自身容器，图片按原比例呈现、可打开原图，宽表格支持横向滚动。发布前核对双语结构、配图顺序、索引与互链，隔离无关工作区改动。
+
+### 作品集入口与标题维护
+
+Works 页的 `.portfolio-entry` 使用三册首图的低透明度预览和明确的双语查看按钮；整个卡片保持单一链接、键盘焦点与触屏可用。入口样式在 `css/portfolio.css`，内页编辑式双行标题在 `css/portfolio-books.css`；标题与引导文案继续通过原双语属性切换。移动端将按钮与预览放在文案下方，减少动态模式关闭悬停过渡。
+
+### 项目案例 Hero 与进入引导
+
+Works Hero 使用左侧双行标题、右侧设计说明及底部翻阅链接，保留原景观底图。页面专属样式与脚本为 `css/works-intro.css`、`js/works-intro.js`。正常从页顶进入后停留 1.5 秒，再以 1.9 秒缓动下移至 Hero 尾部与完整作品集入口同时可见的位置；入口置于分类筛选之前。滚轮、触屏、指针或键盘操作立即取消自动引导；历史返回、锚点访问、编辑器 iframe、减少动态模式不自动下移。底部链接始终保留原生锚点回退。
+
+作品集总览位于 `works/portfolio/`，以规划、景观、空间与建筑三册阅读器展示；页序由页面数组维护，封面同步首图，保留旧源媒体。阅读器保持完整图面、翻页、键盘导航与移动端降级；正文配图及首屏均不新增框架。
+
+CI 使用 Ruby 3.1；调用同时接收位置哈希与关键字参数的方法时，测试必须用显式 `{ ... }` 包住位置哈希，避免本地旧 Ruby 与 CI 的参数解析差异。
+
+### 轻量图片、离线缓存与发布版本
+
+网页源图作为清晰母版保留；`scripts/optimize-images.py --backup <仓库外目录>` 仅备份原图及SHA256清单，不再有损改写源图。`scripts/jekyll-with-assets.rb` 显式注册 Jekyll post_write 钩子并统一运行 `scripts/prepare-site.py`，在构建目录生成按内容哈希命名的480/768/1280/1920/2560px WebP（不放大源图，照片质量82、展板及PNG质量90）与响应式引用，源内容字段不变；编辑器预览、上传后的构建及发布使用同一路径，不向编辑器扩大可写范围。Python需安装 `requirements-site.txt`。原图备份不得进入仓库或站点。
+
+构建产物 `release.json` 与页面meta记录版本和提交；`sw.js`使用发布版本隔离缓存，在线页面尝试新内容、慢网1秒回退已访问页面，静态资源按文件内容版本缓存，图片缓存最多60MB/100项。旧main-*缓存一次迁移，新版本由用户点击提示切换；页尾支持检查更新和仅清理本站缓存。语言设置保留，未访问的图片不承诺离线可用。本地默认不注册SW，`?offline-test=1`仅供离线验收。
+
+正式发布统一走Actions构建、审计与部署；论坛快照同步完成后触发同一工作流。站点时区固定Asia/Shanghai，已发布博客路径使用显式permalink，旧路径保留跳转。隐藏条目仅从列表隐藏，不视为访问控制。
+
+响应式图片保留 `data-original-src` 用于本地编辑器绑定源字段；替换图片草稿时清除旧 `srcset`，避免浏览器继续显示旧缩略图。
+
+### 关键入口在资源请求失败时的降级
+
+按2026-10-16凌晨的Jekyll结构保留轻量HTML、独立CSS/JS与原有双语作品数据；不在整页内联CSS、JS或Base64展板。CSS/JS查询版本按文件内容哈希生成，论坛同步不再让未变化资源全部失效。受控导航优先尝试网络；1秒内尚未收到响应头且有缓存时显示缓存。收到响应头即交付响应流，正文失败时提供手动重试；8秒仅限制等待响应头，不主动截断慢速正文；完整正文下载成功后才写入缓存，不能仅依据200响应头。图片保留响应式尺寸和失败提示及重试；首次离线预热仅请求当前HTML。
+
+关键页面的独立样式与有序同步脚本由 `scripts/bundle-page-assets.py` 各合并为一个内容哈希文件，以减少并发冷请求，应用代码不回填HTML。`js/navigation-repair.js` 是一次性头部恢复引导：旧worker等待时可激活修复，只有文档仍未完成且无表单时才重载一次；已阅读页面、表单及后续正常升级保持手动切换。不得因论坛快照变化重置静态资源版本。
+
+作品集使用768px轻量预览，并按实际画布宽度与屏幕像素密度加载最高2560px清晰图；预览、清晰图及失败重试均不得锁住翻页。只预取下一页轻量图；大图入口始终可用，过时下载不得覆盖新页。
+
+导航缓存查找必须先查当前发布桶，再回退上一发布桶；显式刷新必须尝试完整新HTML，不能再次被1秒旧缓存竞争抢先。网络失败仍保留缓存兜底。
+
+### 首次加载、流式导航与性能排查
+
+正式入口统一为 `https://www.behop.cn`；canonical、sitemap 和 robots 跟随站点配置。首页、Works、作品集、AI Tools 与论坛按页合并主 CSS 和有序 defer JS，缓存注册使用头部独立 async runtime。流式 HTML 必须在完整下载后才入缓存；开始交付的流不可再替换旧页面，中断由独立 runtime 提供手动重试，禁止自动循环重载。8秒冷 CSS/JS 超时不能冒充对首次未受 worker 控制请求的保护。保留默认可见正文、语言偏好、离线容量和用户主动更新规则。博客保留既有内联脚本依赖顺序，非必要广告/外部 iframe 在页面完成后接近视口再加载。
+
+CDN、HTTPS、发布后 HTML 清理与多地区验收按 `docs/loading-performance.md` 执行；仓库构建不能证明 Cloudflare 后台已配置。使用 `python3 scripts/performance-probe.py --network-label <实际链路> --samples 5` 检查完整下载，浏览器另测 LCP/CLS，禁止把代理测试称为大陆直连或海外节点。实质修改后运行 `npm run check`。
+
+### Cloudflare 缓存实际配置与证书维护边界
+
+2026-10-16已在后台启用Always Use HTTPS与三条规则：公开HTML尊重源站TTL（当前10分钟，Browser bypass）、更新文件/论坛数据/Webhook绕过、内容哈希目录一年缓存且>=400不存储。免费UI自定义Edge TTL最低2小时，不得把当前策略误写为已实现5分钟。发布后清理受影响HTML，保持查询串cache key；新增其他年份文章时更新当前HTML规则范围。保留www/wechat* Worker。当前Full(strict)的源站证书前提未满足，DNS-only会影响CDN防护和Webhook，须另行明确授权并安排维护时段，不擅自切换。以 `docs/loading-performance.md` 中已应用配置覆盖此前待配置目标；多地区与浏览器性能指标仍须独立验收。
+
+### 图片清晰度与慢网修复（2026-10-17）
+
+母版不重复压缩，构建参数与源内容共同参与图片指纹；修改质量、尺寸后必须生成新URL。全宽首屏使用100vw，展板按正文宽度、卡片按实际布局选图；CSS背景使用高质量image-set；三册小封面单独以384px为基准，2倍屏选768px、3倍屏至多1280px，避免按整屏大图下载。阅读器清晰图异步增强，翻页使用八段轻量动画且不等待下载。HTML/CSS/JS收到响应头即交付，8秒只限制响应头等待；完整正文成功后才入缓存。图片容量索引每个worker初始化一次后增量维护，保留60MB/100项限制及用户主动升级规则。
+
+### GitHub Pages 构建环境固定（2026-10-20）
+
+`.github/workflows/jekyll.yml` 的构建与部署均固定 `ubuntu-24.04`，保留 Ruby 3.1 和现有依赖。禁止直接改回 `ubuntu-latest`：2026-10-19 起该标签迁移到 Ubuntu 26.04，当前固定的 `ruby/setup-ruby` 无法识别该镜像，导致 Setup Ruby 立即失败。将来升级镜像或Ruby安装Action时，须先验证平台支持及完整构建部署；安装环境失败不能归因于图片或页面代码。
+
+### SPL 空间表达字典发布维护
+
+SPL 工具页由 `_ai_products/spatial-prompt-lab.md` 维护，真实界面截图存于 `img/ai-products/spatial-prompt-lab/`。网页只提供双语介绍和百度网盘下载，不托管完整离线 HTML、编辑器或项目源数据。更新数量与审核状态时以 SPL 当前数据为准，区分表达候选、专业配方和已确认示例。下载区没有版本接口时显示静态可下载提示；有接口时成功查询后更新版本，失败保留静态提示。
+
+### 加载可靠性与有界列表（2026-10-22）
+
+本条覆盖此前“导航网络优先、1秒缓存竞争、关键CSS/JS等待8秒”的规则：已访问页面立即返回完整缓存，后台检查内容变化并提供手动更新；显式刷新等待网络，失败才回退缓存。未访问页面与关键CSS/JS不再使用固定8秒主动中止；慢请求继续，真实失败才降级。HTML完整下载成功后才缓存，中断不写入；论坛辅助数据可独立超时。仍保留用户主动升级、语言偏好和图片60MiB/100项上限。
+
+`js/image-loading.js`提供接近视口图片的慢加载提示、真实失败提示和手动重试，不能取消仍在进行的下载；作品集阅读器由自身脚本管理状态，取消20秒整图中止，清晰图接近视口才增强，翻页不等下载。博客内联背景同样经过构建衍生图管线；源图与编辑器字段不变。
+
+`scripts/paginate-content.rb`经统一Jekyll入口生成博客、Works、AI Tools静态分页，每页最多12项；工具与图库共用页容量。分类使用完整静态链接，每个分类独立分页；首页工具和作品各最多6项。新增条目仍维护原集合，不写生成页。`scripts/prepare-forum.mjs`从现有静态主题和审核快照生成论坛正文及6项分页列表，共用`js/forum-renderer.js`；列表只读摘要，详情只加载当前正文和当前主题评论。旧查询式主题链接保留兼容跳转；评论与统计不能阻塞正文。
+
+`.asset-cache/`仅供构建缓存，不进入Git或站点；图片按源图与转换参数复用，当前及上一发布的哈希图片/合并资源保留，缓存缺失时不能承诺恢复上一版。Actions使用缓存恢复并上传当前结果。论坛同步仅计划/手动触发，语义数据无变化时不改写时间戳，不触发完整部署；代码push正常部署。Gemfile与Gemfile.lock固定已验证的github-pages 231依赖。
+
+博客阅读、目录和按需搜索使用`js/blog-reading.js`原生增强，不再依赖jQuery/Bootstrap链。新接口均为构建产物，不扩大编辑器写入权限。实质修改运行`npm run check`并覆盖慢响应、断流、图片失败、旧缓存升级与移动端；本地数据不能代表大陆直连或多地区实测。
+
+构建会输出`asset-manifest.json`，供下一版恢复当前公开版本的哈希资源。Actions构建前运行`scripts/restore-published-assets.py`：优先复用本地/Actions缓存，缺失时只读取本站公开资源；首次迁移从六个公开入口提取旧合并包。恢复失败保留已有缓存并明确记录，不阻断内容构建，也不能据此声称历史资源已全部恢复。
+
+语言偏好恢复脚本保持async，不得为消除语言切换跳动而新增阻塞解析的外部脚本；独立缓存/恢复runtime先于应用样式与脚本开始加载。流式正文中断才保留重试提示，后台更新或缓存写入失败不得冒充正文中断。
+
+停用旧Jekyll根分页生成器后，历史`/page2/`保留到`/blog/en/`的静态跳转，避免已有链接变成404；新博客分页仍按语言独立生成。

@@ -39,7 +39,7 @@ layout: null
         <div class="mt-6 rounded-2xl border border-accent/40 bg-accent/10 p-5">
           <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div class="space-y-1">
-              <p id="latest-version-label" class="text-sm font-semibold text-foreground" data-en="Latest: loading..." data-zh="最新版本：加载中...">最新版本：加载中...</p>
+              <p id="latest-version-label" class="text-sm font-semibold text-foreground" data-en="Download available" data-zh="可下载使用">Download available</p>
               <p class="text-sm text-muted-foreground" data-en="{{ page.download_tip_en | default: 'Click the button to download the latest package.' }}" data-zh="{{ page.download_tip_zh | default: '点击右侧按钮即可下载最新安装包。' }}">{{ page.download_tip_zh | default: '点击右侧按钮即可下载最新安装包。' }}</p>
               {% if page.download_code %}
               <p class="text-xs text-muted-foreground" data-en="Access code: {{ page.download_code }}" data-zh="提取码：{{ page.download_code }}">提取码：{{ page.download_code }}</p>

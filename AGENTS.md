@@ -328,3 +328,7 @@ CDN、HTTPS、发布后 HTML 清理与多地区验收按 `docs/loading-performan
 ### GitHub Pages 构建环境固定（2026-10-20）
 
 `.github/workflows/jekyll.yml` 的构建与部署均固定 `ubuntu-24.04`，保留 Ruby 3.1 和现有依赖。禁止直接改回 `ubuntu-latest`：2026-10-19 起该标签迁移到 Ubuntu 26.04，当前固定的 `ruby/setup-ruby` 无法识别该镜像，导致 Setup Ruby 立即失败。将来升级镜像或Ruby安装Action时，须先验证平台支持及完整构建部署；安装环境失败不能归因于图片或页面代码。
+
+### SPL 空间表达字典发布维护
+
+SPL 工具页由 `_ai_products/spatial-prompt-lab.md` 维护，真实界面截图存于 `img/ai-products/spatial-prompt-lab/`。网页只提供双语介绍和百度网盘下载，不托管完整离线 HTML、编辑器或项目源数据。更新数量与审核状态时以 SPL 当前数据为准，区分表达候选、专业配方和已确认示例。下载区没有版本接口时显示静态可下载提示；有接口时成功查询后更新版本，失败保留静态提示。

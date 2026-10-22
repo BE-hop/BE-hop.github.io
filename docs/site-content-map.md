@@ -247,6 +247,7 @@ _ai_products/ru-lineart.md
 _ai_products/ru-render.md
 _ai_products/spi-render.md
 _ai_products/ru-canvas.md
+_ai_products/spatial-prompt-lab.md
 ```
 
 可见性字段：
@@ -459,3 +460,7 @@ http://127.0.0.1:4001/behop-ai-product/
 ### 图片清晰度与慢网修复（2026-10-17）
 
 母版不重复压缩，构建参数与源内容共同参与图片指纹；修改质量、尺寸后必须生成新URL。全宽首屏使用100vw，展板按正文宽度、卡片按实际布局选图；CSS背景使用高质量image-set而非统一480px。阅读器清晰图异步增强，翻页使用八段轻量动画且不等待下载。HTML/CSS/JS收到响应头即交付，8秒只限制响应头等待；完整正文成功后才入缓存。图片容量索引每个worker初始化一次后增量维护，保留60MB/100项限制及用户主动升级规则。
+
+### SPL 空间表达字典发布维护
+
+SPL 工具页由 `_ai_products/spatial-prompt-lab.md` 维护，真实界面截图存于 `img/ai-products/spatial-prompt-lab/`。网页只提供双语介绍和百度网盘下载，不托管完整离线 HTML、编辑器或项目源数据。更新数量与审核状态时以 SPL 当前数据为准，区分表达候选、专业配方和已确认示例。下载区没有版本接口时显示静态可下载提示；有接口时成功查询后更新版本，失败保留静态提示。

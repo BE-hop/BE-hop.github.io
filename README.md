@@ -63,7 +63,7 @@ npm run legacy:watch          # 仅在维护旧hux-blog LESS/JS时使用
 
 master是唯一正式源，Actions固定ubuntu-24.04/Ruby 3.1。
 发布前完成检查、浏览器验收并获取最新origin/master，保护论坛机器人提交。
-**worker退役版发布前必须先确认线上HTML允许正常HTTP缓存**；Actions会阻止仍带no-store的发布。
+**worker退役版发布前必须先确认线上HTML允许正常HTTP缓存**；Actions会阻止仍带no-store的发布。2026-10-23已修复公开HTML的Browser bypass，实际短TTL为600秒；持续以[性能规范](docs/loading-performance.md)中的HTTP预检为准。
 本地构建不能证明CDN配置或大陆实际网络已达标。DNS、证书、付费或迁移按具体方案确认后执行。
 
 常见问题：端口占用时改PORT；缺commonmarker时使用预览脚本；出现原始Liquid时检查是否误把仓库根当静态站点。

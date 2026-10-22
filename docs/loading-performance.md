@@ -37,8 +37,8 @@ Actions优先恢复.asset-cache，缺失时通过公开manifest恢复；恢复�
 
 ## 当前后台事实与发布步骤
 
-2026-10-23读取：六个HTML仍返回`max-age=600, no-store`；首页可命中CF缓存，哈希CSS/JS为一年缓存。代码尚不能依此退役自动离线，发布门禁预期失败。
-现有Cloudflare三条规则、Full模式和www/wechat* Worker边界见历史证据；本轮不能把旧后台状态当成刚刚配置成功。
+2026-10-23经用户批准，已将Public HTML - short edge cache的Browser TTL从Bypass cache改为Respect origin TTL，其他规则保持原值。六个入口HTTP缓存预检通过，实际HTML为`max-age=600`；首页和Works命中CF缓存。更新文件为DYNAMIC，缺失哈希资源404为BYPASS。浏览器60秒目标尚未应用，本轮采用已验证的源站600秒TTL。
+现有三条规则、Full模式及www/wechat* Worker保留；请求来自当前开发机链路，不能代表大陆直连。
 
 正式发布按顺序：
 

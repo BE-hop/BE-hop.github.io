@@ -1,3 +1,4 @@
+import os
 import unittest,tempfile,subprocess,re,importlib.util
 from pathlib import Path
 SCRIPT=Path(__file__).resolve().parents[1]/'scripts/prepare-site.py'
@@ -9,7 +10,7 @@ class AssetVersions(unittest.TestCase):
    def build(text):
     (root/'index.html').write_text('<head><link rel="stylesheet" href="/css/example.css"></head><body>'+text+'<script src="/js/sw-registration.js"></script></body>')
     (root/'sw.js').write_text('const VERSION="__BUILD_VERSION__";')
-    subprocess.run(['python3',str(SCRIPT),'--site',str(root)],check=True,stdout=subprocess.DEVNULL)
+    subprocess.run(['python3',str(SCRIPT),'--site',str(root)],check=True,stdout=subprocess.DEVNULL,env={**os.environ,'BEHOP_ASSET_CACHE':str(root/'.asset-cache')})
     output=(root/'index.html').read_text();self.assertRegex(output, r'<head>[\s\S]*<script async src="/js/sw-registration[\s\S]*</head>');return re.search(r'href="([^"]+)"',output)[1],re.search(r'name="behop-release" content="([^"]+)"',output)[1]
    first=build('old forum');second=build('updated forum')
    self.assertEqual(first[0],second[0]);self.assertNotEqual(first[1],second[1])

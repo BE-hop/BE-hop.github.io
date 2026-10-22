@@ -45,7 +45,7 @@
   const category = categoryOptions.includes(categoryParam) ? categoryParam : "all"
   const filter = filterOptions.includes(filterParam) ? filterParam : "all"
   const sort = sortOptions.includes(sortParam) ? sortParam : "latest"
-  const initialPage = Math.max(1, Number.parseInt(getParam("page", "1"), 10) || 1)
+  const initialPage = Math.max(1, Number.parseInt(getParam("page", window.location.pathname.match(/\/page\/(\d+)\//)?.[1] || "1"), 10) || 1)
   const pageSize = 6
 
   let visibleCount = initialPage * pageSize
@@ -331,7 +331,7 @@
 
     const article = document.createElement("article")
     const link = document.createElement("a")
-    link.href = `${baseTopic}?topic=${encodeURIComponent(topic.slug)}`
+    link.href = topic.url || `${baseTopic}?topic=${encodeURIComponent(topic.slug)}`
     link.dataset.topic = topic.slug
     link.className =
       "group block bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors no-underline"
@@ -487,7 +487,7 @@
 
   const renderList = () => {
     const sorted = getFilteredSorted()
-    const items = sorted.slice(0, visibleCount)
+    const items = sorted.slice((initialPage - 1) * pageSize, initialPage * pageSize)
     const lang = getLang()
 
     list.innerHTML = ""
@@ -787,27 +787,10 @@
   const hydrateApprovedData = async () => {
     if (!forumClient) return
 
-    try {
-      const [comments, metrics, fetchedTopics] = await Promise.all([
-        forumClient.fetchApprovedComments(),
-        forumClient.fetchApprovedMetrics(),
-        forumClient.fetchApprovedTopics ? forumClient.fetchApprovedTopics() : Promise.resolve([]),
-      ])
-
-      approvedComments = comments
-      approvedMetrics = metrics
-      approvedTopics = Array.isArray(fetchedTopics) ? fetchedTopics : []
-      const approvedSlugSet = new Set(approvedTopics.map((topic) => topic?.slug).filter(Boolean))
-      const cleanedLocalTopics = filterPersistentDraftTopics(localTopics, approvedSlugSet).slice(0, 100)
-      if (cleanedLocalTopics.length !== localTopics.length) {
-        localTopics = cleanedLocalTopics
-        saveLocalTopics(localTopics)
-      }
-      topics = mergeTopics(localTopics, approvedTopics, staticTopics)
-      renderResult = renderList()
-    } catch (error) {
-      // keep static fallback values
-    }
+    const refresh = () => { topics = mergeTopics(localTopics, approvedTopics, staticTopics); renderResult = renderList() }
+    await Promise.allSettled([
+      forumClient.fetchApprovedMetrics().then(metrics => { approvedMetrics = metrics; refresh() }),
+    ])
   }
 
   localTopics = loadLocalTopics()
@@ -817,19 +800,6 @@
   let renderResult = renderList()
   bindCompose()
 
-  if (loadMore) {
-    loadMore.addEventListener("click", (event) => {
-      const hasNext = visibleCount < renderResult.total
-      if (!hasNext) return
-
-      event.preventDefault()
-      visibleCount += pageSize
-      renderResult = renderList()
-
-      const nextPageValue = Math.max(1, Math.ceil(Math.min(visibleCount, renderResult.total) / pageSize))
-      window.history.replaceState({}, "", buildUrl({ page: nextPageValue }))
-    })
-  }
 
   hydrateApprovedData()
 

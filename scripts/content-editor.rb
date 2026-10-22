@@ -961,6 +961,7 @@ def publish_preflight
   unless ENV["CONTENT_EDITOR_SKIP_PREFLIGHT_COMMANDS"] == "1"
     command_or_raise("npm", "run", "css:check")
     Dir.mktmpdir("behop-publish-build-") do |destination|
+      # The shared build also generates bounded lists and static forum pages; none are editor write targets.
       command_or_raise("./scripts/local-preview.sh", "build", env: { "JEKYLL_DESTINATION" => destination })
       command_or_raise("npm", "run", "site:audit", env: { "SITE_ROOT" => destination })
     end

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Build-only responsive images and release versioning. No source/editor fields change."""
-import argparse, hashlib, json, re, subprocess, importlib.util
+import argparse, hashlib, json, re, subprocess, importlib.util, os, shutil, html
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 from PIL import Image, ImageOps
 spec=importlib.util.spec_from_file_location("page_assets",Path(__file__).with_name("bundle-page-assets.py"));page_assets=importlib.util.module_from_spec(spec);spec.loader.exec_module(page_assets)
 parser=argparse.ArgumentParser();parser.add_argument('--site',default='_site');args=parser.parse_args()
 root=Path(__file__).resolve().parent.parent;site=Path(args.site).resolve();media=site/'media/optimized';media.mkdir(parents=True,exist_ok=True)
+cache=Path(os.environ.get('BEHOP_ASSET_CACHE', str(root/'.asset-cache'))).resolve();cache.mkdir(parents=True,exist_ok=True)
 variants={};before=after=0
 for parent in ['img','assets']:
  for p in sorted((site/parent).rglob('*')):
@@ -21,8 +22,13 @@ for parent in ['img','assets']:
    digest=hashlib.sha256(p.read_bytes()+f'webp-v2-q{quality}-480,768,1280,1920,2560'.encode()).hexdigest()[:14];items=[]
    for width in sorted(set([min(im.width,w) for w in [480,768,1280,1920,2560]])):
     dest=media/f'{digest}-{width}.webp'
+    cached=cache/'media/optimized'/dest.name
     if not dest.exists():
-     out=im.copy();out.thumbnail((width,10000));out.save(dest,quality=quality,method=5)
+     if cached.is_file():shutil.copy2(cached,dest)
+     else:
+      out=im.copy();out.thumbnail((width,10000));out.save(dest,quality=quality,method=5)
+    cached.parent.mkdir(parents=True,exist_ok=True)
+    if not cached.exists():shutil.copy2(dest,cached)
     items.append((width,'/'+dest.relative_to(site).as_posix()))
    variants[key]={'items':items,'default':next((u for w,u in items if w>=1280),items[-1][1]),'thumb':next((u for w,u in items if w>=480),items[-1][1]),'cover':items[-1][1],'width':im.width,'height':im.height,'full':items[-1][1]}
    before+=p.stat().st_size
@@ -51,7 +57,9 @@ for p in site.rglob('*.html'):
   sizes='(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 90vw, 900px'
   context=text[max(0,m.start()-900):m.start()]
   if 'portfolio-entry__previews' in context:sizes='(max-width: 760px) 120px, 240px'
-  elif attr(tag,'fetchpriority')=='high' or 'data-hero-media' in tag:sizes='100vw'
+  elif 'data-hero-media' in tag:sizes='100vw'
+  elif 'detail-cover' in context:sizes='(max-width: 1023px) calc(100vw - 48px), 560px'
+  elif attr(tag,'fetchpriority')=='high':sizes='100vw'
   elif p.relative_to(site).as_posix() in ['index.html','works/index.html','behop-ai-product/index.html']:sizes='(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 90vw, 760px'
   elif 'portfolio-page-' in (src or ''):sizes='(max-width: 760px) calc(100vw - 32px), (max-width: 1400px) 90vw, 1280px'
   tag=put(tag,'sizes',sizes)
@@ -60,6 +68,16 @@ for p in site.rglob('*.html'):
   if attr(tag,'fetchpriority')!='high' and not attr(tag,'loading'):tag=put(tag,'loading','lazy')
   return put(tag,'decoding','async')
  text=re.sub(r'<img\b[^>]*>',image,text,flags=re.I)
+ # Inline blog header backgrounds must use the same derived images as CSS.
+ def background(m):
+  tag=m.group()
+  def replace_url(u):
+   v=resolve(u.group(2),p)
+   if not v:return u.group()
+   choices=[(w,path) for w,path in v['items'] if w>=min(v['width'],1280)]
+   return 'image-set('+', '.join(f"url('{path}') {w/min(v['width'],1280):.3f}x" for w,path in choices)+')'
+  return re.sub(r'url\(([\"\']?)([^)\"\']+)\1\)',replace_url,tag)
+ text=re.sub(r'<[^>]+\sstyle="[^"]*"[^>]*>',background,text)
  text=re.sub(r'<iframe\b[^>]*>',lambda m:put(m.group(),'loading','lazy'),text,flags=re.I)
  def spread(m):
   tag=m.group();v=resolve(attr(tag,'data-src'),p)
@@ -71,6 +89,17 @@ for p in site.rglob('*.html'):
  text=re.sub(r'<span\b[^>]*data-book-spread[^>]*>',spread,text)
  # Lightweight social image: never download a 3MB hidden photo.
  text=re.sub(r'<img\b[^>]*width="0"[^>]*>', '', text)
+ # Default bilingual output must match the default English language before JS.
+ if 'data-en=' in text or 'data-i18n-en=' in text:
+  text=re.sub(r'<html lang="[^"]+"', '<html lang="en"', text, count=1)
+  def english(m):
+   value=attr(m[1], 'data-en') or attr(m[1], 'data-i18n-en')
+   return m[1]+html.escape(html.unescape(value))+m[3] if value else m[0]
+  text=re.sub(r'(<[\w-]+\b[^>]*(?:data-en|data-i18n-en)="[^"]*"[^>]*>)([^<]*)(</[\w-]+>)',english,text)
+  text=text.replace('</head>','<script async src="/js/language-init.js"></script></head>') if (site/'js/language-init.js').is_file() else text
+ if (site/'js/image-loading.js').is_file():
+  text=text.replace('</head>','<link rel="stylesheet" href="/css/image-loading.css"></head>')
+  text=text.replace('</body>','<script defer src="/js/image-loading.js"></script></body>')
  p.write_text(text)
 
 # CSS backgrounds retain enough pixels for full-width and high-density displays.
@@ -104,7 +133,8 @@ for p in site.rglob('*.html'):
   if route.endswith('/index.html'):route=route[:-10]
   text=text.replace('</head>',f'<link rel="canonical" href="{site_url}{route}"></head>')
  text=text.replace('</head>',f'<meta name="behop-release" content="{version}"><meta name="behop-commit" content="{commit}"></head>')
- text=text.replace('</head>',f'<script async src="/js/sw-registration.js?v={version}"></script></head>')
+ runtime=f'<script async src="/js/sw-registration.js?v={version}"></script>'
+ text=text.replace('<head>', '<head>'+runtime, 1)
  # Stable release query makes old and new assets distinct in browser and SW caches.
  text=re.sub(r'((?:src|href)=[\"\'])(/[^\"\'?#]+\.(?:css|js))(?:\?[^\"\']*)?([\"\'])',lambda m:m[1]+m[2]+'?v='+hashlib.sha256((site/m[2].lstrip('/')).read_bytes()).hexdigest()[:16]+m[3] if (site/m[2].lstrip('/')).is_file() else m[0],text)
  text=page_assets.bundle_page(site,p,text)
@@ -114,3 +144,26 @@ release={'version':version,'commit':commit,'image_count':len(variants)}
 (site/'release.json').write_text(json.dumps(release))
 (site/'image-optimization.json').write_text(json.dumps({'images':len(variants),'source_bytes':before,'responsive_bytes':sum(p.stat().st_size for p in media.glob('*'))}))
 print('Prepared release',version,'images',len(variants),'responsive MB',round(sum(p.stat().st_size for p in media.glob('*'))/1048576,2))
+
+# Keep only current + previous release assets. This cache survives Jekyll clean.
+manifest=cache/'releases.json'
+try:history=json.loads(manifest.read_text())
+except (OSError,ValueError):history=[]
+current=sorted('/'+p.relative_to(site).as_posix() for folder in ['media/optimized','assets/bundles'] for p in (site/folder).glob('*') if p.is_file())
+(site/'asset-manifest.json').write_text(json.dumps({'version':version,'files':current}))
+# A repeated build of the same release must not evict its previous release.
+previous=next((entry for entry in history if entry['version']!=version),None)
+for relative in current:
+ source=site/relative.lstrip('/');target=cache/relative.lstrip('/')
+ target.parent.mkdir(parents=True,exist_ok=True)
+ if not target.exists():shutil.copy2(source,target)
+for relative in (previous or {}).get('files',[]):
+ source=cache/relative.lstrip('/');target=site/relative.lstrip('/')
+ if source.is_file() and not target.exists():
+  target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target)
+entries=[{'version':version,'files':current}]+([previous] if previous else [])
+manifest.write_text(json.dumps(entries))
+keep={relative for entry in entries for relative in entry['files']}
+for folder in ['media/optimized','assets/bundles']:
+ for p in (cache/folder).glob('*'):
+  if '/'+p.relative_to(cache).as_posix() not in keep:p.unlink()

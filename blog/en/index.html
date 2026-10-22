@@ -30,7 +30,7 @@ lang-switcher: true
   }
 </style>
 
-{% for post in site.posts %}
+{% for post in page.list_items %}
 {% if post.lang == 'en' %}
 <div class="post-preview">
     <a href="{{ post.url | prepend: site.baseurl }}">
@@ -60,6 +60,7 @@ lang-switcher: true
 <hr>
 {% endif %}
 {% endfor %}
+{% include list-pagination.html %}
 
 <script>
   (function () {

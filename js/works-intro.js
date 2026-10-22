@@ -46,7 +46,7 @@
   });
   const schedule = () => {
     const navigation = performance.getEntriesByType('navigation')[0];
-    if (cancelled || reducedMotion.matches || location.hash || window.scrollY > 8 || window.self !== window.top || navigation?.type === 'back_forward') return;
+    if (location.pathname !== '/works/' || cancelled || reducedMotion.matches || location.hash || window.scrollY > 8 || window.self !== window.top || navigation?.type === 'back_forward') return;
     timer = window.setTimeout(reveal, 1500);
   };
   if (document.readyState === 'complete') schedule();

@@ -8,6 +8,11 @@
     ? navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(() => null)
     : Promise.resolve(null);
   let stalled = false;
+  let interrupted = false;
+  let pageUpdated = false;
+  let cachedFallback = false;
+  let showCachedFallback;
+  let offerPageUpdate;
   const showRetry = () => {
     if (document.querySelector('[data-loading-retry]') || !document.body) return;
     const banner = document.createElement('aside');
@@ -16,7 +21,9 @@
     // Inline recovery styling remains usable if the main stylesheet failed.
     banner.style.cssText = 'position:fixed;bottom:16px;left:16px;right:16px;z-index:2147483647;padding:12px;background:#fff;color:#172d25;border:1px solid #527765;font:14px system-ui;box-shadow:0 2px 12px #0003';
     const message = document.createElement('span');
-    message.textContent = 'Loading is slow. You can keep reading or retry. / 加载较慢，可继续阅读或重试。 ';
+    message.textContent = interrupted
+      ? 'The page download stopped. Retry to load the complete page. / 页面下载中断，可重试加载完整页面。 '
+      : 'Loading is slow. You can keep reading or retry. / 加载较慢，可继续阅读或重试。 ';
     const retry = document.createElement('button');
     retry.type = 'button';
     retry.textContent = 'Retry / 重试';
@@ -35,11 +42,13 @@
     if (stalled) showRetry();
     if (document.readyState === 'complete') {
       clearTimeout(timer);
-      document.querySelector('[data-loading-retry]')?.remove();
+      if (!interrupted) document.querySelector('[data-loading-retry]')?.remove();
     }
   });
   navigator.serviceWorker.addEventListener('message', event => {
-    if (event.data?.type === 'NAVIGATION_INTERRUPTED') { stalled = true; showRetry(); }
+    if (event.data?.type === 'NAVIGATION_INTERRUPTED') { interrupted = true; stalled = true; document.querySelector('[data-loading-retry]')?.remove(); showRetry(); }
+    if (event.data?.type === 'CACHED_FALLBACK') { cachedFallback = true; showCachedFallback?.(); }
+    if (event.data?.type === 'PAGE_UPDATED') { pageUpdated = true; offerPageUpdate?.(); }
   });
   const start = () => {
     const release = document.querySelector('meta[name="behop-release"]')?.content || '';
@@ -55,12 +64,19 @@
     document.body.append(panel);
     panel.querySelector('small').textContent = `Version ${release.slice(0, 8)} · ${commit.slice(0, 8)}`;
     const status = text => { panel.querySelector('[role="status"]').textContent = text; };
+    showCachedFallback = () => {
+      panel.open = true;
+      status(zh() ? '网络请求失败，正在显示已缓存版本。网络恢复后可再次刷新。' : 'The network request failed. Showing a cached page; refresh again when connected.');
+    };
+    if (cachedFallback) showCachedFallback();
     const offer = () => {
       available = true;
       panel.open = true;
       status(zh() ? '发现新版本，刷新后查看。' : 'A new version is ready. Refresh when convenient.');
       panel.querySelector('[data-refresh]').hidden = false;
     };
+    offerPageUpdate = offer;
+    if (pageUpdated) offer();
     async function check(manual = false) {
       if (!manual && Date.now() - checkedAt < 15 * 60 * 1000) return;
       checkedAt = Date.now();

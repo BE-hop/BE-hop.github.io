@@ -1,4 +1,4 @@
-/* Versioned offline cache. Old releases never mask successful online navigation. */
+/* Complete cached pages open immediately; refresh and release upgrades remain explicit. */
 const VERSION = '__BUILD_VERSION__';
 const SHELL = `behop-shell-${VERSION}`;
 const MEDIA = `behop-media-${VERSION}`;
@@ -23,17 +23,25 @@ async function getMediaIndex() {
 }
 const isLocal = url => url.origin === self.location.origin;
 const isMedia = request => request.destination === 'image' || /\.(webp|png|jpe?g|gif)$/i.test(new URL(request.url).pathname);
+async function cachedResponse(request) {
+  try {
+    const bucket = await caches.open(SHELL);
+    return (await bucket.match(request)) || (await caches.match(request));
+  } catch { return undefined; } // Storage restrictions must not block a working network.
+}
 async function store(request, response) {
   if (!response || !response.ok || response.type === 'opaque') return response;
   const media = isMedia(request);
   const copy = response.clone();
   if (media) {
-    // Serialize eviction so simultaneous image loads cannot race the byte limit.
+    // Stream each body into storage independently; one slow image must not queue all others.
+    const cache = await caches.open(MEDIA);
+    const size = Number(copy.headers.get('content-length')) || (await copy.clone().blob()).size;
+    if (size > MAX_MEDIA_BYTES) return response;
+    await cache.put(request, copy);
+    // Serialize only index updates and eviction, after the body is complete.
     mediaQueue = mediaQueue.catch(() => {}).then(async () => {
       const index = await getMediaIndex();
-      const cache = await caches.open(MEDIA);
-      const size = Number(copy.headers.get('content-length')) || (await copy.clone().blob()).size;
-      await cache.put(request, copy);
       const id = MEDIA + request.url;
       index.delete(id);
       index.set(id, { bucket: cache, key: request, size });
@@ -51,7 +59,8 @@ async function store(request, response) {
     await cache.put(request, copy);
     // Bound previously visited pages/resources as well.
     const keys = await cache.keys();
-    for (const key of keys.slice(0, Math.max(0, keys.length - 120))) await cache.delete(key);
+    const removable = keys.filter(key => !['/offline.html', '/release.json'].includes(new URL(key.url).pathname));
+    for (const key of removable.slice(0, Math.max(0, keys.length - 120))) await cache.delete(key);
   }
   return response;
 }
@@ -91,43 +100,49 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (request.method !== 'GET' || !isLocal(url) || url.pathname === '/sw.js' || url.pathname === '/release.json' || url.pathname.startsWith('/api/')) return;
   if (request.mode === 'navigate') {
-    // Deliver headers/body immediately; only complete documents enter the cache.
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-    const fresh = fetch(request, { signal: controller.signal }).finally(() => clearTimeout(timeout));
+    // A slow connection is not an offline signal. Do not abort viable navigation.
+    let deliveredFresh = false;
+    const fresh = fetch(request);
+    const currentCache = cachedResponse(request);
     const completed = fresh.then(async response => {
-      await response.clone().arrayBuffer();
-      if (response.ok) await store(request, response);
+      const body = await response.clone().text();
+      if (!response.ok) return;
+      const cached = await currentCache;
+      await store(request, response).catch(() => {});
+      if (cached && request.cache !== 'reload' && body !== await cached.clone().text()) {
+        const client = await self.clients.get?.(event.resultingClientId || event.clientId);
+        client?.postMessage({ type: 'PAGE_UPDATED' });
+      }
     });
     event.waitUntil(completed.catch(async () => {
+      if (!deliveredFresh) return; // A failed background refresh must not interrupt cached reading.
       const client = await self.clients.get?.(event.resultingClientId || event.clientId);
       client?.postMessage({ type: 'NAVIGATION_INTERRUPTED' });
     }));
     event.respondWith((async () => {
-      const currentCache = await caches.open(SHELL);
-      const cached = (await currentCache.match(request)) || (await caches.match(request));
-      if (cached && request.cache !== 'reload') {
-        let timer;
-        const grace = new Promise(resolve => { timer = setTimeout(() => resolve(cached), 1000); });
-        const response = await Promise.race([fresh.catch(() => cached), grace]);
-        clearTimeout(timer);
-        return response;
+      const cached = await currentCache;
+      if (cached && request.cache !== 'reload') return cached;
+      try { const response = await fresh; deliveredFresh = true; return response; }
+      catch {
+        if (cached) {
+          const client = await self.clients.get?.(event.resultingClientId || event.clientId);
+          client?.postMessage({ type: 'CACHED_FALLBACK' });
+          return cached;
+        }
+        return (await cachedResponse('/offline.html')) || new Response('Connection failed. Please retry.', { status: 503 });
       }
-      try { return await fresh; }
-      catch { return cached || (await caches.match('/offline.html')) || new Response('Connection timed out. Please retry.', { status: 503 }); }
     })());
     return;
   }
   const liveData = url.pathname.startsWith('/assets/data/forum-');
-  const bounded = /\.(css|js)$/i.test(url.pathname) || liveData;
+  const bounded = liveData;
   let finishCache;
   const cacheWork = new Promise(resolve => { finishCache = resolve; });
   event.waitUntil(cacheWork);
   event.respondWith((async () => {
     let timer;
     try {
-      const bucket = await caches.open(SHELL);
-      const cached = (await bucket.match(request)) || (await caches.match(request));
+      const cached = await cachedResponse(request);
       if (!liveData && cached) { finishCache(); return cached; }
       const controller = new AbortController();
       if (bounded) timer = setTimeout(() => controller.abort(), 8000);
@@ -138,7 +153,7 @@ self.addEventListener('fetch', event => {
       return response;
     } catch {
       finishCache();
-      return (await caches.match(request)) || new Response('', { status: 503, statusText: 'Not available offline' });
+      return (await cachedResponse(request)) || new Response('', { status: 503, statusText: 'Not available offline' });
     } finally {
       clearTimeout(timer);
     }

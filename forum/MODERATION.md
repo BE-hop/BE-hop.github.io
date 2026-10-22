@@ -212,3 +212,7 @@ where status = 'pending';
 - `forum_approved_events` (optional)
 
 You can use Supabase, Firebase, or another service. The static site only depends on approved JSON snapshots.
+
+## 2026-10-22 构建与同步补充
+
+审核快照仍由原同步脚本生成，禁止手工修改。相同数据仅时间戳变化时不写入；同步工作流按计划或手动执行，有实质提交才触发Pages重建。`scripts/prepare-forum.mjs`在统一构建中生成静态可读正文、6项分页列表、摘要脚本及按主题拆分的审核评论；这些产物不反写快照，也不触发线上查询或提交。旧`?topic=`链接继续通过客户端跳转到静态详情。

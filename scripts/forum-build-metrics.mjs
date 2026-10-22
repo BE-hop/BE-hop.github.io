@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs/promises"
 import path from "node:path"
+import { writeSnapshot } from "./write-snapshot.mjs"
 
 const root = process.cwd()
 const commentsPath = path.join(root, "assets/data/forum-comments-approved.json")
@@ -120,7 +121,8 @@ const main = async () => {
   const data = await loadData()
   const metrics = buildMetrics(data)
 
-  await fs.writeFile(metricsPath, `${JSON.stringify(metrics, null, 2)}\n`, "utf8")
+  const changed = await writeSnapshot(metricsPath, metrics)
+  if (!changed) { process.stdout.write("Snapshot content unchanged.\n"); return }
 
   process.stdout.write(
     `Updated ${path.relative(root, metricsPath)}\n` +

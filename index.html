@@ -113,7 +113,7 @@ lang-switcher: true
         </div>
 
         <div class="ai-bento-grid" data-bento-grid>
-          {%- assign featured_tools = site.ai_products | sort: "order" -%}
+          {%- assign featured_tools = site.ai_products | where_exp: "item", "item.visibility != 'hidden'" | where_exp: "item", "item.visibility != 'concept'" | sort: "order" | slice: 0, 6 -%}
           {%- for tool in featured_tools -%}
           {%- if tool.visibility != "hidden" and tool.visibility != "concept" -%}
           {%- assign tool_cover = tool.cover | default: tool.image -%}
@@ -159,7 +159,7 @@ lang-switcher: true
           <p class="project-filter-status" id="project-filter-status" role="status" aria-live="polite"></p>
         </div>
 
-        {%- assign project_list = site.projects | sort: "order" -%}
+        {%- assign project_list = site.projects | where_exp: "item", "item.visibility != 'hidden'" | sort: "order" | slice: 0, 6 -%}
         <div class="grid grid-cols-1 gap-5 lg:grid-cols-2" id="project-results">
           {%- for project in project_list -%}
           {%- if project.category == "professional" and project.visibility != "hidden" -%}

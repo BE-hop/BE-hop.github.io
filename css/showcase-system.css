@@ -893,5 +893,13 @@
 .is-motion-paused *, .is-motion-paused *::before, .is-motion-paused *::after { animation-play-state: paused !important; }
 @media (max-width: 760px), (pointer: coarse) {
   .site-nav, .showcase-page .site-nav { backdrop-filter: none; -webkit-backdrop-filter: none; }
-  .hero-grid-stage__scan, .ai-grid-scan::before { animation: none !important; }
+  .hero-grid-stage__scan-frame, .ai-grid-scan::before { animation: none !important; }
+}
+
+/* Reading priority: decorative scans settle after one pass instead of running forever. */
+.hero-grid-stage__scan-frame,
+.portfolio-home .hero-title[data-masked-heading] .hero-title-line,
+.ai-grid-scan::before { animation-iteration-count: 1; }
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .hero-grid-stage__scan-frame, .ai-grid-scan::before { animation: none; }
 }

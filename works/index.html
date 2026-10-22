@@ -19,7 +19,7 @@ lang-switcher: true
 <link rel="stylesheet" href="/css/local-fonts.css">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
 </head>
-<body class="works-page showcase-page theme-works bg-background text-foreground">
+<body data-list-filter="{{ page.list_filter }}" class="works-page showcase-page theme-works bg-background text-foreground">
   {% include nav.html %}
 
   <main>
@@ -60,16 +60,18 @@ lang-switcher: true
         </a>
 
         <div class="mb-12 flex flex-wrap gap-2" role="group" aria-label="Project filters">
-          <button type="button" class="filter-button is-active rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all" data-filter="all" data-en="All" data-zh="全部" aria-pressed="true" aria-controls="works-results">All</button>
-          <button type="button" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all" data-filter="professional" data-en="Professional" data-zh="真实工作" aria-pressed="false" aria-controls="works-results">Professional</button>
-          <button type="button" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all" data-filter="academic" data-en="Academic" data-zh="学术研究" aria-pressed="false" aria-controls="works-results">Academic</button>
-          <button type="button" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all" data-filter="landscape" data-en="Landscape" data-zh="景观设计" aria-pressed="false" aria-controls="works-results">Landscape</button>
-          <button type="button" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all" data-filter="interior" data-en="Spatial Concept" data-zh="空间概念" aria-pressed="false" aria-controls="works-results">Spatial Concept</button>
+          <a href="/works/#works-results" data-static-filter="all" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all{% if page.list_filter == 'all' %} is-active{% endif %}"  data-en="All" data-zh="全部"  aria-controls="works-results"{% if page.list_filter == 'all' %} aria-current="page"{% endif %}>All</a>
+          <a href="/works/category/professional/#works-results" data-static-filter="professional" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all{% if page.list_filter == 'professional' %} is-active{% endif %}"  data-en="Professional" data-zh="真实工作"  aria-controls="works-results"{% if page.list_filter == 'professional' %} aria-current="page"{% endif %}>Professional</a>
+          <a href="/works/category/academic/#works-results" data-static-filter="academic" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all{% if page.list_filter == 'academic' %} is-active{% endif %}"  data-en="Academic" data-zh="学术研究"  aria-controls="works-results"{% if page.list_filter == 'academic' %} aria-current="page"{% endif %}>Academic</a>
+          <a href="/works/category/landscape/#works-results" data-static-filter="landscape" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all{% if page.list_filter == 'landscape' %} is-active{% endif %}"  data-en="Landscape" data-zh="景观设计"  aria-controls="works-results"{% if page.list_filter == 'landscape' %} aria-current="page"{% endif %}>Landscape</a>
+          <a href="/works/category/interior/#works-results" data-static-filter="interior" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all{% if page.list_filter == 'interior' %} is-active{% endif %}"  data-en="Spatial Concept" data-zh="空间概念"  aria-controls="works-results"{% if page.list_filter == 'interior' %} aria-current="page"{% endif %}>Spatial Concept</a>
         </div>
         <p class="project-filter-status" id="project-filter-status" role="status" aria-live="polite"></p>
 
-        {%- assign project_list = site.projects | sort: "order" -%}
+        {%- assign project_list = page.list_items -%}
+        {%- assign featured_urls = project_list | where: "featured", true | slice: 0, 3 | map: "url" -%}
         <div id="works-results">
+          {% if featured_urls.size > 0 %}
           <section class="mb-20" aria-labelledby="featured-works-heading" data-project-group>
             <div class="mb-8 flex items-end justify-between gap-6">
               <div>
@@ -81,7 +83,7 @@ lang-switcher: true
 
             <div class="works-scroll-stack" data-scroll-stack>
               {%- for project in project_list -%}
-              {%- if project.featured == true and project.visibility != "hidden" -%}
+              {%- if featured_urls contains project.url -%}
               {%- assign cover_image = project.cover | default: project.image -%}
               <article class="works-stack-card" data-project data-category="{{ project.category }}" data-scroll-stack-card>
                 <a href="{{ project.url | prepend: site.baseurl }}" class="grid h-full no-underline lg:grid-cols-[1.18fr_0.82fr]">
@@ -106,11 +108,14 @@ lang-switcher: true
             </div>
           </section>
 
+          {% endif %}
+          {% assign more_count = project_list.size | minus: featured_urls.size %}
+          {% if more_count > 0 %}
           <section aria-labelledby="all-works-heading" data-project-group>
             <h2 id="all-works-heading" class="works-heading mb-8 text-3xl font-semibold text-foreground md:text-4xl" data-scroll-reveal data-en="More Works" data-zh="更多项目">More Works</h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {%- for project in project_list -%}
-              {%- if project.featured != true and project.visibility != "hidden" -%}
+              {%- unless featured_urls contains project.url -%}
               {%- assign cover_image = project.cover | default: project.image -%}
               {%- assign project_type_zh = project.type_zh | default: project.project_type_zh | default: project.category_label_zh | default: project.type | default: project.project_type -%}
               {%- assign project_type_en = project.type_en | default: project.project_type_en | default: project.category_label_en | default: project.type | default: project.project_type -%}
@@ -129,12 +134,15 @@ lang-switcher: true
                   </div>
                 </a>
               </article>
-              {%- endif -%}
+              {%- endunless -%}
               {%- endfor -%}
             </div>
           </section>
+          {% endif %}
+          {% if project_list.size == 0 %}<p data-en="No projects in this category yet." data-zh="此分类暂无项目。">No projects in this category yet.</p>{% endif %}
         </div>
 
+        {% include list-pagination.html %}
         <div class="mt-16 rounded-2xl border border-border bg-secondary p-6 md:flex md:items-center md:justify-between md:gap-6">
           <div>
             <h2 class="works-heading text-2xl font-semibold text-foreground" data-scroll-reveal data-en="Need the full archive?" data-zh="需要查看全部作品？">Need the full archive?</h2>
@@ -151,5 +159,6 @@ lang-switcher: true
   <script defer src="{{ site.baseurl }}/js/showcase-system.js"></script>
   <script defer src="{{ site.baseurl }}/js/works-intro.js"></script>
   {% include editor-bridge.html %}
+<script defer src="/js/list-navigation.js"></script>
 </body>
 </html>

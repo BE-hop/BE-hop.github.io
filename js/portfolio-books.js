@@ -60,19 +60,40 @@
   const currentSpread = () => spreads[state.book][pageIndex()]
 
   const downloads = new Map()
+  let activeSource = ""
   const download = (src) => {
-    if (downloads.has(src)) return downloads.get(src)
+    if (downloads.has(src)) {
+      const cached = downloads.get(src)
+      downloads.delete(src)
+      downloads.set(src, cached)
+      return cached
+    }
+    let cancel
     const task = new Promise((resolve) => {
       const image = new Image()
-      const timer = setTimeout(() => { image.src = ""; resolve(null) }, 20000)
-      image.onload = () => { clearTimeout(timer); resolve(image) }
-      image.onerror = () => { clearTimeout(timer); resolve(null) }
+      image.fetchPriority = src === activeSource ? "high" : "low"
+      let settled = false
+      image.onload = () => { settled = true; resolve(image) }
+      image.onerror = () => { settled = true; resolve(null) }
+      cancel = () => {
+        if (settled) return
+        settled = true
+        image.src = ""
+        resolve(null)
+      }
       image.src = src
-    }).then((image) => { if (!image) downloads.delete(src);
-      // Do not retain decoded full-size boards for an entire volume.
-      while (downloads.size > 6) downloads.delete(downloads.keys().next().value);
-      return image })
+    }).then((image) => {
+      if (!image && downloads.get(src) === task) downloads.delete(src)
+      return image
+    })
+    task.cancel = cancel
     downloads.set(src, task)
+    // Bound pending requests as well as decoded boards. Never cancel the current detail.
+    while (downloads.size > 6) {
+      const oldest = [...downloads.keys()].find(key => key !== activeSource)
+      downloads.get(oldest)?.cancel()
+      downloads.delete(oldest)
+    }
     return task
   }
   const loadSpread = async (spread) => {
@@ -86,17 +107,39 @@
     const candidates = (spread.srcset || "").split(",").map((entry) => entry.trim().split(/\s+/)).filter((entry) => entry.length === 2)
     return (candidates.find((entry) => parseInt(entry[1], 10) >= width) || candidates[candidates.length - 1] || [spread.full])[0]
   }
+  let readerVisible = !("IntersectionObserver" in window)
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return
+      readerVisible = true
+      observer.disconnect()
+      setImage(currentImage, currentSpread(), true)
+    }, { rootMargin: "100px" })
+    observer.observe(reader)
+  }
   let imageSequence = 0
+  let slowImageTimer
   const setImage = (image, spread, visible) => {
     if (!spread) return
     const sequence = String(++imageSequence)
+    if (visible) clearTimeout(slowImageTimer)
     image.dataset.requestedSrc = spread.src
     image.dataset.sequence = sequence
+    image.fetchPriority = visible ? "high" : "low"
     image.alt = visible ? (language() === "zh" ? spread.zh : spread.en) : ""
     if (image.src !== new URL(spread.small, location.href).href) image.src = spread.small
-    const expected = visible ? readingSource(spread) : spread.small
+    const expected = visible && readerVisible ? readingSource(spread) : spread.small
+    if (visible) activeSource = expected
+    if (visible && expected !== spread.small) {
+      slowImageTimer = setTimeout(() => {
+        if (image.dataset.sequence !== sequence) return
+        fallback.hidden = false
+        fallback.textContent = t("Loading detail slowly. You can read the preview and keep turning pages.", "清晰图正在慢速加载，可查看预览并继续翻页。")
+      }, 12000)
+    }
     download(expected).then((loaded) => {
       if (image.dataset.sequence !== sequence) return
+      if (visible) clearTimeout(slowImageTimer)
       if (loaded) {
         spread.width = loaded.naturalWidth
         spread.height = loaded.naturalHeight
@@ -104,7 +147,7 @@
         if (visible) { fallback.hidden = true; updateLoupe() }
       } else if (visible) {
         fallback.hidden = false
-        fallback.textContent = t("Image download stalled. You can keep turning pages. ", "图面下载较慢，仍可继续翻页。")
+        fallback.textContent = t("The detailed image could not load. The preview and page controls remain available. ", "清晰图暂未加载成功，可继续查看预览和翻页。")
         const retry = document.createElement("button")
         retry.type = "button"
         retry.textContent = t("Retry image", "重新加载图面")
@@ -153,6 +196,7 @@
     next.setAttribute("aria-label", t("Next spread", "下一张图面"))
   }
   const preloadAround = () => {
+    if (!readerVisible) return
     const pages = spreads[state.book]
     const connection = navigator.connection
     if (connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType || '')) return
@@ -163,7 +207,7 @@
   const render = (freshImage) => {
     const spread = currentSpread()
     if (!spread) return
-    if (freshImage || currentImage.dataset.requestedSrc !== spread.src) setImage(currentImage, spread, true)
+    if (freshImage || currentImage.dataset.requestedSrc !== spread.src) { fallback.hidden = true; setImage(currentImage, spread, true) }
     else currentImage.alt = language() === "zh" ? spread.zh : spread.en
     updateReaderText()
     coverButtons.forEach((button) => {
@@ -171,7 +215,13 @@
       button.classList.toggle("is-selected", selected)
       button.setAttribute("aria-selected", String(selected))
     })
-    fallback.hidden = true
+    if (!fallback.hidden) {
+      const retry = fallback.querySelector("button")
+      if (retry) {
+        fallback.firstChild.textContent = t("The detailed image could not load. The preview and page controls remain available. ", "清晰图暂未加载成功，可继续查看预览和翻页。")
+        retry.textContent = t("Retry image", "重新加载图面")
+      } else fallback.textContent = t("Loading detail slowly. You can read the preview and keep turning pages.", "清晰图正在慢速加载，可查看预览并继续翻页。")
+    }
     updateLoupeState()
     preloadAround()
   }

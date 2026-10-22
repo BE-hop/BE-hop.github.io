@@ -20,3 +20,7 @@ career-trend-file/**/sources/
 
 __pycache__/
 *.pyc
+
+.asset-cache/
+!Gemfile.lock
+!package-lock.json

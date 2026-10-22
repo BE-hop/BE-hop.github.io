@@ -19,7 +19,7 @@ nav-theme: dark
 <link rel="stylesheet" href="/css/local-fonts.css">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
 </head>
-<body class="showcase-page theme-ai bg-background text-foreground">
+<body data-list-filter="{{ page.list_filter }}" class="showcase-page theme-ai bg-background text-foreground">
   {% include nav.html %}
 
   {%- assign visible_product_count = 0 -%}
@@ -93,15 +93,15 @@ nav-theme: dark
         </div>
 
         <div class="mb-10 flex flex-wrap items-center justify-center gap-2" role="group" aria-label="AI tool filters">
-          <button type="button" class="filter-button is-active px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground" data-filter="All" data-en="All" data-zh="全部" aria-pressed="true" aria-controls="ai-product-results">全部</button>
-          <button type="button" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80" data-filter="Design Tools" data-en="Design Tools" data-zh="设计工具" aria-pressed="false" aria-controls="ai-product-results">设计工具</button>
-          <button type="button" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80" data-filter="Rendering Workflow" data-en="Rendering Workflow" data-zh="渲染工作流" aria-pressed="false" aria-controls="ai-product-results">渲染工作流</button>
-          <button type="button" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80" data-filter="Workflow Prototype" data-en="Workflow Prototype" data-zh="工作流原型" aria-pressed="false" aria-controls="ai-product-results">工作流原型</button>
+          <a href="/behop-ai-product/#products" data-static-filter="All" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground{% if page.list_filter == 'All' %} is-active{% endif %}"  data-en="All" data-zh="全部"  aria-controls="ai-product-results"{% if page.list_filter == 'All' %} aria-current="page"{% endif %}>全部</a>
+          <a href="/behop-ai-product/category/design-tools/#products" data-static-filter="Design Tools" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80{% if page.list_filter == 'Design Tools' %} is-active{% endif %}"  data-en="Design Tools" data-zh="设计工具"  aria-controls="ai-product-results"{% if page.list_filter == 'Design Tools' %} aria-current="page"{% endif %}>设计工具</a>
+          <a href="/behop-ai-product/category/rendering-workflow/#products" data-static-filter="Rendering Workflow" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80{% if page.list_filter == 'Rendering Workflow' %} is-active{% endif %}"  data-en="Rendering Workflow" data-zh="渲染工作流"  aria-controls="ai-product-results"{% if page.list_filter == 'Rendering Workflow' %} aria-current="page"{% endif %}>渲染工作流</a>
+          <a href="/behop-ai-product/category/workflow-prototype/#products" data-static-filter="Workflow Prototype" class="filter-button px-4 py-2 rounded-full text-sm font-medium transition-all bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80{% if page.list_filter == 'Workflow Prototype' %} is-active{% endif %}"  data-en="Workflow Prototype" data-zh="工作流原型"  aria-controls="ai-product-results"{% if page.list_filter == 'Workflow Prototype' %} aria-current="page"{% endif %}>工作流原型</a>
         </div>
         <p class="project-filter-status" id="ai-filter-status" role="status" aria-live="polite"></p>
 
         <div class="ai-bento-grid" id="ai-product-results" data-product-grid>
-          {%- assign product_list = site.ai_products | sort: "order" -%}
+          {%- assign product_list = page.list_products -%}
           {%- for product in product_list -%}
           {%- if product.visibility != "hidden" and product.visibility != "concept" -%}
           {%- assign product_cover = product.cover | default: product.image -%}
@@ -149,7 +149,7 @@ nav-theme: dark
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-gallery-grid>
-          {%- assign gallery_list = site.ai_gallery | sort: "order" -%}
+          {%- assign gallery_list = page.list_gallery -%}
           {%- for item in gallery_list -%}
           {%- if item.visibility != "hidden" and item.visibility != "concept" -%}
           <a href="{{ item.url | prepend: site.baseurl }}" class="group relative block overflow-hidden rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent text-left no-underline {{ item.grid_class | default: 'aspect-[4/3]' }}">
@@ -314,6 +314,7 @@ nav-theme: dark
         </div>
       </div>
     </section>
+    {% include list-pagination.html %}
   </main>
 
   <footer class="border-t border-border bg-card">
@@ -389,5 +390,6 @@ nav-theme: dark
   <script defer src="{{ site.baseurl }}/js/behop-ai.js"></script>
   <script defer src="{{ site.baseurl }}/js/showcase-system.js"></script>
   {% include editor-bridge.html %}
+<script defer src="/js/list-navigation.js"></script>
 </body>
 </html>

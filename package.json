@@ -32,6 +32,6 @@
         "forum:metrics": "node scripts/forum-build-metrics.mjs",
         "boil": "git push boilerplate boilerplate:master",
         "push": "git push origin master --tag",
-        "runtime:test": "node --test test/site_runtime_test.mjs && python3 test/image_pipeline_test.py && python3 test/asset_version_test.py"
+        "runtime:test": "node --test test/site_runtime_test.mjs test/snapshot_test.mjs test/forum_build_test.mjs && python3 test/image_pipeline_test.py && python3 test/asset_version_test.py && python3 test/published_assets_test.py && ruby test/pagination_test.rb"
     }
 }

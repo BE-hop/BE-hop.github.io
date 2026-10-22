@@ -61,9 +61,10 @@ twitter_username: "@Behop2000"
 # from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
 highlighter: rouge
 permalink: pretty
-paginate: 10
 exclude:
   - AGENTS.md
+  - .asset-cache/
+  - "-tmp-behop-*"
   - .codex/
   - .content-editor/
   - career-trend-file/

@@ -1,0 +1,7 @@
+{% if page.list_pages > 1 %}
+<nav class="list-pagination" aria-label="Pagination">
+  {% if page.list_previous %}<a href="{{ page.list_previous | relative_url }}{% if page.list_anchor %}#{{ page.list_anchor }}{% endif %}" rel="prev" data-en="← Previous" data-zh="← 上一页">← Previous</a>{% endif %}
+  <span>{{ page.list_page }} / {{ page.list_pages }}</span>
+  {% if page.list_next %}<a href="{{ page.list_next | relative_url }}{% if page.list_anchor %}#{{ page.list_anchor }}{% endif %}" rel="next" data-en="Next →" data-zh="下一页 →">Next →</a>{% endif %}
+</nav>
+{% endif %}

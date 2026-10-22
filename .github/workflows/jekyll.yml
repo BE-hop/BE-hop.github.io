@@ -32,10 +32,28 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  changes:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    outputs:
+      deploy: ${{ steps.changed.outputs.deploy }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - id: changed
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if [ "$EVENT" != "workflow_run" ] || [ "$(git rev-parse HEAD)" != "$BEFORE" ]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          fi
   # Pin the image: the Ruby setup action does not support Ubuntu 26.04.
   # Build job
   build:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    needs: changes
+    if: needs.changes.outputs.deploy == 'true'
     runs-on: ubuntu-24.04
     env:
       BUNDLE_PATH: /github/home/.bundle
@@ -56,6 +74,12 @@ jobs:
         with:
           node-version: "20"
           cache: npm
+      - name: Restore derived assets
+        uses: actions/cache@v4
+        with:
+          path: .asset-cache
+          key: behop-derived-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: behop-derived-${{ runner.os }}-
       - name: Install frontend dependencies
         run: npm ci
       - name: Check generated CSS
@@ -73,6 +97,8 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
+      - name: Recover currently published hashed assets
+        run: python scripts/restore-published-assets.py
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: |

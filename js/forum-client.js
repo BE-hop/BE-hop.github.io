@@ -374,13 +374,17 @@
   }
 
   const fetchJson = async (url, fallbackValue) => {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), requestTimeoutMs)
     try {
-      const response = await fetch(url, { cache: "no-store" })
+      const response = await fetch(url, { cache: "no-store", signal: controller.signal })
       if (!response.ok) return fallbackValue
       const data = await response.json()
       return data ?? fallbackValue
     } catch (error) {
       return fallbackValue
+    } finally {
+      clearTimeout(timer)
     }
   }
 
@@ -559,7 +563,10 @@
     submitComment,
     submitTopic,
     trackEvent,
-    fetchApprovedComments: async () => normalizeComments(await fetchJson(approvedCommentsUrl, { comments: [] })),
+    fetchApprovedComments: async (slug) => normalizeComments(await fetchJson(
+      slug && /^[a-z0-9][a-z0-9-]*$/.test(slug) ? withBaseUrl(`/assets/data/forum-comments/${slug}.json`) : approvedCommentsUrl,
+      { comments: [] }
+    )),
     fetchApprovedTopics: async () => normalizeTopics(await fetchJson(approvedTopicsUrl, { topics: [] })),
     fetchApprovedMetrics: async () => normalizeMetrics(await fetchJson(approvedMetricsUrl, {})),
     formatNumber,

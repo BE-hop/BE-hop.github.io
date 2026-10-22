@@ -5,7 +5,14 @@
   const baseForum = `${baseUrl}/forum/`.replace(/\/+/g, "/")
   const baseTopic = `${baseForum}topic/`
   const params = new URLSearchParams(window.location.search)
-  const requestedSlug = (params.get("topic") || "").trim()
+  const requestedSlug = (params.get("topic") || document.body.dataset.topicSlug || "").trim()
+  const legacyTarget = staticTopics.find(topic => topic.slug === requestedSlug) || (!requestedSlug ? staticTopics[0] : null)
+  if (!document.body.dataset.topicSlug && legacyTarget?.url) {
+    const target = new URL(legacyTarget.url, location.origin)
+    params.forEach((value, key) => { if (key !== "topic") target.searchParams.set(key, value) })
+    location.replace(target.pathname + target.search)
+    return
+  }
   const forumClient = window.FORUM_CLIENT || null
   const localDraftKey = "forumTopicDrafts"
 
@@ -179,410 +186,6 @@
     }
 
     return "article"
-  }
-
-  const createParagraph = (text, className = "text-sm leading-relaxed text-foreground/90") => {
-    const paragraph = document.createElement("p")
-    paragraph.className = className
-    paragraph.textContent = text
-    return paragraph
-  }
-
-  const createRichParagraph = (html, className = "text-sm leading-relaxed text-foreground/90") => {
-    const paragraph = document.createElement("p")
-    paragraph.className = className
-    paragraph.innerHTML = html
-    return paragraph
-  }
-
-  const createHeading = (text, className = "text-xl font-semibold text-foreground") => {
-    const heading = document.createElement("h2")
-    heading.className = className
-    heading.textContent = text
-    return heading
-  }
-
-  const createBulletList = (items, options = {}) => {
-    const {
-      listClass = "space-y-2 text-sm text-foreground",
-      itemClass = "flex items-start gap-2",
-      dotClass = "mt-1 h-1.5 w-1.5 rounded-full bg-primary",
-    } = options
-
-    const list = document.createElement("ul")
-    list.className = listClass
-
-    items.forEach((item) => {
-      const li = document.createElement("li")
-      li.className = itemClass
-
-      const dot = document.createElement("span")
-      dot.className = dotClass
-
-      const textNode = document.createElement("span")
-      textNode.textContent = item
-
-      li.append(dot, textNode)
-      list.appendChild(li)
-    })
-
-    return list
-  }
-
-  const pickLangArray = (value, lang) => {
-    if (Array.isArray(value)) return value
-    if (!value || typeof value !== "object") return []
-    const localized = value[lang] || value.en || value.zh
-    return Array.isArray(localized) ? localized : []
-  }
-
-  const pickLangMatrix = (value, lang) => {
-    const localized = pickLang(value, lang)
-    if (!Array.isArray(localized)) return []
-    return localized.filter((row) => Array.isArray(row))
-  }
-
-  const createDivider = (className) => {
-    const divider = document.createElement("hr")
-    divider.className = className
-    return divider
-  }
-
-  const createQuoteBlock = (lines, className = "forum-insight-quote", lineClassName = "forum-insight-quote__line") => {
-    const quote = document.createElement("blockquote")
-    quote.className = className
-    lines.forEach((line) => {
-      const lineNode = document.createElement("p")
-      lineNode.className = lineClassName
-      lineNode.innerHTML = line
-      quote.appendChild(lineNode)
-    })
-    return quote
-  }
-
-  const createInsightTable = (headers, rows) => {
-    const wrap = document.createElement("div")
-    wrap.className = "forum-insight-table-wrap"
-
-    const table = document.createElement("table")
-    table.className = "forum-insight-table"
-
-    if (Array.isArray(headers) && headers.length) {
-      const thead = document.createElement("thead")
-      const tr = document.createElement("tr")
-      headers.forEach((header) => {
-        const th = document.createElement("th")
-        th.textContent = header
-        tr.appendChild(th)
-      })
-      thead.appendChild(tr)
-      table.appendChild(thead)
-    }
-
-    const tbody = document.createElement("tbody")
-    rows.forEach((row) => {
-      const tr = document.createElement("tr")
-      row.forEach((cell) => {
-        const td = document.createElement("td")
-        td.textContent = cell
-        tr.appendChild(td)
-      })
-      tbody.appendChild(tr)
-    })
-    table.appendChild(tbody)
-    wrap.appendChild(table)
-
-    return wrap
-  }
-
-  const appendInsightNode = (container, lastSection, node) => {
-    if (lastSection) {
-      lastSection.appendChild(node)
-      return
-    }
-
-    const section = document.createElement("section")
-    section.className = "forum-insight-section"
-    section.appendChild(node)
-    container.appendChild(section)
-  }
-
-  const renderQaAnswerBlock = (container, block, lang) => {
-    if (!block || typeof block !== "object") return
-    const value = pickLang(block, lang)
-    if (!value && !Array.isArray(block?.en) && !Array.isArray(block?.zh)) return
-
-    if (block.type === "h2" || block.type === "h3") {
-      const heading = document.createElement("h3")
-      heading.className = "forum-qa-answer__heading"
-      heading.textContent = value
-      container.appendChild(heading)
-      return
-    }
-
-    if (block.type === "ul") {
-      const items = pickLangArray(block, lang)
-      if (!items.length) return
-      container.appendChild(
-        createBulletList(items, {
-          listClass: "forum-qa-answer__list",
-          itemClass: "forum-qa-answer__list-item",
-          dotClass: "forum-qa-answer__dot",
-        })
-      )
-      return
-    }
-
-    container.appendChild(createParagraph(value, "forum-qa-answer__paragraph"))
-  }
-
-  const renderQaBlock = (container, block, lang) => {
-    const thread = document.createElement("section")
-    thread.className = "forum-qa-thread"
-
-    const items = Array.isArray(block?.items) ? block.items : []
-
-    items.forEach((item, index) => {
-      const questionText = pickLang(item?.question, lang)
-      const answerText = pickLang(item?.answer, lang)
-      const answerBlocks = pickLangArray(item?.answerBlocks, lang)
-      if (!questionText && !answerText && !answerBlocks.length) return
-
-      const pair = document.createElement("article")
-      pair.className = "forum-qa-pair"
-
-      const questionCard = document.createElement("div")
-      questionCard.className = "forum-qa-question"
-
-      const questionMeta = document.createElement("div")
-      questionMeta.className = "forum-qa-question__meta"
-
-      const questionRole = document.createElement("span")
-      questionRole.className = "forum-qa-question__role"
-      questionRole.textContent = pickLang(qaRoleLabels.question, lang)
-
-      const questionIndex = document.createElement("span")
-      questionIndex.className = "forum-qa-question__index"
-      questionIndex.textContent = `Q${index + 1}`
-
-      questionMeta.append(questionRole, questionIndex)
-      questionCard.appendChild(questionMeta)
-
-      if (questionText) {
-        const questionBody = document.createElement("p")
-        questionBody.className = "forum-qa-question__text"
-        questionBody.textContent = questionText
-        questionCard.appendChild(questionBody)
-      }
-
-      const answerCard = document.createElement("div")
-      answerCard.className = "forum-qa-answer"
-
-      const answerMeta = document.createElement("div")
-      answerMeta.className = "forum-qa-answer__meta"
-      answerMeta.textContent = pickLang(qaRoleLabels.answer, lang)
-      answerCard.appendChild(answerMeta)
-
-      const answerBody = document.createElement("div")
-      answerBody.className = "forum-qa-answer__body"
-
-      if (answerText) {
-        answerBody.appendChild(createParagraph(answerText, "forum-qa-answer__paragraph"))
-      }
-
-      answerBlocks.forEach((answerBlock) => {
-        renderQaAnswerBlock(answerBody, answerBlock, lang)
-      })
-
-      answerCard.appendChild(answerBody)
-      pair.append(questionCard, answerCard)
-      thread.appendChild(pair)
-    })
-
-    if (!thread.children.length) {
-      const empty = document.createElement("div")
-      empty.className = "forum-dialogue-empty"
-      empty.textContent =
-        lang === "zh"
-          ? "当前对话内容为空，请在数据中补充 qa.items。"
-          : "No dialogue items found. Add qa.items in the topic data."
-      thread.appendChild(empty)
-    }
-
-    container.appendChild(thread)
-  }
-
-  const renderArticleBlock = (container, block, lang) => {
-    if (block.type === "qa") {
-      renderQaBlock(container, block, lang)
-      return
-    }
-
-    if (block.type === "hr") {
-      container.appendChild(createDivider("forum-insight-divider"))
-      return
-    }
-
-    const blockValue = pickLang(block, lang)
-    if (!blockValue && !Array.isArray(block?.en)) return
-
-    if (block.type === "h2") {
-      container.appendChild(createHeading(blockValue))
-      return
-    }
-
-    if (block.type === "ul") {
-      const items = pickLang(block, lang) || []
-      if (items.length) container.appendChild(createBulletList(items))
-      return
-    }
-
-    if (block.type === "quote") {
-      const lines = pickLangArray(block.lines, lang)
-      if (!lines.length) return
-      container.appendChild(createQuoteBlock(lines))
-      return
-    }
-
-    if (block.type === "table") {
-      const headers = pickLangArray(block.headers, lang)
-      const rows = pickLangMatrix(block.rows, lang)
-      if (!headers.length || !rows.length) return
-      container.appendChild(createInsightTable(headers, rows))
-      return
-    }
-
-    if (block.type === "p-rich") {
-      container.appendChild(createRichParagraph(blockValue))
-      return
-    }
-
-    container.appendChild(createParagraph(blockValue))
-  }
-
-  const renderDialogueBlock = (container, block, lang) => {
-    if (block.type === "qa") {
-      renderQaBlock(container, block, lang)
-      return
-    }
-
-    if (block.type === "hr") {
-      container.appendChild(createDivider("forum-insight-divider"))
-      return
-    }
-
-    const blockValue = pickLang(block, lang)
-    if (!blockValue && !Array.isArray(block?.en)) return
-
-    if (block.type === "h2") {
-      container.appendChild(
-        createHeading(blockValue, "text-base md:text-lg font-semibold text-foreground/90 tracking-wide")
-      )
-      return
-    }
-
-    if (block.type === "ul") {
-      const items = pickLang(block, lang) || []
-      if (items.length) {
-        container.appendChild(
-          createBulletList(items, {
-            listClass: "space-y-2 text-sm text-foreground/90",
-            itemClass: "flex items-start gap-2",
-            dotClass: "mt-1.5 h-1.5 w-1.5 rounded-full bg-accent",
-          })
-        )
-      }
-      return
-    }
-
-    if (block.type === "quote") {
-      const lines = pickLangArray(block.lines, lang)
-      if (!lines.length) return
-      container.appendChild(createQuoteBlock(lines))
-      return
-    }
-
-    if (block.type === "table") {
-      const headers = pickLangArray(block.headers, lang)
-      const rows = pickLangMatrix(block.rows, lang)
-      if (!headers.length || !rows.length) return
-      container.appendChild(createInsightTable(headers, rows))
-      return
-    }
-
-    if (block.type === "p-rich") {
-      container.appendChild(createRichParagraph(blockValue, "forum-dialogue-note text-sm leading-relaxed"))
-      return
-    }
-
-    container.appendChild(createParagraph(blockValue, "forum-dialogue-note text-sm leading-relaxed"))
-  }
-
-  const renderInsightBlock = (container, block, lang) => {
-    if (block.type === "qa") {
-      renderQaBlock(container, block, lang)
-      return
-    }
-
-    if (block.type === "hr") {
-      container.appendChild(createDivider("forum-insight-divider"))
-      return
-    }
-
-    const blockValue = pickLang(block, lang)
-    const hasArrayValue = Array.isArray(block?.en) || Array.isArray(block?.zh)
-    const hasStructuredArray = Array.isArray(pickLang(block?.lines, lang)) || Array.isArray(pickLang(block?.rows, lang))
-    if (!blockValue && !hasArrayValue && !hasStructuredArray) return
-
-    if (block.type === "h2") {
-      const section = document.createElement("section")
-      section.className = "forum-insight-section"
-      section.appendChild(createHeading(blockValue, "forum-insight-section__title"))
-      container.appendChild(section)
-      return
-    }
-
-    const lastSection =
-      container.lastElementChild && container.lastElementChild.classList.contains("forum-insight-section")
-        ? container.lastElementChild
-        : null
-
-    if (block.type === "ul") {
-      const items = pickLangArray(block, lang)
-      if (!items.length) return
-
-      const list = createBulletList(items, {
-        listClass: "forum-insight-list",
-        itemClass: "forum-insight-list__item",
-        dotClass: "forum-insight-list__dot",
-      })
-
-      appendInsightNode(container, lastSection, list)
-      return
-    }
-
-    if (block.type === "quote") {
-      const lines = pickLangArray(block.lines, lang)
-      if (!lines.length) return
-      appendInsightNode(container, lastSection, createQuoteBlock(lines))
-      return
-    }
-
-    if (block.type === "table") {
-      const headers = pickLangArray(block.headers, lang)
-      const rows = pickLangMatrix(block.rows, lang)
-      if (!headers.length || !rows.length) return
-      appendInsightNode(container, lastSection, createInsightTable(headers, rows))
-      return
-    }
-
-    const paragraphClass = container.childElementCount === 0 ? "forum-insight-lead" : "forum-insight-paragraph"
-    const paragraph =
-      block.type === "p-rich"
-        ? createRichParagraph(blockValue, paragraphClass)
-        : createParagraph(blockValue, paragraphClass)
-
-    appendInsightNode(container, lastSection, paragraph)
   }
 
   const setCommentFeedback = (type, text) => {
@@ -792,8 +395,14 @@
       return
     }
 
+    if (!topic.content && topic.url) {
+      const target = new URL(topic.url, location.origin)
+      if (requestedSlug && !requestedTopic) target.searchParams.set("from", "not-found")
+      location.replace(target.pathname + target.search)
+      return
+    }
     activeTopic = topic
-    const showNotice = Boolean(requestedSlug) && !requestedTopic
+    const showNotice = params.get("from") === "not-found" || (Boolean(requestedSlug) && !requestedTopic)
 
     const next = new URLSearchParams(params)
     next.set("topic", topic.slug)
@@ -920,28 +529,12 @@
 
     const contentWrap = document.querySelector("[data-topic-content]")
     if (contentWrap) {
-      contentWrap.innerHTML = ""
-      if (layout === "dialogue") {
-        contentWrap.className = "forum-dialogue"
-      } else if (layout === "insight") {
-        contentWrap.className = "forum-insight"
-      } else {
-        contentWrap.className = "forum-article space-y-6"
+      // Preserve the static DOM until the topic/language actually changes.
+      const key = `${topic.slug}:${lang}`
+      if (contentWrap.dataset.renderedTopic !== key) {
+        window.FORUM_RENDER_TOPIC(contentWrap, topic, lang, layout)
+        contentWrap.dataset.renderedTopic = key
       }
-
-      ;(topic.content || []).forEach((block) => {
-        if (layout === "dialogue") {
-          renderDialogueBlock(contentWrap, block, lang)
-          return
-        }
-
-        if (layout === "insight") {
-          renderInsightBlock(contentWrap, block, lang)
-          return
-        }
-
-        renderArticleBlock(contentWrap, block, lang)
-      })
     }
 
     renderComments(topic, lang)
@@ -964,7 +557,7 @@
 
       picks.forEach((item) => {
         const link = document.createElement("a")
-        link.href = `${baseTopic}?topic=${encodeURIComponent(item.slug)}`
+        link.href = item.url || `${baseTopic}?topic=${encodeURIComponent(item.slug)}`
         link.className =
           "group flex flex-col gap-1 rounded-lg border border-border px-3 py-2 hover:bg-muted transition-colors no-underline"
 
@@ -990,7 +583,7 @@
 
     if (prevLink) {
       if (prevTopic) {
-        prevLink.href = `${baseTopic}?topic=${encodeURIComponent(prevTopic.slug)}`
+        prevLink.href = prevTopic.url || `${baseTopic}?topic=${encodeURIComponent(prevTopic.slug)}`
         const prevTitle = prevLink.querySelector("[data-topic-prev-title]")
         if (prevTitle) prevTitle.textContent = pickLang(prevTopic.title, lang)
         prevLink.classList.remove("hidden")
@@ -1001,7 +594,7 @@
 
     if (nextLink) {
       if (nextTopic) {
-        nextLink.href = `${baseTopic}?topic=${encodeURIComponent(nextTopic.slug)}`
+        nextLink.href = nextTopic.url || `${baseTopic}?topic=${encodeURIComponent(nextTopic.slug)}`
         const nextTitle = nextLink.querySelector("[data-topic-next-title]")
         if (nextTitle) nextTitle.textContent = pickLang(nextTopic.title, lang)
         nextLink.classList.remove("hidden")
@@ -1047,31 +640,23 @@
       return
     }
 
-    try {
-      const [comments, metrics, fetchedTopics] = await Promise.all([
-        forumClient.fetchApprovedComments(),
-        forumClient.fetchApprovedMetrics(),
-        forumClient.fetchApprovedTopics ? forumClient.fetchApprovedTopics() : Promise.resolve([]),
-      ])
-      approvedComments = comments
-      approvedMetrics = metrics
-      approvedTopics = Array.isArray(fetchedTopics) ? fetchedTopics : []
-      const approvedSlugSet = new Set(approvedTopics.map((topic) => topic?.slug).filter(Boolean))
-      const cleanedLocalTopics = filterPersistentDraftTopics(localTopics, approvedSlugSet).slice(0, 100)
-      if (cleanedLocalTopics.length !== localTopics.length) {
-        localTopics = cleanedLocalTopics
-        saveLocalTopics(localTopics)
-      }
-    } catch (error) {
-      // keep fallback data
+    const refresh = () => { topics = mergeTopics(localTopics, staticTopics.filter(topic => topic.content), approvedTopics, staticTopics); render() }
+    const tasks = [
+      forumClient.fetchApprovedComments(document.body.dataset.topicSlug).then(comments => { approvedComments = comments; refresh() }),
+      forumClient.fetchApprovedMetrics().then(metrics => { approvedMetrics = metrics; refresh() }),
+    ]
+    // Built pages already contain approved topic content; only legacy/draft URLs fetch it.
+    if (!document.body.dataset.topicSlug && forumClient.fetchApprovedTopics) {
+      tasks.push(forumClient.fetchApprovedTopics().then(fetchedTopics => {
+        approvedTopics = Array.isArray(fetchedTopics) ? fetchedTopics : []
+        refresh()
+      }))
     }
-
-    topics = mergeTopics(localTopics, approvedTopics, staticTopics)
-    render()
+    await Promise.allSettled(tasks)
   }
 
   localTopics = loadLocalTopics()
-  topics = mergeTopics(localTopics, approvedTopics, staticTopics)
+  topics = mergeTopics(localTopics, staticTopics.filter(topic => topic.content), approvedTopics, staticTopics)
   render()
   hydrateApprovedData()
 

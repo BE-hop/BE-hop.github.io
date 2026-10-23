@@ -308,3 +308,9 @@ img/ai-products/concepts/
 ## 全站联系弹窗
 
 共享导航读取`_data/site_settings.yml`中的`navigation.contact_zh/contact_en`、`contact.wechat`、`contact.qr_image`与顶层`email`。模板为`_includes/contact.html`，二维码原图为`img/contact/wechat.jpg`，使用独立的`data-contact-src`仅在主动打开后加载，不参与正文图片衍生与编辑器写入范围扩展。
+
+## 文章更新与网址迁移
+
+同一篇文章的更新沿用已有中英文_posts记录。确需迁移时，只保留一对正式正文；旧URL在原路径放置layout:null的静态跳转页，包含meta refresh、指向对应语言正文的canonical和可点击链接，不能保留旧_posts记录参与博客、归档、标签、搜索与RSS。
+
+《当 AI 获得身体》的唯一正文为2026-10-16的when-ai-gains-a-body双语配对。2026-09-03的when-ai-gets-a-body-maslow和2026-10-15的when-ai-gains-a-body双语旧入口均跳转至10月16日对应语言正文。旧稿可由Git历史恢复；原图片素材保留。

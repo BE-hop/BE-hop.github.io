@@ -402,7 +402,7 @@
   const getCurrentLang = () => (document.documentElement.lang === "zh" ? "zh" : "en")
   const getCurrentDict = () => translations[getCurrentLang()] || translations.en
 
-  const contactForm = document.querySelector("#contact-form")
+  const contactForm = document.querySelector("#contact-form:not([data-shared-contact])")
   const contactStatus = document.querySelector("#contact-form-status")
   const contactSubmitButton = contactForm ? contactForm.querySelector('button[type="submit"]') : null
   const contactSubjectInput = contactForm ? contactForm.querySelector('input[name="_subject"]') : null

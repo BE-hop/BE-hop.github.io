@@ -117,3 +117,7 @@ Gallery:
 - Add a blog post or case note on an AIGC workflow experiment with tools, prompts, quality criteria, and iteration.
 - Update Works case templates or content so future cases consistently include role, process, tools, constraints, and reflection.
 - Use future job-source batches to refine keywords and portfolio priorities, while preserving source traceability through dated indexes.
+
+## Design & AI Practice Positioning — 2026-10-24
+
+The current identity is “Design & AI Practitioner”: spatial design remains the foundation, while research, learning, and personal software demonstrate how real needs become prototypes and reusable workflows. Paperflow, Context English, RUecord-money, and Life-Button are local-tool case studies, not claims of commercial maturity. Public evidence uses isolated demo data; personal learning records, financial data, manuscripts, credentials, and local configuration stay private. AI Digest now documents design-related theory, practice, industry developments, and historical perspectives, with article-level moderated comments.

@@ -12,9 +12,11 @@ test('forum growth generates complete static bodies, bounded lists, summaries, a
   const topics=Array.from({length:20},(_,i)=>({slug:`synthetic-${i}`,title:{en:`Synthetic ${i}`,zh:`合成 ${i}`},excerpt:{en:'Summary'},date:'2026-10-22',author:{name:'Author'},content:[{type:'p',en:`Body ${i}`,zh:`正文 ${i}`}]}));
   await fs.writeFile(path.join(root,'assets/data/forum-topics-approved.json'),JSON.stringify({topics}));
   await fs.writeFile(path.join(root,'assets/data/forum-comments-approved.json'),JSON.stringify({comments:[{topicSlug:'synthetic-0',content:'Only this topic'}]}));
+  await fs.writeFile(path.join(root,'index.html'),'<main><div data-home-digest>\n</div></main>');
   await fs.writeFile(path.join(root,'forum/index.html'),'<head></head><body><main><div data-forum-list></div></main><script src="/js/forum-data.js"></script></body>');
   await fs.writeFile(path.join(root,'forum/topic/index.html'),'<head><title>Topic</title></head><body><h1 data-topic-title></h1><span data-topic-author-initials></span><span data-topic-author></span><div class="forum-article space-y-6" data-topic-content></div><script src="/js/forum-data.js"></script><script src="/js/forum-topic.js"></script></body>');
   execFileSync('node',['scripts/prepare-forum.mjs',root]);
+  assert.equal((await fs.readFile(path.join(root,'index.html'),'utf8')).match(/class="reading-row"/g).length,3);
   const page=await fs.readFile(path.join(root,'forum/topic/synthetic-0/index.html'),'utf8');
   assert.match(page,/Body 0/);assert.match(page,/正文 0/);assert.match(page,/<span data-topic-author>Author<\/span>/);
   assert.match(page,/<span data-topic-author-initials><\/span>/);

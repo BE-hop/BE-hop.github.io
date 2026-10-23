@@ -65,6 +65,22 @@ class ContentEditorTest < Minitest::Test
     assert_equal expected.sort, TYPE_SCHEMAS.keys.sort
   end
 
+  def test_15_homepage_references_reject_unsafe_duplicate_and_missing_content
+    base = {"hero" => {"background_image" => "/img/portfolio/homepage/hero.jpg", "title_lines_zh" => ["标题"], "title_lines_en" => ["Title"]}}
+    ref = {"type" => "project", "slug" => "original"}
+    assert validate_content!("homepage", base.merge("selected_practice" => [ref]))
+    [
+      [{"type" => "project", "slug" => "../original"}],
+      [{"type" => "other", "slug" => "original"}],
+      [{"type" => "tool", "slug" => "missing"}],
+      [ref, ref],
+      Array.new(7) { ref }
+    ].each do |refs|
+      assert_raises(RuntimeError) { validate_content!("homepage", base.merge("selected_practice" => refs)) }
+    end
+    assert validate_content!("homepage", base)
+  end
+
   def test_20_write_path_is_restricted
     assert_raises(RuntimeError) { assert_allowed_write_path!(File.join(TEST_ROOT, ".git", "config")) }
     assert_raises(RuntimeError) { assert_allowed_write_path!(File.join(TEST_ROOT, "README.md")) }

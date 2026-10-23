@@ -198,5 +198,7 @@
     }, {rootMargin:'100px'});
     observer.observe(reader);
   }
+  const initialBook = new URLSearchParams(location.search).get('book');
+  if (spreads[initialBook]?.length) selectBook(initialBook);
   applyLanguage();
 })();

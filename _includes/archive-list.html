@@ -1,0 +1,97 @@
+<!-- Main Content -->
+<style>
+.archive-index [hidden] { display: none !important; }
+.archive-index .archive-status { margin: 20px 0; color: #637065; font-size: 14px; }
+.archive-index #tag_cloud a { color: #53665a !important; background: #f5f5ef !important; border: 1px solid #d7dfd4; cursor: pointer; }
+.archive-index #tag_cloud a:hover { color: #244c36 !important; background: #edf1e9 !important; border-color: #779581; }
+.archive-index #tag_cloud a.focus, .archive-index #tag_cloud a.focus:hover { color: #fff !important; background: #315d3f !important; border-color: #315d3f; }
+</style>
+<div class="container archive-index" data-archive-lang="{{ page.archive-lang | default: 'zh' }}" data-archive-zh-url="{{ '/archive/' | relative_url }}" data-archive-en-url="{{ '/archive/en/' | relative_url }}">
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+			{%- assign archive_lang = page.archive-lang | default: 'zh' -%}
+			{%- if archive_lang == 'zh' -%}
+			{%- assign archive_posts = site.posts | where_exp: "post", "post.lang != 'en'" -%}
+			{%- else -%}
+			{%- assign archive_posts = site.posts | where: "lang", archive_lang -%}
+			{%- endif -%}
+
+			<!-- Tags (as filter) -->
+			<div id='tag_cloud' class="tags tags-sup js-tags">
+				<a class="tag-button--all" data-encode="" href="{{ page.url | relative_url }}">
+					{% if archive_lang == 'zh' %}全部文章{% else %}Show All{% endif %}
+					<sup>{{ archive_posts.size }}</sup>
+				</a>
+
+				{% capture tags %}
+				{% for tag in site.tags %}
+				{% assign tag_posts = tag[1] %}
+				{% if archive_lang == 'zh' %}
+				{% assign tag_posts = tag_posts | where_exp: "post", "post.lang != 'en'" %}
+				{% else %}
+				{% assign tag_posts = tag_posts | where: "lang", archive_lang %}
+				{% endif %}
+				{% assign tag_count = tag_posts | size %}
+				{% if tag_count > 0 %}
+				<a data-sort="{{ archive_posts.size | minus: tag_count | prepend: '0000' | slice: -4, 4 }}"
+					data-encode="{{ tag[0] | strip | url_encode }}" href="{{ page.url | relative_url }}?tag={{ tag[0] | strip | url_encode }}" class="tag-button" title="{{ tag[0] }}"
+					rel="{{ tag_count }}">
+					{{ tag[0] }}
+					<sup>{{ tag_count }}</sup>
+				</a>__SEPERATOR__
+				{% endif %}
+				{% endfor %}
+				{% endcapture %}
+				{{ tags | split:'__SEPERATOR__' | sort }}
+			</div>
+
+			<!-- Article List -->
+			<p class="archive-status" data-archive-status role="status" aria-live="polite">{% if archive_lang == 'zh' %}共 {{ archive_posts.size }} 篇文章{% else %}{{ archive_posts.size }} posts{% endif %}</p>
+            <div class="mini-post-list js-result">
+				{%- assign _sorted_list = archive_posts -%}
+				{%- assign _sorted_list = _sorted_list | sort: 'date' -%}
+				{%- assign _sorted_list = _sorted_list | reverse -%}
+
+
+				{%- for _article in _sorted_list -%}
+				{%- assign _tags = '' -%}
+				{%- for _tag in _article.tags -%}
+				{%- assign _tag_encode = _tag | strip | url_encode -%}
+				{%- if forloop.last -%}
+				{%- assign _tags = _tags | append: _tag_encode -%}
+				{%- else -%}
+				{%- assign _tags = _tags | append: _tag_encode | append: ',' -%}
+				{%- endif -%}
+				{%- endfor -%}
+
+				{% comment %} group by year {% endcomment %}
+				{%- assign _currentdate = _article.date | date: '%Y' -%}
+				{%- if _currentdate != _date -%}
+				{%- unless forloop.first -%}</section>{%- endunless -%}
+				<section>
+					<span class="fa listing-seperator">
+						<span class="tag-text">{{ _currentdate }}</span>
+					</span>
+					{%- assign _date = _currentdate -%}
+					{%- endif -%}
+
+					<div class="post-preview item" data-tags="{{ _tags }}">
+						<a href="{{ _article.url | prepend: site.baseurl }}">
+							<h2 class="post-title">
+								{{ _article.title }}
+							</h2>
+							{% if _article.subtitle %}
+							<h3 class="post-subtitle">
+								{{ _article.subtitle }}
+							</h3>
+							{% endif %}
+						</a>
+						<hr>
+					</div>
+					{%- if forloop.last -%}
+				</section>{%- endif -%}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>

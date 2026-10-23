@@ -51,6 +51,64 @@
       status.textContent = ""
       copySequence++
     }
+    const tabs = [...contact.querySelectorAll('[data-contact-tab]')]
+    const loadQR = () => {
+      const qr = contact.querySelector('[data-contact-src]')
+      if (contact.open && !contact.querySelector('#contact-panel-qr').hidden && !qr.hasAttribute('src')) qr.src = qr.dataset.contactSrc
+    }
+    const selectTab = (tab, focus = false) => {
+      tabs.forEach(item => {
+        const active = item === tab
+        item.setAttribute('aria-selected', String(active))
+        item.tabIndex = active ? 0 : -1
+        contact.querySelector(`#${item.getAttribute('aria-controls')}`).hidden = !active
+      })
+      status.textContent = ''
+      copySequence++
+      if (focus) tab.focus()
+      loadQR()
+    }
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectTab(tab))
+      tab.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+        event.preventDefault()
+        const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length
+        selectTab(tabs[next], true)
+      })
+    })
+    const form = contact.querySelector('#contact-form')
+    const formStatus = contact.querySelector('#contact-form-status')
+    const submit = form.querySelector('[type="submit"]')
+    let sending = false
+    form.addEventListener('submit', async event => {
+      event.preventDefault()
+      if (sending || !form.reportValidity()) return
+      sending = true
+      submit.disabled = true
+      submit.setAttribute('aria-busy', 'true')
+      const message = (zh, en) => { formStatus.textContent = isChinese() ? zh : en }
+      message('正在发送…', 'Sending…')
+      const data = Object.fromEntries(new FormData(form).entries())
+      data._subject = isChinese() ? 'BEhop 联系表单新消息' : 'New message from BEhop contact form'
+      if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) data._url = location.href.split('#')[0]
+      try {
+        const response = await fetch(form.dataset.ajaxEndpoint, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data)
+        })
+        const payload = await response.json()
+        if (!response.ok || (payload.success !== true && payload.success !== 'true')) throw new Error('Contact delivery not confirmed')
+        form.reset()
+        message('消息已发送，感谢联系。', 'Message sent. Thank you for getting in touch.')
+      } catch (error) {
+        // Keep the draft and offer an explicit retry instead of sending twice through a fallback.
+        message('发送未成功，内容已保留。请重试，或使用上方邮箱直接发送。', 'Could not confirm delivery. Your draft is saved here. Please retry or use the email link above.')
+      } finally {
+        sending = false
+        submit.disabled = false
+        submit.removeAttribute('aria-busy')
+      }
+    })
     syncContactLanguage()
     new MutationObserver(syncContactLanguage).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] })
     document.querySelectorAll("[data-contact-open]").forEach(button => {
@@ -64,8 +122,7 @@
         status.textContent = ""
         contact.showModal()
         document.documentElement.classList.add("site-contact-open")
-        const qr = contact.querySelector("[data-contact-src]")
-        if (!qr.hasAttribute("src")) qr.src = qr.dataset.contactSrc
+        loadQR()
       })
     })
     contact.querySelector("[data-contact-close]").addEventListener("click", () => contact.close())
@@ -76,7 +133,7 @@
     })
     contact.addEventListener("keydown", event => {
       if (event.key !== "Tab") return
-      const controls = Array.from(contact.querySelectorAll('button:not(:disabled), a[href], [tabindex="0"]'))
+      const controls = Array.from(contact.querySelectorAll('button:not(:disabled):not([tabindex="-1"]), a[href], input:not([type="hidden"]):not([tabindex="-1"]), select, textarea, [tabindex="0"]'))
         .filter(node => node.getClientRects().length)
       const first = controls[0]
       const last = controls[controls.length - 1]
@@ -122,6 +179,7 @@
   if (!toggle || !mobile) return
 
   const setOpen = (isOpen) => {
+    if (isOpen) mobile.scrollTop = 0
     mobile.classList.toggle("is-open", isOpen)
     toggle.classList.toggle("is-active", isOpen)
     toggle.setAttribute("aria-expanded", String(isOpen))
@@ -129,6 +187,15 @@
 
   toggle.addEventListener("click", () => {
     setOpen(!mobile.classList.contains("is-open"))
+  })
+
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape" || !mobile.classList.contains("is-open")) return
+    setOpen(false)
+    toggle.focus()
+  })
+  window.matchMedia("(max-width: 900px)").addEventListener("change", event => {
+    if (!event.matches) setOpen(false)
   })
 
   mobile.querySelectorAll("a").forEach((link) => {

@@ -14,7 +14,7 @@
     const status = document.querySelector('#project-filter-status, #ai-filter-status');
     if (!selected || !status) return;
     const count = document.querySelectorAll('[data-project], #ai-product-results > a').length;
-    const label = selected.getAttribute('data-' + lang) || current;
+    const label = selected.getAttribute('data-' + lang) || selected.textContent.trim() || current;
     status.textContent = lang === 'zh' ? `本页显示 ${count} 项 · ${label}` : `${count} items on this page · ${label}`;
   };
   sync();

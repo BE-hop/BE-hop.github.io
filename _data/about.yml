@@ -1,20 +1,27 @@
 title_zh: 关于我
 title_en: About
-subtitle_zh: 景观设计师 / AI 工具开发者 / 计算化设计实践者
-subtitle_en: Landscape Designer / AI Tool Builder / Computational Design Practitioner
+subtitle_zh: 设计与 AI 实践者
+subtitle_en: Design & AI Practitioner
 background_image: /img/about.me.jpg
-intro_zh: 我关注 AI、计算化工具与视觉表达如何改变景观设计工作流，尤其是从草图、图像到可编辑空间模型的转化过程。
-intro_en: I explore how AI, computation, and visual representation can reshape landscape design workflows, especially the transition from sketches and images to editable spatial models.
+intro_zh: 以空间设计为起点，构建面向设计、学习与研究的 AI 工具和交互系统。
+intro_en: Starting with spatial design, I build AI tools and interfaces for design, learning, and research.
 sections:
-  - title_zh: 实践方向
-    title_en: Practice Direction
-    body_zh: 我把真实设计项目、工具开发和研究笔记放在同一个系统中记录，既展示空间结果，也展示背后的判断、流程与技术方法。
-    body_en: I document real design projects, tool development, and research notes in one system, showing spatial outcomes together with the judgment, workflow, and technical methods behind them.
-  - title_zh: 工作方法
-    title_en: Working Method
-    body_zh: 从问题、约束和角色出发，通过原型、设计评估和持续复盘，把一次性的经验沉淀为可复用工作流。
-    body_en: I start with the problem, constraints, and role, then use prototypes, design evaluation, and reflection to turn one-off experience into reusable workflows.
-  - title_zh: 自我实现与新交互
-    title_en: Self-Actualization and New Interfaces
-    body_zh: 我关注空间、虚拟空间、AI、机器人、计算机与交互如何协同，赋能学习、创造、研究与思考。正如 Apple 通过 iPhone 把触控、计算、网络与服务整合为新的日常界面，真正改变生活的创新往往不是增加一个功能，而是重组人与信息、空间和工具的关系；我的目标是探索这类软硬件产品如何打开满足高层需求的新可能，同时保留人的目标、判断与责任。
-    body_en: I explore how physical space, virtual space, AI, robotics, computing, and interaction can work together to support learning, creating, researching, and thinking. Just as Apple combined touch, computing, networks, and services through the iPhone to create a new everyday interface, meaningful innovation often does more than add a feature; it reorganizes the relationship between people, information, space, and tools. I want to explore software-hardware products that expand access to higher-level needs while keeping human goals, judgment, and responsibility explicit.
+- title_zh: 当前实践
+  title_en: Current practice
+  body_zh: 我的实践横跨空间设计与个人软件。设计项目让我理解场地、使用者与约束；RU-LineArt 等工具探索如何衔接图像与建模，Paperflow、语境英语、RUecord-money 和 Life-Button
+    则回应研究、学习、记录与工作台组织中的具体问题。
+  body_en: My practice connects spatial design with personal software. Design projects ground my work in context,
+    people, and constraints. RU-LineArt explores the transition from images to models; Paperflow, Context English,
+    RUecord-money, and Life-Button address research, learning, recording, and organizing a workspace.
+- title_zh: 工作方法
+  title_en: How I work
+  body_zh: 从自己遇到的问题出发，明确输入、输出和判断标准，再通过原型与实际使用反馈持续迭代。我关注的不只是生成了什么，也包括它能否被理解、编辑、验证和继续使用。
+  body_en: I start with problems I encounter, define inputs, outputs, and quality criteria, then iterate through
+    prototypes and feedback from use. I care about whether an output can be understood, edited, checked, and used
+    again.
+- title_zh: 长期关注
+  title_en: Ongoing questions
+  body_zh: 我持续关注空间、软件、AI 与交互如何支持学习、创造、研究与思考，也探索虚实空间与机器人带来的新界面。这些是长期研究方向；人的目标、判断和责任始终是设计的起点。
+  body_en: I keep asking how space, software, AI, and interaction can support learning, creating, researching, and
+    thinking. Physical–digital interfaces and robotics remain areas of exploration, grounded in human goals, judgment,
+    and responsibility.

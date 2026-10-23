@@ -1,6 +1,11 @@
 <dialog id="site-contact" class="site-contact" aria-labelledby="site-contact-title">
   <button type="button" class="site-contact__close" data-contact-close aria-label="Close / 关闭" autofocus>×</button>
   <h2 id="site-contact-title" data-contact-zh="联系我" data-contact-en="Contact">Contact</h2>
+  <div class="site-contact__tabs" role="tablist" aria-label="Contact method / 联系方式">
+    <button type="button" id="contact-tab-qr" role="tab" aria-selected="true" aria-controls="contact-panel-qr" data-contact-tab="qr" data-contact-zh="扫码联系" data-contact-en="Scan QR">Scan QR</button>
+    <button type="button" id="contact-tab-email" role="tab" aria-selected="false" aria-controls="contact-panel-email" tabindex="-1" data-contact-tab="email" data-contact-zh="邮件发送" data-contact-en="Send email">Send email</button>
+  </div>
+  <section id="contact-panel-qr" role="tabpanel" aria-labelledby="contact-tab-qr">
   <img class="site-contact__qr" data-contact-src="{{ site.data.site_settings.contact.qr_image | relative_url }}" width="888" height="1131" alt="BEhop WeChat QR code / 微信二维码">
   <p class="site-contact__hint" data-contact-zh="扫码添加微信，或长按保存二维码" data-contact-en="Scan to add me on WeChat, or press and hold to save the QR code.">Scan to add me on WeChat, or press and hold to save the QR code.</p>
   <p class="site-contact__error" data-contact-error hidden data-contact-zh="二维码未能加载，请使用下方微信号添加。" data-contact-en="QR code could not load. Please add me using the WeChat ID below."></p>
@@ -8,9 +13,36 @@
     <div><span class="site-contact__label" data-contact-zh="微信号" data-contact-en="WeChat ID">WeChat ID</span><span class="site-contact__value">{{ site.data.site_settings.contact.wechat | escape }}</span></div>
     <button type="button" data-contact-copy="{{ site.data.site_settings.contact.wechat | escape }}" data-contact-zh="复制微信号" data-contact-en="Copy WeChat ID">Copy WeChat ID</button>
   </div>
+  </section>
+  <section id="contact-panel-email" role="tabpanel" aria-labelledby="contact-tab-email" hidden>
   <div class="site-contact__row">
     <div><span class="site-contact__label" data-contact-zh="邮箱" data-contact-en="Email">Email</span><a class="site-contact__value" href="mailto:{{ site.data.site_settings.email | escape }}">{{ site.data.site_settings.email | escape }}</a></div>
     <button type="button" data-contact-copy="{{ site.data.site_settings.email | escape }}" data-contact-zh="复制邮箱" data-contact-en="Copy email">Copy email</button>
   </div>
+  <form id="contact-form" data-shared-contact action="https://formsubmit.co/{{ site.data.site_settings.email | strip }}" method="POST" data-ajax-endpoint="https://formsubmit.co/ajax/{{ site.data.site_settings.email | strip }}">
+    <input type="hidden" name="_subject" value="New message from BEhop contact form">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_url" value="{{ site.url }}{{ site.baseurl }}/">
+    <input type="text" name="_honey" class="site-contact__honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="site-contact__fields">
+      <label><span data-contact-zh="姓名 *" data-contact-en="Name *">Name *</span><input name="name" type="text" autocomplete="name" required maxlength="160"></label>
+      <label><span data-contact-zh="邮箱 *" data-contact-en="Email *">Email *</span><input name="email" type="email" autocomplete="email" required maxlength="254"></label>
+      <label><span data-contact-zh="电话（选填）" data-contact-en="Phone (optional)">Phone (optional)</span><input name="phone" type="tel" autocomplete="tel" maxlength="80"></label>
+      <label><span data-contact-zh="联系类型" data-contact-en="Contact type">Contact type</span><select name="project_type">
+        <option value="" data-contact-zh="选择联系类型" data-contact-en="Select contact type">Select contact type</option>
+        <option value="design-project" data-contact-zh="设计项目交流" data-contact-en="Design project discussion">Design project discussion</option>
+        <option value="ai-tool" data-contact-zh="AI 工具开发" data-contact-en="AI tool development">AI tool development</option>
+        <option value="workflow" data-contact-zh="计算化设计工作流" data-contact-en="Computational design workflow">Computational design workflow</option>
+        <option value="research" data-contact-zh="研究 / 申请 / 招聘" data-contact-en="Research / Application / Hiring">Research / Application / Hiring</option>
+        <option value="other" data-contact-zh="其他" data-contact-en="Other">Other</option>
+      </select></label>
+    </div>
+    <label class="site-contact__message"><span data-contact-zh="需求说明 *" data-contact-en="Message *">Message *</span><textarea name="message" rows="4" required maxlength="12000"></textarea></label>
+    <button type="submit" class="site-contact__send" data-contact-zh="发送消息 ↗" data-contact-en="Send message ↗">Send message ↗</button>
+    <p id="contact-form-status" class="site-contact__form-status" role="status" aria-live="polite"></p>
+    <p class="site-contact__privacy" data-contact-zh="通过 FormSubmit 发送至我的邮箱；也可以点击上方邮箱，使用自己的邮件应用。" data-contact-en="Delivered to my inbox through FormSubmit. You can also use the email link above to open your own mail app.">Delivered to my inbox through FormSubmit. You can also use the email link above to open your own mail app.</p>
+  </form>
+  </section>
   <p class="site-contact__status" role="status" aria-live="polite"></p>
 </dialog>

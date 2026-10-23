@@ -1,19 +1,18 @@
 hero:
-  background_image: "/img/portfolio/system/behop-hero-ai-workbench-v2.webp"
-  badge_zh: 景观设计师 / AI工具开发者 / 计算化设计实践者
-  badge_en: Landscape Designer / AI Tool Builder / Computational Design Practitioner
+  background_image: /img/portfolio/system/behop-hero-ai-workbench-v2.webp
+  badge_zh: 设计与 AI 实践者
+  badge_en: Design & AI Practitioner
   title_lines_zh:
-  - Landscape Designer
-  - AI Tool Builder
-  - Computational Design Practitioner
+  - 设计空间
+  - 构建工具
+  - 连接想法与实践
   title_lines_en:
-  - Landscape Designer
-  - AI Tool Builder
-  - Computational Design Practitioner
-  description_zh: 我关注 AI、计算化工具与视觉表达如何改变景观设计工作流，尤其是从草图、图像到可编辑空间模型的转化过程。
-  description_en: I explore how AI, computation, and visual representation can reshape
-    the workflow of landscape design — from sketches and images to editable spatial
-    models.
+  - Design spaces.
+  - Build tools.
+  - Connect ideas to practice.
+  description_zh: 以空间设计为起点，探索 AI、软件与交互如何支持设计、学习和研究；从自己的真实问题出发，构建可以持续使用的工具。
+  description_en: Starting with spatial design, I explore how AI, software, and interaction can support design,
+    learning, and research—building tools around real questions from everyday practice.
   primary_cta_zh: 探索 AI 工具
   primary_cta_en: Explore AI Tools
   secondary_cta_zh: 查看项目案例
@@ -29,11 +28,10 @@ hero:
 ai_tools:
   kicker_zh: AI 工具
   kicker_en: AI Tools
-  title_zh: 精选 AI 工具
-  title_en: Featured AI Tools
-  subtitle_zh: 面向设计工作流、Rhino、Grasshopper、图像到模型转换与自动化表达的工具开发和实验。
-  subtitle_en: Tools and experiments for design workflows, Rhino, Grasshopper, image-to-model
-    conversion, and automated visual representation.
+  title_zh: 设计与工具，都是实践。
+  title_en: Ideas put into practice.
+  subtitle_zh: 以真实问题为起点，在空间设计与 AI 工具之间持续探索。
+  subtitle_en: Real questions, explored through spatial design and AI tools.
   view_all_zh: 查看 AI 工具
   view_all_en: Explore AI Tools
 works:
@@ -42,8 +40,8 @@ works:
   title_zh: 精选项目案例
   title_en: Featured Works
   subtitle_zh: 精选真实工作成果、研究生作品、空间研究与 AI 辅助工作流实验。
-  subtitle_en: Selected professional work, graduate portfolio projects, spatial studies,
-    and AI-assisted workflow experiments.
+  subtitle_en: Selected professional work, graduate portfolio projects, spatial studies, and AI-assisted workflow
+    experiments.
   view_all_zh: 查看全部项目
   view_all_en: View All Works
   archive_label_zh: 全部归档
@@ -68,8 +66,8 @@ contact:
   title_zh: 联系 BEhop
   title_en: Contact BEhop
   description_zh: 欢迎联系我交流设计项目、AI 工具开发、计算化设计工作流、研究合作或作品集相关事宜。
-  description_en: Contact me about design projects, AI tool development, computational
-    design workflows, research collaboration, or portfolio review.
+  description_en: Contact me about design projects, AI tool development, computational design workflows, research
+    collaboration, or portfolio review.
   email_label_zh: 电子邮箱
   email_label_en: Email
   email: liuruyuan73@gmail.com
@@ -84,9 +82,8 @@ contact:
 footer:
   brand_zh: BEhooop
   brand_en: BEhooop
-  description_zh: 景观设计师、AI 工具开发者与计算化设计实践者，持续记录设计项目、工具开发和研究思考。
-  description_en: Landscape designer, AI tool builder, and computational design practitioner
-    documenting design projects, tool development, and research notes.
+  description_zh: 设计与 AI 实践者，记录空间项目、工具构建与研究思考。
+  description_en: Design and AI practice, through spatial projects, useful tools, and research notes.
   company_label_zh: 关于 BEhop
   company_label_en: About BEhop
   contact_label_zh: 联系 BEhop
@@ -95,3 +92,16 @@ footer:
   rights_en: All Rights Reserved
   back_to_top_zh: 返回顶部
   back_to_top_en: Back to Top
+selected_practice:
+- type: tool
+  slug: ru-lineart
+- type: tool
+  slug: paperflow
+- type: tool
+  slug: context-english
+- type: project
+  slug: shilih-lake
+- type: project
+  slug: didi-campus
+- type: project
+  slug: graduation-design

@@ -1,164 +1,119 @@
 ---
 layout: null
-title: "Works / 项目案例"
-description: "Selected professional work, graduate portfolio projects, spatial studies, and AI-assisted workflow experiments."
-permalink: /works/
 lang-switcher: true
+nav-theme: light
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Works / 项目案例 | BEhooop</title>
-  {% include tailwind-head.html %}
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css?v=portfolio-entry-2">
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/showcase-system.css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/works-intro.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Works | BEhooop</title>
+{% include tailwind-head.html %}
+<link rel="stylesheet" href="/css/site-nav.css">
+<link rel="stylesheet" href="/css/portfolio.css">
+<link rel="stylesheet" href="/css/showcase-system.css">
 <link rel="stylesheet" href="/css/local-fonts.css">
-  <link rel="canonical" href="{{ page.url | absolute_url }}">
+<link rel="stylesheet" href="/css/editorial.css">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
 </head>
-<body data-list-filter="{{ page.list_filter }}" class="works-page showcase-page theme-works bg-background text-foreground">
-  {% include nav.html %}
-
-  <main>
-    <section class="works-hero" data-nav-tone="dark">
-      <div class="works-hero__media" aria-hidden="true">
-        <img data-media-role="hero" sizes="100vw" src="{{ '/img/portfolio/hero-landscape.jpg' | relative_url }}" alt="" fetchpriority="high" decoding="async">
-      </div>
-      <div class="works-hero__veil"></div>
-      <div class="works-hero__content">
-        <div class="works-hero__masthead"><span data-en="BEhooop / Selected works" data-zh="BEhooop / 设计作品选集">BEhooop / Selected works</span><span>LANDSCAPE &amp; SPATIAL DESIGN</span></div>
-        <div class="works-hero__editorial">
-          <div class="works-hero__heading-group">
-            <p class="showcase-kicker" data-en="Ideas shaped into places" data-zh="让想法成为场所">Ideas shaped into places</p>
-            <h1 class="works-hero__title"><span data-en="Design in" data-zh="于自然之间">Design in</span><span data-en="practice." data-zh="构筑日常。">practice.</span></h1>
-          </div>
-          <div class="works-hero__aside"><span class="works-hero__index" aria-hidden="true">01 — 03</span><p class="works-hero__description" data-en="Planning, landscape, and spatial design. A selection of projects tracing ideas from context and strategy to the details of everyday life." data-zh="从规划、景观到空间设计，以场地为起点，将策略、体验与日常生活串联为完整的设计实践。">Planning, landscape, and spatial design. A selection of projects tracing ideas from context and strategy to the details of everyday life.</p></div>
-        </div>
-        <div class="works-hero__footer"><span data-en="Context / Strategy / Experience" data-zh="场地 / 策略 / 体验">Context / Strategy / Experience</span><a href="#portfolio-entry" class="works-hero__explore"><span data-en="Explore the collection" data-zh="向下，翻开作品">Explore the collection</span><span aria-hidden="true">↓</span></a></div>
-      </div>
-    </section>
-
-    <section class="works-content px-6 py-16 lg:px-8 lg:py-24" data-nav-tone="light">
-      <div class="mx-auto max-w-7xl">
-
-
-        <a href="{{ site.baseurl }}/works/portfolio/" class="portfolio-entry" id="portfolio-entry" aria-label="Open portfolio collection / 点击查看作品集">
-          <span class="portfolio-entry__copy">
-            <span class="showcase-kicker" data-en="The portfolio collection" data-zh="作品集总览">The portfolio collection</span>
-            <span class="portfolio-entry__title" data-en="A closer look at the work." data-zh="翻开作品，看见设计。">A closer look at the work.</span>
-            <span class="portfolio-entry__description" data-en="Planning · Landscape · Spatial + Architecture" data-zh="规划 · 景观 · 空间与建筑">Planning · Landscape · Spatial + Architecture</span>
-          </span>
-          <span class="portfolio-entry__previews" aria-hidden="true">
-            <img data-media-role="thumbnail" sizes="(max-width: 760px) 96px, 180px" src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-01.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
-            <img data-media-role="thumbnail" sizes="(max-width: 760px) 96px, 180px" src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-didi-campus-01.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
-            <img data-media-role="thumbnail" sizes="(max-width: 760px) 96px, 180px" src="{{ '/img/portfolio/real-works/portfolio-selection/portfolio-page-undergraduate-17.jpg' | relative_url }}" alt="" loading="lazy" decoding="async">
-          </span>
-          <span class="portfolio-entry__action"><span data-en="Click to explore" data-zh="点击查看作品集">Click to explore</span><span class="portfolio-entry__arrow" aria-hidden="true">↗</span></span>
-        </a>
-
-        <div class="mb-12 flex flex-wrap gap-2" role="group" aria-label="Project filters">
-          <a href="/works/#works-results" data-static-filter="all" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all{% if page.list_filter == 'all' %} is-active{% endif %}"  data-en="All" data-zh="全部"  aria-controls="works-results"{% if page.list_filter == 'all' %} aria-current="page"{% endif %}>All</a>
-          <a href="/works/category/professional/#works-results" data-static-filter="professional" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all{% if page.list_filter == 'professional' %} is-active{% endif %}"  data-en="Professional" data-zh="真实工作"  aria-controls="works-results"{% if page.list_filter == 'professional' %} aria-current="page"{% endif %}>Professional</a>
-          <a href="/works/category/academic/#works-results" data-static-filter="academic" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all{% if page.list_filter == 'academic' %} is-active{% endif %}"  data-en="Academic" data-zh="学术研究"  aria-controls="works-results"{% if page.list_filter == 'academic' %} aria-current="page"{% endif %}>Academic</a>
-          <a href="/works/category/landscape/#works-results" data-static-filter="landscape" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all{% if page.list_filter == 'landscape' %} is-active{% endif %}"  data-en="Landscape" data-zh="景观设计"  aria-controls="works-results"{% if page.list_filter == 'landscape' %} aria-current="page"{% endif %}>Landscape</a>
-          <a href="/works/category/interior/#works-results" data-static-filter="interior" class="filter-button rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground transition-all{% if page.list_filter == 'interior' %} is-active{% endif %}"  data-en="Spatial Concept" data-zh="空间概念"  aria-controls="works-results"{% if page.list_filter == 'interior' %} aria-current="page"{% endif %}>Spatial Concept</a>
-        </div>
-        <p class="project-filter-status" id="project-filter-status" role="status" aria-live="polite"></p>
-
-        {%- assign project_list = page.list_items -%}
-        {%- assign featured_urls = project_list | where: "featured", true | slice: 0, 3 | map: "url" -%}
-        <div id="works-results">
-          {% if featured_urls.size > 0 %}
-          <section class="mb-20" aria-labelledby="featured-works-heading" data-project-group>
-            <div class="mb-8 flex items-end justify-between gap-6">
-              <div>
-                <p class="showcase-kicker text-sm font-semibold uppercase tracking-widest text-primary" data-en="Selected narrative" data-zh="重点叙事">Selected narrative</p>
-                <h2 id="featured-works-heading" class="works-heading mt-4 text-4xl font-semibold text-foreground md:text-5xl" data-scroll-reveal data-en="Featured Works" data-zh="精选项目">Featured Works</h2>
-              </div>
-              <p class="hidden max-w-sm text-right text-sm leading-relaxed text-muted-foreground md:block" data-en="Scroll through projects selected for their complete design process and transferable decisions." data-zh="滚动浏览在完整设计过程和可迁移判断上更具代表性的项目。">Scroll through projects selected for their complete design process and transferable decisions.</p>
-            </div>
-
-            <div class="works-scroll-stack" data-scroll-stack>
-              {%- for project in project_list -%}
-              {%- if featured_urls contains project.url -%}
-              {%- assign cover_image = project.cover | default: project.image -%}
-              <article class="works-stack-card" data-project data-category="{{ project.category }}" data-scroll-stack-card>
-                <a href="{{ project.url | prepend: site.baseurl }}" class="grid h-full no-underline lg:grid-cols-[1.18fr_0.82fr]">
-                  <div class="works-card-media min-h-[260px] overflow-hidden bg-secondary lg:min-h-[34rem]">
-                    {% if cover_image %}<img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ cover_image | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover" loading="lazy" decoding="async">{% endif %}
-                  </div>
-                  <div class="flex flex-col justify-between p-7 md:p-10">
-                    <div>
-                      <p class="text-xs font-semibold uppercase tracking-widest text-primary" data-en="{{ project.category_label_en | default: project.category }}" data-zh="{{ project.category_label_zh | default: project.category }}">{{ project.category_label_en | default: project.category }}</p>
-                      <h3 class="works-heading mt-5 text-3xl font-semibold text-foreground md:text-4xl" data-en="{{ project.title_en }}" data-zh="{{ project.title_zh }}">{{ project.title_en | default: project.title_zh }}</h3>
-                      <p class="mt-5 leading-relaxed text-muted-foreground" data-en="{{ project.summary_en }}" data-zh="{{ project.summary_zh }}">{{ project.summary_en | default: project.summary_zh }}</p>
-                    </div>
-                    <div class="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-5 text-sm">
-                      <span class="text-muted-foreground">{% if project.year %}{{ project.year }}{% endif %}{% if project.status_en %} · <span data-en="{{ project.status_en }}" data-zh="{{ project.status_zh }}">{{ project.status_en }}</span>{% endif %}</span>
-                      <span class="font-semibold text-primary" data-en="Open case study ↗" data-zh="进入案例 ↗">Open case study ↗</span>
-                    </div>
-                  </div>
-                </a>
-              </article>
-              {%- endif -%}
-              {%- endfor -%}
-            </div>
-          </section>
-
-          {% endif %}
-          {% assign more_count = project_list.size | minus: featured_urls.size %}
-          {% if more_count > 0 %}
-          <section aria-labelledby="all-works-heading" data-project-group>
-            <h2 id="all-works-heading" class="works-heading mb-8 text-3xl font-semibold text-foreground md:text-4xl" data-scroll-reveal data-en="More Works" data-zh="更多项目">More Works</h2>
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {%- for project in project_list -%}
-              {%- unless featured_urls contains project.url -%}
-              {%- assign cover_image = project.cover | default: project.image -%}
-              {%- assign project_type_zh = project.type_zh | default: project.project_type_zh | default: project.category_label_zh | default: project.type | default: project.project_type -%}
-              {%- assign project_type_en = project.type_en | default: project.project_type_en | default: project.category_label_en | default: project.type | default: project.project_type -%}
-              {%- assign summary_zh = project.summary_zh | default: project.summary | default: project.detail_zh -%}
-              {%- assign summary_en = project.summary_en | default: project.summary | default: project.detail_en -%}
-              <article class="works-card" data-project data-category="{{ project.category }}" data-glare-card>
-                <a href="{{ project.url | prepend: site.baseurl }}" class="block no-underline">
-                  {% if cover_image %}<div class="works-card-media aspect-[4/3] overflow-hidden bg-secondary"><img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ cover_image | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover" loading="lazy" decoding="async"></div>{% endif %}
-                  <div class="p-6">
-                    <div class="mb-4 flex flex-wrap gap-2 text-xs uppercase tracking-wider text-muted-foreground">
-                      <span data-en="{{ project_type_en }}" data-zh="{{ project_type_zh }}">{{ project_type_en | default: project_type_zh }}</span>{% if project.year %}<span>· {{ project.year }}</span>{% endif %}
-                    </div>
-                    <h3 class="works-heading text-2xl font-semibold text-foreground" data-en="{{ project.title_en }}" data-zh="{{ project.title_zh }}">{{ project.title_en | default: project.title_zh }}</h3>
-                    <p class="mt-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground" data-en="{{ summary_en }}" data-zh="{{ summary_zh }}">{{ summary_en | default: summary_zh }}</p>
-                    <span class="mt-6 inline-flex text-sm font-semibold text-primary" data-en="View details ↗" data-zh="查看详情 ↗">View details ↗</span>
-                  </div>
-                </a>
-              </article>
-              {%- endunless -%}
-              {%- endfor -%}
-            </div>
-          </section>
-          {% endif %}
-          {% if project_list.size == 0 %}<p data-en="No projects in this category yet." data-zh="此分类暂无项目。">No projects in this category yet.</p>{% endif %}
-        </div>
-
-        {% include list-pagination.html %}
-        <div class="mt-16 rounded-2xl border border-border bg-secondary p-6 md:flex md:items-center md:justify-between md:gap-6">
-          <div>
-            <h2 class="works-heading text-2xl font-semibold text-foreground" data-scroll-reveal data-en="Need the full archive?" data-zh="需要查看全部作品？">Need the full archive?</h2>
-            <p class="mt-2 text-sm leading-relaxed text-muted-foreground" data-en="The archive keeps additional graduate works, visual boards, research outputs, and limited professional notes without crowding the featured page." data-zh="归档页收纳更多研究生作品、单页作品板、研究发表和脱敏工作记录，不干扰精选页的重点。">The archive keeps additional graduate works, visual boards, research outputs, and limited professional notes without crowding the featured page.</p>
-          </div>
-          <a href="{{ site.baseurl }}/works/archive/" class="mt-5 inline-flex shrink-0 items-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 md:mt-0" data-en="Open Archive" data-zh="打开归档">Open Archive</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <script defer src="{{ site.baseurl }}/js/site-nav.js"></script>
-  <script defer src="{{ site.baseurl }}/js/portfolio.js"></script>
-  <script defer src="{{ site.baseurl }}/js/showcase-system.js"></script>
-  <script defer src="{{ site.baseurl }}/js/works-intro.js"></script>
-  {% include editor-bridge.html %}
-<script defer src="/js/list-navigation.js"></script>
-</body>
+<body data-list-filter="{{ page.list_filter }}" class="showcase-page theme-works editorial-works">
+{% include nav.html %}
+<main id="top">
+<section class="editorial-catalog-hero works-editorial-hero landing-hero" data-nav-tone="light">
+<img class="catalog-hero-backdrop" src="/img/portfolio/hero-landscape.jpg" data-media-role="hero" sizes="100vw" alt="Landscape design studies" decoding="async">
+<div class="editorial-shell">
+<p class="editorial-eyebrow" data-zh="精选设计实践" data-en="BEhop / SELECTED WORKS">BEhop / SELECTED WORKS</p>
+<h1 data-zh="从场地到作品" data-en="Grounded in place.
+Shaped through practice.">Grounded in place.
+Shaped through practice.</h1>
+<p class="catalog-hero-description" data-zh="规划、景观与空间设计，记录从问题、策略到落地成果的过程。" data-en="Planning, landscape, and spatial design. Context and constraints, decisions and outcomes.">Planning, landscape, and spatial design. Context and constraints, decisions and outcomes.</p>
+</div>
+</section>
+<section class="editorial-section works-directory" data-nav-tone="light">
+<div class="editorial-shell">
+<div id="portfolio-entry" class="portfolio-editorial-entry">
+<header class="editorial-section-heading">
+<div>
+<p class="editorial-eyebrow">THE PORTFOLIO COLLECTION</p>
+<h2 data-zh="翻开作品，看见过程。" data-en="Open the work. See the thinking.">Open the work. See the thinking.</h2>
+</div>
+<a href="/works/portfolio/" data-zh="完整阅读作品集 ↗" data-en="Read the collection ↗">Read the collection ↗</a>
+</header>
+<div class="portfolio-entry-books">
+<a class="portfolio-entry-book portfolio-entry-book--planning" href="/works/portfolio/?book=planning#portfolio-reader">
+<img src="/img/portfolio/real-works/portfolio-selection/portfolio-page-shili-lake-01.jpg" data-media-role="card" sizes="(max-width: 760px) 160px, 300px" alt="Planning portfolio cover" loading="lazy" decoding="async">
+<div>
+<span class="editorial-eyebrow">01 / 9 SPREADS</span>
+<h3 data-zh="规划" data-en="Planning">Planning</h3>
+<span data-zh="打开阅读 ↗" data-en="Open book ↗">Open book ↗</span>
+</div>
+</a>
+<a class="portfolio-entry-book portfolio-entry-book--landscape" href="/works/portfolio/?book=landscape#portfolio-reader">
+<img src="/img/portfolio/real-works/portfolio-selection/portfolio-page-didi-campus-01.jpg" data-media-role="card" sizes="(max-width: 760px) 160px, 300px" alt="Landscape portfolio cover" loading="lazy" decoding="async">
+<div>
+<span class="editorial-eyebrow">02 / 17 SPREADS</span>
+<h3 data-zh="景观" data-en="Landscape">Landscape</h3>
+<span data-zh="打开阅读 ↗" data-en="Open book ↗">Open book ↗</span>
+</div>
+</a>
+<a class="portfolio-entry-book portfolio-entry-book--spatial" href="/works/portfolio/?book=spatial#portfolio-reader">
+<img src="/img/portfolio/real-works/portfolio-selection/portfolio-page-undergraduate-17.jpg" data-media-role="card" sizes="(max-width: 760px) 160px, 300px" alt="Spatial + Architecture portfolio cover" loading="lazy" decoding="async">
+<div>
+<span class="editorial-eyebrow">03 / 11 SPREADS</span>
+<h3 data-zh="空间与建筑" data-en="Spatial + Architecture">Spatial + Architecture</h3>
+<span data-zh="打开阅读 ↗" data-en="Open book ↗">Open book ↗</span>
+</div>
+</a>
+</div>
+</div>
+<header class="editorial-section-heading">
+<div>
+<p class="editorial-eyebrow">PROJECT INDEX</p>
+<h2 data-zh="设计项目" data-en="Design projects">Design projects</h2>
+</div>
+<a href="/works/archive/" data-zh="全部归档 ↗" data-en="Full archive ↗">Full archive ↗</a>
+</header>
+<nav class="catalog-filters" aria-label="Project categories">
+<a class="filter-button{% if page.list_filter == 'all' %} is-active{% endif %}" href="/works/#works-results" data-static-filter="all" aria-controls="works-results">
+<span data-zh="全部" data-en="All">All</span>
+</a>
+<a class="filter-button{% if page.list_filter == 'professional' %} is-active{% endif %}" href="/works/category/professional/#works-results" data-static-filter="professional" aria-controls="works-results">
+<span data-zh="真实工作" data-en="Professional">Professional</span>
+</a>
+<a class="filter-button{% if page.list_filter == 'academic' %} is-active{% endif %}" href="/works/category/academic/#works-results" data-static-filter="academic" aria-controls="works-results">
+<span data-zh="学术研究" data-en="Academic">Academic</span>
+</a>
+<a class="filter-button{% if page.list_filter == 'landscape' %} is-active{% endif %}" href="/works/category/landscape/#works-results" data-static-filter="landscape" aria-controls="works-results">
+<span data-zh="景观设计" data-en="Landscape">Landscape</span>
+</a>
+<a class="filter-button{% if page.list_filter == 'interior' %} is-active{% endif %}" href="/works/category/interior/#works-results" data-static-filter="interior" aria-controls="works-results">
+<span data-zh="空间概念" data-en="Spatial concepts">Spatial concepts</span>
+</a>
+</nav>
+<p class="project-filter-status" id="project-filter-status" role="status" aria-live="polite">
+</p>
+<div class="catalog-grid" id="works-results">{% for project in page.list_items %}<a class="catalog-card" href="{{ project.url | relative_url }}" data-project data-category="{{ project.category }}">
+<div class="catalog-card-media">
+<img src="{{ project.cover | default: project.image | relative_url }}" data-media-role="card" sizes="(max-width: 599px) calc(100vw - 40px), (max-width: 1199px) 44vw, (max-width: 1799px) 29vw, (max-width: 2399px) 21vw, 400px" alt="{{ project.title_en | escape }}" loading="lazy" decoding="async">
+</div>
+<div class="catalog-card-copy">
+<span class="editorial-eyebrow" data-zh="{{ project.category_label_zh | escape }}" data-en="{{ project.category_label_en | escape }}">{{ project.category_label_en }}</span>
+<h3 data-zh="{{ project.title_zh | escape }}" data-en="{{ project.title_en | escape }}">{{ project.title_en }}</h3>
+<p data-zh="{{ project.summary_zh | escape }}" data-en="{{ project.summary_en | escape }}">{{ project.summary_en }}</p>
+<div class="catalog-card-bottom">
+<span>{{ project.year }}{% if project.featured %} · <span data-zh="精选" data-en="Selected">Selected</span>{% endif %}</span>
+<span aria-hidden="true">↗</span>
+</div>
+</div>
+</a>{% endfor %}</div>{% if page.list_items.size == 0 %}<p data-zh="此分类暂无项目。" data-en="No projects in this category yet.">No projects in this category yet.</p>{% endif %}{% include list-pagination.html %}</div>
+</section>
+</main>{% include editorial-footer.html %}<script defer src="/js/site-nav.js">
+</script>
+<script defer src="/js/editorial.js">
+</script>
+<script defer src="/js/showcase-system.js">
+</script>
+<script defer src="/js/list-navigation.js">
+</script>{% include editor-bridge.html %}</body>
 </html>

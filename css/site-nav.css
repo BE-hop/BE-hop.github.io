@@ -1,4 +1,6 @@
 :root {
+  --font-zh-ui: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --landing-hero-height: clamp(400px, 46svh, 440px);
   --nav-text: #f8f8f8;
   --nav-muted: rgba(255, 255, 255, 0.7);
   --nav-text-scrolled: #111;
@@ -85,9 +87,10 @@ html[lang="en"] .site-heading h1 {
   justify-content: space-between;
   gap: 20px;
   height: 72px;
-  max-width: 1200px;
+  width: calc(100% - clamp(40px, 8vw, 192px));
+  max-width: 2160px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0;
 }
 
 .site-nav__brand {
@@ -378,18 +381,31 @@ html[lang="en"] .site-heading h1 {
   transform: translateY(-5px) rotate(-45deg);
 }
 
-.site-nav__mobile {
+.site-nav .site-nav__mobile[data-site-nav-mobile] {
+  position: absolute;
+  top: 72px;
+  left: 0;
+  right: 0;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease;
-  background: var(--nav-bg);
-  border-top: 1px solid var(--nav-border);
+  visibility: hidden;
+  background: #f5f3ed;
+  color: #243a30;
+  border-top: 1px solid #d8ded5;
+  overscroll-behavior: contain;
 }
 
-.site-nav__mobile.is-open {
-  max-height: 720px;
+.site-nav .site-nav__mobile[data-site-nav-mobile].is-open {
+  visibility: visible;
+  max-height: calc(100dvh - 72px);
+  overflow-y: auto;
   padding-bottom: 16px;
+  box-shadow: 0 18px 36px #10201826;
 }
+.site-nav .site-nav__mobile .site-nav__mobile-link:not(.site-contact-trigger) { color: #243a30; }
+.site-nav .site-nav__mobile .site-nav__mobile-sublink { color: #53665a; }
+.site-nav .site-nav__mobile .site-nav__mobile-link:not(.site-contact-trigger):hover,
+.site-nav .site-nav__mobile .site-nav__mobile-sublink:hover { color: #163c2a; }
 
 .site-nav__mobile-inner {
   max-width: 1120px;
@@ -527,3 +543,52 @@ html.site-contact-open { overflow: hidden; }
 @media (max-width: 900px) {
   .site-nav [data-contact-desktop] { display: none; }
 }
+
+/* Mutually exclusive contact pages preserve the email draft while switching. */
+.site-contact [hidden] { display: none !important; }
+.site-contact__tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0 0 20px; background: #eef2ef; border-radius: 8px; }
+.site-contact__tabs button { border: 0; border-radius: 5px; padding: 11px 8px; font: inherit; font-size: 14px; color: #63716a; background: transparent; cursor: pointer; }
+.site-contact__tabs [aria-selected="true"] { background: #fff; color: #193b46; box-shadow: 0 1px 5px #1b332014; }
+.site-contact__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.site-contact form label { display: flex; flex-direction: column; gap: 7px; font-size: 12px; font-weight: 500; color: #53645b; }
+.site-contact form input:not([type="hidden"]), .site-contact form select, .site-contact form textarea { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid #d1dbd4; border-radius: 5px; padding: 10px; font: inherit; font-size: 14px; line-height: 1.5; color: #243a30; background: #fbfcfa; }
+.site-contact__message { margin: 18px 0; }
+.site-contact form textarea { resize: vertical; min-height: 100px; }
+.site-contact .site-contact__honey { display: none; }
+.site-contact__send { border: 0; border-radius: 5px; background: #193b46; color: #fff; padding: 12px 20px; font: inherit; font-size: 14px; cursor: pointer; }
+.site-contact__send:disabled { opacity: .6; cursor: wait; }
+.site-contact__privacy, .site-contact__form-status { font-size: 12px; line-height: 1.7; margin: 12px 0 0; color: #61716a; }
+.site-contact__form-status { color: #27543d; }
+@media (max-width: 480px) { .site-contact__fields { grid-template-columns: 1fr; gap: 12px; } }
+
+/* Landing sections share geometry independently of language and content height. */
+:root body .landing-hero {
+  position: relative;
+  box-sizing: border-box;
+  height: var(--landing-hero-height);
+  min-height: var(--landing-hero-height);
+  padding: 90px 0 32px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+.landing-hero .site-heading { padding: 0; }
+
+@media (max-width: 760px) { :root { --landing-hero-height: clamp(500px, 62svh, 560px); } }
+
+/* One Chinese type system for every masthead, without downloading a CJK font. */
+html[lang="zh"] .site-nav,
+html[lang="zh"] .landing-hero,
+html[lang="zh"] .landing-hero :is(h1,h2,p,a,button,span) { font-family: var(--font-zh-ui); }
+html[lang="zh"] .site-nav__brand { font-family: Manrope, sans-serif; }
+html[lang="zh"] .landing-hero h1 {
+  font-size: clamp(30px,3.6vw,48px);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: .045em;
+  white-space: normal;
+  margin: 12px 0 18px;
+}
+html[lang="zh"] .landing-hero .subheading { font-size: 15px; font-weight: 400; line-height: 1.85; letter-spacing: .025em; }
+html[lang="zh"] .landing-hero.intro-header .header-mask { position: absolute; inset: 0; background: linear-gradient(180deg,#14313366,#14313355); }
+html[lang="zh"] .landing-hero.intro-header .container { position: relative; z-index: 1; }

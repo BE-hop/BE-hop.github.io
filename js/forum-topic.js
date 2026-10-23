@@ -80,6 +80,7 @@
   let topicsHydrated = false
   let trackedTopicSlug = ""
   let activeTopic = null
+  let commentSubmitting = false
   const staticTopicSlugSet = new Set(staticTopics.map((topic) => topic?.slug).filter(Boolean))
 
   const mergeTopics = (...groups) => {
@@ -247,7 +248,7 @@
     const submitButton = document.querySelector("[data-topic-comment-submit]")
     if (submitButton) {
       submitButton.textContent = copy.submit
-      submitButton.disabled = !forumClient?.canSubmitComments
+      submitButton.disabled = commentSubmitting || !forumClient?.canSubmitComments
       submitButton.classList.toggle("opacity-60", !forumClient?.canSubmitComments)
       submitButton.classList.toggle("cursor-not-allowed", !forumClient?.canSubmitComments)
     }
@@ -311,6 +312,7 @@
     form.dataset.bound = "1"
     form.addEventListener("submit", async (event) => {
       event.preventDefault()
+      if (commentSubmitting) return
 
       const lang = getStorageItem(localStorage, "portfolioLang", "en")
       const copy = commentI18n[lang] || commentI18n.en
@@ -354,7 +356,11 @@
         submitButton.classList.add("opacity-70")
       }
 
-      const result = await forumClient.submitComment(payload)
+      commentSubmitting = true
+      let result
+      try { result = await forumClient.submitComment(payload) }
+      catch (_) { result = {ok:false} }
+      finally { commentSubmitting = false }
 
       if (submitButton) {
         submitButton.disabled = false
@@ -365,7 +371,7 @@
         if (messageInput) messageInput.value = ""
         setCommentFeedback("success", copy.feedbackPending)
 
-        if (forumClient?.canTrackEvents) {
+        if (!document.body.classList.contains("editorial-digest") && forumClient?.canTrackEvents) {
           forumClient.trackEvent({
             eventType: "comment_submit",
             page: "forum_topic",
@@ -621,7 +627,7 @@
 
     bindCommentForm()
 
-    if (forumClient?.canTrackEvents && trackedTopicSlug !== topic.slug) {
+    if (!document.body.classList.contains("editorial-digest") && forumClient?.canTrackEvents && trackedTopicSlug !== topic.slug) {
       trackedTopicSlug = topic.slug
       forumClient.trackEvent({
         eventType: "page_view",
@@ -643,7 +649,7 @@
     const refresh = () => { topics = mergeTopics(localTopics, staticTopics.filter(topic => topic.content), approvedTopics, staticTopics); render() }
     const tasks = [
       forumClient.fetchApprovedComments(document.body.dataset.topicSlug).then(comments => { approvedComments = comments; refresh() }),
-      forumClient.fetchApprovedMetrics().then(metrics => { approvedMetrics = metrics; refresh() }),
+
     ]
     // Built pages already contain approved topic content; only legacy/draft URLs fetch it.
     if (!document.body.dataset.topicSlug && forumClient.fetchApprovedTopics) {

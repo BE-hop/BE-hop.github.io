@@ -1,0 +1,12 @@
+<a href="{{ product.url | relative_url }}" class="catalog-card" data-category="{{ product.category }}">
+<div class="catalog-card-media{% if product.slug == 'ru-render' %} catalog-card-media--white-cover{% endif %}">{% if product.cover or product.image %}<img data-media-role="card" sizes="(max-width: 599px) calc(100vw - 40px), (max-width: 1199px) 44vw, (max-width: 1799px) 29vw, (max-width: 2399px) 21vw, 400px" src="{{ product.cover | default: product.image | relative_url }}" alt="{{ product.title_en | escape }}" loading="lazy" decoding="async">{% endif %}</div>
+<div class="catalog-card-copy">
+<span class="editorial-eyebrow" data-zh="{{ product.category_zh | escape }}" data-en="{{ product.category_en | escape }}">{{ product.category_en }}</span>
+<h3 data-zh="{{ product.title_zh | escape }}" data-en="{{ product.title_en | escape }}">{{ product.title_en }}</h3>
+<p data-zh="{{ product.summary_zh | escape }}" data-en="{{ product.summary_en | escape }}">{{ product.summary_en }}</p>
+<div class="catalog-card-bottom">
+<span class="status-label" data-zh="{{ product.status_zh | escape }}" data-en="{{ product.status_en | escape }}">{{ product.status_en }}</span>
+<span aria-hidden="true">↗</span>
+</div>
+</div>
+</a>

@@ -49,11 +49,10 @@ types:
           - { path: hero.secondary_cta_en, label: 次按钮（英文） }
       - id: sections
         title: 首页内容入口
-        description: AI Tools、Works、Contact 和 Footer。
+        description: 精选实践引用、标题与页脚。
         fields:
-          - { path: ai_tools, label: AI Tools 区, type: object }
-          - { path: works, label: Works 区, type: object }
-          - { path: contact, label: Contact 区, type: object }
+          - { path: selected_practice, label: 精选实践（type 为 tool/project，slug 为内容标识）, type: array }
+          - { path: ai_tools, label: 精选实践标题, type: object }
           - { path: footer, label: Footer 区, type: object }
   projects:
     label: Works
@@ -137,6 +136,11 @@ types:
           - { path: subtitle_en, label: 副标题（英文） }
           - { path: summary_zh, label: 摘要（中文）, type: textarea }
           - { path: summary_en, label: 摘要（英文）, type: textarea }
+          - { path: category, label: 分类代码 }
+          - { path: category_zh, label: 分类（中文） }
+          - { path: category_en, label: 分类（英文） }
+          - { path: status_zh, label: 当前状态（中文） }
+          - { path: status_en, label: 当前状态（英文） }
           - { path: visibility, label: 可见性, type: select, options: [public, hidden, concept] }
           - { path: order, label: 排序, type: number }
       - id: detail

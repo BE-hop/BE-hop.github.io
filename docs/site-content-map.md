@@ -153,6 +153,10 @@ _ai_products/ru-render.md
 _ai_products/spi-render.md
 _ai_products/ru-canvas.md
 _ai_products/spatial-prompt-lab.md
+_ai_products/paperflow.md
+_ai_products/context-english.md
+_ai_products/ruecord-money.md
+_ai_products/life-button.md
 ```
 
 可见性字段：
@@ -307,10 +311,22 @@ img/ai-products/concepts/
 
 ## 全站联系弹窗
 
-共享导航读取`_data/site_settings.yml`中的`navigation.contact_zh/contact_en`、`contact.wechat`、`contact.qr_image`与顶层`email`。模板为`_includes/contact.html`，二维码原图为`img/contact/wechat.jpg`，使用独立的`data-contact-src`仅在主动打开后加载，不参与正文图片衍生与编辑器写入范围扩展。
+共享导航读取`_data/site_settings.yml`中的`navigation.contact_zh/contact_en`、`contact.wechat`、`contact.qr_image`与顶层`email`。模板为`_includes/contact.html`，扫码与邮件采用互斥页签；邮件收件人复用同一顶层`email`，保留FormSubmit表单字段及原提交渠道，由`js/site-nav.js`统一处理。旧`portfolio.js`跳过标记`data-shared-contact`的共享表单，避免详情页重复发送。二维码原图为`img/contact/wechat.jpg`，使用独立的`data-contact-src`仅在主动打开后加载，不参与正文图片衍生与编辑器写入范围扩展。
 
 ## 文章更新与网址迁移
 
 同一篇文章的更新沿用已有中英文_posts记录。确需迁移时，只保留一对正式正文；旧URL在原路径放置layout:null的静态跳转页，包含meta refresh、指向对应语言正文的canonical和可点击链接，不能保留旧_posts记录参与博客、归档、标签、搜索与RSS。
 
 《当 AI 获得身体》的唯一正文为2026-10-16的when-ai-gains-a-body双语配对。2026-09-03的when-ai-gets-a-body-maslow和2026-10-15的when-ai-gains-a-body双语旧入口均跳转至10月16日对应语言正文。旧稿可由Git历史恢复；原图片素材保留。
+
+## 紧凑首页、扩展工具与情报
+
+首页六卡顺序由 homepage.selected_practice 控制，元素为 `{type: tool|project, slug: 集合文件名}`；工具和项目的标题、摘要与封面仍维护于原集合。缺失、重复、非法引用由编辑服务拒绝；隐藏内容不会出现在首页。
+
+新增工具：paperflow、context-english、ruecord-money、life-button。沿用 _ai_products 字段，分类新增 Learning Research、Personal Productivity；原分类地址继续生成。新增媒体位于 img/ai-products/<slug>/，demo.png 为隔离合成数据截图，workflow.svg 为明确标注的流程示意。
+
+About 的唯一内容源仍为 _data/about.yml，页面专属布局只改变主栏呈现，不改博客模板。
+
+情报站主条目仍在 js/forum-data.js 人工维护，审核快照由机器人维护，均不进入本地内容编辑器。新增可选字段：contentType（research/practice/industry/observation）、eventDate（YYYY-MM-DD）、sources（name双语对象或文字＋url数组）、designRelevance（双语摘要）。date 继续表示站内发布日期；缺少新字段的旧条目标为历史观察，不补造事件或来源。历史留言只在 message 分类显示。
+
+博客双语归档共用`_includes/archive-list.html`，默认静态显示全部文章；标签值保留URL编码，筛选与语言切换使用`js/archive.js`原生增强。博客侧栏标签按当前页面语言进入对应归档，关于页不再展示精选标签。

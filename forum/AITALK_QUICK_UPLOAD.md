@@ -1,95 +1,10 @@
-# AItalk Quick Upload
+# AI 情报人工维护流程
 
-After the forum list was switched to dynamic rendering, adding a new article only requires updating one data file:
+1. 在 js/forum-data.js 的站主条目中新增或更新一条，slug 保持稳定，并准备完整中英文标题、摘要与正文。
+2. 明确 contentType：理论研究 research、实践 practice、产业 industry、历史观察 observation。date 为站内发布时刻；eventDate 为可选事件日期。
+3. 外部研究填写 sources 的真实出处和 designRelevance；不把个人观点包装成论文或已验证新闻。AI 对话来源须标明原始对话。
+4. 已有双语博客是完整正文唯一来源时，情报只写摘要及对应语言全文链接。
+5. 运行 npm run check、npm run browser:test，在本地预览核对类型／主题／年份、分页、双语和评论。
+6. 审阅明确变更列表后按根 README 的正式发布流程操作；不要全量暂存，不运行带 secret 的同步命令。
 
-- `/Users/mac/Documents/BE-hop.github.io/js/forum-data.js`
-
-## 1. Add a topic object
-
-Append one object to the `topics` array with:
-
-- `slug` (unique)
-- `category` (`ai` for AItalk)
-- `tags` (include `aitalk` so detail page uses dialogue layout)
-- `title` / `excerpt` (`en` + `zh`)
-- `content` blocks (`p`, `h2`, `qa`, `ul`)
-- For long answers, use `answerBlocks` in each `qa` item (recommended)
-
-Template:
-
-```js
-{
-  slug: "your-topic-slug",
-  category: "ai",
-  tags: ["aitalk"],
-  author: {
-    name: "BEhop",
-    initials: "BH",
-    role: { en: "AItalk Editor", zh: "AItalk 编辑" },
-  },
-  stats: { replies: 0, views: 0 },
-  date: "2026-02-06T10:00:00Z",
-  readTime: { en: "6 min", zh: "6 分钟" },
-  title: {
-    en: "AI Talk: ...",
-    zh: "AI Talk：...",
-  },
-  excerpt: {
-    en: "Short summary...",
-    zh: "简短摘要...",
-  },
-  content: [
-    {
-      type: "qa",
-      items: [
-        {
-          question: {
-            zh: "短问题（建议一句话）",
-          },
-          answerBlocks: [
-            { type: "p", zh: "长回答第一段..." },
-            { type: "h2", zh: "小标题" },
-            { type: "p", zh: "长回答第二段..." },
-            {
-              type: "ul",
-              zh: ["要点 1", "要点 2", "要点 3"],
-            },
-          ],
-        },
-        {
-          question: {
-            zh: "第二个短问题（这就是你说的每天固定两次问答）",
-          },
-          answerBlocks: [
-            { type: "p", zh: "第二个问题的长回答..." },
-          ],
-        },
-      ],
-    },
-  ],
-}
-```
-
-## 2. Build and preview
-
-```bash
-cd /Users/mac/Documents/BE-hop.github.io
-./scripts/local-preview.sh build
-./scripts/local-preview.sh
-```
-
-Open:
-
-- `http://127.0.0.1:4000/forum/`
-
-Optional direct check:
-
-- `http://127.0.0.1:4000/forum/topic/?topic=your-topic-slug`
-
-## 3. Publish
-
-```bash
-git add -A
-git commit -m "Add new AItalk topic"
-git push
-```
+审核快照由机器人维护，新增站主文章不通过访客发帖 API。更多说明见 MODERATION.md。

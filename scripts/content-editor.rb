@@ -377,6 +377,21 @@ def validate_content!(type, data)
   end
   schema_fields(schema).each { |field| validate_field_value!(field, value_at(data, field["path"])) }
 
+  if type == "homepage" && data.key?("selected_practice")
+    refs = data["selected_practice"]
+    raise "Invalid selected practice list" unless refs.is_a?(Array) && refs.length <= 6
+    seen = Set.new
+    refs.each do |ref|
+      valid = ref.is_a?(Hash) && %w[tool project].include?(ref["type"]) && ref["slug"].is_a?(String) && ref["slug"].match?(/\A[a-z0-9][a-z0-9-]*\z/)
+      raise "Invalid selected practice reference" unless valid
+      key = [ref["type"], ref["slug"]]
+      raise "Duplicate selected practice reference" if seen.include?(key)
+      seen << key
+      dir = ref["type"] == "tool" ? "ai-products" : "projects"
+      file = File.join(COLLECTION_DIRS.fetch(dir), ref["slug"] + ".md")
+      raise "Selected practice content is missing" unless File.file?(file)
+    end
+  end
   true
 end
 

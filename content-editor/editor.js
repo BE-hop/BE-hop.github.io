@@ -110,6 +110,8 @@ function rebuildBindings() {
   state.drafts.forEach((content) => {
     const seen = new Set()
     flatten(content.data).forEach(({ path, value }) => {
+      // References are structural settings; visible copy belongs to the linked record.
+      if (content.type === "homepage" && path.startsWith("selected_practice.")) return
       if (typeof value !== "string" && typeof value !== "number") return
       let pair = localizedPair(path, content.data)
       if (content.type === "blog" && /^(zh|en)\./.test(path)) {

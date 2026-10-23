@@ -1,35 +1,26 @@
 ---
 layout: null
 lang-switcher: true
+nav-theme: dark
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BEhop 设计 | Portfolio</title>
-  {% include tailwind-head.html %}
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/site-nav.css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/portfolio.css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/showcase-system.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEhop · Design & AI Practice | BEhooop</title>
+{% include tailwind-head.html %}
+<link rel="stylesheet" href="/css/site-nav.css">
+<link rel="stylesheet" href="/css/portfolio.css">
+<link rel="stylesheet" href="/css/showcase-system.css">
 <link rel="stylesheet" href="/css/local-fonts.css">
-  <link rel="canonical" href="{{ page.url | absolute_url }}">
+<link rel="stylesheet" href="/css/editorial.css">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
 </head>
-<body class="portfolio-home showcase-page showcase-home theme-home bg-background text-foreground">
-  {% include nav.html %}
-  {% assign home = site.data.homepage %}
-  {% assign site_settings = site.data.site_settings %}
-
-  <nav class="home-chapter-nav" aria-label="Homepage sections" data-home-chapter-nav>
-    <a href="#ai-tools" data-home-nav="ai-tools"><span>01</span><span data-zh="AI 工具" data-en="AI Tools">AI Tools</span></a>
-    <a href="#projects" data-home-nav="projects"><span>02</span><span data-zh="项目案例" data-en="Works">Works</span></a>
-    <a href="#updates" data-home-nav="updates"><span>03</span><span data-zh="更新" data-en="Updates">Updates</span></a>
-    <a href="#about" data-home-nav="about"><span>04</span><span data-zh="关于" data-en="About">About</span></a>
-  </nav>
-
-  <main id="top">
-    <section class="showcase-home-hero relative min-h-screen flex items-center justify-center overflow-hidden" data-home-section data-section-key="top" data-nav-tone="dark">
-      <div class="hero-grid-stage absolute inset-0" aria-hidden="true" data-hero-grid-scan>
+<body class="portfolio-home showcase-page editorial-home theme-home">
+{% include nav.html %}
+{% assign home = site.data.homepage %}<main id="top">
+<section class="showcase-home-hero editorial-home-hero landing-hero" data-nav-tone="dark">      <div class="hero-grid-stage absolute inset-0" aria-hidden="true" data-hero-grid-scan>
         <img data-media-role="hero" sizes="100vw" src="{{ home.hero.background_image | relative_url }}" alt="" class="hero-grid-stage__depth w-full h-full object-cover" data-hero-media hidden fetchpriority="low" loading="lazy" decoding="async" />
         <svg class="hero-grid-stage__tunnel" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="presentation">
           <g class="hero-grid-stage__faces">
@@ -56,467 +47,111 @@ lang-switcher: true
           </g>
           <rect class="hero-grid-stage__scan-frame" x="600" y="330" width="400" height="240" />
         </svg>
-        <div class="hero-grid-stage__focus"></div>
+        <div class="hero-grid-stage__focus">
+</div>
       </div>
 
-      <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-10">
-        <div class="max-w-4xl">
-          <div class="space-y-8">
-            <div class="hero-badge inline-flex items-center gap-2 bg-card/10 border border-card/20 rounded-full px-4 py-2" data-hero-reveal>
-              <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-              <span class="text-sm text-card font-medium tracking-wide" data-zh="{{ home.hero.badge_zh }}" data-en="{{ home.hero.badge_en }}">{{ home.hero.badge_en }}</span>
-            </div>
 
-            <div class="space-y-6" data-hero-reveal>
-              <h1 class="hero-title text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-card tracking-tight" data-masked-heading>
-                {% for line in home.hero.title_lines_en %}
-                <span class="hero-title-line" data-zh="{{ home.hero.title_lines_zh[forloop.index0] | default: line }}" data-en="{{ line }}">{{ line }}</span>
-                {% endfor %}
-              </h1>
-              <p class="max-w-3xl text-lg md:text-xl text-card/85 leading-relaxed text-pretty" data-zh="{{ home.hero.description_zh }}" data-en="{{ home.hero.description_en }}">{{ home.hero.description_en }}</p>
-            </div>
-
-            <div class="hero-actions pt-4" aria-label="Hero actions" data-hero-reveal>
-              <a href="{{ site.baseurl }}/behop-ai-product/" class="hero-action hero-action--primary" data-zh="{{ home.hero.primary_cta_zh }}" data-en="{{ home.hero.primary_cta_en }}">{{ home.hero.primary_cta_en }}</a>
-              <a href="{{ site.baseurl }}/works/" class="hero-action hero-action--ghost" data-zh="{{ home.hero.secondary_cta_zh }}" data-en="{{ home.hero.secondary_cta_en }}">{{ home.hero.secondary_cta_en }}</a>
-              <a href="#contact" class="hero-action hero-action--link">
-                <span class="hero-action-icon">
-                  <svg class="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24">
-                    <polygon points="6,4 20,12 6,20" />
-                  </svg>
-                </span>
-                <span data-zh="{{ home.hero.contact_cta_zh }}" data-en="{{ home.hero.contact_cta_en }}">{{ home.hero.contact_cta_en }}</span>
-              </a>
-              <a href="#projects" class="hero-action hero-action--scroll">
-                <span data-zh="{{ home.hero.scroll_label_zh }}" data-en="{{ home.hero.scroll_label_en }}">{{ home.hero.scroll_label_en }}</span>
-                <svg class="w-4 h-4 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <polyline points="19 12 12 19 5 12" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <section id="ai-tools" class="theme-ai ai-grid-scan py-24 lg:py-28" data-home-section data-section-key="ai-tools" data-nav-tone="dark">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8" data-reveal>
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
-          <div class="space-y-4">
-            <p class="showcase-kicker text-primary font-medium tracking-wide uppercase text-sm" data-zh="{{ home.ai_tools.kicker_zh }}" data-en="{{ home.ai_tools.kicker_en }}">{{ home.ai_tools.kicker_en }}</p>
-            <h2 class="ai-heading showcase-section-heading text-4xl md:text-5xl font-bold text-foreground text-balance" data-scroll-reveal data-zh="{{ home.ai_tools.title_zh }}" data-en="{{ home.ai_tools.title_en }}">{{ home.ai_tools.title_en }}</h2>
-            <p class="text-muted-foreground text-lg max-w-2xl" data-zh="{{ home.ai_tools.subtitle_zh }}" data-en="{{ home.ai_tools.subtitle_en }}">{{ home.ai_tools.subtitle_en }}</p>
-          </div>
-          <a href="{{ site.baseurl }}/behop-ai-product/" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors" data-zh="{{ home.ai_tools.view_all_zh }}" data-en="{{ home.ai_tools.view_all_en }}">{{ home.ai_tools.view_all_en }}</a>
-        </div>
-
-        <div class="ai-bento-grid" data-bento-grid>
-          {%- assign featured_tools = site.ai_products | where_exp: "item", "item.visibility != 'hidden'" | where_exp: "item", "item.visibility != 'concept'" | sort: "order" | slice: 0, 6 -%}
-          {%- for tool in featured_tools -%}
-          {%- if tool.visibility != "hidden" and tool.visibility != "concept" -%}
-          {%- assign tool_cover = tool.cover | default: tool.image -%}
-          <a href="{{ tool.url | prepend: site.baseurl }}" class="group ai-bento-card{% if tool.order == 0 or tool.featured == true %} ai-bento-card--featured{% endif %} block overflow-hidden rounded-xl bg-card border border-border no-underline" data-spotlight-card>
-            {% if tool_cover %}
-            <div class="ai-bento-media aspect-[4/3] overflow-hidden bg-secondary">
-              <img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ tool_cover | relative_url }}" alt="{{ tool.title_en | default: tool.title_zh }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
-            </div>
-            {% endif %}
-            <div class="p-5">
-              <div class="mb-3 flex items-center justify-between gap-3">
-                <span class="text-xs uppercase tracking-wider text-primary" data-zh="{{ tool.category_zh }}" data-en="{{ tool.category_en }}">{{ tool.category_zh }}</span>
-                {% if tool.order == 0 %}
-                <span class="rounded-full bg-primary/10 px-2 py-1 text-xs text-primary">Featured</span>
-                {% endif %}
-              </div>
-              <h3 class="font-serif text-xl font-semibold text-foreground" data-zh="{{ tool.title_zh }}" data-en="{{ tool.title_en }}">{{ tool.title_zh }}</h3>
-              <p class="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-2" data-zh="{{ tool.summary_zh }}" data-en="{{ tool.summary_en }}">{{ tool.summary_zh }}</p>
-            </div>
-          </a>
-          {%- endif -%}
-          {%- endfor -%}
-        </div>
-      </div>
-    </section>
-
-    <section id="projects" class="theme-works py-24 lg:py-32" data-home-section data-section-key="projects" data-nav-tone="light">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8">
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
-          <div class="space-y-4">
-            <p class="showcase-kicker text-primary font-medium tracking-wide uppercase text-sm" data-zh="{{ home.works.kicker_zh }}" data-en="{{ home.works.kicker_en }}">{{ home.works.kicker_en }}</p>
-            <h2 class="works-heading showcase-section-heading text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance" data-scroll-reveal data-zh="{{ home.works.title_zh }}" data-en="{{ home.works.title_en }}">{{ home.works.title_en }}</h2>
-            <p class="text-muted-foreground text-lg max-w-xl" data-zh="{{ home.works.subtitle_zh }}" data-en="{{ home.works.subtitle_en }}">{{ home.works.subtitle_en }}</p>
-          </div>
-
-          <div class="flex flex-wrap gap-2" role="group" aria-label="Project filters">
-            <button type="button" class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground is-active" data-filter="all" data-zh="{{ home.works.filter_all_zh }}" data-en="{{ home.works.filter_all_en }}" aria-pressed="true" aria-controls="project-results">{{ home.works.filter_all_en }}</button>
-            <button type="button" class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="professional" data-zh="{{ home.works.filter_professional_zh }}" data-en="{{ home.works.filter_professional_en }}" aria-pressed="false" aria-controls="project-results">{{ home.works.filter_professional_en }}</button>
-            <button type="button" class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="academic" data-zh="{{ home.works.filter_academic_zh }}" data-en="{{ home.works.filter_academic_en }}" aria-pressed="false" aria-controls="project-results">{{ home.works.filter_academic_en }}</button>
-            <button type="button" class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="landscape" data-zh="{{ home.works.filter_landscape_zh }}" data-en="{{ home.works.filter_landscape_en }}" aria-pressed="false" aria-controls="project-results">{{ home.works.filter_landscape_en }}</button>
-            <button type="button" class="filter-button px-4 py-2 text-sm rounded-full transition-all bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground" data-filter="interior" data-zh="{{ home.works.filter_interior_zh }}" data-en="{{ home.works.filter_interior_en }}" aria-pressed="false" aria-controls="project-results">{{ home.works.filter_interior_en }}</button>
-          </div>
-          <p class="project-filter-status" id="project-filter-status" role="status" aria-live="polite"></p>
-        </div>
-
-        {%- assign project_list = site.projects | where_exp: "item", "item.visibility != 'hidden'" | sort: "order" | slice: 0, 6 -%}
-        <div class="grid grid-cols-1 gap-5 lg:grid-cols-2" id="project-results">
-          {%- for project in project_list -%}
-          {%- if project.category == "professional" and project.visibility != "hidden" -%}
-          {%- assign project_cover = project.cover | default: project.image -%}
-          <a href="{{ project.url | prepend: site.baseurl }}" class="group project-card works-card project-card--feature grid overflow-hidden rounded-xl border border-border bg-card no-underline transition-all md:grid-cols-[0.95fr_1.05fr]" data-project data-category="{{ project.category }}" data-glare-card data-i18n-aria="projects.viewProject" aria-label="查看项目">
-            <div class="works-card-media aspect-[16/10] overflow-hidden bg-secondary md:aspect-auto">
-              {% if project_cover %}
-              <img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
-              {% endif %}
-            </div>
-            <div class="flex min-h-[260px] flex-col justify-between p-6">
-              <div>
-                <div class="mb-4 flex flex-wrap items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
-                  <span data-zh="{{ project.category_label_zh }}" data-en="{{ project.category_label_en }}">{{ project.category_label_zh }}</span>
-                  {% if project.status_zh or project.status_en %}<span data-zh="· {{ project.status_zh }}" data-en="· {{ project.status_en }}">· {{ project.status_zh | default: project.status_en }}</span>{% endif %}
-                  {% if project.year %}<span>· {{ project.year }}</span>{% endif %}
-                </div>
-                <h3 class="font-serif text-2xl font-semibold text-foreground" data-zh="{{ project.title_zh }}" data-en="{{ project.title_en }}">{{ project.title_zh }}</h3>
-                <p class="mt-3 text-sm font-medium text-foreground/70" data-zh="{{ home.works.role_prefix_zh }}{{ project.role_zh }}" data-en="{{ home.works.role_prefix_en }}{{ project.role_en }}">{{ home.works.role_prefix_en }}{{ project.role_en }}</p>
-                <p class="mt-4 text-sm leading-relaxed text-muted-foreground line-clamp-3" data-zh="{{ project.summary_zh }}" data-en="{{ project.summary_en }}">{{ project.summary_zh }}</p>
-              </div>
-              <span class="mt-6 inline-flex text-sm font-medium text-primary" data-zh="{{ home.works.view_project_zh }}" data-en="{{ home.works.view_project_en }}">{{ home.works.view_project_en }}</span>
-            </div>
-          </a>
-          {%- endif -%}
-          {%- endfor -%}
-        </div>
-
-        <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
-          {%- for project in project_list -%}
-          {%- if project.category != "professional" and project.visibility != "hidden" -%}
-          {%- assign project_cover = project.cover | default: project.image -%}
-          <a href="{{ project.url | prepend: site.baseurl }}" class="group project-card works-card overflow-hidden rounded-xl border border-border bg-card no-underline transition-all" data-project data-category="{{ project.category }}" data-glare-card data-i18n-aria="projects.viewProject" aria-label="查看项目">
-            <div class="works-card-media aspect-[4/3] overflow-hidden bg-secondary">
-              {% if project_cover %}
-              <img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ project_cover | relative_url }}" alt="{{ project.title_en | default: project.title_zh }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
-              {% endif %}
-            </div>
-            <div class="p-5">
-              <div class="mb-3 text-xs uppercase tracking-wider text-muted-foreground" data-zh="{{ project.category_label_zh }}" data-en="{{ project.category_label_en }}">{{ project.category_label_zh }}</div>
-              <h3 class="font-serif text-xl font-semibold text-foreground" data-zh="{{ project.title_zh }}" data-en="{{ project.title_en }}">{{ project.title_zh }}</h3>
-              <p class="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-3" data-zh="{{ project.summary_zh }}" data-en="{{ project.summary_en }}">{{ project.summary_zh }}</p>
-            </div>
-          </a>
-          {%- endif -%}
-          {%- endfor -%}
-        </div>
-
-        <div class="mt-12 text-center">
-          <a href="{{ site.baseurl }}/works/" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors group" data-zh="{{ home.works.view_all_zh }}" data-en="{{ home.works.view_all_en }}">{{ home.works.view_all_en }}</a>
-          <a href="{{ site.baseurl }}/works/archive/" class="ml-5 inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-medium transition-colors group" data-en="{{ home.works.archive_label_en }}" data-zh="{{ home.works.archive_label_zh }}">{{ home.works.archive_label_en }}</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="updates" class="theme-works py-24 lg:py-28" data-home-section data-section-key="updates" data-nav-tone="light">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8" data-reveal>
-        <div class="grid lg:grid-cols-2 gap-8">
-          <div class="bg-card rounded-2xl border border-border p-6 lg:p-8">
-            <div class="mb-6 flex items-end justify-between gap-4">
-              <div>
-                <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="latestBlog.kicker">Blog</p>
-                <h2 class="font-serif text-3xl font-bold text-foreground" data-scroll-reveal data-i18n="latestBlog.title">Latest Blog</h2>
-              </div>
-              <a href="{{ site.baseurl }}/blog/" class="text-sm font-medium text-primary hover:text-primary/80" data-i18n="latestBlog.viewAll">All Posts</a>
-            </div>
-            <div class="space-y-5">
-              {%- assign latest_posts = site.posts | where: "lang", "en" -%}
-              {%- for post in latest_posts limit:3 -%}
-              <article class="border-t border-border pt-5 first:border-t-0 first:pt-0">
-                <a href="{{ post.url | prepend: site.baseurl }}" class="group no-underline">
-                  <time class="text-xs uppercase tracking-wider text-muted-foreground">{{ post.date | date: "%b %-d, %Y" }}</time>
-                  <h3 class="mt-2 text-lg font-semibold text-foreground group-hover:text-primary transition-colors">{{ post.title }}</h3>
-                  {% if post.subtitle %}
-                  <p class="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">{{ post.subtitle }}</p>
-                  {% endif %}
-                </a>
-              </article>
-              {%- endfor -%}
-            </div>
-          </div>
-
-          <div class="bg-card rounded-2xl border border-border p-6 lg:p-8">
-            <div class="mb-6 flex items-end justify-between gap-4">
-              <div>
-                <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="digest.kicker">AI Digest</p>
-                <h2 class="font-serif text-3xl font-bold text-foreground" data-scroll-reveal data-i18n="digest.title">Latest AI Digest</h2>
-              </div>
-              <a href="{{ site.baseurl }}/forum/" class="text-sm font-medium text-primary hover:text-primary/80" data-i18n="digest.viewAll">Open Digest</a>
-            </div>
-            <div class="grid gap-4">
-              <a href="{{ site.baseurl }}/forum/" class="block rounded-xl border border-border bg-secondary/60 p-5 no-underline hover:border-primary/40 transition-colors">
-                <span class="text-xs uppercase tracking-wider text-primary" data-i18n="digest.card1.kicker">AI Tools</span>
-                <h3 class="mt-2 text-lg font-semibold text-foreground" data-i18n="digest.card1.title">Curated signals on AI tools, design workflow, and industry applications</h3>
-                <p class="mt-2 text-sm leading-relaxed text-muted-foreground" data-i18n="digest.card1.desc">A lightweight entry for AI news, tool notes, trends, design applications, and practical tutorials.</p>
-              </a>
-              <a href="{{ site.baseurl }}/forum/" class="block rounded-xl border border-border bg-secondary/60 p-5 no-underline hover:border-primary/40 transition-colors">
-                <span class="text-xs uppercase tracking-wider text-primary" data-i18n="digest.card2.kicker">AI Design Thinking</span>
-                <h3 class="mt-2 text-lg font-semibold text-foreground" data-i18n="digest.card2.title">From geometry algorithms to design rules</h3>
-                <p class="mt-2 text-sm leading-relaxed text-muted-foreground" data-i18n="digest.card2.desc">Notes on how AI moves from drawing faster to encoding design cognition and decision rules.</p>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="theme-works py-24 lg:py-32" data-home-section data-section-key="about" data-nav-tone="light">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8" data-reveal>
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start mb-24">
-          <div class="relative">
-          <div class="relative aspect-[3/4] rounded-2xl overflow-hidden">
-              <img data-media-role="card" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 44vw, 380px" src="{{ site.baseurl }}/img/portfolio/behop-letters.svg" alt="BEhop Design" class="w-full h-full object-cover" />
-            </div>
-            <div class="absolute -bottom-8 -right-4 lg:-right-8 bg-card p-6 rounded-xl shadow-xl max-w-xs border border-border">
-              <blockquote class="text-foreground font-serif text-lg italic leading-relaxed" data-i18n="about.quote">“AI 不是替代创作，而是放大认知与表达的工具。”</blockquote>
-              <p class="text-muted-foreground text-sm mt-3" data-i18n="about.quoteAuthor">— BEhooop</p>
-            </div>
-          </div>
-
-          <div class="space-y-8 lg:pt-8">
-            <div class="space-y-4">
-            <p class="text-primary font-medium tracking-wide uppercase text-sm" data-i18n="about.title">关于 BEhop</p>
-              <h2 class="font-serif text-4xl md:text-5xl font-bold text-foreground text-balance leading-tight" data-scroll-reveal data-i18n="about.subtitle">景观设计师 / AI工具开发者 / 计算化设计实践者</h2>
-            </div>
-
-            <p class="text-muted-foreground leading-relaxed text-lg text-pretty" data-i18n="about.description">我关注 AI、计算化工具与视觉表达如何改变景观设计工作流，尤其是从草图、图像到可编辑空间模型的转化过程。</p>
-
-            <div class="space-y-4 pt-4">
-              <h3 class="font-serif text-xl font-semibold text-foreground" data-i18n="about.philosophy">创作方法</h3>
-              <p class="text-muted-foreground leading-relaxed text-pretty" data-i18n="about.philosophy.text">每个案例都围绕统一流程展开：明确目标、选择工具、记录参数、对比结果、总结可复用模板。通过结构化沉淀，让一次创作能持续转化为后续项目的能力资产。</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-              <div class="p-4 bg-background rounded-lg">
-                <h4 class="font-medium text-foreground mb-1" data-i18n="about.values.1.title">成果导向</h4>
-                <p class="text-sm text-muted-foreground" data-i18n="about.values.1.desc">以可验证结果展示 AI 工具价值</p>
-              </div>
-              <div class="p-4 bg-background rounded-lg">
-                <h4 class="font-medium text-foreground mb-1" data-i18n="about.values.2.title">流程透明</h4>
-                <p class="text-sm text-muted-foreground" data-i18n="about.values.2.desc">记录从输入到输出的关键决策</p>
-              </div>
-              <div class="p-4 bg-background rounded-lg">
-                <h4 class="font-medium text-foreground mb-1" data-i18n="about.values.3.title">持续迭代</h4>
-                <p class="text-sm text-muted-foreground" data-i18n="about.values.3.desc">通过复盘与实验不断优化方法</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div class="bg-card p-8 rounded-xl border border-border text-center group hover:border-primary/30 hover:shadow-lg transition-all">
-            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-              <svg class="w-6 h-6 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="10" r="3" />
-                <path d="M12 21c-4.97-4.97-8-8.03-8-11.5A8 8 0 0 1 20 9.5C20 13 16.97 16.03 12 21Z" />
-              </svg>
-            </div>
-            <div class="font-serif text-4xl lg:text-5xl font-bold text-primary mb-2">{{ site.projects | size }}</div>
-            <div class="text-sm text-muted-foreground uppercase tracking-wider" data-i18n="about.stats.projects">案例成果</div>
-          </div>
-          <div class="bg-card p-8 rounded-xl border border-border text-center group hover:border-primary/30 hover:shadow-lg transition-all">
-            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-              <svg class="w-6 h-6 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 20A7 7 0 0 1 7.5 7.5C8.5 4 12 3 13 2c1 2 .5 3 2 4 1.5 1 3 2 3 5a7 7 0 0 1-7 9Z" />
-              </svg>
-            </div>
-            <div class="font-serif text-4xl lg:text-5xl font-bold text-primary mb-2">2</div>
-            <div class="text-sm text-muted-foreground uppercase tracking-wider" data-i18n="about.stats.years">流程沉淀</div>
-          </div>
-          <div class="bg-card p-8 rounded-xl border border-border text-center group hover:border-primary/30 hover:shadow-lg transition-all">
-            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-              <svg class="w-6 h-6 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2l2.5 7H22l-5.5 4 2.1 7L12 16l-6.6 4 2.1-7L2 9h7.5L12 2z" />
-              </svg>
-            </div>
-            <div class="font-serif text-4xl lg:text-5xl font-bold text-primary mb-2">1</div>
-            <div class="text-sm text-muted-foreground uppercase tracking-wider" data-i18n="about.stats.awards">工具实验</div>
-          </div>
-          <div class="bg-card p-8 rounded-xl border border-border text-center group hover:border-primary/30 hover:shadow-lg transition-all">
-            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-              <svg class="w-6 h-6 text-primary group-hover:text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 11c1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3 1.3 3 3 3Z" />
-                <path d="M8 11c1.7 0 3-1.3 3-3S9.7 5 8 5 5 6.3 5 8s1.3 3 3 3Z" />
-                <path d="M2 20c0-2.8 2.3-5 5-5" />
-                <path d="M22 20c0-2.8-2.3-5-5-5" />
-                <path d="M12 20c0-2.5 2-4.5 4.5-4.5" />
-              </svg>
-            </div>
-            <div class="font-serif text-4xl lg:text-5xl font-bold text-primary mb-2">{{ site.data.worksarchive | size }}</div>
-            <div class="text-sm text-muted-foreground uppercase tracking-wider" data-i18n="about.stats.team">知识分享</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="theme-works py-24 lg:py-32" data-home-section data-section-key="contact" data-nav-tone="light">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8" data-reveal>
-        <div class="text-center max-w-3xl mx-auto mb-16">
-          <p class="text-primary font-medium tracking-wide uppercase text-sm mb-4" data-zh="{{ home.contact.kicker_zh }}" data-en="{{ home.contact.kicker_en }}">{{ home.contact.kicker_en }}</p>
-          <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance mb-6" data-scroll-reveal data-zh="{{ home.contact.title_zh }}" data-en="{{ home.contact.title_en }}">{{ home.contact.title_en }}</h2>
-          <p class="text-muted-foreground text-lg" data-zh="{{ home.contact.description_zh }}" data-en="{{ home.contact.description_en }}">{{ home.contact.description_en }}</p>
-        </div>
-
-        <div class="grid lg:grid-cols-5 gap-12 lg:gap-16">
-          <div class="lg:col-span-2 space-y-8">
-            <div class="space-y-6">
-              <div class="flex items-start gap-4">
-                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 4h16v12H4z" />
-                    <path d="m4 4 8 6 8-6" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 class="font-medium text-foreground mb-1" data-zh="{{ home.contact.email_label_zh }}" data-en="{{ home.contact.email_label_en }}">{{ home.contact.email_label_en }}</h4>
-                  <p class="text-muted-foreground text-sm leading-relaxed">{{ home.contact.email }}</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-4">
-                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 6v6l4 2" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 class="font-medium text-foreground mb-1" data-zh="{{ home.contact.hours_label_zh }}" data-en="{{ home.contact.hours_label_en }}">{{ home.contact.hours_label_en }}</h4>
-                  <p class="text-muted-foreground text-sm leading-relaxed" data-zh="{{ home.contact.hours_text_zh }}" data-en="{{ home.contact.hours_text_en }}">{{ home.contact.hours_text_en }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lg:col-span-3">
-            <div class="bg-card rounded-2xl p-8 lg:p-10 border border-border shadow-sm">
-              <h3 class="font-serif text-2xl font-semibold text-foreground mb-6" data-zh="{{ home.contact.form_title_zh }}" data-en="{{ home.contact.form_title_en }}">{{ home.contact.form_title_en }}</h3>
-              <form id="contact-form" class="space-y-6" action="https://formsubmit.co/{{ site.email | strip }}" method="POST" data-ajax-endpoint="https://formsubmit.co/ajax/{{ site.email | strip }}">
-                <input type="hidden" name="_subject" value="BEhop 联系表单新消息">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_url" value="{{ site.url }}{{ site.baseurl }}/">
-                <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div class="space-y-2">
-                    <label for="name" class="text-sm font-medium text-foreground" data-i18n="contact.name">姓名</label>
-                    <input id="name" name="name" type="text" class="contact-input" data-i18n-placeholder="contact.name.placeholder" required>
-                  </div>
-                  <div class="space-y-2">
-                    <label for="email" class="text-sm font-medium text-foreground" data-i18n="contact.email">邮箱</label>
-                    <input id="email" name="email" type="email" class="contact-input" data-i18n-placeholder="contact.email.placeholder" required>
-                  </div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div class="space-y-2">
-                    <label for="phone" class="text-sm font-medium text-foreground" data-i18n="contact.phone.input">电话</label>
-                    <input id="phone" name="phone" type="tel" class="contact-input" data-i18n-placeholder="contact.phone.placeholder">
-                  </div>
-                  <div class="space-y-2">
-                    <label for="project-type" class="text-sm font-medium text-foreground" data-i18n="contact.project">需求类型</label>
-                    <select id="project-type" name="project_type" class="contact-select" data-i18n-placeholder="contact.project.placeholder"></select>
-                  </div>
-                </div>
-                <div class="space-y-2">
-                  <label for="message" class="text-sm font-medium text-foreground" data-i18n="contact.message">需求说明</label>
-                  <textarea id="message" name="message" class="contact-textarea contact-textarea--desktop-landscape" data-i18n-placeholder="contact.message.placeholder" required></textarea>
-                </div>
-                <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-14 text-base font-medium rounded-lg transition-colors" data-i18n="contact.submit">发送消息</button>
-                <p id="contact-form-status" class="text-xs text-muted-foreground text-center hidden" role="status" aria-live="polite"></p>
-                <p class="text-xs text-muted-foreground text-center" data-zh="{{ home.contact.notice_zh }}" data-en="{{ home.contact.notice_en }}">{{ home.contact.notice_en }}</p>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="bg-foreground text-card">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-20">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
-        <div class="lg:col-span-5 space-y-6">
-          <a href="#top" class="inline-flex items-center gap-3">
-            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-              <span class="text-primary-foreground font-serif font-bold text-xl">林</span>
-            </div>
-            <span class="font-serif text-2xl font-semibold" data-zh="{{ home.footer.brand_zh }}" data-en="{{ home.footer.brand_en }}">{{ home.footer.brand_en }}</span>
-          </a>
-          <p class="text-card/70 leading-relaxed max-w-sm" data-zh="{{ home.footer.description_zh }}" data-en="{{ home.footer.description_en }}">{{ home.footer.description_en }}</p>
-          <div class="flex gap-3 pt-2">
-            {% if site_settings.social.instagram %}
-            <a href="{{ site_settings.social.instagram }}" target="_blank" rel="noopener" class="w-11 h-11 rounded-full bg-card/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label="Instagram">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="17" cy="7" r="1" />
-              </svg>
-            </a>
-            {% endif %}
-            {% if site_settings.social.linkedin %}
-            <a href="{{ site_settings.social.linkedin }}" target="_blank" rel="noopener" class="w-11 h-11 rounded-full bg-card/10 flex items-center justify-center hover:bg-primary transition-colors" aria-label="LinkedIn">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <line x1="7" y1="10" x2="7" y2="17" />
-                <line x1="7" y1="7" x2="7" y2="7" />
-                <path d="M11 10h3a3 3 0 0 1 3 3v4" />
-                <line x1="11" y1="10" x2="11" y2="17" />
-              </svg>
-            </a>
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="lg:col-span-4">
-          <h4 class="font-medium text-sm uppercase tracking-wider text-card/50 mb-5" data-zh="{{ home.footer.company_label_zh }}" data-en="{{ home.footer.company_label_en }}">{{ home.footer.company_label_en }}</h4>
-          <nav class="flex flex-col gap-3">
-            <a href="{{ site.baseurl }}/behop-ai-product/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.ai">AI Tools</a>
-            <a href="{{ site.baseurl }}/works/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.projects">Works</a>
-            <a href="{{ site.baseurl }}/blog/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.blog">Blog</a>
-            <a href="{{ site.baseurl }}/forum/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.forum">AI Digest</a>
-            <a href="{{ site.baseurl }}/about/" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.about">About</a>
-            <a href="#contact" class="text-card/70 hover:text-card text-sm transition-colors" data-i18n="nav.contact">联系 BEhop</a>
-          </nav>
-        </div>
-
-        <div class="lg:col-span-3">
-          <h4 class="font-medium text-sm uppercase tracking-wider text-card/50 mb-5" data-zh="{{ home.footer.contact_label_zh }}" data-en="{{ home.footer.contact_label_en }}">{{ home.footer.contact_label_en }}</h4>
-          <div class="space-y-3 text-sm">
-            <p class="text-card/70">{{ home.contact.email }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="border-t border-card/10">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p class="text-card/50 text-sm">
-            © <span id="current-year"></span> <span data-zh="{{ home.footer.brand_zh }}" data-en="{{ home.footer.brand_en }}">{{ home.footer.brand_en }}</span>. <span data-zh="{{ home.footer.rights_zh }}" data-en="{{ home.footer.rights_en }}">{{ home.footer.rights_en }}</span>.
-          </p>
-          <button class="flex items-center gap-2 text-card/50 hover:text-card text-sm transition-colors group" data-scroll-top>
-            <span data-zh="{{ home.footer.back_to_top_zh }}" data-en="{{ home.footer.back_to_top_en }}">{{ home.footer.back_to_top_en }}</span>
-            <span class="w-8 h-8 rounded-full bg-card/10 flex items-center justify-center group-hover:bg-primary transition-colors">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="19" x2="12" y2="5" />
-                <polyline points="5 12 12 5 19 12" />
-              </svg>
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script defer src="{{ site.baseurl }}/js/site-nav.js"></script>
-  <script defer src="{{ site.baseurl }}/js/portfolio.js"></script>
-  <script defer src="{{ site.baseurl }}/js/showcase-system.js"></script>
-  {% include editor-bridge.html %}
-</body>
+<div class="editorial-shell hero-editorial-copy">
+<p class="editorial-eyebrow" data-zh="设计与 AI 实践" data-en="DESIGN × AI × PRACTICE">DESIGN × AI × PRACTICE</p>
+<h1>{% for line in home.hero.title_lines_en %}<span data-zh="{{ home.hero.title_lines_zh[forloop.index0] | escape }}" data-en="{{ line | escape }}">{{ line }}</span>
+{% endfor %}</h1>
+<p class="hero-editorial-description" data-zh="{{ home.hero.description_zh | escape }}" data-en="{{ home.hero.description_en | escape }}">{{ home.hero.description_en }}</p>
+<div class="hero-actions">
+<a href="/behop-ai-product/" class="hero-action hero-action--primary">
+<span data-zh="{{ home.hero.primary_cta_zh | escape }}" data-en="{{ home.hero.primary_cta_en | escape }}">{{ home.hero.primary_cta_en }}</span>
+<span aria-hidden="true">↗</span>
+</a>
+<a href="/works/" class="hero-action hero-action--ghost">
+<span data-zh="{{ home.hero.secondary_cta_zh | escape }}" data-en="{{ home.hero.secondary_cta_en | escape }}">{{ home.hero.secondary_cta_en }}</span>
+<span aria-hidden="true">↗</span>
+</a>
+<button type="button" class="hero-action hero-action--link" data-contact-open data-zh="联系我 ↗" data-en="Get in touch ↗">Get in touch ↗</button>
+<a href="#practice" class="hero-action hero-action--scroll" data-zh="向下探索 ↓" data-en="Discover below ↓">Discover below ↓</a>
+</div>
+<div class="hero-editorial-note">
+<span>BEhop / Selected practice</span>
+<span data-zh="从空间到工具 从问题到实践" data-en="From spaces to tools. From questions to practice.">From spaces to tools. From questions to practice.</span>
+</div>
+</div>
+</section>
+<section id="practice" class="editorial-section theme-works" data-nav-tone="light">
+<div class="editorial-shell">
+<span id="ai-tools" class="anchor-alias">
+</span>
+<span id="projects" class="anchor-alias">
+</span>
+<header class="editorial-section-heading">
+<div>
+<p class="editorial-eyebrow">01 / SELECTED PRACTICE</p>
+<h2 data-zh="{{ home.ai_tools.title_zh | escape }}" data-en="{{ home.ai_tools.title_en | escape }}">{{ home.ai_tools.title_en }}</h2>
+<p data-zh="{{ home.ai_tools.subtitle_zh | escape }}" data-en="{{ home.ai_tools.subtitle_en | escape }}">{{ home.ai_tools.subtitle_en }}</p>
+</div>
+<div class="editorial-links">
+<a href="/behop-ai-product/" data-zh="全部工具 ↗" data-en="All tools ↗">All tools ↗</a>
+<a href="/works/" data-zh="全部项目 ↗" data-en="All works ↗">All works ↗</a>
+</div>
+</header>
+<div class="practice-grid">{% for ref in home.selected_practice %}{% if ref.type == 'tool' %}{% assign item = site.ai_products | where: 'slug', ref.slug | first %}{% assign kind_zh = '工具实践' %}{% assign kind_en = 'Tool practice' %}{% else %}{% assign item = site.projects | where: 'slug', ref.slug | first %}{% assign kind_zh = '设计项目' %}{% assign kind_en = 'Design project' %}{% endif %}{% if item and item.visibility != 'hidden' and item.visibility != 'concept' %}<a class="practice-card" href="{{ item.url | relative_url }}">
+<div class="practice-card-media">
+<img data-media-role="card" sizes="(max-width: 600px) 110px, 180px" src="{{ item.cover | default: item.image | relative_url }}" alt="{{ item.title_en | escape }}" loading="lazy" decoding="async">
+</div>
+<div class="practice-card-copy">
+<span class="editorial-eyebrow" data-zh="{{ kind_zh }}" data-en="{{ kind_en }}">{{ kind_en }}</span>
+<h3 data-zh="{{ item.title_zh | escape }}" data-en="{{ item.title_en | escape }}">{{ item.title_en }}</h3>
+<p data-zh="{{ item.summary_zh | escape }}" data-en="{{ item.summary_en | escape }}">{{ item.summary_en }}</p>
+<span class="card-arrow" aria-hidden="true">↗</span>
+</div>
+</a>{% endif %}{% endfor %}</div>
+</div>
+</section>
+<section id="updates" class="editorial-section editorial-reading theme-works" data-nav-tone="light">
+<div class="editorial-shell">
+<div class="reading-grid">
+<div>
+<header class="editorial-section-heading">
+<div>
+<p class="editorial-eyebrow">02 / JOURNAL</p>
+<h2 data-zh="写作与思考" data-en="Notes & reflections">Notes & reflections</h2>
+</div>
+<a href="/blog/" data-lang-href-zh="/blog/" data-lang-href-en="/blog/en/" data-zh="全部文章 ↗" data-en="All writing ↗">All writing ↗</a>
+</header>
+{% assign posts_en = site.posts | where: 'lang', 'en' %}{% for post in posts_en limit:3 %}{% assign zh_url = post.url | replace: '-en/', '/' %}{% assign zh_post = site.posts | where: 'url', zh_url | first %}<a class="reading-row" href="{{ post.url }}" data-lang-href-en="{{ post.url }}" data-lang-href-zh="{{ zh_post.url | default: post.url }}">
+<time>{{ post.date | date: '%Y.%m.%d' }}</time>
+<h3 data-en="{{ post.title | escape }}" data-zh="{{ zh_post.title | default: post.title | escape }}">{{ post.title }}</h3>
+<p data-en="{{ post.subtitle | default: post.excerpt | strip_html | truncate: 100 | escape }}" data-zh="{{ zh_post.subtitle | default: zh_post.excerpt | strip_html | truncate: 65 | escape }}">{{ post.subtitle | default: post.excerpt | strip_html | truncate: 100 }}</p>
+<span aria-hidden="true">↗</span>
+</a>{% endfor %}</div>
+<div>
+<header class="editorial-section-heading">
+<div>
+<p class="editorial-eyebrow">03 / AI DIGEST</p>
+<h2 data-zh="设计 AI 观察" data-en="Design AI, observed">Design AI, observed</h2>
+</div>
+<a href="/forum/" data-zh="全部情报 ↗" data-en="All observations ↗">All observations ↗</a>
+</header>
+<div data-home-digest>
+</div>
+</div>
+</div>
+<div id="about" class="home-about-strip">
+<div>
+<p class="editorial-eyebrow" data-zh="关于 BEhop" data-en="ABOUT BEhop">ABOUT BEhop</p>
+<p data-zh="{{ site.data.about.intro_zh | escape }}" data-en="{{ site.data.about.intro_en | escape }}">{{ site.data.about.intro_en }}</p>
+</div>
+<div id="contact" class="editorial-links">
+<a href="/about/" data-zh="认识我 ↗" data-en="About me ↗">About me ↗</a>
+<button type="button" data-contact-open data-zh="联系我 ↗" data-en="Get in touch ↗">Get in touch ↗</button>
+</div>
+</div>
+</div>
+</section>
+</main>{% include editorial-footer.html %}<script defer src="/js/site-nav.js">
+</script>
+<script defer src="/js/editorial.js">
+</script>
+<script defer src="/js/showcase-system.js">
+</script>
+<script defer src="/js/list-navigation.js">
+</script>{% include editor-bridge.html %}</body>
 </html>

@@ -1,58 +1,62 @@
 ---
-layout: page
-title: "About"
-description: "Landscape Designer & AI Tool Builder for Design Workflows"
-nav-order: 20
-header-img: "img/about.me.jpg"
-header-mask: 0.3
-multilingual: true
+layout: null
 lang-switcher: true
+nav-theme: light
 ---
-
-{% assign about = site.data.about %}
-
-<!-- Chinese Version -->
-<div class="zh post-container">
-    <h2>{{ about.subtitle_zh }}</h2>
-    <p>{{ about.intro_zh }}</p>
-    {% for section in about.sections %}
-    <h3>{{ section.title_zh }}</h3>
-    <p>{{ section.body_zh }}</p>
-    {% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | BEhooop</title>
+{% include tailwind-head.html %}
+<link rel="stylesheet" href="/css/site-nav.css">
+<link rel="stylesheet" href="/css/portfolio.css">
+<link rel="stylesheet" href="/css/showcase-system.css">
+<link rel="stylesheet" href="/css/local-fonts.css">
+<link rel="stylesheet" href="/css/editorial.css">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+</head>
+<body class="showcase-page theme-works editorial-about">
+{% include nav.html %}
+{% assign about = site.data.about %}<main id="top">
+<section class="about-editorial-hero landing-hero" data-nav-tone="dark">
+<img src="{{ about.background_image }}" data-media-role="hero" sizes="100vw" alt="BEhop by the sea" decoding="async">
+<div class="editorial-shell">
+<p class="editorial-eyebrow" data-zh="关于 BEhop" data-en="BEhop / ABOUT">BEhop / ABOUT</p>
+<h1 data-zh="在设计与构建之间" data-en="Designing.
+And building.">Designing. And building.</h1>
+<p class="about-hero-intro">以空间设计为起点 探索 AI、工具与交互的新可能</p>
 </div>
-
-<!-- English Version -->
-<div class="en post-container">
-    <h2>{{ about.subtitle_en }}</h2>
-    <p>{{ about.intro_en }}</p>
-    {% for section in about.sections %}
-    <h3>{{ section.title_en }}</h3>
-    <p>{{ section.body_en }}</p>
-    {% endfor %}
+</section>
+<div class="editorial-shell about-editorial-grid">
+<article class="about-editorial-content">
+<p class="editorial-eyebrow" data-zh="关于我" data-en="A LITTLE ABOUT ME">A LITTLE ABOUT ME</p>
+<h2 data-zh="{{ about.subtitle_zh | escape }}" data-en="{{ about.subtitle_en | escape }}">{{ about.subtitle_en }}</h2>
+<p class="about-intro" data-zh="{{ about.intro_zh | escape }}" data-en="{{ about.intro_en | escape }}">{{ about.intro_en }}</p>{% for section in about.sections %}<section>
+<span class="about-section-index">0{{ forloop.index }}</span>
+<div>
+<h3 data-zh="{{ section.title_zh | escape }}" data-en="{{ section.title_en | escape }}">{{ section.title_en }}</h3>
+<p data-zh="{{ section.body_zh | escape }}" data-en="{{ section.body_en | escape }}">{{ section.body_en }}</p>
 </div>
-
-
-{% if site.disqus_username %}
-<!-- disqus 评论框 start -->
-<div class="comment">
-    <div id="disqus_thread" class="disqus-thread">
-
-    </div>
+</section>{% endfor %}<div class="editorial-links">
+<a href="/works/" data-zh="设计项目 ↗" data-en="Design work ↗">Design work ↗</a>
+<a href="/behop-ai-product/" data-zh="工具与系统 ↗" data-en="Tools & systems ↗">Tools & systems ↗</a>
+<button type="button" data-contact-open data-zh="联系我 ↗" data-en="Get in touch ↗">Get in touch ↗</button>
 </div>
-<!-- disqus 评论框 end -->
-
-<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "{{site.disqus_username}}";
-    var disqus_identifier = "{{site.disqus_username}}/{{page.url}}";
-    var disqus_url = "{{site.url}}{{page.url}}";
-
-    (function () {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
+</article>
+<aside class="about-editorial-sidebar"><section class="about-sidebar-profile">
+<h5 data-zh="关于我" data-en="About me">About me</h5>{% if site.sidebar-avatar %}<img src="{{ site.sidebar-avatar }}" data-media-role="thumbnail" sizes="240px" alt="BEhop profile portrait" loading="lazy" decoding="async">{% endif %}<div data-about-sidebar-lang="zh">{% capture sidebar_zh %}{% include about/sidebar.md %}{% endcapture %}{{ sidebar_zh | markdownify }}</div>
+<div data-about-sidebar-lang="en">{% capture sidebar_en %}{% include about/sidebar-en.md %}{% endcapture %}{{ sidebar_en | markdownify }}</div>
+<nav class="about-social-links" aria-label="Social profiles">{% if site.rednote_home %}<a href="{{ site.rednote_home }}" target="_blank" rel="me noopener" data-zh="小红书 ↗" data-en="Xiaohongshu ↗">Xiaohongshu ↗</a>{% endif %}{% if site.bilibili_home %}<a href="{{ site.bilibili_home }}" target="_blank" rel="me noopener">bilibili ↗</a>{% endif %}{% if site.github_username %}<a href="https://github.com/{{ site.github_username }}" target="_blank" rel="me noopener">GitHub ↗</a>{% endif %}{% if site.twitter_username %}<a href="https://twitter.com/{{ site.twitter_username | remove: '@' }}" target="_blank" rel="me noopener">X / Twitter ↗</a>{% endif %}{% if site.instagram_home %}<a href="{{ site.instagram_home }}" target="_blank" rel="me noopener">Instagram ↗</a>{% endif %}{% if site.youtube_home %}<a href="{{ site.youtube_home }}" target="_blank" rel="me noopener">YouTube ↗</a>{% endif %}{% if site.RSS %}<a href="/feed.xml">RSS ↗</a>{% endif %}</nav>
+</section>{% include friends.html %}</aside>
+</div>
+</main>{% include editorial-footer.html %}<script defer src="/js/site-nav.js">
 </script>
-<!-- disqus 公共JS代码 end -->
-{% endif %}
+<script defer src="/js/editorial.js">
+</script>
+<script defer src="/js/showcase-system.js">
+</script>
+<script defer src="/js/list-navigation.js">
+</script>{% include editor-bridge.html %}</body>
+</html>

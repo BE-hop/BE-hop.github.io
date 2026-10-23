@@ -26,6 +26,10 @@
 <script defer src="{{ '/js/blog-reading.js' | prepend: site.baseurl }}"></script>
 <script defer src="{{ '/js/site-nav.js' | prepend: site.baseurl }}"></script>
 
+{% if page.archive-lang %}
+<script defer src="{{ '/js/archive.js' | prepend: site.baseurl }}"></script>
+{% endif %}
+
 <!-- async load function -->
 <script>
     function async(u, c) {

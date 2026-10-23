@@ -70,3 +70,7 @@ master是唯一正式源，Actions固定ubuntu-24.04/Ruby 3.1。
 详细排查与回退见性能规范。代码遵循[Apache License 2.0](LICENSE)。
 
 本轮实施结果和前后对照见[流畅化验收](docs/fluency-validation.md)。
+
+## 联系入口维护
+
+全站导航提供“联系我 / Contact”弹窗。微信号与二维码路径维护于`_data/site_settings.yml`的`contact`，邮箱复用顶层`email`；二维码原图位于`img/contact/wechat.jpg`，首次打开弹窗才加载。桌面入口位于中英切换右侧的导航最右端，移动端保留于菜单内。入口采用低饱和深蓝灰色块与右箭头，适配深浅导航并与中英切换及其他导航文字使用统一字体和行高、垂直居中；英文模式语言入口显示Chinese / EN，中文模式显示中文 / EN，顶层导航组间距统一20px。交互规范见视觉文档。

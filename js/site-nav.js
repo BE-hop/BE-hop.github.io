@@ -38,6 +38,87 @@
   updateNav()
   window.addEventListener("scroll", updateNav)
 
+  const contact = document.querySelector("#site-contact")
+  if (contact) {
+    let opener
+    let copySequence = 0
+    const status = contact.querySelector('.site-contact__status')
+    const isChinese = () => document.documentElement.lang.startsWith("zh")
+    const syncContactLanguage = () => {
+      document.querySelectorAll("[data-contact-zh]").forEach(node => {
+        node.textContent = node.getAttribute(isChinese() ? "data-contact-zh" : "data-contact-en")
+      })
+      status.textContent = ""
+      copySequence++
+    }
+    syncContactLanguage()
+    new MutationObserver(syncContactLanguage).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] })
+    document.querySelectorAll("[data-contact-open]").forEach(button => {
+      button.addEventListener("click", () => {
+        opener = button
+        if (mobile && toggle) {
+          mobile.classList.remove("is-open")
+          toggle.classList.remove("is-active")
+          toggle.setAttribute("aria-expanded", "false")
+        }
+        status.textContent = ""
+        contact.showModal()
+        document.documentElement.classList.add("site-contact-open")
+        const qr = contact.querySelector("[data-contact-src]")
+        if (!qr.hasAttribute("src")) qr.src = qr.dataset.contactSrc
+      })
+    })
+    contact.querySelector("[data-contact-close]").addEventListener("click", () => contact.close())
+    contact.addEventListener("click", event => {
+      if (event.target !== contact) return
+      const bounds = contact.getBoundingClientRect()
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) contact.close()
+    })
+    contact.addEventListener("keydown", event => {
+      if (event.key !== "Tab") return
+      const controls = Array.from(contact.querySelectorAll('button:not(:disabled), a[href], [tabindex="0"]'))
+        .filter(node => node.getClientRects().length)
+      const first = controls[0]
+      const last = controls[controls.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    })
+    contact.addEventListener("close", () => {
+      copySequence++
+      document.documentElement.classList.remove("site-contact-open")
+      // The mobile entry is hidden after opening; return focus to its menu toggle.
+      if (opener && !mobile?.contains(opener) && opener.getClientRects().length) opener.focus()
+      else if (toggle) toggle.focus()
+    })
+    contact.querySelector("[data-contact-src]").addEventListener("error", () => {
+      contact.querySelector("[data-contact-error]").hidden = false
+    })
+    contact.querySelector("[data-contact-src]").addEventListener("load", () => {
+      contact.querySelector("[data-contact-error]").hidden = true
+    })
+    contact.querySelectorAll("[data-contact-copy]").forEach(button => {
+      button.addEventListener("click", async () => {
+        const sequence = ++copySequence
+        let succeeded = false
+        try {
+          await navigator.clipboard.writeText(button.dataset.contactCopy)
+          succeeded = true
+        } catch (error) {
+          // The visible ID and email remain selectable when clipboard access is denied.
+        }
+        if (sequence !== copySequence || !contact.open) return
+        status.textContent = succeeded
+          ? (isChinese() ? "已复制" : "Copied")
+          : (isChinese() ? "复制失败，请选中联系方式手动复制。" : "Could not copy. Please select the contact details and copy manually.")
+      })
+    })
+  }
+
   if (!toggle || !mobile) return
 
   const setOpen = (isOpen) => {

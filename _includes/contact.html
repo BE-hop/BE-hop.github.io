@@ -1,0 +1,16 @@
+<dialog id="site-contact" class="site-contact" aria-labelledby="site-contact-title">
+  <button type="button" class="site-contact__close" data-contact-close aria-label="Close / 关闭" autofocus>×</button>
+  <h2 id="site-contact-title" data-contact-zh="联系我" data-contact-en="Contact">Contact</h2>
+  <img class="site-contact__qr" data-contact-src="{{ site.data.site_settings.contact.qr_image | relative_url }}" width="888" height="1131" alt="BEhop WeChat QR code / 微信二维码">
+  <p class="site-contact__hint" data-contact-zh="扫码添加微信，或长按保存二维码" data-contact-en="Scan to add me on WeChat, or press and hold to save the QR code.">Scan to add me on WeChat, or press and hold to save the QR code.</p>
+  <p class="site-contact__error" data-contact-error hidden data-contact-zh="二维码未能加载，请使用下方微信号添加。" data-contact-en="QR code could not load. Please add me using the WeChat ID below."></p>
+  <div class="site-contact__row">
+    <div><span class="site-contact__label" data-contact-zh="微信号" data-contact-en="WeChat ID">WeChat ID</span><span class="site-contact__value">{{ site.data.site_settings.contact.wechat | escape }}</span></div>
+    <button type="button" data-contact-copy="{{ site.data.site_settings.contact.wechat | escape }}" data-contact-zh="复制微信号" data-contact-en="Copy WeChat ID">Copy WeChat ID</button>
+  </div>
+  <div class="site-contact__row">
+    <div><span class="site-contact__label" data-contact-zh="邮箱" data-contact-en="Email">Email</span><a class="site-contact__value" href="mailto:{{ site.data.site_settings.email | escape }}">{{ site.data.site_settings.email | escape }}</a></div>
+    <button type="button" data-contact-copy="{{ site.data.site_settings.email | escape }}" data-contact-zh="复制邮箱" data-contact-en="Copy email">Copy email</button>
+  </div>
+  <p class="site-contact__status" role="status" aria-live="polite"></p>
+</dialog>

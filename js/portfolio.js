@@ -17,7 +17,7 @@
       "nav.services": "创作方向",
       "nav.contact": "联系 BEhop",
       "nav.portfolio": "项目案例",
-      "nav.blog": "Blog",
+      "nav.blog": "博客",
       "nav.blog.latest": "最新文章",
       "nav.blog.about": "关于我",
       "nav.blog.archive": "归档",

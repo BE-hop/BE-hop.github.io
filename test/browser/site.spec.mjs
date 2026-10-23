@@ -36,10 +36,10 @@ test('rapid reader navigation does not request high resolution or drop input', a
   expect(requests.filter(url=>/-(1920|2560)\.webp/.test(url))).toEqual([]);
   const detailURL = await page.locator('[data-reader-full]').getAttribute('href');
   await page.locator('[data-reader-full]').click();
-  await expect(page.locator('dialog')).toBeVisible();
+  await expect(page.locator('dialog.media-viewer')).toBeVisible();
   await expect.poll(()=>requests.some(url=>url.endsWith(detailURL))).toBeTruthy();
   await page.keyboard.press('Escape');
-  await expect(page.locator('dialog')).not.toBeVisible();
+  await expect(page.locator('dialog.media-viewer')).not.toBeVisible();
 });
 
 test('detail failure keeps a preview and navigation usable', async ({page}) => {
@@ -48,9 +48,9 @@ test('detail failure keeps a preview and navigation usable', async ({page}) => {
   const detailURL = await link.getAttribute('href');
   await page.route('**'+detailURL,route=>route.abort('failed'));
   await link.click();
-  await expect(page.locator('dialog')).toBeVisible();
-  await expect(page.locator('dialog [role="status"]')).toContainText(/could not|未加载/);
-  await expect(page.locator('dialog img')).toBeVisible();
+  await expect(page.locator('dialog.media-viewer')).toBeVisible();
+  await expect(page.locator('dialog.media-viewer [role="status"]')).toContainText(/could not|未加载/);
+  await expect(page.locator('dialog.media-viewer img')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.locator('h1')).toBeVisible();
 });

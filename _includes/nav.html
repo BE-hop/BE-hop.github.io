@@ -80,11 +80,15 @@
             {% if page.lang-switcher %}
             <div class="site-nav__lang">
                 <button type="button" class="site-nav__lang-btn lang-button blog-lang-button" data-lang="zh"
-                    data-blog-lang="zh">中文</button>
+                    data-blog-lang="zh" data-zh="中文" data-en="Chinese">Chinese</button>
                 <button type="button" class="site-nav__lang-btn lang-button blog-lang-button is-active" data-lang="en"
                     data-blog-lang="en">EN</button>
             </div>
             {% endif %}
+            <button type="button" class="site-nav__link site-contact-trigger" data-contact-open data-contact-desktop
+                    aria-haspopup="dialog" aria-controls="site-contact"
+                    data-contact-zh="{{ site_settings.navigation.contact_zh }}"
+                    data-contact-en="{{ site_settings.navigation.contact_en }}">{{ site_settings.navigation.contact_en }}</button>
             <button type="button" class="site-nav__toggle" data-site-nav-toggle aria-label="Toggle menu"
                 aria-expanded="false">
                 <span class="site-nav__toggle-bar"></span>
@@ -162,6 +166,14 @@
                 <a class="site-nav__mobile-link" href="{{ site.baseurl }}/about/" data-i18n="nav.about"
                     data-i18n-zh="{{ site_settings.navigation.about_zh }}" data-i18n-en="{{ site_settings.navigation.about_en }}" data-zh="{{ site_settings.navigation.about_zh }}" data-en="{{ site_settings.navigation.about_en }}">{{ site_settings.navigation.about_en }}</a>
             </div>
+            <div class="site-nav__mobile-group">
+                <button type="button" class="site-nav__mobile-link site-contact-trigger" data-contact-open
+                    aria-haspopup="dialog" aria-controls="site-contact"
+                    data-contact-zh="{{ site_settings.navigation.contact_zh }}"
+                    data-contact-en="{{ site_settings.navigation.contact_en }}">{{ site_settings.navigation.contact_en }}</button>
+            </div>
         </div>
     </div>
 </header>
+
+{% include contact.html %}

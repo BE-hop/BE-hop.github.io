@@ -11,9 +11,15 @@ navigation:
   ai_tools_en: AI Tools
   works_zh: 项目案例
   works_en: Works
-  blog_zh: Blog
+  blog_zh: 博客
   blog_en: Blog
   digest_zh: AI情报
   digest_en: AI Digest
   about_zh: 关于我
   about_en: About
+  contact_zh: 联系我
+  contact_en: Contact
+
+contact:
+  wechat: Behooooop
+  qr_image: /img/contact/wechat.jpg

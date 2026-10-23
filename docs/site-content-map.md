@@ -304,3 +304,7 @@ img/ai-products/concepts/
 - 图片转换保留data-original-src，替换草稿继续移除旧srcset。已包裹的图片链接不得嵌套额外链接。
 - 构建、缓存、预算统一见[性能规范](loading-performance.md)，工程职责见[架构](architecture.md)。
 - SPL页只提供介绍、真实截图及下载链接；没有版本接口时保留静态下载提示，查询失败不能隐藏下载入口。
+
+## 全站联系弹窗
+
+共享导航读取`_data/site_settings.yml`中的`navigation.contact_zh/contact_en`、`contact.wechat`、`contact.qr_image`与顶层`email`。模板为`_includes/contact.html`，二维码原图为`img/contact/wechat.jpg`，使用独立的`data-contact-src`仅在主动打开后加载，不参与正文图片衍生与编辑器写入范围扩展。
